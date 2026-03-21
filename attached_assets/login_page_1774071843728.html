@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magpie World | Auth</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-start: #68e6c5;
+      --teal-mid:   #59ced1;
+      --teal-end:   #4f98d8;
+      --teal-btn-start: #6be7c5;
+      --teal-btn-end:   #4ea7d8;
+      --bg-deep:    #020617;
+      --card-bg:    rgba(15, 23, 42, 0.72);
+      --border-subtle: rgba(255,255,255,0.10);
+      --border-focus:  rgba(104,230,197,0.55);
+      --icon-color: #7ea3bf;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-deep);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── BACKGROUND ── */
+    .page-bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(135deg, #020617 0%, #03112d 50%, #020617 100%);
+      overflow: hidden;
+    }
+    .bg-glow { position: absolute; border-radius: 50%; pointer-events: none; }
+    .bg-glow-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(104,230,197,0.08) 0%, transparent 70%);
+      top: -180px; left: -180px;
+    }
+    .bg-glow-2 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(79,152,216,0.08) 0%, transparent 70%);
+      bottom: -120px; right: -120px;
+    }
+    .bg-glow-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(89,206,209,0.05) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+
+    /* ── NAVBAR ── */
+    header {
+      position: fixed; top: 0; width: 100%; z-index: 50;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 16px 24px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+    .nav-inner .btn-hamburger { justify-self: end; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand img { width: 40px; height: 40px; object-fit: contain; border-radius: 6px; }
+    .brand-text {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.875rem; letter-spacing: 0.16em;
+      background: linear-gradient(90deg, var(--teal-start), var(--teal-mid), var(--teal-end));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    nav.desktop-nav { display: flex; align-items: center; gap: 32px; }
+    nav.desktop-nav a {
+      font-size: 0.8125rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.2em; color: #cbd5e1; text-decoration: none; transition: color 0.3s;
+    }
+    nav.desktop-nav a:hover { color: #67e0c8; }
+    .btn-hamburger {
+      display: none; background: none; border: none; color: #fff;
+      cursor: pointer; padding: 8px; border-radius: 6px;
+    }
+    .btn-hamburger:hover { background: rgba(255,255,255,0.1); }
+    .mobile-menu {
+      display: none; position: fixed; top: 72px; left: 0; right: 0;
+      background: rgba(2,6,23,0.97); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 24px; z-index: 49; flex-direction: column; gap: 16px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 0.875rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.2em; color: #cbd5e1; text-decoration: none;
+      padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: #67e0c8; }
+    @media (max-width: 767px) { nav.desktop-nav { display: none; } .btn-hamburger { display: flex; } }
+    @media (min-width: 768px) { .btn-hamburger { display: none; } }
+
+    /* ── MAIN WRAPPER ── */
+    .auth-wrapper {
+      position: relative; z-index: 1; flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 90px 24px 40px;
+    }
+
+    /* ── CARD SCENE ── */
+    .card-scene { width: 100%; max-width: 600px; }
+    .card-scene.wide { max-width: 760px; }
+
+    /* ── CARD BOX ── */
+    .auth-card {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 36px 44px 36px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45), 0 0 0 1px rgba(104,230,197,0.05);
+      animation: slideIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.985); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+
+    /* ── CARD HEADER ── */
+    .card-header { text-align: center; margin-bottom: 22px; }
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem; letter-spacing: 0.07em;
+      color: #fff; line-height: 1; margin-bottom: 8px;
+    }
+    .card-subtitle { font-size: 0.8125rem; color: #64748b; font-weight: 500; }
+    .card-subtitle a {
+      color: #68e6c5; text-decoration: none; font-weight: 700;
+      transition: color 0.2s; cursor: pointer;
+    }
+    .card-subtitle a:hover { color: #4f98d8; }
+
+    /* ── SOCIAL BUTTONS ── */
+    .social-btns { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+    .btn-social {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle);
+      color: #e2e8f0; font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 600; padding: 10px 28px;
+      border-radius: 8px; cursor: pointer; letter-spacing: 0.04em;
+      transition: border-color 0.3s, background 0.3s, transform 0.2s;
+    }
+    .btn-social:hover {
+      border-color: rgba(104,230,197,0.35);
+      background: rgba(104,230,197,0.06);
+      transform: translateY(-1px);
+    }
+
+    /* ── DIVIDER ── */
+    .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .divider-line { flex: 1; height: 1px; background: var(--border-subtle); }
+    .divider-text {
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.16em; color: #3a4e63; white-space: nowrap;
+    }
+
+    /* ── FORM GRID ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group.no-mb { margin-bottom: 0; }
+
+    .form-label {
+      display: block; font-size: 0.69rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: #8fa8c0; margin-bottom: 6px;
+    }
+
+    .input-wrap { position: relative; }
+
+    .form-input {
+      width: 100%;
+      background: rgba(8, 18, 40, 0.65);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 10px 42px 10px 40px;
+      color: #e2e8f0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.855rem; font-weight: 500;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+    }
+    .form-input::placeholder { color: #2a3d55; }
+    .form-input:focus {
+      border-color: var(--border-focus);
+      background: rgba(8, 18, 40, 0.85);
+      box-shadow: 0 0 0 3px rgba(104,230,197,0.08);
+    }
+    .form-input.no-toggle { padding-right: 14px; }
+
+    .input-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 16px; color: var(--icon-color);
+      pointer-events: none; display: flex; align-items: center; justify-content: center;
+      transition: color 0.25s;
+    }
+    .input-icon svg { display: block; width: 16px; height: 16px; }
+    .input-wrap:focus-within .input-icon { color: #68e6c5; }
+
+    .pw-toggle {
+      position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: #4a6278;
+      cursor: pointer; padding: 2px; line-height: 0; transition: color 0.25s;
+    }
+    .pw-toggle:hover { color: #68e6c5; }
+    .pw-toggle svg { display: block; width: 16px; height: 16px; }
+
+    /* ── FORM FOOTER ROW (sign-in) ── */
+    .form-footer-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; flex-wrap: wrap; gap: 8px;
+    }
+    .remember-label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .remember-checkbox { width: 14px; height: 14px; accent-color: #68e6c5; cursor: pointer; }
+    .remember-text { font-size: 0.785rem; color: #8fa8c0; font-weight: 500; }
+    .forgot-link {
+      font-size: 0.785rem; font-weight: 600; color: #68e6c5;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .forgot-link:hover { color: #4f98d8; }
+
+    /* ── SUBMIT BUTTON ── */
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(90deg, var(--teal-btn-start), var(--teal-btn-end));
+      color: #07111e; font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 12px 24px; border-radius: 8px; border: none;
+      cursor: pointer; margin-bottom: 16px;
+      box-shadow: 0 4px 24px rgba(107,231,197,0.22);
+      transition: transform 0.25s, opacity 0.25s, box-shadow 0.25s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px); opacity: 0.93;
+      box-shadow: 0 10px 36px rgba(107,231,197,0.34);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── SWITCH ROW ── */
+    .switch-row { text-align: center; font-size: 0.8rem; color: #475569; font-weight: 500; }
+    .switch-row a {
+      color: #68e6c5; text-decoration: none; font-weight: 700;
+      cursor: pointer; transition: color 0.2s;
+    }
+    .switch-row a:hover { color: #4f98d8; }
+
+    /* ── TERMS ── */
+    .terms-note {
+      font-size: 0.7rem; color: #3a4e63;
+      text-align: center; line-height: 1.6; margin-top: 12px;
+    }
+    .terms-note a { color: #68e6c5; text-decoration: none; }
+    .terms-note a:hover { text-decoration: underline; }
+
+    /* ── PASSWORD STRENGTH ── */
+    .strength-bar { display: flex; gap: 4px; margin-top: 6px; }
+    .strength-seg {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: rgba(255,255,255,0.08); transition: background 0.3s;
+    }
+    .strength-label {
+      font-size: 0.67rem; font-weight: 600; color: #3a4e63;
+      margin-top: 3px; min-height: 13px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1; text-align: center;
+      padding: 14px 24px 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    footer p { font-size: 0.72rem; color: #1a2a3a; }
+    footer a { color: #253a4f; text-decoration: none; }
+    footer a:hover { color: #68e6c5; }
+  </style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="page-bg">
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+</div>
+
+<!-- NAVBAR -->
+<header>
+  <div class="nav-inner">
+    <a href="landing_page.html" class="brand">
+      <img src="https://customer-assets.emergentagent.com/job_magpie-landing/artifacts/aoxma5c5_LOGO%202.jpeg" alt="Magpie bird logo" />
+      <span class="brand-text">MAGPIE</span>
+    </a>
+    <nav class="desktop-nav">
+      <a href="landing_page.html#home">Home</a>
+      <a href="landing_page.html#trending">Trending</a>
+      <a href="landing_page.html#about">About</a>
+      <a href="landing_page.html#vision">Vision</a>
+      <a href="landing_page.html#contact">Contact</a>
+    </nav>
+    <button class="btn-hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12h16"/><path d="M4 18h16"/><path d="M4 6h16"/>
+      </svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="landing_page.html#home"     onclick="closeMobile()">Home</a>
+    <a href="landing_page.html#trending" onclick="closeMobile()">Trending</a>
+    <a href="landing_page.html#about"    onclick="closeMobile()">About</a>
+    <a href="landing_page.html#vision"   onclick="closeMobile()">Vision</a>
+    <a href="landing_page.html#contact"  onclick="closeMobile()">Contact</a>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="auth-wrapper" id="authWrapper">
+
+  <!-- ══ SIGN IN ══ -->
+  <div class="card-scene" id="signinScene">
+    <div class="auth-card" id="signinCard">
+      <div class="card-header">
+        <div class="card-title">Sign In</div>
+        <p class="card-subtitle">New to Magpie? <a onclick="showSignup()">Create an account</a></p>
+      </div>
+
+      <div class="social-btns">
+        <button class="btn-social">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+      </div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">or continue with email</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <form onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="si-email">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6.5L22 7"/>
+              </svg>
+            </span>
+            <input class="form-input no-toggle" type="email" id="si-email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="si-password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input class="form-input" type="password" id="si-password" placeholder="Enter your password" autocomplete="current-password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('si-password', this)" aria-label="Toggle password visibility">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-footer-row">
+          <label class="remember-label">
+            <input type="checkbox" class="remember-checkbox" />
+            <span class="remember-text">Remember me</span>
+          </label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary">Enter the World</button>
+        <p class="switch-row">Don't have an account? <a onclick="showSignup()">Start your journey</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ SIGN UP ══ -->
+  <div class="card-scene wide" id="signupScene" style="display:none;">
+    <div class="auth-card" id="signupCard">
+      <div class="card-header">
+        <div class="card-title">Join Magpie</div>
+        <p class="card-subtitle">Already have an account? <a onclick="showSignin()">Sign in</a></p>
+      </div>
+
+      <div class="social-btns">
+        <button class="btn-social">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+      </div>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">or sign up with email</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <form onsubmit="return false;">
+        <!-- Row 1: First + Last -->
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group no-mb">
+            <label class="form-label" for="su-fname">First Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </span>
+              <input class="form-input no-toggle" type="text" id="su-fname" placeholder="First" autocomplete="given-name" />
+            </div>
+          </div>
+          <div class="form-group no-mb">
+            <label class="form-label" for="su-lname">Last Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </span>
+              <input class="form-input no-toggle" type="text" id="su-lname" placeholder="Last" autocomplete="family-name" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Email + Username -->
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group no-mb">
+            <label class="form-label" for="su-email">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6.5L22 7"/>
+                </svg>
+              </span>
+              <input class="form-input no-toggle" type="email" id="su-email" placeholder="you@example.com" autocomplete="email" />
+            </div>
+          </div>
+          <div class="form-group no-mb">
+            <label class="form-label" for="su-username">Username</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input class="form-input no-toggle" type="text" id="su-username" placeholder="your_magpie_handle" autocomplete="username" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Password + Confirm -->
+        <div class="form-row" style="margin-bottom:14px;">
+          <div class="form-group no-mb">
+            <label class="form-label" for="su-password">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input class="form-input" type="password" id="su-password" placeholder="Create a strong password" autocomplete="new-password" oninput="checkStrength(this.value)" />
+              <button type="button" class="pw-toggle" onclick="togglePw('su-password', this)" aria-label="Toggle password visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-seg" id="seg1"></div>
+              <div class="strength-seg" id="seg2"></div>
+              <div class="strength-seg" id="seg3"></div>
+              <div class="strength-seg" id="seg4"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel"></div>
+          </div>
+          <div class="form-group no-mb">
+            <label class="form-label" for="su-confirm">Confirm Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </span>
+              <input class="form-input" type="password" id="su-confirm" placeholder="Repeat your password" autocomplete="new-password" />
+              <button type="button" class="pw-toggle" onclick="togglePw('su-confirm', this)" aria-label="Toggle visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Begin Your Journey</button>
+        <p class="switch-row">Already have an account? <a onclick="showSignin()">Sign in</a></p>
+        <p class="terms-note">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 Magpie World. All rights reserved. &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></p>
+</footer>
+
+<script>
+  /* ── Mobile menu ── */
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu   = document.getElementById('mobileMenu');
+  hamburgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  /* ── Show sign-in on load ── */
+  document.getElementById('signinCard').style.display = 'block';
+
+  /* ── Page switch ── */
+  function showSignup() {
+    document.getElementById('signinScene').style.display = 'none';
+    document.getElementById('signupScene').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function showSignin() {
+    document.getElementById('signupScene').style.display = 'none';
+    document.getElementById('signinScene').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── Password toggle ── */
+  const eyeOpenSVG   = `<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>`;
+  const eyeClosedSVG = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+  function togglePw(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    btn.querySelector('svg').innerHTML = isHidden ? eyeClosedSVG : eyeOpenSVG;
+  }
+
+  /* ── Password strength ── */
+  const segs = ['seg1','seg2','seg3','seg4'].map(id => document.getElementById(id));
+  const strengthLabel = document.getElementById('strengthLabel');
+  const colors = ['#e74c3c','#e67e22','#f1c40f','#68e6c5'];
+  const labels = ['Weak','Fair','Good','Strong'];
+
+  function checkStrength(val) {
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+    if (/\d/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    segs.forEach((s, i) => {
+      s.style.background = val.length === 0 ? 'rgba(255,255,255,0.08)'
+        : i < score ? colors[score - 1] : 'rgba(255,255,255,0.08)';
+    });
+    strengthLabel.textContent = val.length === 0 ? '' : labels[score - 1] || 'Weak';
+    strengthLabel.style.color = val.length === 0 ? '#3a4e63' : colors[score - 1] || colors[0];
+  }
+</script>
+</body>
+</html>

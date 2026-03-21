@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magpie – Story Reader</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #12161f;
+    --bg-panel:   #0e1219;
+    --bg-sidebar: #0b0e15;
+    --surface:    #181d28;
+    --surface2:   #1e2535;
+    --border:     rgba(0,229,200,0.10);
+    --border2:    rgba(255,255,255,0.06);
+    --cyan:       #00e5c8;
+    --cyan-lo:    rgba(0,229,200,0.12);
+    --red:        #e06060;
+    --gold:       #e8bb50;
+    --white:      #e8ead0;
+    --text:       #c8cdb8;
+    --text-dim:   #7a8470;
+    --text-faint: #4a5040;
+    --gray:       #6e7d8a;
+    --story-fs:   19px;
+    --story-lh:   1.95;
+    --col-width:  660px;
+    --reading-bg: #12161f;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    width:100%; height:100%; overflow:hidden;
+    background:var(--bg); color:var(--white);
+    font-family:"Barlow", sans-serif;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  #app {
+    display:grid;
+    grid-template-columns:220px 1fr 270px;
+    grid-template-rows:56px 1fr;
+    width:100vw; height:100vh;
+    overflow:hidden;
+    transition: grid-template-columns 0.28s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Full-width top toolbar spanning all 3 columns */
+  #read-toolbar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 24px 0 20px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg-panel);
+    z-index:20;
+  }
+
+  /* ════ LEFT SIDEBAR ════ */
+  #left-bar {
+    grid-column: 1;
+    grid-row: 2;
+    background:var(--bg-sidebar);
+    border-right:1px solid var(--border);
+    display:flex; flex-direction:column;
+    padding:0; overflow:hidden;
+    position:relative; z-index:10;
+    transition: width 0.28s cubic-bezier(0.4,0,0.2,1);
+    width: 220px;
+    min-width:0;
+  }
+
+  /* Collapsed state */
+  #app.sidebar-collapsed {
+    grid-template-columns: 44px 1fr 270px;
+  }
+  #app.sidebar-collapsed #left-bar { width: 44px; }
+  #app.sidebar-collapsed #left-content { opacity:0; pointer-events:none; }
+  #app.sidebar-collapsed #exit-section { opacity:0; pointer-events:none; }
+  #app.sidebar-collapsed .left-tab { padding:11px 0 10px; }
+  #app.sidebar-collapsed .left-tab span:not(.left-tab-badge),
+  #app.sidebar-collapsed .left-tab .left-tab-badge { display:none; }
+  #app.sidebar-collapsed #left-tabs-header { justify-content:center; flex-direction:column; }
+  #app.sidebar-collapsed .left-tab { border-bottom:none; border-right:2px solid transparent; width:100%; }
+  #app.sidebar-collapsed .left-tab.active { border-right-color:var(--cyan); border-bottom-color:transparent; }
+  #app.sidebar-collapsed #collapse-btn { transform:rotate(180deg); }
+
+  /* ── Left sidebar tabs ── */
+  #left-tabs-header {
+    display:flex; gap:0; flex-shrink:0;
+    border-bottom:1px solid var(--border);
+    align-items:stretch;
+  }
+  #collapse-btn {
+    flex-shrink:0;
+    width:36px;
+    background:none; border:none; border-left:1px solid var(--border);
+    cursor:pointer; color:var(--text-faint);
+    display:flex; align-items:center; justify-content:center;
+    transition:color 0.2s, background 0.2s, transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  }
+  #collapse-btn:hover { color:var(--cyan); background:rgba(0,229,200,0.04); }
+  #collapse-btn svg { width:13px; height:13px; flex-shrink:0; }
+  .left-tab {
+    flex:1; background:none; border:none; border-bottom:2px solid transparent;
+    padding:11px 6px 10px;
+    cursor:pointer; color:var(--gray);
+    font-family:"Barlow Condensed",sans-serif; font-size:11px; font-weight:700;
+    letter-spacing:1.5px; text-transform:uppercase;
+    transition:color 0.2s, border-color 0.2s, background 0.2s;
+    display:flex; align-items:center; justify-content:center; gap:5px;
+  }
+  .left-tab:hover { color:var(--cyan); background:rgba(0,229,200,0.04); }
+  .left-tab.active { color:var(--cyan); border-bottom-color:var(--cyan); background:rgba(0,229,200,0.04); }
+  .left-tab svg { width:11px; height:11px; }
+  .left-tab-badge {
+    background:var(--cyan); color:#060d1f;
+    border-radius:10px; padding:1px 5px; font-size:9px; font-weight:900; line-height:1.4;
+  }
+
+  #left-content {
+    flex:1 1 auto; overflow-y:auto;
+    scrollbar-width:thin; scrollbar-color:rgba(0,229,200,0.15) transparent;
+  }
+  #left-content::-webkit-scrollbar { width:3px; }
+  #left-content::-webkit-scrollbar-thumb { background:rgba(0,229,200,0.15); }
+
+  .left-tab-panel { display:none; padding:12px 14px; }
+  .left-tab-panel.active { display:block; }
+
+  .side-section-label {
+    font-family:"Barlow Condensed",sans-serif; font-size:9px;
+    letter-spacing:2.5px; text-transform:uppercase; color:var(--text-faint);
+    margin-bottom:7px; margin-top:2px;
+  }
+
+  /* Quest cards — compact */
+  .quest-list { display:flex; flex-direction:column; gap:7px; }
+  .quest-card {
+    background:var(--surface); border:1px solid var(--border2);
+    border-radius:7px; padding:10px 11px;
+    transition:border-color 0.2s; cursor:pointer;
+  }
+  .quest-card:hover { border-color:rgba(0,229,200,0.25); }
+  .quest-card.active-quest { border-color:rgba(0,229,200,0.28); background:rgba(0,229,200,0.04); }
+  .quest-card-header {
+    display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:6px;
+  }
+  .quest-card-title {
+    font-family:"Barlow Condensed",sans-serif; font-size:12px; font-weight:700;
+    color:var(--white); line-height:1.2;
+  }
+  .quest-status {
+    font-family:"Barlow Condensed",sans-serif; font-size:8px; font-weight:700;
+    letter-spacing:1px; text-transform:uppercase; padding:2px 6px; border-radius:3px; flex-shrink:0;
+  }
+  .quest-status.active { background:rgba(0,229,200,0.12); color:var(--cyan); border:1px solid rgba(0,229,200,0.2); }
+  .quest-status.new    { background:rgba(232,187,80,0.12); color:var(--gold); border:1px solid rgba(232,187,80,0.2); }
+  .quest-status.done   { background:rgba(255,255,255,0.05); color:var(--text-dim); border:1px solid rgba(255,255,255,0.08); }
+  .quest-progress-bar  { height:2px; background:rgba(255,255,255,0.06); border-radius:1px; overflow:hidden; margin-bottom:7px; }
+  .quest-progress-fill { height:100%; border-radius:1px; background:linear-gradient(to right,rgba(0,229,200,0.4),var(--cyan)); transition:width 0.6s; }
+  .quest-steps { display:flex; flex-direction:column; gap:4px; }
+  .quest-step  { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--text-faint); line-height:1.3; }
+  .quest-step.done    { color:var(--text-dim); }
+  .quest-step.current { color:var(--text); }
+  .step-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; background:rgba(255,255,255,0.1); }
+  .quest-step.done    .step-dot { background:var(--cyan); }
+  .quest-step.current .step-dot { background:var(--gold); }
+
+  /* Inventory in left */
+  .inv-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:12px; }
+  .inv-slot {
+    aspect-ratio:1; background:var(--surface); border:1px solid var(--border2);
+    border-radius:7px; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; gap:3px; cursor:pointer; padding:6px;
+    transition:background 0.2s, border-color 0.2s; position:relative;
+  }
+  .inv-slot:hover { background:var(--cyan-lo); border-color:rgba(0,229,200,0.4); }
+  .inv-slot.empty { opacity:0.2; cursor:default; }
+  .inv-slot.empty:hover { background:var(--surface); border-color:var(--border2); }
+  .item-icon  { font-size:18px; }
+  .item-name  { font-size:8px; letter-spacing:0.5px; color:var(--gray); text-transform:uppercase; text-align:center; line-height:1.2; }
+  .item-rarity { position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; }
+  .rarity-legendary { background:#f5a623; box-shadow:0 0 4px #f5a623; }
+  .rarity-rare      { background:#5b8dee; box-shadow:0 0 4px #5b8dee; }
+
+  .inv-item-detail {
+    background:var(--surface); border:1px solid var(--border2); border-radius:7px; padding:10px; margin-bottom:7px;
+  }
+  .inv-item-detail-name {
+    font-family:"Barlow Condensed",sans-serif; font-size:12px; font-weight:700;
+    color:var(--white); margin-bottom:4px; display:flex; align-items:center; gap:6px;
+  }
+  .inv-item-detail-desc { font-size:10px; color:var(--text-dim); line-height:1.5; }
+
+  /* ════ RIGHT SIDEBAR — Stats + Chapter ════ */
+  #right-bar {
+    grid-column: 3;
+    grid-row: 2;
+    background:var(--bg-sidebar);
+    border-left:1px solid var(--border);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* Stats */
+  #stats-section {
+    padding:16px 16px 14px;
+    border-bottom:1px solid var(--border);
+    display:flex; flex-direction:column; gap:12px; flex-shrink:0;
+  }
+  .stat-block { display:flex; flex-direction:column; gap:5px; }
+  .stat-header { display:flex; align-items:center; justify-content:space-between; }
+  .stat-label {
+    display:flex; align-items:center; gap:5px;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  }
+  .stat-label.hp { color:var(--red); }
+  .stat-label.xp { color:var(--gold); }
+  .stat-label svg { width:10px; height:10px; }
+  .stat-num { font-family:"Barlow Condensed",sans-serif; font-size:12px; font-weight:700; }
+  .stat-num.hp { color:var(--red); }
+  .stat-num.xp { color:var(--gold); }
+  .bar-track { height:5px; border-radius:3px; background:rgba(255,255,255,0.07); overflow:hidden; }
+  .bar-fill  { height:100%; border-radius:3px; transition:width 0.6s cubic-bezier(.4,0,.2,1); }
+  .bar-fill.hp { background:linear-gradient(to right,#a03030,var(--red)); }
+  .bar-fill.xp { background:linear-gradient(to right,#a07820,var(--gold)); }
+  .lvl-row { display:flex; align-items:center; gap:6px; margin-top:2px; }
+  .lvl-pill {
+    font-family:"Barlow Condensed",sans-serif;
+    background:rgba(232,187,80,0.1); border:1px solid rgba(232,187,80,0.25);
+    border-radius:4px; padding:2px 8px; font-size:11px; color:var(--gold); letter-spacing:1px;
+  }
+  .xp-next { font-size:10px; color:var(--text-faint); }
+
+  /* Chapter info */
+  #chapter-section {
+    padding:14px 16px;
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .section-micro { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); opacity:0.7; margin-bottom:6px; }
+  .chapter-title { font-family:"Barlow Condensed",sans-serif; font-size:14px; font-weight:700; color:var(--white); margin-bottom:2px; }
+  .chapter-sub   { font-size:11px; color:var(--gray); }
+  .chapter-progress      { margin-top:10px; height:3px; border-radius:2px; background:rgba(255,255,255,0.07); overflow:hidden; }
+  .chapter-progress-fill { height:100%; border-radius:2px; width:28%; background:linear-gradient(to right,rgba(0,229,200,0.5),var(--cyan)); }
+  .chapter-progress-label { font-size:10px; color:var(--text-faint); margin-top:4px; }
+
+
+
+  /* ════ CENTRE ════ */
+  #reading-area {
+    grid-column: 2;
+    grid-row: 2;
+    display:flex; flex-direction:column;
+    background:var(--reading-bg);
+    overflow:hidden; position:relative;
+    transition:background 0.4s;
+  }
+
+  #location-wrap { display:flex; align-items:center; gap:14px; }
+  #location-label-sm {
+    font-size:9px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--cyan); opacity:0.6; flex-shrink:0;
+  }
+  #location-name {
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:22px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--white);
+    border-left:3px solid var(--cyan); padding-left:12px;
+  }
+
+  #toolbar-controls { display:flex; align-items:center; gap:8px; }
+  .ctrl-group {
+    display:flex; align-items:center; gap:1px;
+    background:var(--surface); border:1px solid var(--border2); border-radius:6px; overflow:hidden;
+  }
+  .ctrl-btn {
+    background:none; border:none; color:var(--gray);
+    padding:7px 12px; cursor:pointer; font-size:13px; font-weight:600;
+    transition:color 0.15s, background 0.15s;
+    font-family:"Barlow Condensed",sans-serif;
+    border-right:1px solid var(--border2);
+    line-height:1;
+  }
+  .ctrl-btn:last-child { border-right:none; }
+  .ctrl-btn:hover { color:var(--cyan); background:var(--cyan-lo); }
+
+  #theme-btn {
+    background:var(--surface); border:1px solid var(--border2); border-radius:6px;
+    padding:7px 12px; cursor:pointer; color:var(--gray);
+    font-family:"Barlow Condensed",sans-serif; font-size:11px; font-weight:600;
+    letter-spacing:1px; text-transform:uppercase;
+    transition:color 0.2s, border-color 0.2s;
+    display:flex; align-items:center; gap:5px; line-height:1;
+  }
+  #theme-btn:hover { color:var(--cyan); border-color:rgba(0,229,200,0.3); }
+  #theme-btn svg { width:13px; height:13px; }
+
+  #btn-bookmark {
+    background:var(--surface); border:1px solid var(--border2); border-radius:6px;
+    padding:7px 10px; cursor:pointer; color:var(--gray);
+    transition:color 0.2s, border-color 0.2s;
+    display:flex; align-items:center;
+  }
+  #btn-bookmark:hover { color:var(--cyan); border-color:rgba(0,229,200,0.3); }
+  #btn-bookmark svg { width:14px; height:14px; display:block; }
+
+  #story-scroll {
+    flex:1 1 auto; overflow-y:auto; padding:48px 0 120px;
+    scrollbar-width:thin; scrollbar-color:rgba(0,229,200,0.2) transparent;
+    display:flex; justify-content:center;
+  }
+  #story-scroll::-webkit-scrollbar { width:4px; }
+  #story-scroll::-webkit-scrollbar-thumb { background:rgba(0,229,200,0.2); border-radius:2px; }
+
+  #story-col { width:var(--col-width); max-width:90vw; }
+
+  .story-scene-tag {
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:10px; letter-spacing:4px; text-transform:uppercase;
+    color:var(--cyan); opacity:0.6; margin-bottom:28px; display:block;
+  }
+
+  #story-text {
+    font-family:"Lora", Georgia, serif;
+    font-size:var(--story-fs); line-height:var(--story-lh);
+    color:var(--text); letter-spacing:0.01em; word-spacing:0.04em;
+  }
+  #story-text p { margin-bottom:1.6em; hyphens:auto; -webkit-hyphens:auto; }
+  #story-text em { font-style:italic; color:rgba(200,205,184,0.85); }
+  #story-text strong { font-weight:600; color:#dce0cc; }
+  #story-text .narrator-note {
+    font-style:italic; color:var(--text-dim); font-size:0.93em;
+    padding-left:18px; border-left:2px solid rgba(0,229,200,0.2); margin:1.4em 0;
+  }
+
+  .quest-tag {
+    display:flex; align-items:center; gap:10px;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--cyan); opacity:0.9;
+    padding:10px 16px;
+    background:rgba(0,229,200,0.05); border:1px solid rgba(0,229,200,0.15);
+    border-radius:6px; margin:1.8em 0;
+  }
+  .quest-tag svg { width:12px; height:12px; flex-shrink:0; }
+
+  .story-divider { display:flex; align-items:center; gap:12px; margin:2.4em 0; }
+  .story-divider::before, .story-divider::after { content:""; flex:1; height:1px; background:var(--border2); }
+  .story-divider span { font-size:14px; opacity:0.3; }
+
+  /* ── CHOICES ── */
+  #choices-section {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 20px;
+  }
+
+  .choices-label {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    opacity: 0.5;
+    margin-bottom: 16px;
+  }
+
+  #choices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .choice-btn {
+    background: rgba(255,255,255,0.02);
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 14px 20px 14px 22px;
+    color: var(--text-dim);
+    font-family: "Lora", Georgia, serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    position: relative;
+    transition: background 0.18s, color 0.18s, padding-left 0.18s;
+    display: block;
+  }
+  .choice-btn:first-child { border-top: none; }
+
+  /* Animated left accent bar */
+  .choice-btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--cyan);
+    opacity: 0;
+    transform: scaleY(0.4);
+    transition: opacity 0.18s, transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .choice-btn:hover {
+    background: rgba(0,229,200,0.05);
+    color: var(--white);
+    padding-left: 26px;
+  }
+  .choice-btn:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .choice-btn.selected {
+    background: rgba(0,229,200,0.08);
+    color: var(--white);
+    padding-left: 26px;
+  }
+  .choice-btn.selected::before {
+    opacity: 1;
+    transform: scaleY(1);
+    background: var(--cyan);
+  }
+
+  /* Free action divider + row */
+  .choice-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 14px;
+  }
+  .choice-divider::before,
+  .choice-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+  .choice-divider span {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  .free-action-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .free-action-input {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 11px 16px;
+    color: var(--white);
+    font-family: "Lora", Georgia, serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .free-action-input::placeholder {
+    color: rgba(200,205,184,0.22);
+    font-style: italic;
+  }
+  .free-action-input:focus {
+    border-color: rgba(0,229,200,0.35);
+    background: rgba(0,229,200,0.04);
+  }
+  .free-action-send {
+    background: rgba(0,229,200,0.12);
+    border: 1px solid rgba(0,229,200,0.25);
+    border-radius: 8px;
+    width: 40px; height: 40px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .free-action-send:hover {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    transform: scale(1.04);
+  }
+  .free-action-send svg { width: 13px; height: 13px; }
+  .free-action-send:hover svg { stroke: #060d1f; }
+
+  #reading-time { font-size:10px; color:var(--text-faint); letter-spacing:1px; text-align:center; margin-top:40px; margin-bottom:20px; }
+
+  /* Exit */
+  #exit-section { padding:14px 14px; border-top:1px solid var(--border); flex-shrink:0; }
+  #btn-exit {
+    display:flex; align-items:center; gap:8px; width:100%;
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+    border-radius:6px; padding:9px 14px;
+    color:rgba(255,255,255,0.6); font-family:"Barlow Condensed",sans-serif;
+    font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    cursor:pointer; transition:all 0.2s;
+  }
+  #btn-exit:hover { border-color:var(--cyan); color:var(--cyan); background:var(--cyan-lo); }
+  #btn-exit svg { width:13px; height:13px; }
+
+  /* ════ THEMES ════ */
+  body.theme-sepia {
+    --reading-bg: #1a1610;
+    --text: #d4c9a8; --text-dim: #8a7d5a; --text-faint: #5a5038;
+    --surface: #221c12; --surface2: #2a2418; --border2: rgba(255,220,140,0.08);
+  }
+  body.theme-light {
+    --reading-bg: #f5f2e8; --bg-panel: #ece9df;
+    --text: #2a2820; --text-dim: #6a6858; --text-faint: #9a9880;
+    --surface: #e8e5db; --surface2: #dedad0; --border2: rgba(0,0,0,0.08); --white: #1a1810;
+  }
+  body.theme-midnight {
+    --reading-bg: #080c12; --text: #b0b8a8; --text-dim: #5a6250;
+    --surface: #0e1318; --surface2: #121820;
+  }
+
+  /* ── Panels (overlays) ── */
+  .panel-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,0.7);
+    z-index:80; display:none; align-items:center; justify-content:center;
+    backdrop-filter:blur(6px);
+  }
+  .panel-overlay.open { display:flex; }
+  .panel-box {
+    background:var(--bg-panel); border:1px solid rgba(0,229,200,0.2);
+    border-radius:12px; padding:24px; width:420px; max-height:70vh;
+    overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,0.8);
+  }
+  .panel-title {
+    font-family:"Barlow Condensed",sans-serif; font-size:17px; font-weight:800;
+    letter-spacing:2px; text-transform:uppercase; color:var(--cyan); margin-bottom:16px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .panel-close { background:none; border:none; color:var(--gray); cursor:pointer; font-size:18px; line-height:1; }
+  .panel-close:hover { color:var(--white); }
+
+  @keyframes fadeSlideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+  .new-text { animation:fadeSlideIn 0.5s ease forwards; }
+
+  /* ════ SCENE TRANSITION ════ */
+  #scene-transition {
+    position:fixed; inset:0; z-index:200;
+    display:flex; flex-direction:column;
+    pointer-events:none; opacity:0;
+    font-family:"Barlow",sans-serif;
+  }
+  #scene-transition.entering { pointer-events:all; animation:sceneEnter 0.65s cubic-bezier(0.16,1,0.3,1) forwards; }
+  #scene-transition.visible  { pointer-events:all; opacity:1; }
+  #scene-transition.leaving  { pointer-events:none; animation:sceneLeave 0.5s cubic-bezier(0.4,0,0.6,1) forwards; }
+  @keyframes sceneEnter { from{opacity:0;transform:scale(1.03)} to{opacity:1;transform:scale(1)} }
+  @keyframes sceneLeave { from{opacity:1;transform:scale(1)}    to{opacity:0;transform:scale(0.98)} }
+
+  #scene-canvas-wrap { position:absolute; inset:0; overflow:hidden; }
+  #scene-svg-canvas { width:100%; height:100%; display:block; position:absolute; inset:0; }
+  #scene-vignette {
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 85% 85% at 50% 50%, transparent 30%, rgba(0,0,0,0.55) 100%);
+  }
+  #scene-bottom-fade {
+    position:absolute; bottom:0; left:0; right:0; height:55%; pointer-events:none;
+    background:linear-gradient(to bottom, transparent 0%, rgba(5,8,16,0.82) 55%, rgba(5,8,16,0.98) 100%);
+  }
+
+  #scene-info-panel {
+    position:absolute; bottom:0; left:0; right:0;
+    padding:32px 0 44px;
+    display:flex; flex-direction:column; align-items:center; z-index:5;
+  }
+  #scene-arrived-tag { font-size:10px; letter-spacing:6px; text-transform:uppercase; color:#00e5c8; opacity:0.75; margin-bottom:10px; animation:fadeUp 0.5s 0.3s ease both; }
+  #scene-location-title {
+    font-family:"Barlow Condensed",sans-serif; font-size:clamp(42px,6vw,72px); font-weight:900;
+    letter-spacing:3px; text-transform:uppercase; color:#e8ead0; text-align:center; line-height:1;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.9), 0 0 80px rgba(0,0,0,0.6);
+    animation:fadeUp 0.5s 0.42s ease both;
+  }
+  #scene-title-rule { width:60px; height:2px; margin:16px 0 14px; background:linear-gradient(to right,transparent,#00e5c8,transparent); animation:fadeUp 0.5s 0.52s ease both; }
+  #scene-description { font-family:"Lora",Georgia,serif; font-size:15px; line-height:1.75; color:rgba(200,205,184,0.72); max-width:560px; text-align:center; animation:fadeUp 0.5s 0.6s ease both; padding:0 24px; }
+  #scene-continue-btn {
+    margin-top:28px; display:inline-flex; align-items:center; gap:12px;
+    background:#00e5c8; color:#050810; border:none; border-radius:6px; padding:14px 38px;
+    font-family:"Barlow Condensed",sans-serif; font-size:15px; font-weight:900; letter-spacing:3px; text-transform:uppercase;
+    cursor:pointer; box-shadow: 0 0 40px rgba(0,229,200,0.35), 0 4px 20px rgba(0,0,0,0.5);
+    transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
+    animation:fadeUp 0.5s 0.75s ease both;
+  }
+  #scene-continue-btn:hover { background:#00fff5; transform:translateY(-3px); box-shadow:0 0 60px rgba(0,229,200,0.5), 0 8px 30px rgba(0,0,0,0.5); }
+  #scene-continue-btn svg { width:16px; height:16px; flex-shrink:0; }
+
+  #scene-particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:3; }
+  .spark { position:absolute; border-radius:50%; opacity:0; animation:sparkFloat var(--dur) var(--delay) ease-in-out infinite; }
+  @keyframes sparkFloat { 0%{opacity:0;transform:translateY(0) scale(1)} 15%{opacity:0.7} 85%{opacity:0.2} 100%{opacity:0;transform:translateY(-80px) scale(0.3)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+  @keyframes gentleFlicker { 0%,100%{opacity:1} 25%{opacity:0.88} 55%{opacity:0.95} 75%{opacity:0.9} }
+  @keyframes fireFlicker { 0%,100%{opacity:0.8;transform:scaleX(1) scaleY(1)} 20%{opacity:0.9;transform:scaleX(1.06) scaleY(0.96)} 50%{opacity:0.7;transform:scaleX(0.94) scaleY(1.05)} 80%{opacity:0.85;transform:scaleX(1.03) scaleY(0.97)} }
+  @keyframes waterShimmer { 0%,100%{opacity:0.5} 50%{opacity:0.35} }
+  @keyframes lanternSway { 0%,100%{transform:rotate(0deg);transform-origin:top center;} 30%{transform:rotate(3deg);transform-origin:top center;} 70%{transform:rotate(-3deg);transform-origin:top center;} }
+  .flicker      { animation:gentleFlicker 3.5s ease-in-out infinite; }
+  .fire-anim    { animation:fireFlicker   1.8s ease-in-out infinite; transform-origin:50% 100%; }
+  .water-anim   { animation:waterShimmer  2.2s ease-in-out infinite; }
+  .sway-anim    { animation:lanternSway   4s   ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ════ FULL-WIDTH TOP TOOLBAR ════ -->
+  <div id="read-toolbar">
+    <div id="location-wrap">
+      <span id="location-label-sm">Location</span>
+      <div id="location-name">Captain's Quarters</div>
+    </div>
+    <div id="toolbar-controls">
+      <div class="ctrl-group">
+        <button class="ctrl-btn" onclick="changeFontSize(-1)" title="Decrease text size">A−</button>
+        <button class="ctrl-btn" onclick="changeFontSize(1)"  title="Increase text size">A+</button>
+      </div>
+      <div class="ctrl-group">
+        <button class="ctrl-btn" title="Compact spacing" onclick="changeLineHeight(-0.15)">≡</button>
+        <button class="ctrl-btn" title="Relaxed spacing" onclick="changeLineHeight(0.15)">☰</button>
+      </div>
+      <button id="theme-btn" onclick="cycleTheme()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span id="theme-label">Dark</span>
+      </button>
+      <button id="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ LEFT SIDEBAR ════ -->
+  <div id="left-bar">
+
+    <!-- Left tabs: Quests + Items -->
+    <div id="left-tabs-header">
+      <button class="left-tab active" onclick="switchLeftTab('quests',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Quests
+        <span class="left-tab-badge" id="quest-badge">2</span>
+      </button>
+      <button class="left-tab" onclick="switchLeftTab('inventory',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 11V7a4 4 0 0 0-8 0v4"/><rect x="3" y="11" width="18" height="11" rx="2"/></svg>
+        Items
+        <span class="left-tab-badge">2</span>
+      </button>
+      <button id="collapse-btn" onclick="toggleSidebar()" title="Collapse sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <div id="left-content">
+
+      <!-- Quests Panel -->
+      <div id="left-tab-quests" class="left-tab-panel active">
+        <div class="side-section-label">Active</div>
+        <div class="quest-list">
+
+          <div class="quest-card active-quest">
+            <div class="quest-card-header">
+              <div class="quest-card-title">The Traitor's Mutiny</div>
+              <span class="quest-status active">Active</span>
+            </div>
+            <div class="quest-progress-bar"><div class="quest-progress-fill" id="main-quest-prog" style="width:25%"></div></div>
+            <div class="quest-steps">
+              <div class="quest-step done"><span class="step-dot"></span>Get the compass</div>
+              <div class="quest-step done"><span class="step-dot"></span>Reach the Quarters</div>
+              <div class="quest-step current"><span class="step-dot"></span>Survive Silas</div>
+              <div class="quest-step"><span class="step-dot"></span>Discover his secret</div>
+              <div class="quest-step"><span class="step-dot"></span>Deliver the compass</div>
+            </div>
+          </div>
+
+          <div class="quest-card">
+            <div class="quest-card-header">
+              <div class="quest-card-title">The Captain's Mission</div>
+              <span class="quest-status active">Active</span>
+            </div>
+            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:15%"></div></div>
+            <div class="quest-steps">
+              <div class="quest-step done"><span class="step-dot"></span>Hear his dying words</div>
+              <div class="quest-step current"><span class="step-dot"></span>Survive to act on them</div>
+              <div class="quest-step"><span class="step-dot"></span>Find the cartographer</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="side-section-label" style="margin-top:14px;">Completed</div>
+        <div class="quest-list">
+          <div class="quest-card" style="opacity:0.55">
+            <div class="quest-card-header">
+              <div class="quest-card-title">All Aboard</div>
+              <span class="quest-status done">Done</span>
+            </div>
+            <div class="quest-progress-bar"><div class="quest-progress-fill" style="width:100%;opacity:0.4"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Panel -->
+      <div id="left-tab-inventory" class="left-tab-panel">
+        <div class="side-section-label">Equipped</div>
+        <div class="inv-grid">
+          <div class="inv-slot" onclick="showItemDetail('compass')">
+            <span class="item-rarity rarity-legendary"></span>
+            <span class="item-icon">🧭</span>
+            <span class="item-name">Brass Compass</span>
+          </div>
+          <div class="inv-slot" onclick="showItemDetail('dagger')">
+            <span class="item-rarity rarity-rare"></span>
+            <span class="item-icon">🗡️</span>
+            <span class="item-name">Dagger</span>
+          </div>
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+        </div>
+        <div class="side-section-label">Bag</div>
+        <div class="inv-grid">
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+          <div class="inv-slot empty"><span class="item-icon">·</span></div>
+        </div>
+        <div id="item-detail-area"></div>
+      </div>
+
+    </div>
+
+    <div id="exit-section">
+      <button id="btn-exit" onclick="window.location.href='#'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Exit Story
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ CENTRE ════ -->
+  <div id="reading-area">
+
+    <div id="story-scroll">
+      <div id="story-col">
+        <span class="story-scene-tag">⚓ Scene 2 — The Captain's Quarters · Aboard the Windbreaker</span>
+
+        <div id="story-text">
+          <p>The compass is slick with blood. Outside, cannon fire rattles the hull of the <em>Windbreaker</em>, but the real threat is inside — standing in the ruined doorway with a blade still dripping red.</p>
+
+          <p>Quartermaster Silas fills the frame. He's a broad man, built like the ship's keel, and he moves with the unhurried confidence of someone who has already decided how this ends. His cutlass catches the amber lantern light as it sweeps toward you in a slow, deliberate arc — a warning, not yet a strike.</p>
+
+          <p>His cold eyes lock onto your closed fist.</p>
+
+          <p><strong>'The Captain was a fool to trust a greenhorn,'</strong> Silas growls over the din of battle, his voice low enough that only you can hear it above the thunder of cannon and splintering wood. <strong>'Give me the compass, and I might just let you take a lifeboat.'</strong></p>
+
+          <p>The brass in your hand pulses with a strange, unnatural warmth. It doesn't point north. The needle is spinning wildly — then stops. It locks, with eerie certainty, directly onto Silas.</p>
+
+          <p class="narrator-note">The compass vibrates faintly against your palm — almost as if it recognises something in Silas, something carried close to his chest beneath that salt-stained coat. Whatever secret this instrument holds, it chose you to keep it.</p>
+
+          <div class="quest-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Quest Started: The Traitor's Mutiny
+          </div>
+
+          <div class="story-divider"><span>✦</span></div>
+
+          <p>You have perhaps three seconds before Silas decides the offer has expired. The lantern sways in the listing cabin. A Persian rug covers the floor between you. Through the shattered stern windows, the open sea burns orange with fire.</p>
+        </div>
+
+        <!-- CHOICES -->
+        <div id="choices-section">
+          <div class="choices-label">What do you do?</div>
+          <div id="choices-list">
+            <button class="choice-btn" onclick="makeChoice(this,0)">
+              Lie and tell Silas the Captain threw it out the shattered porthole.
+            </button>
+            <button class="choice-btn" onclick="makeChoice(this,1)">
+              Draw your dagger and fight Silas for the truth.
+            </button>
+            <button class="choice-btn" onclick="makeChoice(this,2)">
+              Dive for the hidden smuggler's hatch under the Persian rug.
+            </button>
+            <button class="choice-btn" onclick="makeChoice(this,3)">
+              Toss the compass to him, but prepare to ambush when he catches it.
+            </button>
+          </div>
+
+          <div class="choice-divider"><span>or</span></div>
+
+          <div class="free-action-row">
+            <input type="text" class="free-action-input" id="action-input" placeholder="Write your own action…" onkeydown="if(event.key==='Enter')sendAction()">
+            <button class="free-action-send" onclick="sendAction()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="reading-time">~3 min read · Scene 2 of 8</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ RIGHT SIDEBAR — Stats + Now Reading ════ -->
+  <div id="right-bar">
+
+    <!-- Stats -->
+    <div id="stats-section">
+      <div class="stat-block">
+        <div class="stat-header">
+          <span class="stat-label hp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            Health
+          </span>
+          <span class="stat-num hp" id="hp-val">85 / 100</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill hp" id="hp-bar" style="width:85%"></div></div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-header">
+          <span class="stat-label xp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Experience
+          </span>
+          <span class="stat-num xp" id="xp-val">0 / 100</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill xp" id="xp-bar" style="width:0%"></div></div>
+        <div class="lvl-row">
+          <span class="lvl-pill">Level <span id="lvl-val">1</span></span>
+          <span class="xp-next" id="xp-next">100 XP to next level</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter / Now Reading -->
+    <div id="chapter-section">
+      <div class="section-micro">Now Reading</div>
+      <div class="chapter-title">The Traitor's Compass</div>
+      <div class="chapter-sub">Chapter 3 · Scene 2 of 8</div>
+      <div class="chapter-progress"><div class="chapter-progress-fill"></div></div>
+      <div class="chapter-progress-label">28% through chapter</div>
+    </div>
+
+    <div style="flex:1"></div>
+
+  </div>
+</div>
+
+<!-- SCENE TRANSITION OVERLAY -->
+<div id="scene-transition">
+  <div id="scene-canvas-wrap">
+    <svg id="scene-svg-canvas" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="scene-vignette"></div>
+    <div id="scene-bottom-fade"></div>
+    <div id="scene-particles"></div>
+  </div>
+  <div id="scene-info-panel">
+    <div id="scene-arrived-tag">✦ &nbsp; You have arrived &nbsp; ✦</div>
+    <div id="scene-location-title">—</div>
+    <div id="scene-title-rule"></div>
+    <div id="scene-description"></div>
+    <button id="scene-continue-btn" onclick="dismissScene()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      Continue Reading
+    </button>
+  </div>
+</div>
+
+<script>
+  /* ── Font & layout ── */
+  let fs = 19, lh = 1.95;
+  function changeFontSize(d) {
+    fs = Math.max(14, Math.min(26, fs + d));
+    document.documentElement.style.setProperty('--story-fs', fs + 'px');
+  }
+  function changeLineHeight(d) {
+    lh = Math.max(1.4, Math.min(2.6, +(lh + d).toFixed(2)));
+    document.documentElement.style.setProperty('--story-lh', lh);
+  }
+
+  /* ── Themes ── */
+  const themes = ['dark','sepia','midnight','light'];
+  const themeLabels = { dark:'Dark', sepia:'Sepia', midnight:'Midnight', light:'Light' };
+  let themeIdx = 0;
+  function cycleTheme() {
+    document.body.classList.remove('theme-' + themes[themeIdx]);
+    themeIdx = (themeIdx + 1) % themes.length;
+    const t = themes[themeIdx];
+    if (t !== 'dark') document.body.classList.add('theme-' + t);
+    document.getElementById('theme-label').textContent = themeLabels[t];
+  }
+
+  /* ── Left sidebar collapse ── */
+  function toggleSidebar() {
+    document.getElementById('app').classList.toggle('sidebar-collapsed');
+  }
+
+  /* ── Left sidebar tabs ── */
+  function switchLeftTab(tabId, btn) {
+    document.querySelectorAll('.left-tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.left-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('left-tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+    // Re-expand if collapsed when switching tabs
+    document.getElementById('app').classList.remove('sidebar-collapsed');
+  }
+
+  /* ── Item detail ── */
+  const itemData = {
+    compass: {
+      icon:'🧭', name:'The Brass Compass', rarity:'Legendary',
+      desc:'An instrument of unknown origin that refuses to point north. Its needle seeks something else entirely — perhaps truth, perhaps danger. Warm to the touch even in cold water.'
+    },
+    dagger: {
+      icon:'🗡️', name:'Sailor\'s Dagger', rarity:'Rare',
+      desc:'A well-balanced blade, salt-pitted along the fuller. The Captain pressed it into your hand on your first watch. "For the night," he said. He never asked for it back.'
+    }
+  };
+  function showItemDetail(id) {
+    const item = itemData[id];
+    const area = document.getElementById('item-detail-area');
+    area.innerHTML = `
+      <div class="inv-item-detail new-text" style="margin-top:12px">
+        <div class="inv-item-detail-name">
+          <span>${item.icon}</span>
+          <span>${item.name}</span>
+          <span style="font-size:9px;opacity:0.6;font-weight:400;letter-spacing:1px;color:var(--gold);margin-left:auto">${item.rarity}</span>
+        </div>
+        <div class="inv-item-detail-desc">${item.desc}</div>
+      </div>`;
+  }
+
+  /* ── Bookmark ── */
+  function toggleBookmark(btn) {
+    const on = btn.dataset.saved === 'true';
+    btn.dataset.saved = on ? 'false' : 'true';
+    btn.style.color = on ? '' : 'var(--cyan)';
+    btn.style.borderColor = on ? '' : 'rgba(0,229,200,0.4)';
+    btn.querySelector('path').setAttribute('fill', on ? 'none' : 'currentColor');
+  }
+
+  /* ── Quest progress update ── */
+  function advanceQuestProgress() {
+    const bar = document.getElementById('main-quest-prog');
+    if (!bar) return;
+    const cur = parseFloat(bar.style.width) || 25;
+    bar.style.width = Math.min(100, cur + 15) + '%';
+    // update step highlights
+    const steps = document.querySelectorAll('#tab-quests .quest-card.active-quest .quest-step');
+    const doneCount = steps.length - Array.from(steps).filter(s => !s.classList.contains('done')).length;
+  }
+
+  /* ── XP ── */
+  let xp = 0, lvl = 1;
+  function gainXP(amount) {
+    xp += amount;
+    const needed = 100 * lvl;
+    if (xp >= needed) { lvl++; xp -= needed; }
+    document.getElementById('xp-val').textContent = xp + ' / ' + (100*lvl);
+    document.getElementById('xp-bar').style.width = (xp / (100*lvl) * 100) + '%';
+    document.getElementById('lvl-val').textContent = lvl;
+    document.getElementById('xp-next').textContent = (100*lvl - xp) + ' XP to next level';
+  }
+
+  /* ── Append story (no "You chose" — continuation style) ── */
+  function appendStory(result, quest) {
+    const st = document.getElementById('story-text');
+    const hr = document.createElement('div'); hr.className='story-divider new-text'; hr.innerHTML='<span>✦</span>';
+    const p1 = document.createElement('p'); p1.className='new-text'; p1.innerHTML = result;
+    st.appendChild(hr); st.appendChild(p1);
+    if (quest) {
+      const qt = document.createElement('div'); qt.className='quest-tag new-text';
+      qt.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>' + quest;
+      st.appendChild(qt);
+    }
+    const sc = document.getElementById('story-scroll');
+    setTimeout(()=>{ sc.scrollTo({ top: sc.scrollHeight, behavior:'smooth' }); }, 100);
+  }
+
+  /* ── Quest notification ── */
+  function showQuestNotification(text) {
+    const badge = document.getElementById('quest-badge');
+    badge.textContent = parseInt(badge.textContent||0) + 0; // keep count
+    advanceQuestProgress();
+  }
+
+  /* ── Outcomes ── */
+  const outcomes = [
+    {
+      text: "You force a calm smile. <strong>'The Captain panicked — threw it out before you reached him.'</strong> The lie flows smoothly, almost too smoothly. Silas's eyes narrow to slits. He doesn't believe you entirely... but he doesn't strike. Not yet. His blade drops an inch. The lantern swings between you both, casting orange shadows that turn his face into a map of suspicion.",
+      quest: "Silas suspects you — the confrontation is far from over.",
+      xp: 10, newLocation:"Captain's Quarters"
+    },
+    {
+      text: "Your dagger clears its scabbard with a clean ring of steel that cuts through the din of battle. <strong>'You want it? Come take it.'</strong> Silas bares his teeth — the first honest expression you've seen on him. He lunges, and the cabin becomes a crucible.",
+      quest: "⚔️ Combat: The Duel in the Quarters — fight your way out.",
+      xp: 25, newLocation:"Open Deck"
+    },
+    {
+      text: "You drop low and haul back the edge of the Persian rug. There — a brass ring half-hidden in the floorboards. Your fingers close around cold metal just as Silas lunges. The hatch gives. Darkness swallows you whole, and the sound of his cursing fades above.",
+      quest: "Escaped through the smuggler's hatch — now find your footing.",
+      xp: 15, newLocation:"Below Deck"
+    },
+    {
+      text: "You flip the compass high into the smoky air. It turns in a slow, glittering arc. Silas's eyes track it — and you move. But his hand snaps it from the air without looking, without flinching. <em>He was always expecting this.</em> His gaze finds yours with something worse than anger: patience.",
+      quest: "Silas anticipated your trick — the compass is in his hands now.",
+      xp: 20, newLocation:"Crow's Nest"
+    }
+  ];
+
+  function makeChoice(btn, idx) {
+    document.querySelectorAll('.choice-btn').forEach(b => { b.style.opacity='0.4'; b.style.pointerEvents='none'; });
+    btn.style.opacity='1'; btn.classList.add('selected');
+    setTimeout(() => {
+      const out = outcomes[idx];
+      gainXP(out.xp);
+      showQuestNotification(out.quest);
+      const doStory = () => {
+        document.getElementById('location-name').textContent = out.newLocation;
+        const lc = document.getElementById('location-card-name');
+        if (lc) lc.textContent = out.newLocation;
+        appendStory(out.text, out.quest);
+        setTimeout(() => {
+          document.querySelectorAll('.choice-btn').forEach(b => { b.style.opacity='1'; b.style.pointerEvents=''; b.classList.remove('selected'); });
+          refreshChoices();
+        }, 600);
+      };
+      if (out.newLocation !== currentLocation) {
+        triggerLocationTransition(out.newLocation, doStory);
+      } else {
+        doStory();
+      }
+    }, 350);
+  }
+
+  /* ── Free action ── */
+  function sendAction() {
+    const inp = document.getElementById('action-input'), val = inp.value.trim();
+    if(!val) return;
+    gainXP(5);
+    appendStory(`${val} — the story bends around the weight of your decision. Silas watches, calculating. Every move you make is a signal, and some signals cannot be unsent.`, null);
+    inp.value = '';
+  }
+
+  /* ── Choice sets ── */
+  const nextSets = [
+    [
+      { text:"Call out for the ship's cook — he owes you a debt of silence.", loc:"Captain's Quarters",
+        story:"His name escapes your lips over the roar of cannon. A long beat of silence. Then — footsteps on the companionway. The cook appears in the doorway behind Silas, cleaver in hand. The balance of the room shifts." },
+      { text:"Dive through the hatch into the dark hold below.", loc:"Below Deck",
+        story:"The hatch gives with a groan. You drop into cold, salt-smelling darkness, the compass clutched to your chest. Above, Silas's boots thunder toward the opening. You run." },
+      { text:"Sprint past him onto the open deck and face the storm.", loc:"Open Deck",
+        story:"You shoulder past Silas with everything you have. He catches your coat — it tears. Then you're through, into the screaming wind and fire-lit chaos of the main deck." },
+      { text:"Scale the mast to the crow's nest — plan from above.", loc:"Crow's Nest",
+        story:"The rigging is wet and hot to the touch. You climb anyway, hand over hand, the compass strapped to your wrist. Below, Silas watches you ascend with something like admiration." }
+    ],
+    [
+      { text:"Read the compass — let it guide your next move.", loc:"Captain's Quarters",
+        story:"The needle swings once, twice, then locks onto the northwest bulkhead with absolute conviction. There's something behind the panelling. Something Silas hasn't found yet." },
+      { text:"Demand to know who Silas is truly working for.", loc:"Captain's Quarters",
+        story:"The question hangs between you like smoke. Silas's jaw tightens. A muscle jumps below his eye. For a moment — just a moment — he looks almost ashamed." },
+      { text:"Climb to the crow's nest and signal for loyal crew.", loc:"Crow's Nest",
+        story:"The loyal hands are still out there, you know it. From the crow's nest you can see them — four figures near the bow, watching the quarterdeck. Waiting for a signal." },
+      { text:"Go below to search the hold for a second way out.", loc:"Below Deck",
+        story:"The hold is a maze of shadows and shifting cargo. But the compass leads you true, through rope coils and barrel stacks, toward something that wasn't on any manifest." }
+    ]
+  ];
+  let setIdx = 0;
+
+  const locTexts = {
+    "Captain's Quarters": "Back in the amber-lit cabin, stained-glass light bleeds its colours across the tilting charts. The compass needle still points somewhere it shouldn't.",
+    "Below Deck": "Darkness and lantern-glow. The hold creaks around you. Somewhere in this black labyrinth is either salvation or a very final mistake.",
+    "Open Deck": "The storm hits like a wall. Fire, smoke, rain, and the groaning of a ship fighting to stay in one piece.",
+    "Crow's Nest": "The world is smaller from up here. Quieter too, beneath the wind. You can see the whole board now."
+  };
+
+  function refreshChoices() {
+    const list = document.getElementById('choices-list');
+    list.innerHTML = '';
+    const set = nextSets[setIdx % nextSets.length]; setIdx++;
+    set.forEach(({ text, loc, story }, i) => {
+      const b = document.createElement('button'); b.className='choice-btn';
+      b.innerHTML = text;
+      b.onclick = function() {
+        const out = { text: story || locTexts[loc] || text, quest: `📍 ${loc}`, xp: 8, newLocation: loc };
+        outcomes[i] = out;
+        makeChoice(this, i);
+      };
+      list.appendChild(b);
+    });
+  }
+
+  /* ════════════════════════════════
+     SCENE TRANSITIONS
+  ════════════════════════════════ */
+  const locationScenes = {
+    "Captain's Quarters": {
+      description: "Stained-glass light bleeds amber across splintered oak. The ship tilts. Nautical charts slide from the desk as cannon fire echoes through the hull.",
+      bgGrad: "linear-gradient(170deg,#1c0a04 0%,#0d1020 100%)",
+      sparkColor: "#ff9030",
+      svg: `<defs><radialGradient id="sg1" cx="62%" cy="18%" r="48%"><stop offset="0%" stop-color="#ffaa30" stop-opacity="0.9"/><stop offset="60%" stop-color="#8b2200" stop-opacity="0.3"/><stop offset="100%" stop-color="transparent" stop-opacity="0"/></radialGradient><filter id="sb"><feGaussianBlur stdDeviation="6"/></filter><filter id="gb"><feGaussianBlur stdDeviation="12" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="1440" height="900" fill="#0c0806"/><rect width="1440" height="900" fill="url(#sg1)"/><rect x="0" y="0" width="240" height="900" fill="#120d08"/><rect x="1200" y="0" width="240" height="900" fill="#120d08"/><rect x="0" y="0" width="1440" height="60" fill="#100d08" opacity="0.9"/><rect x="290" y="30" width="170" height="320" rx="12" fill="#1c1208" stroke="#3a2412" stroke-width="5"/><rect x="304" y="46" width="142" height="288" rx="6" fill="#1a0c06"/><line x1="375" y1="46" x2="375" y2="334" stroke="#2e1a0a" stroke-width="4"/><line x1="304" y1="190" x2="446" y2="190" stroke="#2e1a0a" stroke-width="3"/><rect x="306" y="48" width="67" height="70" rx="3" fill="#d04008" opacity="0.45" class="flicker"/><rect x="377" y="48" width="67" height="70" rx="3" fill="#f07020" opacity="0.4" class="flicker"/><rect x="306" y="122" width="67" height="66" rx="3" fill="#802010" opacity="0.38"/><rect x="377" y="122" width="67" height="66" rx="3" fill="#c05010" opacity="0.42"/><rect x="306" y="192" width="67" height="66" rx="3" fill="#e07020" opacity="0.45" class="flicker"/><rect x="377" y="192" width="67" height="66" rx="3" fill="#a04018" opacity="0.4"/><rect x="306" y="262" width="67" height="70" rx="3" fill="#c06020" opacity="0.4"/><rect x="377" y="262" width="67" height="70" rx="3" fill="#ff9040" opacity="0.38" class="flicker"/><g transform="translate(534,14)"><rect x="-18" y="-18" width="230" height="390" rx="18" fill="#ff9030" opacity="0.08" filter="url(#sb)"/><rect width="195" height="355" rx="14" fill="#1c1208" stroke="#3a2412" stroke-width="5"/><rect x="14" y="18" width="167" height="321" rx="6" fill="#1a0c06"/><line x1="97" y1="18" x2="97" y2="339" stroke="#2e1a0a" stroke-width="5"/><line x1="14" y1="178" x2="181" y2="178" stroke="#2e1a0a" stroke-width="3.5"/><line x1="14" y1="96" x2="181" y2="96" stroke="#2e1a0a" stroke-width="2.5"/><line x1="14" y1="260" x2="181" y2="260" stroke="#2e1a0a" stroke-width="2.5"/><rect x="16" y="20" width="79" height="74" rx="3" fill="#e05010" opacity="0.5" class="flicker"/><rect x="99" y="20" width="80" height="74" rx="3" fill="#ff8030" opacity="0.45" class="flicker"/><rect x="16" y="98" width="79" height="78" rx="3" fill="#c03010" opacity="0.42"/><rect x="99" y="98" width="80" height="78" rx="3" fill="#d06020" opacity="0.46"/><rect x="16" y="180" width="79" height="78" rx="3" fill="#ff9040" opacity="0.48" class="flicker"/><rect x="99" y="180" width="80" height="78" rx="3" fill="#a03018" opacity="0.42"/><rect x="16" y="262" width="79" height="75" rx="3" fill="#d05020" opacity="0.44"/><rect x="99" y="262" width="80" height="75" rx="3" fill="#ff7030" opacity="0.46" class="flicker"/></g><g transform="translate(782,30)"><rect width="170" height="320" rx="12" fill="#1c1208" stroke="#3a2412" stroke-width="5"/><rect x="14" y="16" width="142" height="288" rx="6" fill="#1a0c06"/><line x1="85" y1="16" x2="85" y2="304" stroke="#2e1a0a" stroke-width="4"/><line x1="14" y1="160" x2="156" y2="160" stroke="#2e1a0a" stroke-width="3"/><rect x="16" y="18" width="67" height="70" rx="3" fill="#b03808" opacity="0.44" class="flicker"/><rect x="87" y="18" width="67" height="70" rx="3" fill="#d06018" opacity="0.4" class="flicker"/><rect x="16" y="92" width="67" height="66" rx="3" fill="#901808" opacity="0.38"/><rect x="87" y="92" width="67" height="66" rx="3" fill="#b04010" opacity="0.4"/><rect x="16" y="162" width="67" height="66" rx="3" fill="#d06020" opacity="0.44" class="flicker"/><rect x="87" y="162" width="67" height="66" rx="3" fill="#904010" opacity="0.38"/><rect x="16" y="232" width="67" height="70" rx="3" fill="#c05018" opacity="0.4"/><rect x="87" y="232" width="67" height="70" rx="3" fill="#e08038" opacity="0.36" class="flicker"/></g><rect x="180" y="580" width="1080" height="320" rx="8" fill="#110c07"/><rect x="180" y="578" width="1080" height="10" rx="3" fill="#221508" opacity="0.9"/><g transform="translate(430,508)" filter="url(#gb)"><circle cx="60" cy="60" r="60" fill="#2e1e08" stroke="#5a3e14" stroke-width="4"/><circle cx="60" cy="60" r="52" fill="#1e1408" stroke="#4a3410" stroke-width="2"/><line x1="60" y1="12" x2="60" y2="22" stroke="#c8a040" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="98" x2="60" y2="108" stroke="#c8a040" stroke-width="3" stroke-linecap="round"/><line x1="12" y1="60" x2="22" y2="60" stroke="#c8a040" stroke-width="3" stroke-linecap="round"/><line x1="98" y1="60" x2="108" y2="60" stroke="#c8a040" stroke-width="3" stroke-linecap="round"/><polygon points="60,16 55,60 60,63 65,60" fill="#e05040" opacity="0.95" class="flicker"/><polygon points="60,63 55,60 60,104 65,60" fill="#6a8098" opacity="0.85"/><circle cx="60" cy="60" r="6" fill="#1e1408" stroke="#c8a040" stroke-width="2"/><circle cx="60" cy="60" r="3" fill="#00e5c8" opacity="0.8" class="flicker"/><circle cx="60" cy="60" r="55" fill="none" stroke="#00e5c8" stroke-width="1" opacity="0.2" class="flicker"/></g>`
+    },
+    "Below Deck": {
+      description: "Pitch darkness broken only by a swaying lantern. The smell of bilge water and raw timber fills your lungs. A brass compass glows faintly in your palm.",
+      bgGrad: "linear-gradient(180deg,#03060e 0%,#050408 100%)",
+      sparkColor: "#e8a030",
+      svg: `<defs><radialGradient id="lg" cx="50%" cy="38%" r="40%"><stop offset="0%" stop-color="#ff9020" stop-opacity="0.7"/><stop offset="100%" stop-color="transparent" stop-opacity="0"/></radialGradient><filter id="lb"><feGaussianBlur stdDeviation="18"/></filter><filter id="fb"><feGaussianBlur stdDeviation="2"/></filter></defs><rect width="1440" height="900" fill="#020508"/><ellipse cx="720" cy="340" rx="600" ry="420" fill="url(#lg)" filter="url(#lb)"/><rect x="0" y="0" width="1440" height="55" fill="#060408" opacity="0.98"/><rect x="30" y="0" width="26" height="900" fill="#090706"/><rect x="180" y="0" width="22" height="900" fill="#090706"/><rect x="400" y="0" width="22" height="900" fill="#0e0c08"/><rect x="580" y="0" width="24" height="900" fill="#100e0a"/><rect x="720" y="0" width="24" height="900" fill="#0e0c08"/><rect x="860" y="0" width="24" height="900" fill="#100e0a"/><rect x="1040" y="0" width="22" height="900" fill="#0e0c08"/><rect x="1220" y="0" width="22" height="900" fill="#090706"/><rect x="1384" y="0" width="26" height="900" fill="#090706"/><rect x="0" y="260" width="1440" height="14" fill="#0a0806" opacity="0.7"/><rect x="0" y="520" width="1440" height="12" fill="#0a0806" opacity="0.65"/><g class="sway-anim" style="transform-origin:720px 0px"><line x1="720" y1="0" x2="720" y2="60" stroke="#2a2018" stroke-width="3" opacity="0.8"/><rect x="696" y="60" width="48" height="70" rx="6" fill="#2e2010" stroke="#4a3820" stroke-width="3"/><rect x="700" y="64" width="18" height="62" rx="2" fill="#ff8010" opacity="0.18" class="flicker"/><rect x="722" y="64" width="18" height="62" rx="2" fill="#ffaa30" opacity="0.2" class="flicker"/><line x1="720" y1="60" x2="720" y2="130" stroke="#3a2c18" stroke-width="2.5"/><ellipse cx="720" cy="130" rx="24" ry="8" fill="#2a1e0c" stroke="#3a2c18" stroke-width="2"/><ellipse cx="720" cy="92" rx="10" ry="18" fill="#ff7008" opacity="0.9" class="fire-anim" filter="url(#fb)"/><ellipse cx="720" cy="96" rx="7" ry="12" fill="#ffaa30" opacity="0.95" class="fire-anim"/><ellipse cx="720" cy="100" rx="4" ry="7" fill="#ffee80" opacity="1" class="fire-anim"/></g><rect x="0" y="760" width="1440" height="140" fill="#080604"/><line x1="0" y1="775" x2="1440" y2="775" stroke="#0c0a06" stroke-width="2" opacity="0.7"/><line x1="0" y1="792" x2="1440" y2="792" stroke="#0c0a06" stroke-width="2" opacity="0.6"/><g transform="translate(570,755)"><rect x="0" y="0" width="300" height="140" rx="6" fill="#0c0a06" stroke="#2a1a0a" stroke-width="4"/><rect x="6" y="6" width="288" height="128" rx="4" fill="#100c08" stroke="#1e1408" stroke-width="2"/><circle cx="150" cy="70" r="22" fill="#0e0a06" stroke="#3a2a14" stroke-width="3"/><circle cx="150" cy="70" r="16" fill="none" stroke="#4a3818" stroke-width="3"/><rect x="8" y="8" width="284" height="124" rx="3" fill="none" stroke="#00e5c8" stroke-width="1" opacity="0.25" class="flicker"/></g>`
+    },
+    "Open Deck": {
+      description: "The storm has teeth. Cannon smoke burns your eyes as fire consumes the rigging. Through the chaos, you can see the sea — and the second ship bearing down.",
+      bgGrad: "linear-gradient(175deg,#0e0504 0%,#060d1f 100%)",
+      sparkColor: "#ff6020",
+      svg: `<defs><radialGradient id="fg" cx="78%" cy="22%" r="38%"><stop offset="0%" stop-color="#ff4500" stop-opacity="0.85"/><stop offset="100%" stop-color="transparent" stop-opacity="0"/></radialGradient><filter id="oh"><feGaussianBlur stdDeviation="20"/></filter><filter id="om"><feGaussianBlur stdDeviation="8"/></filter><filter id="os"><feGaussianBlur stdDeviation="3"/></filter></defs><rect width="1440" height="900" fill="#08060e"/><rect width="1440" height="900" fill="url(#fg)"/><ellipse cx="150" cy="100" rx="240" ry="85" fill="#0c0a12" opacity="0.9"/><ellipse cx="480" cy="65" rx="300" ry="95" fill="#0e0c14" opacity="0.85"/><ellipse cx="820" cy="80" rx="350" ry="110" fill="#0c0a12" opacity="0.8"/><ellipse cx="1200" cy="70" rx="280" ry="95" fill="#0e0c14" opacity="0.85"/><rect x="0" y="300" width="1440" height="70" fill="#080a14" opacity="0.8"/><path d="M0,320 Q180,308 360,320 Q540,332 720,320 Q900,308 1080,320 Q1260,332 1440,320" stroke="#0e1830" stroke-width="2" fill="none" opacity="0.6"/><line x1="720" y1="0" x2="720" y2="580" stroke="#1a1208" stroke-width="16" stroke-linecap="round"/><line x1="330" y1="115" x2="1110" y2="115" stroke="#1a1208" stroke-width="12" stroke-linecap="round"/><line x1="450" y1="230" x2="990" y2="230" stroke="#1a1208" stroke-width="9" stroke-linecap="round"/><path d="M335,115 Q450,200 510,310 Q560,390 530,440 Q500,460 440,440 L380,380 Q330,300 335,115 Z" fill="#14100c" stroke="#201808" stroke-width="2" opacity="0.75"/><path d="M1105,115 Q990,200 930,310 Q880,390 910,440 Q940,460 1000,440 L1060,380 Q1110,300 1105,115 Z" fill="#14100c" stroke="#201808" stroke-width="2" opacity="0.75"/><g transform="translate(980,80)"><ellipse cx="0" cy="0" rx="60" ry="90" fill="#ff3000" opacity="0.6" class="fire-anim" filter="url(#os)"/><ellipse cx="0" cy="10" rx="40" ry="65" fill="#ff6010" opacity="0.7" class="fire-anim" filter="url(#os)"/><ellipse cx="0" cy="20" rx="22" ry="40" fill="#ff9020" opacity="0.8" class="fire-anim"/><ellipse cx="0" cy="28" rx="12" ry="22" fill="#ffcc40" opacity="0.9" class="fire-anim"/></g><g transform="translate(400,160)"><ellipse cx="0" cy="0" rx="30" ry="45" fill="#ff3000" opacity="0.5" class="fire-anim" filter="url(#os)"/><ellipse cx="0" cy="8" rx="18" ry="28" fill="#ff6010" opacity="0.65" class="fire-anim"/><ellipse cx="0" cy="14" rx="10" ry="16" fill="#ffaa30" opacity="0.8" class="fire-anim"/></g><line x1="720" y1="115" x2="200" y2="530" stroke="#16100c" stroke-width="2.5" opacity="0.7"/><line x1="720" y1="115" x2="1240" y2="530" stroke="#16100c" stroke-width="2.5" opacity="0.7"/><rect x="0" y="510" width="1440" height="390" fill="#0c0906"/><rect x="0" y="510" width="1440" height="8" fill="#1a1208" opacity="0.8"/><line x1="0" y1="528" x2="1440" y2="528" stroke="#141008" stroke-width="2" opacity="0.6"/><ellipse cx="1100" cy="520" rx="200" ry="60" fill="#ff5000" opacity="0.12" filter="url(#om)"/>`
+    },
+    "Crow's Nest": {
+      description: "At the peak of the mast, the world falls away. Stars burn through breaking storm cover. On the horizon — a second ship, running dark.",
+      bgGrad: "linear-gradient(175deg,#040810 0%,#020408 100%)",
+      sparkColor: "#00e5c8",
+      svg: `<defs><radialGradient id="cg" cx="50%" cy="35%" r="55%"><stop offset="0%" stop-color="#102040" stop-opacity="0.5"/><stop offset="100%" stop-color="transparent" stop-opacity="0"/></radialGradient><filter id="cng"><feGaussianBlur stdDeviation="16"/></filter><filter id="cns"><feGaussianBlur stdDeviation="5"/></filter></defs><rect width="1440" height="900" fill="#020408"/><rect width="1440" height="900" fill="url(#cg)"/><circle cx="120" cy="55" r="2" fill="#e8f0ff" opacity="0.95"/><circle cx="290" cy="38" r="2.2" fill="#f0f4ff" opacity="0.9"/><circle cx="480" cy="70" r="1.8" fill="#e8f0ff" opacity="0.85"/><circle cx="640" cy="28" r="2.4" fill="#ffffff" opacity="0.9"/><circle cx="820" cy="50" r="2" fill="#e8f0ff" opacity="0.88"/><circle cx="1000" cy="32" r="1.9" fill="#f0f4ff" opacity="0.85"/><circle cx="1160" cy="65" r="2.2" fill="#e8f0ff" opacity="0.9"/><circle cx="1340" cy="44" r="2" fill="#f8f8ff" opacity="0.85"/><circle cx="200" cy="95" r="1.2" fill="#d8e4f0" opacity="0.7"/><circle cx="380" cy="135" r="1.4" fill="#d8e4f0" opacity="0.75"/><circle cx="540" cy="105" r="1.2" fill="#d8e4f0" opacity="0.7"/><circle cx="720" cy="120" r="1.5" fill="#e0e8f8" opacity="0.8"/><circle cx="900" cy="95" r="1.3" fill="#d8e4f0" opacity="0.72"/><g transform="translate(280,60)"><circle cx="0" cy="0" r="80" fill="#c0d0e0" opacity="0.06" filter="url(#cng)"/><circle cx="0" cy="0" r="50" fill="#c8d8e8" opacity="0.85"/><path d="M-50,0 A50,50 0 0,1 50,0 A35,50 0 0,0 -50,0 Z" fill="#080c14" opacity="0.7"/></g><rect x="0" y="380" width="1440" height="60" fill="#050810" opacity="0.8"/><rect x="710" y="480" width="20" height="420" fill="#1a1208" opacity="0.95"/><g transform="translate(568,450)"><ellipse cx="152" cy="44" rx="155" ry="38" fill="#1e1608" stroke="#3a2810" stroke-width="4"/><rect x="4" y="6" width="296" height="42" rx="8" fill="#1a1208" stroke="#3a2810" stroke-width="3"/><rect x="2" y="4" width="300" height="8" rx="4" fill="#2e2010" stroke="#3a2a12" stroke-width="1"/><rect x="10" y="-32" width="8" height="36" rx="2" fill="#221808" stroke="#3a2810" stroke-width="1.5"/><rect x="140" y="-35" width="8" height="39" rx="2" fill="#221808" stroke="#3a2810" stroke-width="1.5"/><rect x="276" y="-32" width="8" height="36" rx="2" fill="#221808" stroke="#3a2810" stroke-width="1.5"/><rect x="6" y="-34" width="292" height="7" rx="3" fill="#2e2010" stroke="#4a3018" stroke-width="1.5"/></g><g transform="translate(692,380)" filter="url(#cng)"><circle cx="36" cy="36" r="56" fill="#00e5c8" opacity="0.1"/></g><g transform="translate(692,380)"><circle cx="36" cy="36" r="32" fill="#0e0808" stroke="#00e5c8" stroke-width="2" opacity="0.8"/><polygon points="36,8 33,36 36,38 39,36" fill="#00e5c8" opacity="0.95" class="flicker"/><polygon points="36,38 33,36 36,64 39,36" fill="#4a6070" opacity="0.7"/><circle cx="36" cy="36" r="4" fill="#00e5c8" opacity="0.9" class="flicker"/><circle cx="36" cy="36" r="30" fill="none" stroke="#00e5c8" stroke-width="1" opacity="0.2" class="flicker"/></g>`
+    }
+  };
+
+  let currentLocation = "Captain's Quarters";
+
+  function triggerLocationTransition(newLocation, afterCallback) {
+    if (newLocation === currentLocation) { if (afterCallback) afterCallback(); return; }
+    currentLocation = newLocation;
+    const scene = locationScenes[newLocation] || { description:`You have entered ${newLocation}.`, bgGrad:"linear-gradient(170deg,#080c16 0%,#040810 100%)", sparkColor:"#00e5c8", svg:'' };
+    document.getElementById('scene-location-title').textContent = newLocation;
+    document.getElementById('scene-description').textContent    = scene.description;
+    document.getElementById('scene-svg-canvas').innerHTML       = scene.svg;
+    document.getElementById('scene-transition').style.background = scene.bgGrad;
+    spawnParticles(scene.sparkColor);
+    window._sceneAfterCb = afterCallback || null;
+    const ov = document.getElementById('scene-transition');
+    ov.classList.remove('leaving','visible');
+    ov.style.opacity = ''; ov.style.pointerEvents = '';
+    ov.classList.add('entering');
+    ov.addEventListener('animationend', function h(e) {
+      if (e.animationName !== 'sceneEnter') return;
+      ov.removeEventListener('animationend', h);
+      ov.classList.remove('entering'); ov.classList.add('visible');
+    }, { once:true });
+  }
+
+  function dismissScene() {
+    const ov = document.getElementById('scene-transition');
+    ov.classList.remove('visible'); ov.classList.add('leaving');
+    ov.addEventListener('animationend', function h(e) {
+      if (e.animationName !== 'sceneLeave') return;
+      ov.removeEventListener('animationend', h);
+      ov.classList.remove('leaving'); ov.style.opacity='0'; ov.style.pointerEvents='none';
+      if (window._sceneAfterCb) { window._sceneAfterCb(); window._sceneAfterCb = null; }
+    }, { once:true });
+  }
+
+  function spawnParticles(color) {
+    const c = document.getElementById('scene-particles'); c.innerHTML='';
+    for (let i=0;i<24;i++){
+      const s=document.createElement('div'); s.className='spark';
+      s.style.cssText=`left:${Math.random()*100}%;top:${20+Math.random()*65}%;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;background:${color};--dur:${2+Math.random()*3.5}s;--delay:${Math.random()*2.5}s;`;
+      c.appendChild(s);
+    }
+  }
+</script>
+
+</body>
+</html>

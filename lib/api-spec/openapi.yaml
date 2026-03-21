@@ -1,22 +1,29 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Magpie Interactive Reading Platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: stories
+    description: Story management
+  - name: sessions
+    description: Story session management
+  - name: ai
+    description: AI story generation
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +31,414 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/profile:
+    get:
+      operationId: getProfile
+      tags: [auth]
+      summary: Get current user profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateProfile
+      tags: [auth]
+      summary: Update user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+
+  /stories:
+    get:
+      operationId: listStories
+      tags: [stories]
+      summary: List all available storylines
+      responses:
+        "200":
+          description: List of storylines
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stories:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Story"
+                required: [stories]
+
+  /stories/{storyId}:
+    get:
+      operationId: getStory
+      tags: [stories]
+      summary: Get a specific storyline
+      parameters:
+        - name: storyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Storyline details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Story"
+        "404":
+          description: Not found
+
+  /sessions:
+    get:
+      operationId: listSessions
+      tags: [sessions]
+      summary: List user's story sessions
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/StorySession"
+                required: [sessions]
+        "401":
+          description: Unauthorized
+    post:
+      operationId: createSession
+      tags: [sessions]
+      summary: Create a new story session
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSessionRequest"
+      responses:
+        "201":
+          description: Created session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StorySession"
+        "401":
+          description: Unauthorized
+
+  /sessions/{sessionId}:
+    get:
+      operationId: getSession
+      tags: [sessions]
+      summary: Get a specific session with its story nodes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session with story nodes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionWithNodes"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /sessions/{sessionId}/continue:
+    post:
+      operationId: continueSession
+      tags: [sessions]
+      summary: Continue a session by making a choice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContinueSessionRequest"
+      responses:
+        "200":
+          description: Next story node
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoryNode"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+
+  /ai/generate:
+    post:
+      operationId: generateStorySegment
+      tags: [ai]
+      summary: Generate next story segment based on choice
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateSegmentRequest"
+      responses:
+        "200":
+          description: Generated story segment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneratedSegment"
+        "401":
+          description: Unauthorized
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     HealthStatus:
       type: object
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+      required: [message]
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        displayName:
+          type: string
+        avatarUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, email, displayName, createdAt]
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+        avatarUrl:
+          type: string
+          nullable: true
+
+    Story:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        genre:
+          type: string
+        description:
+          type: string
+        longDescription:
+          type: string
+        coverGradient:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        rating:
+          type: string
+        chapterCount:
+          type: integer
+        readingTime:
+          type: string
+        featured:
+          type: boolean
+        rank:
+          type: integer
+          nullable: true
+        initialPrompt:
+          type: string
+      required: [id, title, genre, description, longDescription, coverGradient, tags, rating, chapterCount, readingTime, featured, initialPrompt]
+
+    StorySession:
+      type: object
+      properties:
+        id:
+          type: string
+        storyId:
+          type: string
+        userId:
+          type: string
+        status:
+          type: string
+          enum: [active, completed, abandoned]
+        currentNodeId:
+          type: string
+          nullable: true
+        nodeCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        story:
+          $ref: "#/components/schemas/Story"
+      required: [id, storyId, userId, status, nodeCount, createdAt, updatedAt, story]
+
+    StoryNode:
+      type: object
+      properties:
+        id:
+          type: string
+        sessionId:
+          type: string
+        parentNodeId:
+          type: string
+          nullable: true
+        choiceMade:
+          type: string
+          nullable: true
+        narrativeText:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/Choice"
+        nodeIndex:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, sessionId, narrativeText, choices, nodeIndex, createdAt]
+
+    Choice:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        consequence:
+          type: string
+      required: [id, text]
+
+    SessionWithNodes:
+      type: object
+      properties:
+        session:
+          $ref: "#/components/schemas/StorySession"
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/StoryNode"
+        currentNode:
+          $ref: "#/components/schemas/StoryNode"
+          nullable: true
+      required: [session, nodes]
+
+    CreateSessionRequest:
+      type: object
+      properties:
+        storyId:
+          type: string
+      required: [storyId]
+
+    ContinueSessionRequest:
+      type: object
+      properties:
+        choiceId:
+          type: string
+        choiceText:
+          type: string
+      required: [choiceId, choiceText]
+
+    GenerateSegmentRequest:
+      type: object
+      properties:
+        storyTitle:
+          type: string
+        genre:
+          type: string
+        previousContext:
+          type: string
+        choiceMade:
+          type: string
+        nodeIndex:
+          type: integer
+      required: [storyTitle, genre, previousContext, choiceMade, nodeIndex]
+
+    GeneratedSegment:
+      type: object
+      properties:
+        narrativeText:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/Choice"
+        isEnding:
+          type: boolean
+      required: [narrativeText, choices, isEnding]
