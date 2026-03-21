@@ -156,7 +156,7 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
+    <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh", overflowX: "hidden", paddingTop: "72px" }}>
       <Navbar showSearch variant="home" />
 
       {/* HERO */}
