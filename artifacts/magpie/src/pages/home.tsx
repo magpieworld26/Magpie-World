@@ -274,7 +274,7 @@ export default function HomePage() {
             New <span style={{ color: "#00e5c8" }}>Releases</span>
           </h2>
         </div>
-        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+        <div style={{ display: "flex", gap: "14px", overflow: "hidden", paddingBottom: "8px" }} className="scrollbar-hide">
           {newReleases.map(story => (
             <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
           ))}
@@ -289,7 +289,7 @@ export default function HomePage() {
               Top 10 <span style={{ color: "#00e5c8" }}>This Week</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflow: "hidden", paddingBottom: "8px" }} className="scrollbar-hide">
             {top10.slice(0, 8).map((story, i) => (
               <div key={story.id} style={{ display: "flex", alignItems: "flex-end", minWidth: "160px", position: "relative" }}>
                 <span style={{
