@@ -1,10 +1,32 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "wouter";
 import { supabase, clearAuthToken } from "@/lib/supabase";
+import birdLogo from "@assets/image_1774626827305.png";
 
 interface NavbarProps {
   showSearch?: boolean;
   variant?: "landing" | "home" | "auth";
+}
+
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href={href}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        fontSize: "0.8125rem",
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: "0.2em",
+        color: hovered ? "#00e5c8" : "#cbd5e1",
+        textDecoration: "none",
+        fontFamily: "'Barlow Condensed', sans-serif",
+        transition: "color 0.2s ease",
+      }}
+    >{children}</a>
+  );
 }
 
 export default function Navbar({ showSearch = false, variant = "landing" }: NavbarProps) {
@@ -42,11 +64,7 @@ export default function Navbar({ showSearch = false, variant = "landing" }: Navb
         onClick={() => setLocation("/")}
         style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}
       >
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="6" fill="#00e5c8" opacity="0.15"/>
-          <path d="M8 22 L16 8 L24 22" stroke="#00e5c8" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="16" cy="8" r="3" fill="#00e5c8"/>
-        </svg>
+        <img src={birdLogo} alt="Magpie logo" style={{ height: "38px", width: "auto" }} />
         <span style={{
           fontFamily: "'Bebas Neue', sans-serif",
           fontSize: "1.875rem",
@@ -62,19 +80,7 @@ export default function Navbar({ showSearch = false, variant = "landing" }: Navb
       {variant === "landing" && (
         <nav style={{ display: "flex", alignItems: "center", gap: "32px" }}>
           {["Home", "Trending", "About", "Vision"].map(link => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              style={{
-                fontSize: "0.8125rem",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.2em",
-                color: "#cbd5e1",
-                textDecoration: "none",
-                fontFamily: "'Barlow Condensed', sans-serif",
-              }}
-            >{link}</a>
+            <NavLink key={link} href={`#${link.toLowerCase()}`}>{link}</NavLink>
           ))}
         </nav>
       )}

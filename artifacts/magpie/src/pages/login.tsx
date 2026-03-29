@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation } from "wouter";
 import { supabase, setAuthToken } from "@/lib/supabase";
 
@@ -12,6 +12,64 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotFeedback, setForgotFeedback] = useState<{ type: "success" | "error"; msg: string } | null>(null);
+  const attemptsRef = useRef<number[]>([]);
+  const [blockedUntil, setBlockedUntil] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    if (blockedUntil === null) return;
+    const tick = () => {
+      const remaining = Math.ceil((blockedUntil - Date.now()) / 1000);
+      if (remaining <= 0) {
+        setBlockedUntil(null);
+        setCountdown(0);
+      } else {
+        setCountdown(remaining);
+      }
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [blockedUntil]);
+
+  const openForgotModal = useCallback(() => {
+    setForgotEmail("");
+    setForgotFeedback(null);
+    setForgotOpen(true);
+  }, []);
+
+  const handleForgotSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    const now = Date.now();
+    attemptsRef.current = attemptsRef.current.filter(t => now - t < 60000);
+    if (attemptsRef.current.length >= 3) {
+      const oldest = attemptsRef.current[0];
+      const unblockAt = oldest + 60000;
+      setBlockedUntil(unblockAt);
+      setForgotFeedback({ type: "error", msg: "Too many attempts. Please wait." });
+      return;
+    }
+    attemptsRef.current.push(now);
+
+    setForgotLoading(true);
+    setForgotFeedback(null);
+    try {
+      const { error: err } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: window.location.origin + "/reset-password",
+      });
+      if (err) throw err;
+      setForgotFeedback({ type: "success", msg: "Password reset email sent. Check your inbox." });
+    } catch (err: unknown) {
+      setForgotFeedback({ type: "error", msg: err instanceof Error ? err.message : "Failed to send reset email" });
+    } finally {
+      setForgotLoading(false);
+    }
+  }, [forgotEmail]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -223,6 +281,27 @@ export default function LoginPage() {
                 {loading ? "Please wait..." : mode === "signin" ? "Sign In" : "Create Account"}
               </button>
 
+              {mode === "signin" && (
+                <p style={{ textAlign: "center", marginBottom: "12px" }}>
+                  <button
+                    type="button"
+                    onClick={openForgotModal}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#68e6c5",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontSize: "0.78rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Forgot Password?
+                  </button>
+                </p>
+              )}
+
               <p style={{ textAlign: "center", fontSize: "0.7rem", color: "#3a4e63", fontFamily: "'Montserrat', sans-serif" }}>
                 By continuing, you agree to our{" "}
                 <a href="#" style={{ color: "#68e6c5", textDecoration: "none" }}>Terms of Service</a>
@@ -239,6 +318,132 @@ export default function LoginPage() {
           © 2026 Magpie · <a href="#" style={{ color: "#253a4f", textDecoration: "none" }}>Privacy</a> · <a href="#" style={{ color: "#253a4f", textDecoration: "none" }}>Terms</a>
         </p>
       </footer>
+
+      {forgotOpen && (
+        <div
+          onClick={() => setForgotOpen(false)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 100,
+            background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "24px",
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              width: "100%", maxWidth: "420px",
+              background: "rgba(15, 23, 42, 0.92)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              borderRadius: "18px",
+              padding: "32px 36px",
+              backdropFilter: "blur(20px)",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(104,230,197,0.05)",
+            }}
+          >
+            <h2 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "2rem", letterSpacing: "0.07em",
+              color: "#fff", lineHeight: 1, marginBottom: "8px", textAlign: "center",
+            }}>
+              Reset Password
+            </h2>
+            <p style={{
+              fontSize: "0.8rem", color: "#64748b", fontWeight: 500,
+              fontFamily: "'Montserrat', sans-serif", textAlign: "center", marginBottom: "20px",
+            }}>
+              Enter your email and we'll send you a reset link.
+            </p>
+
+            <form onSubmit={handleForgotSubmit}>
+              <div style={{ marginBottom: "16px" }}>
+                <label style={labelStyle}>Email</label>
+                <div style={{ position: "relative" }}>
+                  <span style={iconStyle}>
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </span>
+                  <input
+                    type="email"
+                    value={forgotEmail}
+                    onChange={e => setForgotEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    required
+                    autoFocus
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+
+              {forgotFeedback && (
+                <div style={{
+                  marginBottom: "14px", padding: "10px 14px",
+                  background: forgotFeedback.type === "success" ? "rgba(104,230,197,0.1)" : "rgba(220,38,38,0.1)",
+                  border: `1px solid ${forgotFeedback.type === "success" ? "rgba(104,230,197,0.3)" : "rgba(220,38,38,0.3)"}`,
+                  borderRadius: "8px", fontSize: "0.8rem",
+                  color: forgotFeedback.type === "success" ? "#68e6c5" : "#fca5a5",
+                  fontFamily: "'Montserrat', sans-serif",
+                }}>
+                  {forgotFeedback.msg}
+                </div>
+              )}
+
+              {blockedUntil !== null && countdown > 0 && (
+                <div style={{
+                  marginBottom: "14px", padding: "10px 14px",
+                  background: "rgba(234,179,8,0.08)",
+                  border: "1px solid rgba(234,179,8,0.25)",
+                  borderRadius: "8px", fontSize: "0.8rem",
+                  color: "#fbbf24",
+                  fontFamily: "'Montserrat', sans-serif", textAlign: "center",
+                }}>
+                  Try again in {countdown}s
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={forgotLoading || (blockedUntil !== null && countdown > 0)}
+                style={{
+                  width: "100%",
+                  background: "linear-gradient(90deg, #6be7c5, #4ea7d8)",
+                  color: "#07111e",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: "0.9rem",
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  border: "none",
+                  cursor: (forgotLoading || (blockedUntil !== null && countdown > 0)) ? "not-allowed" : "pointer",
+                  opacity: (forgotLoading || (blockedUntil !== null && countdown > 0)) ? 0.5 : 1,
+                  boxShadow: "0 4px 24px rgba(107,231,197,0.22)",
+                  transition: "transform 0.25s, opacity 0.25s",
+                  marginBottom: "12px",
+                }}
+              >
+                {forgotLoading ? "Sending..." : "Send Reset Link"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setForgotOpen(false)}
+                style={{
+                  width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: "8px", padding: "10px 24px",
+                  color: "#8fa8c0", fontFamily: "'Montserrat', sans-serif",
+                  fontSize: "0.8rem", fontWeight: 600, cursor: "pointer",
+                  transition: "border-color 0.2s",
+                }}
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

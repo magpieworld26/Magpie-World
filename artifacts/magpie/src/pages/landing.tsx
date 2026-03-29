@@ -46,22 +46,6 @@ export default function LandingPage() {
           textAlign: "center",
           gap: "32px",
         }}>
-          <div style={{
-            display: "inline-flex",
-            borderRadius: "9999px",
-            border: "1px solid rgba(101,228,197,0.45)",
-            background: "rgba(98,220,199,0.10)",
-            padding: "8px 20px",
-            fontSize: "0.75rem",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "0.2em",
-            color: "#78e4cd",
-            fontFamily: "'Barlow Condensed', sans-serif",
-          }}>
-            ✦ Your Story, Your Choices
-          </div>
-
           <h1 style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: "clamp(3rem, 10vw, 5.5rem)",
