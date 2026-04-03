@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation } from "wouter";
 import { supabase, setAuthToken } from "@/lib/supabase";
+import birdLogo from "@assets/image_1774626827305.png";
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
@@ -153,14 +154,10 @@ export default function LoginPage() {
       }}>
         <div style={{
           maxWidth: "1280px", margin: "0 auto", padding: "16px 24px",
-          display: "flex", alignItems: "center", justifyContent: "center",
+          display: "flex", alignItems: "center", justifyContent: "flex-start",
         }}>
           <a href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="6" fill="#00e5c8" opacity="0.15"/>
-              <path d="M8 22 L16 8 L24 22" stroke="#00e5c8" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="16" cy="8" r="3" fill="#00e5c8"/>
-            </svg>
+            <img src={birdLogo} alt="Magpie logo" style={{ height: "38px", width: "auto" }} />
             <span style={{
               fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.875rem", letterSpacing: "0.16em",
               background: "linear-gradient(90deg, #68e6c5, #59ced1, #4f98d8)",
