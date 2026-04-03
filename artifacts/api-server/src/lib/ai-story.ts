@@ -1,433 +1,134 @@
 // ai-story.ts
-// Story continuation engine — calls the Anthropic API to generate the next scene
-// based on the reader's choice, story bible, and accumulated story state.
+// Story continuation engine — calls the OpenAI API to generate the next scene
+// based on the reader's choice, story world context, and previous scenes.
 
-import { StoryData, StoryChoice } from "./story-data";
+import { openai } from "@workspace/integrations-openai-ai-server";
+import { logger } from "./logger";
+import { getStoryById, storiesData } from "./stories-data";
 
-// ─────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────
-
-export type ArcPosition =
-  | "opening"
-  | "establishing"
-  | "deepening"
-  | "converging"
-  | "climax"
-  | "resolution";
-
-export interface ChoiceRecord {
-  turn: number;
-  label: string;
-  title: string;
-  consequence: string; // one-line note, filled in by AI
+export interface Choice {
+  id: string;
+  text: string;
+  consequence?: string;
 }
 
-export interface CharacterState {
-  name: string;
-  currentDynamic: string; // ~10 words
-}
-
-export interface StoryState {
-  turn: number;
-  arcPosition: ArcPosition;
-  choicesMade: ChoiceRecord[];
-  relationshipStates: CharacterState[];
-  worldStateChanges: string[];
-  plantedThreads: string[];
-  activeTensions: string[];
-}
-
-export interface GeneratedChoice {
-  label: "A" | "B" | "C" | "D";
-  title: string;
-  description: string;
-  subtext: string;
-}
-
-export interface ContinuationResult {
-  sceneText: string;
-  choices: GeneratedChoice[];
-  updatedState: StoryState;
-  rawStateBlock: string; // The AI's structured state text, for debugging / display
+export interface GeneratedSegment {
+  narrativeText: string;
+  choices: Choice[];
+  isEnding: boolean;
 }
 
 // ─────────────────────────────────────────────
-// Arc position helper
+// Story lookup — accepts story ID or exact title
 // ─────────────────────────────────────────────
 
-function arcPositionForTurn(turn: number): ArcPosition {
-  if (turn <= 1) return "opening";
-  if (turn === 2) return "establishing";
-  if (turn <= 4) return "deepening";
-  if (turn <= 6) return "converging";
-  if (turn <= 8) return "climax";
-  return "resolution";
+function resolveStory(storyIdOrTitle: string) {
+  // Try direct ID lookup first
+  const byId = getStoryById(storyIdOrTitle);
+  if (byId) return byId;
+
+  // Try exact title match
+  const byTitle = storiesData.find(
+    (s) => s.title.toLowerCase() === storyIdOrTitle.toLowerCase()
+  );
+  if (byTitle) return byTitle;
+
+  // Slugified title fallback (e.g. "No Signal" → "no-signal")
+  const slug = storyIdOrTitle
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return getStoryById(slug) || null;
 }
 
 // ─────────────────────────────────────────────
-// Initial state builder
+// generateStorySegment — used by session and ai routes
 // ─────────────────────────────────────────────
 
-export function buildInitialState(story: StoryData): StoryState {
-  return {
-    turn: 0,
-    arcPosition: "opening",
-    choicesMade: [],
-    relationshipStates: [],
-    worldStateChanges: [],
-    plantedThreads: [],
-    activeTensions: [],
-  };
-}
+export async function generateStorySegment(
+  storyIdOrTitle: string,
+  genre: string,
+  previousContext: string,
+  choiceMade: string,
+  nodeIndex: number
+): Promise<GeneratedSegment> {
+  const story = resolveStory(storyIdOrTitle);
+  const storyTitle = story?.title || storyIdOrTitle;
+  const storyGenre = story?.genre || genre;
+  const isLateGame = nodeIndex >= 12;
 
-// ─────────────────────────────────────────────
-// State serialiser (sent to the AI on every turn)
-// ─────────────────────────────────────────────
+  const worldContextBlock = story?.worldContext
+    ? `\nSTORY BIBLE (IMMUTABLE — follow exactly):\n${story.worldContext}\n`
+    : "";
 
-function serialiseState(state: StoryState): string {
-  const choices =
-    state.choicesMade.length > 0
-      ? state.choicesMade
-          .map((c) => `  - Turn ${c.turn}: "${c.label}: ${c.title}" → ${c.consequence}`)
-          .join("\n")
-      : "  (none yet)";
+  const systemPrompt = `You are a master storyteller writing an interactive, choice-based narrative for the platform "Magpie — The Home of Breathing Books". You write in the tradition of great literary fiction — rich, atmospheric, emotionally resonant prose that also moves with the pace and tension of a thriller.
 
-  const relationships =
-    state.relationshipStates.length > 0
-      ? state.relationshipStates.map((r) => `  - ${r.name}: ${r.currentDynamic}`).join("\n")
-      : "  (not yet established)";
+STORY: "${storyTitle}" (Genre: ${storyGenre})
+${worldContextBlock}
+WRITING RULES:
+- Write 3-5 paragraphs of immersive, vivid narrative prose
+- Second-person perspective ("you"), present tense — the reader IS the protagonist
+- Match the genre's tone exactly — if a story bible is provided above, its tone directives take full precedence
+- Each segment should advance the plot meaningfully while deepening character and world
+- End at a genuine decision point — not an arbitrary choice but a moment where the path truly forks
+- Vary sentence rhythm: mix short punchy sentences with longer, more complex ones
+- Use sensory details (smell, sound, texture) to create immersion
+- Show consequences of the previous choice naturally in the narrative
+- ${isLateGame ? "This is the late game — choices should feel higher stakes, the plot should be accelerating toward resolution" : "Build atmosphere and intrigue, establish the world"}
 
-  const worldChanges =
-    state.worldStateChanges.length > 0
-      ? state.worldStateChanges.map((w) => `  - ${w}`).join("\n")
-      : "  (none yet)";
+CHOICE RULES:
+- Provide exactly 4 choices (unless this is an ending)
+- Choices should be meaningfully different — not just cosmetic variations
+- Each choice should suggest a genuinely different path forward
+- Label choices with "consequence" field: 1-3 word summary of what the choice represents thematically
+- Make choices feel like they matter — avoid "good/evil" binaries, aim for genuine moral complexity
+- Choices should emerge naturally from the narrative situation
 
-  const threads =
-    state.plantedThreads.length > 0
-      ? state.plantedThreads.map((t) => `  - ${t}`).join("\n")
-      : "  (none yet)";
+${isLateGame && nodeIndex >= 18 ? "This may be an appropriate moment for an ending. Set isEnding: true if the story has reached a satisfying conclusion." : ""}
 
-  const tensions =
-    state.activeTensions.length > 0
-      ? state.activeTensions.map((t) => `  - ${t}`).join("\n")
-      : "  (none yet)";
-
-  return `STORY STATE
-───────────
-Turn: ${state.turn}
-Arc position: ${state.arcPosition}
-Choices made:
-${choices}
-Relationship states:
-${relationships}
-World state changes:
-${worldChanges}
-Planted threads:
-${threads}
-Active tensions:
-${tensions}`;
-}
-
-// ─────────────────────────────────────────────
-// Response parser
-// Splits the AI output into scene text, choices, and updated state block.
-// ─────────────────────────────────────────────
-
-function parseAIResponse(
-  raw: string,
-  currentState: StoryState,
-  choiceMade: GeneratedChoice | StoryChoice
-): ContinuationResult {
-  // We ask the AI to delimit sections with clear markers.
-  // Fallback: treat the whole thing as scene text if parsing fails.
-
-  const sceneMatch = raw.match(/===SCENE===([\s\S]*?)===CHOICES===/);
-  const choicesMatch = raw.match(/===CHOICES===([\s\S]*?)===STATE===/);
-  const stateMatch = raw.match(/===STATE===([\s\S]*)$/);
-
-  const sceneText = sceneMatch
-    ? sceneMatch[1].trim()
-    : raw.split("===")[0].trim(); // graceful fallback
-
-  // Parse choices block
-  const choicesRaw = choicesMatch ? choicesMatch[1].trim() : "";
-  const choices = parseChoicesBlock(choicesRaw);
-
-  // Parse state block — if the AI returned a valid JSON state, use it; otherwise keep current.
-  const stateRaw = stateMatch ? stateMatch[1].trim() : "";
-  const updatedState = parseStateBlock(stateRaw, currentState, choiceMade);
-
-  return { sceneText, choices, updatedState, rawStateBlock: stateRaw };
-}
-
-function parseChoicesBlock(raw: string): GeneratedChoice[] {
-  const choices: GeneratedChoice[] = [];
-  const labels: ("A" | "B" | "C" | "D")[] = ["A", "B", "C", "D"];
-
-  for (const label of labels) {
-    // Match patterns like:  A. Title\n Description\n *Subtext*
-    const regex = new RegExp(
-      `${label}[.):]\\s*([^\\n]+)\\n([\\s\\S]*?)(?=\\n[BCD][.):]|$)`,
-      "i"
-    );
-    const m = raw.match(regex);
-    if (m) {
-      const lines = m[2].trim().split("\n").filter(Boolean);
-      const subtext = lines.find((l) => l.startsWith("*") || l.startsWith("-")) || lines[0] || "";
-      const description = lines
-        .filter((l) => l !== subtext)
-        .join(" ")
-        .replace(/^\*|\*$/g, "")
-        .trim();
-      choices.push({
-        label,
-        title: m[1].trim(),
-        description: description || m[1].trim(),
-        subtext: subtext.replace(/^\*|\*$/g, "").trim(),
-      });
-    }
-  }
-
-  // Fallback: if parsing fully failed, return placeholder choices
-  if (choices.length === 0) {
-    const fallbackTitles = ["Press forward", "Hold back", "Try another way"];
-    return fallbackTitles.map((title, i) => ({
-      label: (["A", "B", "C"] as ("A" | "B" | "C" | "D")[])[i],
-      title,
-      description: title,
-      subtext: "",
-    }));
-  }
-
-  return choices;
-}
-
-function parseStateBlock(
-  raw: string,
-  current: StoryState,
-  choiceMade: GeneratedChoice | StoryChoice
-): StoryState {
-  // Try to extract JSON if the AI wrapped it
-  const jsonMatch = raw.match(/```json([\s\S]*?)```/) || raw.match(/\{[\s\S]*\}/);
-  if (jsonMatch) {
-    try {
-      const parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
-      return { ...current, ...parsed };
-    } catch {
-      // fall through to heuristic parsing below
-    }
-  }
-
-  // Heuristic: bump turn number and arc position
-  const nextTurn = current.turn + 1;
-  const nextArc = arcPositionForTurn(nextTurn);
-
-  const updatedChoices = [
-    ...current.choicesMade,
-    {
-      turn: nextTurn,
-      label: choiceMade.label,
-      title: "title" in choiceMade ? (choiceMade as GeneratedChoice).title : "",
-      consequence: "(see scene)",
-    },
-  ];
-
-  return {
-    ...current,
-    turn: nextTurn,
-    arcPosition: nextArc,
-    choicesMade: updatedChoices,
-  };
-}
-
-// ─────────────────────────────────────────────
-// Core API call — generates one story continuation
-// ─────────────────────────────────────────────
-
-export async function continueStory(
-  story: StoryData,
-  state: StoryState,
-  choiceMade: StoryChoice | GeneratedChoice,
-  recentSceneText: string // the last scene shown to the reader, for voice continuity
-): Promise<ContinuationResult> {
-  const systemPrompt = buildSystemPrompt(story, state, recentSceneText);
-  const userMessage = buildUserMessage(choiceMade, state);
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userMessage }],
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Anthropic API error ${response.status}: ${errorText}`);
-  }
-
-  const data = await response.json();
-  const rawText: string = data.content
-    .map((block: { type: string; text?: string }) =>
-      block.type === "text" ? block.text : ""
-    )
-    .filter(Boolean)
-    .join("\n");
-
-  return parseAIResponse(rawText, state, choiceMade);
-}
-
-// ─────────────────────────────────────────────
-// Prompt builders
-// ─────────────────────────────────────────────
-
-function buildSystemPrompt(
-  story: StoryData,
-  state: StoryState,
-  recentScene: string
-): string {
-  return `You are a master story-writer continuing an interactive choose-your-own-adventure story.
-
-══════════════════════════════════════
-STORY BIBLE (IMMUTABLE CANON)
-══════════════════════════════════════
-Title: ${story.title}
-Genre / Tone: ${story.storyMode}
-Audience: ${story.audienceAge}
-
-${story.worldContext}
-
-══════════════════════════════════════
-CURRENT STORY STATE (LIVING MEMORY)
-══════════════════════════════════════
-${serialiseState(state)}
-
-══════════════════════════════════════
-MOST RECENT SCENE (for voice continuity)
-══════════════════════════════════════
-${recentScene.slice(-1800)}
-
-══════════════════════════════════════
-WRITING INSTRUCTIONS
-══════════════════════════════════════
-
-SCENE ARCHITECTURE (600–900 words total):
-
-Beat 1 — Immediate consequence (open, NO recap, 2–3 sentences)
-Show the choice in motion. The reader just acted — show what happens in the next breath. Never summarise the previous scene.
-
-Beat 2 — Consequence unfolds (200–300 words)
-The direct result plays out. Include at least one UNEXPECTED element — something the reader didn't fully anticipate. Show the world responding specifically to THIS choice, not a generic version of it.
-
-Beat 3 — New ground (200–300 words)
-The story moves forward. New information surfaces, a character dynamic shifts, or the setting opens up. By the end of this beat the reader should feel the story has genuinely advanced.
-
-Deceleration (final 2–3 paragraphs)
-Slow the pacing slightly. Let the reader feel the weight of what's coming. The decision point should feel inevitable.
-
-CHOICE GENERATION (exactly 3 choices, 4 only if the situation genuinely demands it):
-- Each choice must be MEANINGFULLY DISTINCT — different values, different risks, different engagement
-- No choice should be obviously superior
-- At least one choice must feel UNEXPECTED or SURPRISING
-- Choices must reference SPECIFIC DETAILS from the current scene
-- Format: "You [action verb]..." — second person, present tense, concrete action
-- Follow each choice with one sentence of subtext (what the reader gains, risks, or experiences)
-- Do NOT write choices that are the same action with different adjectives
-
-CONTINUITY RULES:
-1. Every named character must behave consistently with their established personality and relationship state
-2. World-state changes are permanent (unless a choice explicitly changed them)
-3. Planted threads must eventually pay off — track them
-4. Prior choices must echo forward visibly
-5. Match the voice, sentence rhythm, and vocabulary of the original opening scene
-
-ARC POSITION GUIDANCE for ${state.arcPosition}:
-${getArcGuidance(state.arcPosition)}
-
-══════════════════════════════════════
-OUTPUT FORMAT — use EXACTLY these delimiters:
-══════════════════════════════════════
-
-===SCENE===
-[Your scene prose here — 600 to 900 words, second person, no chapter headers]
-
-===CHOICES===
-A. [Concise title — 4–6 words]
-[One sentence describing the action]
-*[One sentence of subtext — what the reader gains or risks]*
-
-B. [Concise title]
-[Description]
-*[Subtext]*
-
-C. [Concise title]
-[Description]
-*[Subtext]*
-
-===STATE===
-[Return a JSON object with these keys:
+Respond in JSON format only:
 {
-  "turn": <number>,
-  "arcPosition": "<string>",
-  "choicesMade": [<array of {turn, label, title, consequence}>],
-  "relationshipStates": [<array of {name, currentDynamic}>],
-  "worldStateChanges": [<array of strings>],
-  "plantedThreads": [<array of strings>],
-  "activeTensions": [<array of strings>]
-}]
-`;
-}
+  "narrativeText": "Your story text here...",
+  "choices": [
+    {"id": "choice-1", "text": "Action description", "consequence": "Theme"},
+    {"id": "choice-2", "text": "Action description", "consequence": "Theme"},
+    {"id": "choice-3", "text": "Action description", "consequence": "Theme"},
+    {"id": "choice-4", "text": "Action description", "consequence": "Theme"}
+  ],
+  "isEnding": false
+}`;
 
-function buildUserMessage(
-  choice: StoryChoice | GeneratedChoice,
-  state: StoryState
-): string {
-  const choiceLabel = choice.label;
-  const choiceTitle = "title" in choice ? choice.title : choice.label;
-  const choiceDesc = "description" in choice ? choice.description : "";
+  const userMessage = `Previous story context:
+${previousContext}
 
-  return `The reader chose:
+The reader chose: "${choiceMade}"
 
-Choice ${choiceLabel}: ${choiceTitle}
-${choiceDesc}
+Story beat ${nodeIndex + 1}. Continue the story based on this choice. Write the next segment.`;
 
-This is Turn ${state.turn + 1}. Arc position: ${arcPositionForTurn(state.turn + 1)}.
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      max_tokens: 2048,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage },
+      ],
+      response_format: { type: "json_object" },
+    });
 
-Please generate the next scene continuation and three new choices following the output format exactly.`;
-}
+    const content = completion.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error("Empty response from AI");
+    }
 
-function getArcGuidance(arc: ArcPosition): string {
-  const guidance: Record<ArcPosition, string> = {
-    opening:
-      "Ground the reader, establish world feel. Choices should be direction-based and low-stakes.",
-    establishing:
-      "Introduce key characters and tensions. Choices should be values-based and beginning to diverge.",
-    deepening:
-      "Complicate, reveal, deepen relationships. Higher stakes and more morally textured choices.",
-    converging:
-      "Threads start to collide, pressure rises. Dilemma-based choices with real trade-offs.",
-    climax:
-      "Peak intensity, major consequences. Hard choices with no clean options.",
-    resolution:
-      "Loops close, consequences land. Choices resolve rather than open.",
-  };
-  return guidance[arc];
-}
-
-// ─────────────────────────────────────────────
-// Convenience: start a new session (turn 0 → 1)
-// ─────────────────────────────────────────────
-
-export async function startStory(
-  story: StoryData,
-  initialChoice: StoryChoice
-): Promise<ContinuationResult> {
-  const state = buildInitialState(story);
-  return continueStory(story, state, initialChoice, story.openingScene);
+    const parsed = JSON.parse(content);
+    return {
+      narrativeText: parsed.narrativeText || "The story continues...",
+      choices: parsed.choices || [{ id: "continue", text: "Continue", consequence: "Forward" }],
+      isEnding: parsed.isEnding || false,
+    };
+  } catch (err) {
+    logger.error({ err }, "Error generating story segment");
+    throw err;
+  }
 }

@@ -136,6 +136,11 @@ router.get("/sessions/:sessionId", requireAuth, async (req: AuthenticatedRequest
 
   const sessionWithStory = buildSessionResponse(session);
 
+  if (!sessionWithStory) {
+    res.status(410).json({ message: "Story no longer available" });
+    return;
+  }
+
   res.json(GetSessionResponse.parse({
     session: sessionWithStory,
     nodes: mappedNodes,
@@ -186,7 +191,7 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
   const newNodeIndex = session.nodeCount;
 
   const generated = await generateStorySegment(
-    story.title,
+    story.id,
     story.genre,
     previousContext,
     choiceText,
