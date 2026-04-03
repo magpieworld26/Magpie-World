@@ -1,4 +1,3 @@
-
 export interface StoryData {
   id: string;
   title: string;
@@ -135,24 +134,7 @@ export const storiesData: StoryData[] = [
     featured: false,
     rank: null,
     initialPrompt: "the-salt-covenant"
-  },
-  // ─── NEW STORY ───────────────────────────────────────────────────────────────
-  {
-    id: "apology-to-a-dragon",
-    title: "Apology to a Dragon",
-    genre: "Comedy Fantasy",
-    description: "A junior dragon keeper has twelve days to coax a six-tonne, emotionally devastated Copperwing back into the air before the Midsummer Festival.",
-    longDescription: "The kingdom of Valdenmere domesticated dragons four hundred years ago — and it shows. The Royal Roost's Crown dragons are vain, moody, and completely convinced the world revolves around them. When Belvane, your assigned Copperwing, retreats to his stall after being passed over for the Festival's lead formation, it falls to you — the youngest keeper on staff — to fix it. Your supervisor needs results. Your rival makes everything look effortless. And a twelve-foot dragon with tarnished-penny scales is curled up in the dark because nobody told him he was special. You've got twelve days, one terrible idea, and the only lullaby that's ever worked on him.",
-    coverGradient: "linear-gradient(145deg, #7a3b10 0%, #b85c1a 40%, #e8832a 75%, #f0a050 100%)",
-    tags: ["Comedy", "Dragons", "Fantasy", "Coming of Age"],
-    rating: "★★★★☆",
-    chapterCount: 8,
-    readingTime: "5-8 hrs",
-    featured: false,
-    rank: null,
-    initialPrompt: "apology-to-a-dragon"
   }
-  // ─────────────────────────────────────────────────────────────────────────────
 ];
 
 export function getStoryById(id: string): StoryData | undefined {
@@ -240,35 +222,7 @@ export function getInitialStoryNode(storyId: string): { narrativeText: string; c
         { id: "call-university", text: "Call the university. This needs institutional oversight, not a lone scholar making decisions", consequence: "Follow protocol" },
         { id: "call-nobody", text: "Call nobody. Go to a different archive. Find out what this is before anyone else does", consequence: "Work alone" }
       ]
-    },
-
-    // ─── NEW STORY OPENING ────────────────────────────────────────────────────
-    "apology-to-a-dragon": {
-      narrativeText: `You're polishing a scale.\n\nNot your scale — obviously. It's one of Belvane's, shed yesterday and left in the middle of the walkway like a gift from a king. Copper-coloured, the size of your palm, still warm. Keepers are supposed to collect shed scales and log them. You're supposed to be logging it. Instead, you're sitting on an upturned bucket outside Belvane's stall, rubbing it with a cloth and watching the sunrise turn the Roost orange.\n\nIt's quiet. That almost never happens here. The morning feeding isn't for another twenty minutes, and the dragons are still sleeping — you can hear the deep, slow rumble of six enormous creatures breathing in their stalls. The stone walls of the Roost are warm from yesterday's heat. A sparrow lands on the railing, looks at you, and leaves.\n\nThe quiet dies the moment Gresha rounds the corner. Clipboard. Fast walk. Never good signs.\n\n"Belvane has not left his stall in four days," she says, not slowing down. "He won't eat. He won't fly. Torben tried yesterday and got a face full of smoke." She flips the clipboard shut. "The Festival committee wants all six dragons in the air for the opening ceremony. He's your dragon. Figure it out. Twelve days."\n\nShe walks away. Then Torben finds you — leaning on the railing like he's posing for a portrait — and asks what you think set Belvane off.\n\nAnd then you remember. Four days ago, the Festival committee watched the demonstration flight. Belvane flew beautifully — even landed his barrel roll. And then the committee announced that Silverine would lead the opening formation. Not Belvane. They didn't even say his name.\n\nBelvane landed, walked to his stall, and the door hasn't opened since. Behind it now: a low, quiet sound. Almost like a sigh.\n\nYou stand up. The bucket tips over behind you. You don't pick it up.\n\nWhat do you do?`,
-      choices: [
-        {
-          id: "sing-outside",
-          text: "Sit outside his door and sing the lullaby that always calms him — wait as long as it takes",
-          consequence: "The slow approach"
-        },
-        {
-          id: "petition-committee",
-          text: "March to the Festival committee and argue that Belvane should lead the formation instead of Silverine",
-          consequence: "The bold play"
-        },
-        {
-          id: "ask-torben",
-          text: "Swallow your pride and ask Torben for help — a fresh approach might be what Belvane needs",
-          consequence: "Swallow your pride"
-        },
-        {
-          id: "maintenance-hatch",
-          text: "Sneak in through the off-limits maintenance hatch and face him directly — no door between you",
-          consequence: "Go in uninvited"
-        }
-      ]
     }
-    // ─────────────────────────────────────────────────────────────────────────
   };
 
   return openings[storyId] || {
