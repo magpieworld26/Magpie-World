@@ -25,7 +25,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
         fontFamily: "'Barlow Condensed', sans-serif",
         transition: "color 0.2s ease",
       }}
-    >{children}</a>
+      className="font-bold">{children}</a>
   );
 }
 
