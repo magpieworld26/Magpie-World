@@ -100,25 +100,6 @@ export default function LandingPage() {
             >
               ▶ Start Your Journey
             </button>
-            <button
-              onClick={() => setLocation("/login")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "transparent",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "#fff",
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: "1rem",
-                fontWeight: 600,
-                padding: "14px 36px",
-                borderRadius: "6px",
-                cursor: "pointer",
-              }}
-            >
-              Sign In
-            </button>
           </div>
         </div>
       </section>

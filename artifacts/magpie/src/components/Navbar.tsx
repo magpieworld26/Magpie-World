@@ -79,7 +79,7 @@ export default function Navbar({ showSearch = false, variant = "landing" }: Navb
       {/* Center nav links for landing */}
       {variant === "landing" && (
         <nav style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-          {["Home", "Trending", "About", "Vision"].map(link => (
+          {["Trending", "About", "Vision"].map(link => (
             <NavLink key={link} href={`#${link.toLowerCase()}`}>{link}</NavLink>
           ))}
         </nav>
