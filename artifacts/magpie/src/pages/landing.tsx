@@ -117,9 +117,9 @@ export default function LandingPage() {
             TOP 5 <span style={{ background: "linear-gradient(90deg, #68e6c5, #4f98d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>THIS WEEK</span>
           </h2>
 
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflow: "hidden", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
             {top5.map((story, i) => (
-              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flex: 1, minWidth: "180px", position: "relative" }}>
+              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flex: 1, minWidth: "220px", position: "relative" }}>
                 <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
                   fontSize: "clamp(7rem, 12vw, 11rem)",
@@ -141,9 +141,7 @@ export default function LandingPage() {
                     borderRadius: "12px",
                     overflow: "hidden",
                     flex: 1,
-                    aspectRatio: "3/4",
-                    minHeight: "260px",
-                    maxHeight: "380px",
+                    aspectRatio: "16/9",
                     zIndex: 3,
                     border: "1px solid rgba(255,255,255,0.08)",
                     cursor: "pointer",

@@ -24,52 +24,50 @@ function BookCard({ story, onClick }: { story: Story; onClick: () => void }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         flexShrink: 0,
-        width: "160px",
+        width: "240px",
         cursor: "pointer",
         transition: "transform 0.25s",
-        transform: hovered ? "scale(1.08) translateY(-6px)" : "scale(1)",
+        transform: hovered ? "scale(1.06) translateY(-5px)" : "scale(1)",
         position: "relative",
       }}
     >
       <div style={{
         width: "100%",
-        aspectRatio: "2/3",
-        borderRadius: "6px",
+        aspectRatio: "16/9",
+        borderRadius: "8px",
         overflow: "hidden",
         position: "relative",
         border: "1px solid rgba(255,255,255,0.07)",
         background: story.coverGradient || COVER_CLASSES[0],
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "20px 14px 18px",
       }}>
         <div style={{
           position: "absolute", top: "8px", left: "8px",
           width: "20px", height: "20px", background: "#00e5c8", borderRadius: "3px",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 900, color: "#060d1f",
+          zIndex: 2,
         }}>M</div>
-        <div style={{ marginTop: "auto" }}>
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2,
+          padding: "20px 12px 12px",
+          background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
+        }}>
           <div style={{
             fontFamily: "'Barlow Condensed', sans-serif",
-            fontSize: "18px", fontWeight: 800, textAlign: "center",
+            fontSize: "15px", fontWeight: 800,
             lineHeight: 1.1, textTransform: "uppercase",
             textShadow: "0 2px 8px rgba(0,0,0,0.8)",
           }}>{story.title}</div>
-          <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)", letterSpacing: "1px", textAlign: "center" }}>{story.genre}</div>
+          <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)", letterSpacing: "1px", marginTop: "3px" }}>{story.genre}</div>
         </div>
         {hovered && (
           <div style={{
-            position: "absolute", inset: 0, background: "rgba(0,229,200,0.12)", borderRadius: "6px",
+            position: "absolute", inset: 0, background: "rgba(0,229,200,0.12)", borderRadius: "8px",
             border: "2px solid #00e5c8", display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "28px",
+            fontSize: "28px", zIndex: 3,
           }}>▶</div>
         )}
       </div>
-      <div style={{ marginTop: "10px", fontSize: "13px", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{story.title}</div>
-      <div style={{ fontSize: "11px", color: "#b0bec5", marginTop: "2px" }}>{story.genre}</div>
     </div>
   );
 }
@@ -95,7 +93,7 @@ function ContinueCard({ session, onClick }: { session: StorySession; onClick: ()
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <div style={{ width: "100%", height: "155px", position: "relative", overflow: "hidden", background: session.story.coverGradient }}>
+      <div style={{ width: "100%", aspectRatio: "16/9", position: "relative", overflow: "hidden", background: session.story.coverGradient }}>
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, #0d1b2e, transparent)" }} />
       </div>
       <div style={{ padding: "14px 16px 16px" }}>
@@ -300,24 +298,65 @@ export default function HomePage() {
               Top 10 <span style={{ color: "#00e5c8" }}>This Week</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflow: "hidden", paddingBottom: "8px" }} className="scrollbar-hide">
-            {top10.slice(0, 8).map((story, i) => (
-              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", minWidth: "160px", position: "relative" }}>
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+            {top10.slice(0, 10).map((story, i) => (
+              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flex: 1, minWidth: "220px", position: "relative" }}>
                 <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(5rem, 9vw, 8rem)",
+                  fontSize: "clamp(7rem, 12vw, 11rem)",
                   lineHeight: 1,
-                  WebkitTextStroke: "2px #00e5c8",
+                  WebkitTextStroke: "2px #68e6c5",
                   color: "transparent",
                   position: "relative",
                   zIndex: 2,
                   flexShrink: 0,
-                  marginRight: "-14px",
-                  marginBottom: "-6px",
+                  marginRight: "-18px",
+                  marginBottom: "-8px",
                   userSelect: "none",
                   opacity: 0.85,
                 }}>{i + 1}</span>
-                <BookCard story={story} onClick={() => setLocation(`/story/${story.id}`)} />
+                <div
+                  onClick={() => setLocation(`/story/${story.id}`)}
+                  style={{
+                    position: "relative",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    flex: 1,
+                    aspectRatio: "16/9",
+                    zIndex: 3,
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    cursor: "pointer",
+                    background: story.coverGradient || COVER_CLASSES[i % COVER_CLASSES.length],
+                    transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s",
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = "translateY(-8px) scale(1.025)";
+                    e.currentTarget.style.boxShadow = "0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(104,230,197,0.2)";
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = "";
+                    e.currentTarget.style.boxShadow = "";
+                  }}
+                >
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)",
+                    zIndex: 1,
+                  }} />
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 4,
+                    padding: "24px 14px 12px",
+                    background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
+                  }}>
+                    <div style={{
+                      fontFamily: "'Bebas Neue', sans-serif",
+                      fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                      letterSpacing: "0.08em",
+                      color: "#fff", lineHeight: 1.1, textTransform: "uppercase",
+                    }}>{story.title}</div>
+                    <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.55)", marginTop: "4px" }}>{story.genre}</div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -342,7 +381,7 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "20px" }}>
             {filteredStories.map(story => (
               <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
             ))}
