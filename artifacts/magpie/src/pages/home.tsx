@@ -345,16 +345,16 @@ export default function HomePage() {
                   }} />
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 4,
-                    padding: "24px 14px 12px",
+                    padding: "32px 16px 16px",
                     background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
                   }}>
                     <div style={{
                       fontFamily: "'Bebas Neue', sans-serif",
-                      fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                      fontSize: "clamp(1rem, 2vw, 1.35rem)",
                       letterSpacing: "0.08em",
                       color: "#fff", lineHeight: 1.1, textTransform: "uppercase",
                     }}>{story.title}</div>
-                    <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.55)", marginTop: "4px" }}>{story.genre}</div>
+                    <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.55)", marginTop: "5px" }}>{story.genre}</div>
                   </div>
                 </div>
               </div>
