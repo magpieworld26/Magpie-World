@@ -283,7 +283,7 @@ export default function HomePage() {
             New <span style={{ color: "#00e5c8" }}>Releases</span>
           </h2>
         </div>
-        <div style={{ display: "flex", gap: "14px", overflow: "hidden", paddingBottom: "8px" }} className="scrollbar-hide">
+        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
           {newReleases.map(story => (
             <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
           ))}
