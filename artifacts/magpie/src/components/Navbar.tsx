@@ -6,6 +6,8 @@ import birdLogo from "@assets/image_1774626827305.png";
 interface NavbarProps {
   showSearch?: boolean;
   variant?: "landing" | "home" | "auth";
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -29,8 +31,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   );
 }
 
-export default function Navbar({ showSearch = false, variant = "landing" }: NavbarProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+export default function Navbar({ showSearch = false, variant = "landing", searchQuery = "", onSearchChange }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [, setLocation] = useLocation();
 
@@ -92,7 +93,7 @@ export default function Navbar({ showSearch = false, variant = "landing" }: Navb
             type="text"
             placeholder="SEARCH STORIES"
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={e => onSearchChange?.(e.target.value)}
             style={{
               width: "100%",
               background: "transparent",

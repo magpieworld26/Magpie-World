@@ -116,6 +116,7 @@ export default function HomePage() {
   const [stories, setStories] = useState<Story[]>([]);
   const [sessions, setSessions] = useState<StorySession[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const token = getAuthToken();
@@ -133,9 +134,19 @@ export default function HomePage() {
     }).finally(() => setLoading(false));
   }, [setLocation]);
 
-  const featured = stories.find(s => s.featured) || stories[0];
-  const top10 = stories.filter(s => s.rank !== null && s.rank !== undefined).sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
-  const newReleases = stories.slice(0, 8);
+  const q = searchQuery.trim().toLowerCase();
+  const filteredStories = q
+    ? stories.filter(s =>
+        s.title.toLowerCase().includes(q) ||
+        s.genre.toLowerCase().includes(q) ||
+        (s.description ?? "").toLowerCase().includes(q) ||
+        (s.tags ?? []).some((t: string) => t.toLowerCase().includes(q))
+      )
+    : stories;
+
+  const featured = filteredStories.find(s => s.featured) || filteredStories[0];
+  const top10 = filteredStories.filter(s => s.rank !== null && s.rank !== undefined).sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
+  const newReleases = filteredStories.slice(0, 8);
   const activeSessions = sessions.filter(s => s.status === "active");
 
   const handleReadStory = async (storyId: string) => {
@@ -157,10 +168,10 @@ export default function HomePage() {
 
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh", overflowX: "hidden", paddingTop: "72px" }}>
-      <Navbar showSearch variant="home" />
+      <Navbar showSearch variant="home" searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       {/* HERO */}
-      {featured && (
+      {!q && featured && (
         <div style={{ position: "relative", height: "88vh", minHeight: "580px", display: "flex", alignItems: "flex-end", padding: "0 4vw 90px", overflow: "hidden" }}>
           <div style={{
             position: "absolute", inset: 0,
@@ -248,7 +259,7 @@ export default function HomePage() {
       )}
 
       {/* CONTINUE READING */}
-      {activeSessions.length > 0 && (
+      {!q && activeSessions.length > 0 && (
         <div style={{ padding: "0 4vw 50px" }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
             <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
@@ -268,7 +279,7 @@ export default function HomePage() {
       )}
 
       {/* NEW RELEASES */}
-      <div style={{ padding: "0 4vw 50px" }}>
+      {!q && <div style={{ padding: "0 4vw 50px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
             New <span style={{ color: "#00e5c8" }}>Releases</span>
@@ -279,10 +290,10 @@ export default function HomePage() {
             <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
           ))}
         </div>
-      </div>
+      </div>}
 
       {/* TOP 10 */}
-      {top10.length > 0 && (
+      {!q && top10.length > 0 && (
         <div style={{ padding: "0 4vw 50px" }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
             <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
@@ -317,14 +328,26 @@ export default function HomePage() {
       <div style={{ padding: "0 4vw 80px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
-            All <span style={{ color: "#00e5c8" }}>Stories</span>
+            {q ? <>Search <span style={{ color: "#00e5c8" }}>Results</span></> : <>All <span style={{ color: "#00e5c8" }}>Stories</span></>}
           </h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "20px" }}>
-          {stories.map(story => (
-            <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
-          ))}
-        </div>
+        {filteredStories.length === 0 && q ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", gap: "16px" }}>
+            <div style={{ fontSize: "48px", opacity: 0.3 }}>🔍</div>
+            <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
+              No stories found
+            </div>
+            <div style={{ fontSize: "14px", color: "rgba(255,255,255,0.35)", textAlign: "center", maxWidth: "320px" }}>
+              No stories match "<span style={{ color: "rgba(0,229,200,0.7)" }}>{searchQuery.trim()}</span>". Try a different title, genre, or tag.
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "20px" }}>
+            {filteredStories.map(story => (
+              <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
