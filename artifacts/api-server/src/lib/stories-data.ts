@@ -298,6 +298,40 @@ Ryo Tanaka-Obi — Ship's Engineer / Grounding presence. Forty-three, keeps the 
 
 TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel earned — six days of instrument data and four days of private mathematics before anyone says the thing out loud. The isolation of fold travel is real; these three people know each other better than they've ever known anyone. Let the weight of the decision land without melodrama. The compact object does not move. That is the most unsettling fact in the story, and it should stay unsettling.`,
   },
+  {
+    id: "the-deadlock",
+    title: "The Deadlock",
+    genre: "Mystery / Thriller",
+    description:
+      "A tech trillionaire is murdered on the world's first autonomous supertrain. You're a small-town cop who's been framed. The train won't stop for four hours. Find the killer before everyone else finds you.",
+    longDescription:
+      "The Meridian Zephyr is the world's most talked-about engineering marvel — a self-driving, magnetically levitated supertrain traveling at 600 km/h from London to Singapore. Tonight it's been privately chartered for tech-trillionaire Reginald Aust-Pembury's 70th birthday gala. The guests are the obscenely wealthy, the professionally beautiful, and the quietly dangerous. By midnight, the train is sealed in a tunnel with zero mobile signal and no possibility of stopping. And Reginald Aust-Pembury is dead. You're Officer Ajay Ferreira — a constable from Croydon who's never solved a murder and just got accused of committing one. Your wife Nisha reads four crime novels a week and thinks this is the most exciting thing that's ever happened. You have four hours until the next communications window. Forty-six suspects. One AI witness. And absolutely no discernible motive — which is exactly why they've decided to frame you.",
+    coverGradient:
+      "linear-gradient(145deg, #0a0a12 0%, #1a1a2e 40%, #16213e 75%, #0f1624 100%)",
+    tags: ["Mystery", "Thriller", "Locked Room", "Murder Mystery"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
+    featured: false,
+    rank: 9,
+    initialPrompt: "the-deadlock",
+    storyMode:
+      "Mystery / Thriller — locked-room murder, sealed train, ticking clock, unlikely detective",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+The year is 2026. The Meridian Zephyr is the world's most talked-about engineering marvel — a self-driving, magnetically levitated supertrain that travels at 600 km/h across a newly completed transcontinental track stretching from London to Singapore. The train is twelve carriages long, each one a floating palace of glass and steel. There are no conductors. No engineers. Just an AI called VERA (Velocity Enhanced Rail Assistant) that handles everything from route calibration to the temperature of your risotto. Tonight, the Meridian Zephyr has been privately chartered for the 70th birthday gala of Reginald Aust-Pembury, a reclusive tech-trillionaire who made his fortune selling surveillance software to governments he now pretends to dislike. His guests are a curated collection of the obscenely wealthy, the professionally beautiful, and the quietly dangerous — none of whom particularly like each other, and all of whom accepted the invitation anyway. The train departed London's Stratford terminal at 9 PM. By midnight, it will be somewhere over Eastern Europe, sealed in a tunnel, with zero mobile signal and no possibility of stopping — VERA doesn't take override commands. The world outside the windows is a dark smear. The world inside is champagne, secrets, and one very dead trillionaire.
+
+CHARACTERS
+You — Officer Ajay Ferreira. A 38-year-old constable from Croydon who has never solved a murder, mostly because Croydon's crimes tend to involve stolen mopeds and aggressive pigeons. You have the instincts of a golden retriever — warm, eager, easily distracted by snacks. You were invited because you once, accidentally, tackled a pickpocket who turned out to be wanted in four countries. Reginald Aust-Pembury sent you a handwritten card. You told everyone at the station. You printed it out and laminated it.
+
+Nisha Ferreira — Your wife / Unlikely ally. Mid-30s, a secondary school English teacher who reads approximately four crime novels a week and has strong opinions about all of them. Reading glasses perpetually pushed up on her head, a laugh that carries three carriages, and the habit of narrating real-life situations in her internal "novel voice" — which occasionally leaks out loud. She agreed to come only because she recognised three of the guests from true crime podcasts. Speech quirks: Speaks in full paragraphs. Begins sentences with "In a well-constructed mystery—" Example: "In a well-constructed mystery, the murderer always overexplains their alibi. That man has been doing it for six minutes and no one asked him." Motivation: Wants desperately to be right about something. Fears she's been paying attention to the wrong things her whole life.
+
+Margaux Steele — Antagonist / Reginald's personal attorney and gala organiser. Tall, 50s, silver hair cut with architectural precision. Moves like someone who has been watching exits since 1998. Speaks in clauses, never full sentences. "The situation." Pause. "Requires discretion." Pause. "Yours is not the face I'd choose for discretion." First person to find the body. First person to suggest you did it.
+
+Viktor Chasse — Wildcard / Tech billionaire and Reginald's oldest rival. Extremely tan for no apparent geographic reason. Wears a linen suit on a moving train at midnight — either confidence or madness. Laughs at things slightly before they're funny, as if he received a briefing. Hated Reginald in the specific way you only hate someone you wanted to be.
+
+TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension is real — a murder has happened, you're being framed, the clock is ticking — but the protagonist is fundamentally decent and slightly out of his depth, which creates room for warmth and humour. Nisha provides the trope-savvy commentary. The wealthy guests are all performing for each other. VERA, the AI, is relentlessly helpful in ways that are sometimes useful and sometimes deeply unhelpful. Every scene should balance genuine stakes with the comedy of an ordinary person navigating extraordinary circumstances.`,
+  },
 ];
 
 export function getStoryById(id: string): StoryData | undefined {
@@ -1122,6 +1156,105 @@ What do you do?`,
           text: "You file an immediate preliminary report — everything you have, packaged for the fastest available relay toward the Hegemony's survey authority.",
           consequence:
             "The relay will take six weeks to arrive, but it will arrive. Whatever happens to the Vasanthi from this point on, the discovery is now in the hands of people who can act on it with resources a single survey vessel doesn't have.",
+        },
+      ],
+    },
+    "the-deadlock": {
+      narrativeText: `The Meridian Zephyr didn't feel like a train.
+
+That was your first thought when you'd boarded at Stratford terminal, three hours ago — standing on the platform with your overnight bag and your wife's tote of crime novels, watching the thing materialise out of the evening fog like a rumour that had solidified. Twelve carriages of black glass and brushed steel, no visible wheels, hovering a precise four centimetres above a magnetic track that stretched — according to the brochure Nisha had read aloud three times on the Tube — all the way to Singapore. The world's first fully autonomous transcontinental supertrain. No driver's cabin. No crew quarters. Just VERA, the onboard AI, who had greeted you at the door with a warm recorded voice and the energy of someone who had passed a customer service exam in a single sitting.
+
+"Welcome aboard the Meridian Zephyr. Tonight's route: London Stratford to the Eastern European corridor. Current speed: 600 kilometres per hour. Estimated time to next communications window—"
+
+"What does 'communications window' mean?" you'd asked Nisha.
+
+"It means the tunnel sections block all signals," she'd said, already scanning the guest list on the embossed card they'd handed her. "It means no phone calls in or out. It means," she'd added, with visible satisfaction, "we are sealed in."
+
+She had seemed delighted by this. You had not.
+
+That had been three hours ago. Now you stood in Carriage Four — the main reception carriage, all warm amber lighting and string quartet and canapé stations — holding a champagne flute that was genuinely too thin for your hands. You held it the way you held evidence bags: pinched, cautious, slightly too far from your body. Around you, people who had been born knowing how to hold champagne flutes did exactly that, with the practised ease of the very rich.
+
+Outside the panoramic windows, France had already become a long black ribbon. A farmhouse light blinked past — there and gone — as if the world outside was desperately trying to get your attention.
+
+"Ajay." Nisha appeared at your elbow, her own flute held with total confidence, her reading glasses pushed up into her hair. She was wearing the blue dress — the one she only wore when she'd decided something important was about to happen. "That man in the corner is the third richest person in Belgium."
+
+"Is Belgium a big country for rich people?"
+
+"That's not the point." She turned, scanning the room with the efficient sweep of someone who had just, in fact, cased it. "The point is he was on the Vane Consortium podcast. Episode forty-two. The one about the Bucharest Contracts." A small pause. "In a well-constructed mystery, the person who seems most relaxed at a gathering is almost always the most compromised."
+
+You looked at the Belgian. He did seem very relaxed.
+
+"Nisha, we're not in a mystery. We're at a birthday party."
+
+"We're on a sealed supertrain doing 600 kilometres an hour, with no signal and no stops, surrounded by people who have each separately tried to sue each other." She took a sip of champagne. "We are absolutely in a mystery. I'm simply the only one who has noticed yet."
+
+It was around that time that Reginald Aust-Pembury himself had made his entrance — late, to his own party, which you suspected was a personality trait rather than a scheduling failure. He was shorter than his photographs, with the specific energy of a man who had decided long ago that being unpleasant was simply a form of efficiency. He had moved through his guests like a pinball, ricocheting off people with sharp comments and meaningful silences.
+
+When he reached you, he had looked at your police lapel pin — the one you'd worn because you weren't sure if you were supposed to wear it, and then couldn't figure out how not to — and said:
+
+"Ah yes. The policeman. I do enjoy a prop."
+
+You had laughed, because you were a guest.
+
+Nisha had not laughed. She'd filed it.
+
+At some point after that, Viktor Chasse had drifted into your orbit. Deeply tanned in a way that no season in Europe could explain, linen suit somehow uncreased at midnight on a moving train, he'd shaken your hand and laughed at something you hadn't said yet. He was Reginald's oldest rival in the tech world, which you knew because Nisha had briefed you on the train platform and quizzed you on the Tube. He smiled at everyone with the warmth of a man who had already decided how things were going to end.
+
+Reginald had eventually peeled away from the gathering — sometime after eleven, without announcement — moving toward the front of the train. Toward Carriage One. VERA had mentioned it on boarding: "The host's personal sanctum. Not available for guest access."
+
+He had not come back.
+
+You had noticed, because you'd been watching the canapé station near Carriage One's connecting door, and the smoked salmon blini situation had genuinely warranted close observation.
+
+It was Margaux Steele who opened the connecting door.
+
+She was a tall woman in her fifties — silver hair cut with the precision of someone who treated their appearance as a legal document — and she had gone very still in the doorframe in a way that made the string quartet feel suddenly inappropriate. She stood there for a long moment. Then she turned to face the carriage.
+
+Forty-seven guests. One AI train. No mobile signal. Zero stops between here and a tunnel somewhere over Eastern Europe.
+
+"He's dead," she said.
+
+The string quartet stopped. The champagne stayed mid-sip in forty-seven hands.
+
+And then Margaux Steele turned — not to the room, not to the crowd — but directly to you. Just you. Her eyes moved once to Nisha. Then back.
+
+"The policeman," she said, with the quiet precision of someone reading from a prepared statement. "And his wife." A breath. "Were seen near Carriage One at ten forty-seven."
+
+The forty-six remaining guests rotated slowly toward you, in near-perfect unison, with the unified energy of people who had just found a very convenient answer to a very inconvenient problem.
+
+Nisha's hand found your arm.
+
+"Ajay," she said, very quietly. "In a well-constructed mystery, the people who get framed are always the ones with no discernible motive." The faintest pause. "We have absolutely no discernible motive."
+
+You looked at her. You looked at Margaux. You looked at Viktor Chasse, who was — inexplicably — still smiling, in the way he'd been smiling all evening, as if he'd received tonight's schedule in advance and found it satisfactory.
+
+VERA's pleasant voice chimed from the ceiling.
+
+"Estimated time to next communications window: four hours and twelve minutes. Enjoy your evening."`,
+      choices: [
+        {
+          id: "take-charge",
+          text: "You step forward and take charge — play the cop.",
+          consequence:
+            "You announce, loudly and officially, that you are securing the scene. You invoke what police authority you actually have (some) and what you're prepared to bluff (considerably more). You take control of Carriage One before anyone else can disturb it. You commit yourself to being visible — which means if someone's trying to frame you, you've just made yourself a very easy target to watch.",
+        },
+        {
+          id: "let-nisha-lead",
+          text: "You pull back — let Nisha lead with the tropes.",
+          consequence:
+            "You signal Nisha to take point. She's read four hundred mysteries; she knows the playbook. You play the baffled husband while she quietly runs the actual investigation. Nisha is thrilled — possibly too thrilled — and there's a real chance she starts enjoying this more than the situation warrants.",
+        },
+        {
+          id: "confront-viktor",
+          text: "You go straight for Viktor Chasse.",
+          consequence:
+            "Something about the way he didn't react to the news feels wrong. He already knew. You walk directly over and ask him, flat out, what he knows — in front of everyone. Confronting a billionaire publicly is either brilliant or catastrophic, and you won't know which for at least ten minutes.",
+        },
+        {
+          id: "find-vera",
+          text: "You find VERA's terminal and ask the train.",
+          consequence:
+            "One witness that cannot be bribed, threatened, or charmed: the AI with access to every camera on board. You need to find VERA's passenger interface before whoever did this thinks to do the same. You have no idea where the terminal is — and searching for it means leaving the main carriage, alone, which is exactly where the murderer might want you.",
         },
       ],
     },
