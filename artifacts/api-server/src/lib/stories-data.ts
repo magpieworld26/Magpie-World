@@ -248,6 +248,7 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
     storyMode: "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
+Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously
 Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously — the kind where opening night gets a half-page in the local paper, where parents book seats three weeks out, and where the drama teacher, Mr. Voss, has produced the same Shakespeare rotation for eleven years without apology. This year it's Much Ado About Nothing. Lighthearted. Safe. Funny. Except tonight, two hours before curtain, the lead — Declan Marsh, the boy who has played every major role since Year 9, the boy who is always where he's supposed to be — is not in the building. His phone rings out. His bag is in the changing room. His costume is hanging on its hook, pressed and ready. He vanished sometime between 4:30 p.m., when he signed in at the stage door, and 5:15 p.m., when the cast gathered for warm-up. The school is locked after hours. The exits are monitored. No one saw him leave. Backstage, forty minutes from curtain, the cast is unravelling. Parents are filing into the auditorium. Mr. Voss is on the phone with the deputy principal. And you — who have memorised every line, every cue, every cross — are standing in the wings, holding Declan's script, feeling the weight of the stage lights warming the air just beyond the curtain. Something is wrong. Not just missing-a-cast-member wrong. Something you can't name yet — a feeling like a room where the furniture has been moved one inch to the left.
 
 CHARACTERS
@@ -260,6 +261,37 @@ Rafe Okonkwo — Declan's Best Friend / Wildcard. Tall in the way that seems acc
 Ms. Harlow — Assistant Drama Teacher / Unlikely informant. Mid-thirties, perpetually tired in the way of someone who chose a job they love and is surprised it doesn't love them back equally. She has paint on her left hand she hasn't noticed and a habit of chewing the end of her pen when she's working something out. Warm, candid, and constitutionally unable to pretend things are fine when they aren't. She is the only adult backstage who looks genuinely worried rather than professionally worried. She was Declan's form tutor last year. She found his bag in the changing room — already checked it, already found something inside it she hasn't told anyone about yet. "I want you to go on tonight. But I also want you to understand that's a separate question from what's happening with Declan." / "There are things I probably shouldn't tell you. I'm still deciding."
 
 TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the show, the mystery, and whatever Declan was carrying before he disappeared. Every character has something they're not saying. Information arrives in fragments. The ghost light is a recurring motif: a bare bulb on an empty stage, burning for no reason, a question no one has answered. Let the investigation feel like reading a room, not chasing a villain.`,
+  },
+  {
+    id: "what-the-charts-dont-show",
+    title: "What the Charts Don't Show",
+    genre: "Sci-Fi / Mystery",
+    description:
+      "Sixteen months into a deep-space survey contract, you've found a stellar formation that shouldn't exist. The pattern is not random. You've checked the maths four times. You haven't told anyone yet.",
+    longDescription:
+      "The IHMS Vasanthi has been mapping the Kalanemi Drift for sixteen months — three hundred light-years of uncharted space where survey vessels file reports that bureaucrats will never read. Seven weeks from the end of your contract, the stellar field you've drifted into doesn't match the ninety-year-old charts. Seven bodies. A consistent geometric ratio. A compact object at the centre that hasn't moved. Either the original survey got it completely wrong, or this wasn't here ninety years ago. You've checked your own maths four times. You haven't shown it to anyone yet. The Vasanthi is between fold windows — six weeks minimum before any signal reaches the Hegemony. Whatever the three of you decide, you decide alone.",
+    coverGradient:
+      "linear-gradient(145deg, #060d1f 0%, #0a1a3a 40%, #071530 75%, #030a1a 100%)",
+    tags: ["Sci-Fi", "Mystery", "Exploration", "Discovery"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
+    featured: false,
+    rank: 8,
+    initialPrompt: "what-the-charts-dont-show",
+    storyMode: "Sci-Fi / Mystery — slow discovery, isolation, the weight of a decision no one else can make",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+The Kalanemi Drift is what cartographers in the Hegemony call the three-hundred-light-year band of uncharted space between the Outer Settlements and the Velan Reach — a region too far from the core systems to be profitable and too close to the contested frontier to be ignored. Most ships that enter the Drift are survey vessels on two-year contracts, tasked with mapping stellar formations, cataloguing resource deposits, and filing reports that will be read by bureaucrats who have never left their home system. Faster-than-light travel in the Hegemony works through fold navigation — a method of compressing space along pre-calculated vectors, then releasing. The compression takes twelve to seventy-two hours depending on distance. During the fold, no communication in or out is possible. A ship in fold is genuinely alone in a way that people who have never done it find difficult to imagine and people who do it regularly find difficult to explain. The crew of a survey vessel spends roughly forty percent of its operational time in fold. You stop expecting news from home. The IHMS Vasanthi has been in the Drift for sixteen months. You are seven weeks from the end of your contract. The last three fold jumps have brought you into a stellar region the Hegemony's existing charts describe as unremarkable — standard nebular debris, a few red dwarfs past their interesting phase. What you're finding does not match the charts. The Vasanthi's science team has spent the past six days arguing, very professionally, about which one it is — charting error or something else entirely.
+
+CHARACTERS
+You — Navigation and Cartography Specialist. This is your second survey contract and your first in the Drift. You volunteered for a Drift posting because the standard survey routes felt like driving a road someone else had already paved. You've been sitting on a geometric pattern in the positional data for four days and haven't told anyone.
+
+Dr. Amara Osei-Mensah — Chief Science Officer / Knowledge companion. Thirty-six, approaches the universe with the intensity of someone who became a scientist because wonder felt like a discipline worth practising. She goes completely still when she's thinking — mid-sentence, mid-meal, mid-corridor walk — and resumes exactly where she left off. Collaborative to the point where some people mistake it for uncertainty. It isn't. She checks your cartographic readings before she finalises her own science reports, not because she has to but because she trusts your spatial intuition more than she trusts her instruments. You've been naming formations informally for six months and she's started using the names in her notes. "The spectral signature doesn't match a red dwarf cooling pattern, which means either the chart is ninety years wrong or something heated it back up." / "Tell me what you see first. I want to know if I'm the only one." Motivation: she wants to find something that rewrites a section of the Hegemony's star atlas. She's afraid she's spent her career finding things that were almost remarkable.
+
+Ryo Tanaka-Obi — Ship's Engineer / Grounding presence. Forty-three, keeps the ship running with the confidence of someone who has fixed the same problem in seventeen different configurations. Has very firm opinions about the difference between exploration and wandering around until something goes wrong. The warmest person on the ship and the most likely to complain about something — these two facts coexist without tension. His tools are always exactly where they should be. He's been married fourteen years to someone on Hegemony Station Three and talks about them the way some people talk about gravity — as a fact the universe is organised around. "You want to take the Vasanthi deeper into an uncharted stellar field based on a spectral reading that my instruments can't fully parse. I'm not saying no. I'm saying log it as 'engineer advised caution' and I'll know you heard me." / "If that formation is what Osei-Mensah thinks it is, I want the hull integrity report filed before we get any closer. That's not fear. That's arithmetic." Motivation: he wants to get home on schedule — and he would not admit that he also wants the Vasanthi to find something worth the sixteen months.
+
+TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel earned — six days of instrument data and four days of private mathematics before anyone says the thing out loud. The isolation of fold travel is real; these three people know each other better than they've ever known anyone. Let the weight of the decision land without melodrama. The compact object does not move. That is the most unsettling fact in the story, and it should stay unsettling.`,
   },
 ];
 
@@ -963,7 +995,100 @@ What do you do?`,
           consequence: "The show gives you legitimate access to every part of backstage. You keep every option open — and from the stage, you can still watch who reacts to what.",
         },
       ],
-      
+    },
+    "what-the-charts-dont-show": {
+      narrativeText: `The observation deck runs the full width of the Vasanthi's mid-section — a long, slightly curved room with viewports on both sides and a central table that serves as a chart interface, a meal surface, and an impromptu meeting space depending on the hour. At 06:00, ship time, it belongs mostly to you.
+
+You bring coffee from the galley — the good kind, real-bean, rationed to one cup per person per day and quietly treasured by everyone on board — and pull up the navigation overlay on the chart table. The Vasanthi drifted overnight on passive thrust, letting you maintain distance from the formation while the science team slept and the instruments ran their quiet accumulation of data. Outside the port viewport, the stellar field looks the way deep space usually looks at this range: a dense scatter of light against dark, the nebular cloud to the northeast glowing faintly amber in the light of a distant dwarf.
+
+Except.
+
+You've been navigating for nine years. You know what a stellar field looks like when it's distributed by gravity and time and the slow mechanical processes of a galaxy doing what galaxies do. You know what random distribution looks like, and you know what pattern looks like, and the thing you have been not-quite-saying for four days is that the distribution of bodies in this field is not random.
+
+It's not obvious. If you were looking at the chart overlay without the raw positional data underneath it, you probably wouldn't notice. But the positions of seven stellar bodies in this field — four dwarfs, two debris clusters, and something the instruments have been calling a dense compact object because they don't have a better category — form a pattern that repeats at a consistent scale. The spacing is not identical. But the ratio is.
+
+You've checked your own maths four times. You haven't shown it to anyone yet.
+
+You take a sip of coffee and look out the viewport and let yourself have the thought you've been not-having: someone put those there.
+
+Amara appears at 06:40 with her own coffee and the expression she gets when she's been awake longer than her official schedule suggests.
+
+"You're running the positional overlay," she says. Not a question.
+
+"Cross-checking the approach vectors for the next jump window."
+
+"Mm." She comes to stand beside you at the table. She looks at the overlay for approximately fifteen seconds. "You've got the raw positional data layered underneath the chart."
+
+"Habit."
+
+She points to the compact object — the instruments' non-answer, sitting at the geometric centre of your seven-body pattern — without touching the table. "Has that moved?"
+
+"Not since we arrived in the sector."
+
+"A dense compact object at this mass reading should have measurable proper motion at this range." She picks up her coffee. "Even over six days. Even a small amount."
+
+"I know."
+
+She looks at you sideways. "You've been sitting with this for a while."
+
+"Four days."
+
+She nods slowly. Goes completely still for about eight seconds. Then: "What's the separation ratio between bodies three and four?"
+
+You tell her. She closes her eyes briefly. "Same as between one and two."
+
+"And two and three."
+
+"And the compact object is equidistant from all seven at that same ratio, scaled up."
+
+"Yes."
+
+She sets her coffee down. "Ryo is going to be deeply unhappy."
+
+"Ryo is going to say it's a coincidence."
+
+"It isn't a coincidence."
+
+"No," you agree. "It isn't."
+
+Ryo arrives at 07:15 for his morning systems check and finds both of you at the chart table and immediately says, "Oh, no."
+
+"We haven't said anything yet," Amara says.
+
+"You don't have to. You've got the look." He pours coffee without sitting down and studies the overlay for longer than you'd expect from someone claiming reluctance. "Walk me through it," he says finally.
+
+An hour later, the three of you have covered the table in annotation layers — Amara's spectral readings, your positional data, Ryo's structural assessment of what a vessel would need to safely approach the compact object at varying distances. The compact object remains unmoving. The pattern remains consistent.
+
+The Vasanthi has enough fold capacity for three more major jumps before you'll need to begin the return transit. Using one of them to get closer is not in the mission plan. You are seven weeks from the end of your contract. The Hegemony's star atlas, compiled over three centuries of survey work, has no entry for what is currently sitting fourteen light-hours away and not moving.
+
+Your coffee is cold. You don't notice.
+
+"We can't call it in," Amara says. "We're between fold windows. Even if we initiated an emergency comms relay—"
+
+"Six-week lag," you confirm. "Minimum."
+
+"Which means whatever we decide," Ryo says, "we decide it ourselves."
+
+The three of you sit with that for a moment. Outside, the formation holds its ratio, its pattern, its patient geometric fact.
+
+What do you do?`,
+      choices: [
+        {
+          id: "approach",
+          text: "You take the Vasanthi closer — a controlled approach to within three light-hours of the compact object.",
+          consequence: "At three light-hours, Amara's spectrometry suite can produce a full material composition reading. You'll know, with reasonable certainty, what you're looking at — and have the data to prove it. The approach will consume eight days and a significant portion of your remaining fuel margin.",
+        },
+        {
+          id: "passive-scan",
+          text: "You hold position and spend the next three days running every passive instrument scan you can from current distance.",
+          consequence: "Passive scanning costs nothing in fuel or hull stress. Three days of full-instrument analysis may answer enough questions to make the approach decision with real information rather than pattern recognition and hope.",
+        },
+        {
+          id: "file-report",
+          text: "You file an immediate preliminary report — everything you have, packaged for the fastest available relay toward the Hegemony's survey authority.",
+          consequence: "The relay will take six weeks to arrive, but it will arrive. Whatever happens to the Vasanthi from this point on, the discovery is now in the hands of people who can act on it with resources a single survey vessel doesn't have.",
+        },
+      ],
     },
   };
 
