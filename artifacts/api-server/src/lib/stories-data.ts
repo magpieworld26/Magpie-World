@@ -115,7 +115,8 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
     featured: false,
     rank: 3,
     initialPrompt: "the-driftlands",
-    storyMode: "Adventure / Fantasy — wonder, discovery, and the tension between caution and curiosity",
+    storyMode:
+      "Adventure / Fantasy — wonder, discovery, and the tension between caution and curiosity",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Driftlands are a chain of floating islands scattered across an endless sky. Each island drifts on slow, invisible currents — some no bigger than a house, others wide enough to hold forests and rivers. The gaps between islands shift constantly, closing and opening over days or weeks. Bridges of woven cloudvine connect the closest ones, but the farther islands can only be reached by glider or by waiting for a rare alignment. People live in small communities called "perches," built along the edges of the larger islands where the wind is steady and the light is best. There is no great war, no looming darkness. Life here is about mapping, growing, and finding — because the Driftlands never stop changing. New islands rise from the cloud layer below every few months, carrying strange soil, unfamiliar plants, and sometimes ruins from civilisations that fell long before anyone can remember. Cartographers are the most respected people in the Driftlands. They chart the movements, name the new islands, and decide which ones are safe to settle. To be a cartographer is to be the first person to set foot on something no one has ever seen before. The air always smells faintly of rain and stone.
@@ -179,7 +180,8 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
     featured: false,
     rank: 5,
     initialPrompt: "the-last-entry",
-    storyMode: "Mystery / Thriller — quiet dread, close observation, mounting stakes",
+    storyMode:
+      "Mystery / Thriller — quiet dread, close observation, mounting stakes",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 A small coastal town, present day, late autumn. The kind of place where everyone knows which cars belong on which streets and silence spreads faster than news. The harbour gates mark the edge of town — grey, low, functional — and the school sits two streets inland, running on the same rhythms it always has: register, break, lunch, home. Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case. She'd had a public argument with her parents the week before, which made it easy to believe. The school has continued almost normally — lockers slamming, phones out, the vice-principal in the corridors with that careful look he's worn since Tuesday. Information in this town moves quietly, through the right people, in the right order. Someone has decided you should be one of those people. This morning, Maya's diary appeared in your locker.
@@ -212,7 +214,8 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
     featured: false,
     rank: 6,
     initialPrompt: "the-unread-letter",
-    storyMode: "Historical Fantasy — intimate stakes, institutional pressure, family loyalty",
+    storyMode:
+      "Historical Fantasy — intimate stakes, institutional pressure, family loyalty",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Kingdom of Aldenmere runs on letters. Every noble house, every guild, every law court communicates by sealed courier — the Messenger Guild is the backbone of civilization. Messengers are trained to be invisible: fast, discreet, incurious. Reading a sealed letter is the worst crime in the Guild — punishable by expulsion, or worse. The protagonist is a junior messenger, thirteen days into their first solo route. The letter they've accidentally opened — its seal cracked by the rain — is addressed to the Lord Governor and contains a name: a person supposedly executed two years ago. That person is the protagonist's older sister.
@@ -245,7 +248,8 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
     featured: false,
     rank: 7,
     initialPrompt: "the-show-must-go-on",
-    storyMode: "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
+    storyMode:
+      "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously
@@ -279,7 +283,8 @@ TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the 
     featured: false,
     rank: 8,
     initialPrompt: "what-the-charts-dont-show",
-    storyMode: "Sci-Fi / Mystery — slow discovery, isolation, the weight of a decision no one else can make",
+    storyMode:
+      "Sci-Fi / Mystery — slow discovery, isolation, the weight of a decision no one else can make",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Kalanemi Drift is what cartographers in the Hegemony call the three-hundred-light-year band of uncharted space between the Outer Settlements and the Velan Reach — a region too far from the core systems to be profitable and too close to the contested frontier to be ignored. Most ships that enter the Drift are survey vessels on two-year contracts, tasked with mapping stellar formations, cataloguing resource deposits, and filing reports that will be read by bureaucrats who have never left their home system. Faster-than-light travel in the Hegemony works through fold navigation — a method of compressing space along pre-calculated vectors, then releasing. The compression takes twelve to seventy-two hours depending on distance. During the fold, no communication in or out is possible. A ship in fold is genuinely alone in a way that people who have never done it find difficult to imagine and people who do it regularly find difficult to explain. The crew of a survey vessel spends roughly forty percent of its operational time in fold. You stop expecting news from home. The IHMS Vasanthi has been in the Drift for sixteen months. You are seven weeks from the end of your contract. The last three fold jumps have brought you into a stellar region the Hegemony's existing charts describe as unremarkable — standard nebular debris, a few red dwarfs past their interesting phase. What you're finding does not match the charts. The Vasanthi's science team has spent the past six days arguing, very professionally, about which one it is — charting error or something else entirely.
@@ -402,22 +407,26 @@ What do you do?`,
         {
           id: "sing",
           text: "You sit outside Belvane's door and start singing — the lullaby that always calms him down — and wait as long as it takes.",
-          consequence: "The slow approach. You know Belvane trusts you more than anyone, and you know the song works.",
+          consequence:
+            "The slow approach. You know Belvane trusts you more than anyone, and you know the song works.",
         },
         {
           id: "petition-committee",
           text: "You march to the Festival committee and argue that Belvane should lead the formation instead of Silverine.",
-          consequence: "The bold play. If Belvane's problem is that he was passed over, the fix is getting him what he wants.",
+          consequence:
+            "The bold play. If Belvane's problem is that he was passed over, the fix is getting him what he wants.",
         },
         {
           id: "ask-torben",
           text: "You ask Torben for help — he's better with dragons than you are, and maybe a fresh approach is what Belvane needs.",
-          consequence: "Two keepers are better than one, and Torben's natural ease with dragons might be exactly the energy Belvane responds to right now.",
+          consequence:
+            "Two keepers are better than one, and Torben's natural ease with dragons might be exactly the energy Belvane responds to right now.",
         },
         {
           id: "maintenance-hatch",
           text: "You sneak into the back of Belvane's stall through the maintenance hatch — the one that's technically off-limits — and confront him face to face, no door between you.",
-          consequence: "The most direct route. No waiting, no politics, no backup. Just you and a heartbroken dragon in a dark room.",
+          consequence:
+            "The most direct route. No waiting, no politics, no backup. Just you and a heartbroken dragon in a dark room.",
         },
       ],
     },
@@ -497,22 +506,26 @@ The rain will come again this afternoon. Whatever you decide, you need to decide
         {
           id: "send-cal",
           text: "You send Cal up the hillside to recover the satellite phone component from the cockpit wreckage.",
-          consequence: "Cal is the most physically capable person in the group — if anyone can navigate the unstable wreckage safely, it's her.",
+          consequence:
+            "Cal is the most physically capable person in the group — if anyone can navigate the unstable wreckage safely, it's her.",
         },
         {
           id: "move-east",
           text: "You commit the group to moving east along the river toward the research outpost, following Priya's memory map.",
-          consequence: "It's the only plan that doesn't depend on broken equipment. Priya knows the Basin's topography.",
+          consequence:
+            "It's the only plan that doesn't depend on broken equipment. Priya knows the Basin's topography.",
         },
         {
           id: "split-group",
           text: "You split the group — send a small, fast team to the north ridge with the phone components while the rest stay at base camp and prepare to move.",
-          consequence: "Suki confirmed the ridge has open sky. If Quim can jury-rig the phone to work, even partially, the ridge is where it'll get signal.",
+          consequence:
+            "Suki confirmed the ridge has open sky. If Quim can jury-rig the phone to work, even partially, the ridge is where it'll get signal.",
         },
         {
           id: "signal-fire",
           text: "You ignore the phone entirely and focus everything on making the crash site visible — building a massive signal fire and clearing canopy so a search plane can spot you.",
-          consequence: "It's the simplest plan, and it keeps everyone together.",
+          consequence:
+            "It's the simplest plan, and it keeps everyone together.",
         },
       ],
     },
@@ -604,22 +617,26 @@ The island hums beneath your feet — deeper than your home perch, slower — an
         {
           id: "work-edges",
           text: "You follow the edges first, calling Fennick back to join you.",
-          consequence: "You'll build your map the way Rook taught you — methodical, thorough, from the ground up.",
+          consequence:
+            "You'll build your map the way Rook taught you — methodical, thorough, from the ground up.",
         },
         {
           id: "head-ridge",
           text: "You head for the ridge with Fennick to get a full view of the island before mapping.",
-          consequence: "A panoramic view from the ridge will let you plan your entire survey at once.",
+          consequence:
+            "A panoramic view from the ridge will let you plan your entire survey at once.",
         },
         {
           id: "split-up",
           text: "You split up — you take the edges, Fennick explores the ridge and the centre on his own.",
-          consequence: "Maximum coverage in minimum time. You both get to do what you're best at.",
+          consequence:
+            "Maximum coverage in minimum time. You both get to do what you're best at.",
         },
         {
           id: "follow-instincts",
           text: "You ignore the plan entirely and head straight for the warm, green basin beyond the ridge — the most unusual feature on the island.",
-          consequence: "The warm stone and rich growth suggest something genuinely rare. If this island has a story to tell, the basin is where it's being told.",
+          consequence:
+            "The warm stone and rich growth suggest something genuinely rare. If this island has a story to tell, the basin is where it's being told.",
         },
       ],
     },
@@ -709,17 +726,20 @@ You go.`,
         {
           id: "follow-margaux-plan",
           text: "You pour the '98 Burgundy, deliver it flawlessly, and try to salvage the evening with impeccable service.",
-          consequence: "The classic recovery play. If you nail every remaining course, maintain eye contact, and channel the composure of a person who did not just ruin a Michelin inspection, you might turn this into a story about grace under pressure.",
+          consequence:
+            "The classic recovery play. If you nail every remaining course, maintain eye contact, and channel the composure of a person who did not just ruin a Michelin inspection, you might turn this into a story about grace under pressure.",
         },
         {
           id: "approach-inspector",
           text: "You go directly to the inspector, introduce yourself honestly, and make a human connection.",
-          consequence: "Forget the script. The man has soup in his pocket — the formality ship has sailed. If you speak to him like a real person and let him see someone who cares about the food rather than the performance, you might turn a disaster into the most memorable meal he's had in years.",
+          consequence:
+            "Forget the script. The man has soup in his pocket — the formality ship has sailed. If you speak to him like a real person and let him see someone who cares about the food rather than the performance, you might turn a disaster into the most memorable meal he's had in years.",
         },
         {
           id: "intercept-viktor",
           text: "You intercept Viktor and try to calm him down before he does something that makes this worse.",
-          consequence: "The real threat isn't the spilled bouillabaisse — it's the six-foot-four emotional volcano who's about to storm into a dining room full of witnesses.",
+          consequence:
+            "The real threat isn't the spilled bouillabaisse — it's the six-foot-four emotional volcano who's about to storm into a dining room full of witnesses.",
         },
       ],
     },
@@ -801,22 +821,26 @@ Your phone has half a battery. You could call someone right now. You could also 
         {
           id: "call-police",
           text: "You photograph the plates and call the police right now, from the bus.",
-          consequence: "You put the information in official hands immediately — that's what Mr. Osei told you to do.",
+          consequence:
+            "You put the information in official hands immediately — that's what Mr. Osei told you to do.",
         },
         {
           id: "ride-past",
           text: "You stay on the bus, ride past your stop, and see if the car follows.",
-          consequence: "You get more information before committing to anything. If the car doesn't follow, maybe it's nothing.",
+          consequence:
+            "You get more information before committing to anything. If the car doesn't follow, maybe it's nothing.",
         },
         {
           id: "go-to-osei",
           text: "You get off at your stop as normal and go straight to Mr. Osei's house — he lives two streets away.",
-          consequence: "He already knows about the diary; he's the one adult who's been honest with you today.",
+          consequence:
+            "He already knows about the diary; he's the one adult who's been honest with you today.",
         },
         {
           id: "do-nothing",
           text: "You do nothing — stay on the bus, keep riding, and don't react at all.",
-          consequence: "If they don't know you've seen them, you keep the advantage of surprise.",
+          consequence:
+            "If they don't know you've seen them, you keep the advantage of surprise.",
         },
       ],
     },
@@ -902,22 +926,26 @@ You sat there on the wall, the letter in your hands, and the choice arrived the 
         {
           id: "deliver-letter",
           text: "You deliver the letter as normal and tell Master Corvin the seal was damaged in transit.",
-          consequence: "You follow the rules — no risk to your Guild standing or your future. Master Corvin can't hold the broken seal against you if you report it honestly.",
+          consequence:
+            "You follow the rules — no risk to your Guild standing or your future. Master Corvin can't hold the broken seal against you if you report it honestly.",
         },
         {
           id: "find-sera",
           text: "You pocket the letter and go looking for Sera yourself, tonight.",
-          consequence: "She's here, now — this might be the only chance you get. If you find her first, you can warn her before anyone else acts.",
+          consequence:
+            "She's here, now — this might be the only chance you get. If you find her first, you can warn her before anyone else acts.",
         },
         {
           id: "tell-petra",
           text: "You find Petra and tell her everything — ask for her help figuring out what to do.",
-          consequence: "Petra is smart and knows the Guild better than you do. Sharing the weight of this might mean you make a better decision.",
+          consequence:
+            "Petra is smart and knows the Guild better than you do. Sharing the weight of this might mean you make a better decision.",
         },
         {
           id: "copy-and-deliver",
           text: "You copy down the relevant part of the letter, reseal it as best you can, and deliver it — but keep the information for yourself.",
-          consequence: "The letter gets delivered, which protects you for now. You have time to think before acting — and knowledge the Governor doesn't know you have.",
+          consequence:
+            "The letter gets delivered, which protects you for now. You have time to think before acting — and knowledge the Governor doesn't know you have.",
         },
       ],
     },
@@ -977,22 +1005,26 @@ What do you do?`,
         {
           id: "push-rafe",
           text: "You push Rafe — now, before he closes up again.",
-          consequence: "Rafe is on the verge of telling you. The window is open right now. Whatever Declan told him last week could change everything — context, motive, where to look.",
+          consequence:
+            "Rafe is on the verge of telling you. The window is open right now. Whatever Declan told him last week could change everything — context, motive, where to look.",
         },
         {
           id: "go-to-harlow",
           text: "You go to Ms. Harlow — she's already decided to tell you.",
-          consequence: "She found something physical in Declan's bag. That's concrete, not a recollection — and she's made her choice to share it.",
+          consequence:
+            "She found something physical in Declan's bag. That's concrete, not a recollection — and she's made her choice to share it.",
         },
         {
           id: "fire-exit-corridor",
           text: "You go down the fire exit corridor, toward the main school building.",
-          consequence: "No one else has gone this way. If Declan is somewhere in the school — hiding, or hurt — this is the direction no one has checked.",
+          consequence:
+            "No one else has gone this way. If Declan is somewhere in the school — hiding, or hurt — this is the direction no one has checked.",
         },
         {
           id: "tell-priya-going-on",
           text: "You tell Priya you're going on — and investigate from the inside.",
-          consequence: "The show gives you legitimate access to every part of backstage. You keep every option open — and from the stage, you can still watch who reacts to what.",
+          consequence:
+            "The show gives you legitimate access to every part of backstage. You keep every option open — and from the stage, you can still watch who reacts to what.",
         },
       ],
     },
@@ -1076,17 +1108,20 @@ What do you do?`,
         {
           id: "approach",
           text: "You take the Vasanthi closer — a controlled approach to within three light-hours of the compact object.",
-          consequence: "At three light-hours, Amara's spectrometry suite can produce a full material composition reading. You'll know, with reasonable certainty, what you're looking at — and have the data to prove it. The approach will consume eight days and a significant portion of your remaining fuel margin.",
+          consequence:
+            "At three light-hours, Amara's spectrometry suite can produce a full material composition reading. You'll know, with reasonable certainty, what you're looking at — and have the data to prove it. The approach will consume eight days and a significant portion of your remaining fuel margin.",
         },
         {
           id: "passive-scan",
           text: "You hold position and spend the next three days running every passive instrument scan you can from current distance.",
-          consequence: "Passive scanning costs nothing in fuel or hull stress. Three days of full-instrument analysis may answer enough questions to make the approach decision with real information rather than pattern recognition and hope.",
+          consequence:
+            "Passive scanning costs nothing in fuel or hull stress. Three days of full-instrument analysis may answer enough questions to make the approach decision with real information rather than pattern recognition and hope.",
         },
         {
           id: "file-report",
           text: "You file an immediate preliminary report — everything you have, packaged for the fastest available relay toward the Hegemony's survey authority.",
-          consequence: "The relay will take six weeks to arrive, but it will arrive. Whatever happens to the Vasanthi from this point on, the discovery is now in the hands of people who can act on it with resources a single survey vessel doesn't have.",
+          consequence:
+            "The relay will take six weeks to arrive, but it will arrive. Whatever happens to the Vasanthi from this point on, the discovery is now in the hands of people who can act on it with resources a single survey vessel doesn't have.",
         },
       ],
     },
@@ -1095,7 +1130,9 @@ What do you do?`,
   return (
     openings[storyId] || {
       narrativeText: `Your journey begins in ${story.title}.\n\n${story.description}\n\nThe story unfolds before you. What do you do?`,
-      choices: [{ id: "begin", text: "Begin the journey", consequence: "Start" }],
+      choices: [
+        { id: "begin", text: "Begin the journey", consequence: "Start" },
+      ],
     }
   );
 }
