@@ -228,6 +228,39 @@ Your Sister (Sera) — Absent but central. Supposedly dead, killed on a route tw
 
 TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and hierarchical, but the stakes are entirely personal. Every scene should carry the weight of the choice: follow the rules and survive, or follow family and risk everything. The Guild is a real institution with real power. Master Corvin is dangerous because he's correct about the rules. Let the tension come from the gap between what's legal and what's right.`,
   },
+  {
+    id: "the-show-must-go-on",
+    title: "The Show Must Go On",
+    genre: "Mystery / Drama",
+    description:
+      "Two hours before curtain, your school play's lead has vanished. His bag is here. His costume is here. Rafe knows something. Ms. Harlow found something. You have thirty-two minutes.",
+    longDescription:
+      "Hartwell Secondary School takes its drama programme seriously — opening night gets a half-page in the local paper, parents book seats three weeks out, and Mr. Voss has run the same Shakespeare rotation for eleven years. Tonight is Much Ado About Nothing. Except tonight, two hours before curtain, Declan Marsh — the boy who is always where he's supposed to be — has vanished. His bag is in the changing room. His costume hangs on its hook, pressed and ready. He signed in at 4:31 p.m. By 5:17, he was gone. The school is locked. No one saw him leave. Backstage, Priya the stage manager wants an answer. Rafe is scared and close to breaking. Ms. Harlow found something in Declan's bag and hasn't told anyone yet. The ghost light is still on. And somewhere in this building, something is wrong.",
+    coverGradient:
+      "linear-gradient(145deg, #1a0a2e 0%, #2e1a4a 40%, #1a0a35 75%, #0d0620 100%)",
+    tags: ["Mystery", "Drama", "School", "Thriller"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: 7,
+    initialPrompt: "the-show-must-go-on",
+    storyMode: "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously — the kind where opening night gets a half-page in the local paper, where parents book seats three weeks out, and where the drama teacher, Mr. Voss, has produced the same Shakespeare rotation for eleven years without apology. This year it's Much Ado About Nothing. Lighthearted. Safe. Funny. Except tonight, two hours before curtain, the lead — Declan Marsh, the boy who has played every major role since Year 9, the boy who is always where he's supposed to be — is not in the building. His phone rings out. His bag is in the changing room. His costume is hanging on its hook, pressed and ready. He vanished sometime between 4:30 p.m., when he signed in at the stage door, and 5:15 p.m., when the cast gathered for warm-up. The school is locked after hours. The exits are monitored. No one saw him leave. Backstage, forty minutes from curtain, the cast is unravelling. Parents are filing into the auditorium. Mr. Voss is on the phone with the deputy principal. And you — who have memorised every line, every cue, every cross — are standing in the wings, holding Declan's script, feeling the weight of the stage lights warming the air just beyond the curtain. Something is wrong. Not just missing-a-cast-member wrong. Something you can't name yet — a feeling like a room where the furniture has been moved one inch to the left.
+
+CHARACTERS
+You — The Understudy. You've been Declan's shadow for the entire run. Every rehearsal, every note, every blocking change — you absorbed it all because that's what understudies do. You're not bitter about the role. Mostly. You know this play better than anyone in the building right now, and that fact sits in your chest like a stone you're not sure whether to swallow or throw.
+
+Priya Anand — Stage Manager / Reluctant ally. Compact and sharp-featured, Priya moves through backstage chaos the way a blade moves through water — no wasted motion. She keeps her hair pinned so tightly it looks like a structural decision. She has a headset perpetually around one ear and a clipboard that has never, in living memory, been set down. A systems thinker — she doesn't panic because panic is inefficient. Under the control is a person who notices everything and trusts almost no one. She was the only other person who noticed Declan had been off for the past two weeks — quieter, distracted, jumping at sounds — and she said nothing, and that is gnawing at her. "I'm not asking if you're ready. I'm asking if you're going on. Those are different questions." / "Declan signed in at 4:31. He's not here at 5:17. That's 46 minutes. What changed in 46 minutes?"
+
+Rafe Okonkwo — Declan's Best Friend / Wildcard. Tall in the way that seems accidental, like he grew and then forgot to stop. He has kind eyes and an extremely unreliable face — it shows too much, too fast. Right now it's showing something that looks like fear dressed up as confusion. Loyal to a fault and not a natural liar, which makes him a terrible person to have a secret with. He talks to fill silence, deflects with charm, and laughs a half-second too late when something catches him off guard. He's been checking his phone every thirty seconds since Declan was reported missing, and he hasn't looked at the screen once. He knows something. "He's fine, probably. You know Dec — he does this thing where he — anyway, he'll be here. He's always here. Right?" / "I don't — look, I just think we should maybe not, like — can we just do the show first and then—"
+
+Ms. Harlow — Assistant Drama Teacher / Unlikely informant. Mid-thirties, perpetually tired in the way of someone who chose a job they love and is surprised it doesn't love them back equally. She has paint on her left hand she hasn't noticed and a habit of chewing the end of her pen when she's working something out. Warm, candid, and constitutionally unable to pretend things are fine when they aren't. She is the only adult backstage who looks genuinely worried rather than professionally worried. She was Declan's form tutor last year. She found his bag in the changing room — already checked it, already found something inside it she hasn't told anyone about yet. "I want you to go on tonight. But I also want you to understand that's a separate question from what's happening with Declan." / "There are things I probably shouldn't tell you. I'm still deciding."
+
+TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the show, the mystery, and whatever Declan was carrying before he disappeared. Every character has something they're not saying. Information arrives in fragments. The ghost light is a recurring motif: a bare bulb on an empty stage, burning for no reason, a question no one has answered. Let the investigation feel like reading a room, not chasing a villain.`,
+  },
 ];
 
 export function getStoryById(id: string): StoryData | undefined {
@@ -855,6 +888,82 @@ You sat there on the wall, the letter in your hands, and the choice arrived the 
           consequence: "The letter gets delivered, which protects you for now. You have time to think before acting — and knowledge the Governor doesn't know you have.",
         },
       ],
+    },
+    "the-show-must-go-on": {
+      narrativeText: `The ghost light is still on when you push through the heavy velvet curtain into the wings.
+
+It shouldn't be. That's the thing about backstage before a show — there's a rhythm, and the ghost light is part of it. Off when the crew arrives. On only when the stage is empty for the night. Tonight someone turned it on, and nobody turned it off, and now it's standing at the centre of the stage, its bare bulb glowing like a question mark in all this dark.
+
+You stand there for a moment and look at it.
+
+Then someone grabs your arm.
+
+"You're going on." Priya's voice is flat. Not panicked — Priya doesn't panic — but there's a tightness in it you've only heard once before, during last year's tech week when the lighting rig sparked. "Mr. Voss is on the phone with the deputy. Ms. Harlow is trying to reach Declan's parents. You have the blocking. You have the lines. Curtain is in forty-one minutes."
+
+"I know the lines," you say.
+
+"I didn't ask if you knew the lines." She adjusts her headset. "Are you going on?"
+
+The wings smell like sawdust and stage paint and someone's stress-eaten granola bar. Beyond the curtain, you can hear the dull murmur of the audience building — chairs shifting, programmes rustling, the particular hum of two hundred people who don't yet know that tonight is strange.
+
+"What happened to him?"
+
+Priya's jaw tightens almost imperceptibly. "Unknown."
+
+"That's not an answer."
+
+"No," she agrees, "it isn't." She looks at you for a moment, and you get the sense she's running a calculation. Then: "He signed in at 4:31. His bag was in the changing room when Ms. Harlow checked at 5:10. His costume is still on its hook. His phone is going straight to voicemail, which means it's either off or dead. He's not in any room I've checked." She pauses. "That's every fact I have."
+
+"Forty-six minutes," you say, almost to yourself.
+
+Something flickers across her face. "Yes."
+
+You find Rafe by the prop table, ten minutes later. He's holding a fake sword and not looking at it. He's been checking his phone in a rhythm — look, pocket, wait thirty seconds, look again — but not actually reading whatever's on the screen.
+
+"Hey." You stop beside him. "When did you last see him?"
+
+Rafe's head comes up too fast. "Who, Dec? I mean — earlier. Before warm-up. He was—" He sets the sword down. Picks it up. Sets it down again. "He was fine."
+
+"You're doing the thing where you fill space," you say. "What aren't you saying?"
+
+For a moment you think he's going to hold it together. He's got his stage face on — eyebrows up, mouth ready to form a reassuring sentence. Then something in him shifts, the way a load-bearing wall shifts before it gives.
+
+"He told me something last week," Rafe says. "I said it was probably nothing. I really — I thought it was nothing." He looks at the sword on the table. "Maybe it wasn't nothing."
+
+Before you can push further, Ms. Harlow appears at the end of the corridor. She sees you, and she doesn't look away. That in itself is a signal. Most adults, when they have information they haven't decided to share, look past you. Ms. Harlow looks directly at you, which means she's already decided, and she's waiting for you to come to her.
+
+Thirty-two minutes to curtain.
+
+The ghost light is still on.
+
+Somewhere in this building, between 4:31 p.m. and 5:17 p.m., Declan Marsh stopped existing in any room anyone could find. His bag is here. His costume is here. Rafe knows something. Ms. Harlow found something. And the show — the show that doesn't care about any of this — opens in thirty-two minutes.
+
+You stand at the junction of three corridors: stage left, the changing rooms, the fire exit corridor that leads back toward the main school building.
+
+What do you do?`,
+      choices: [
+        {
+          id: "push-rafe",
+          text: "You push Rafe — now, before he closes up again.",
+          consequence: "Rafe is on the verge of telling you. The window is open right now. Whatever Declan told him last week could change everything — context, motive, where to look.",
+        },
+        {
+          id: "go-to-harlow",
+          text: "You go to Ms. Harlow — she's already decided to tell you.",
+          consequence: "She found something physical in Declan's bag. That's concrete, not a recollection — and she's made her choice to share it.",
+        },
+        {
+          id: "fire-exit-corridor",
+          text: "You go down the fire exit corridor, toward the main school building.",
+          consequence: "No one else has gone this way. If Declan is somewhere in the school — hiding, or hurt — this is the direction no one has checked.",
+        },
+        {
+          id: "tell-priya-going-on",
+          text: "You tell Priya you're going on — and investigate from the inside.",
+          consequence: "The show gives you legitimate access to every part of backstage. You keep every option open — and from the stage, you can still watch who reacts to what.",
+        },
+      ],
+      
     },
   };
 
