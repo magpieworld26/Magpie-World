@@ -45,6 +45,7 @@ export default function ReaderPage() {
   const [textDone, setTextDone] = useState(false);
   const [showChoices, setShowChoices] = useState(false);
   const [storyComplete, setStoryComplete] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
   const storyEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,6 +68,7 @@ export default function ReaderPage() {
     setChosenId(choice.id);
     setChoosing(true);
     setShowChoices(false);
+    setGenerationError(null);
     try {
       const newNode = await api.sessions.continue(sessionId, choice.id, choice.text);
       setNodes(prev => [...prev, newNode]);
@@ -76,8 +78,11 @@ export default function ReaderPage() {
       if (!newNode.choices || newNode.choices.length === 0) {
         setStoryComplete(true);
       }
-    } catch {
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong generating the next scene.";
+      setGenerationError(msg);
       setChosenId(null);
+      setShowChoices(true);
     } finally {
       setChoosing(false);
     }
@@ -361,6 +366,29 @@ export default function ReaderPage() {
                 ))}
               </div>
               <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "1px", textTransform: "uppercase" }}>Generating…</div>
+            </div>
+          )}
+
+          {generationError && !choosing && (
+            <div style={{
+              background: "rgba(255,80,80,0.08)",
+              border: "1px solid rgba(255,80,80,0.25)",
+              borderRadius: "6px",
+              padding: "14px 16px",
+              marginBottom: "16px",
+            }}>
+              <div style={{ fontSize: "11px", color: "rgba(255,120,120,0.9)", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "6px" }}>
+                Generation failed
+              </div>
+              <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", fontFamily: "'Barlow', sans-serif", lineHeight: 1.5 }}>
+                {generationError}
+              </div>
+              <button
+                onClick={() => setGenerationError(null)}
+                style={{ marginTop: "10px", background: "none", border: "1px solid rgba(255,120,120,0.3)", borderRadius: "4px", padding: "6px 12px", color: "rgba(255,120,120,0.8)", fontFamily: "'Barlow Condensed', sans-serif", fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", cursor: "pointer" }}
+              >
+                Dismiss
+              </button>
             </div>
           )}
 
