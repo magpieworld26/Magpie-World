@@ -298,7 +298,7 @@ export async function generateStorySegment(
 
   try {
     const message = await anthropic.messages.create({
-      model: "claude-3-haiku-20240307",
+      model: "anthropic.claude-3-haiku-20240307-v1:0",
       max_tokens: 2048,
       system: systemPrompt,
       messages: [{ role: "user", content: userMessage }],
