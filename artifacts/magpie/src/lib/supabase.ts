@@ -5,6 +5,10 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-a
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+export function getSiteUrl(): string {
+  return import.meta.env.VITE_SITE_URL || window.location.origin;
+}
+
 export const AUTH_TOKEN_KEY = "magpie_auth_token";
 
 export function getAuthToken(): string | null {

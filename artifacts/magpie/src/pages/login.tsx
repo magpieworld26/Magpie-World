@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation } from "wouter";
-import { supabase, setAuthToken } from "@/lib/supabase";
+import { supabase, setAuthToken, getSiteUrl } from "@/lib/supabase";
 import birdLogo from "@assets/image_1774626827305.png";
 
 export default function LoginPage() {
@@ -89,7 +89,7 @@ export default function LoginPage() {
     setForgotFeedback(null);
     try {
       const { error: err } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
-        redirectTo: window.location.origin + "/recover",
+        redirectTo: getSiteUrl() + "/recover",
       });
       if (err) throw err;
       setForgotFeedback({ type: "success", msg: "Password reset email sent. Check your inbox." });
@@ -111,7 +111,7 @@ export default function LoginPage() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin + "/signup",
+            emailRedirectTo: getSiteUrl() + "/signup",
             data: {
               display_name: `${firstName} ${lastName}`.trim(),
             }

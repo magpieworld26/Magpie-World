@@ -27,3 +27,8 @@ timeoutMs = 20000
 
 [[ports]]
 localPort = 24343
+
+[userenv]
+
+[userenv.shared]
+VITE_SITE_URL = "https://94d309d1-2d2d-47f0-b876-683d52cbe7a4-00-3b68sg2l84036-gvixp9ub.kirk.replit.dev"

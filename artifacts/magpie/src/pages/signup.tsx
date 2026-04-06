@@ -10,8 +10,16 @@ export default function SignupPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
     const tokenHash = params.get("token_hash");
     const type = params.get("type");
+
+    if (error) {
+      setStatus("error");
+      setErrorMsg(errorDescription || error);
+      return;
+    }
 
     if (!tokenHash || type !== "signup") {
       setStatus("error");
@@ -21,10 +29,10 @@ export default function SignupPage() {
 
     supabase.auth
       .verifyOtp({ token_hash: tokenHash, type: "signup" })
-      .then(({ error }) => {
-        if (error) {
+      .then(({ error: verifyError }) => {
+        if (verifyError) {
           setStatus("error");
-          setErrorMsg(error.message || "Email confirmation failed. The link may have expired.");
+          setErrorMsg(verifyError.message || "Email confirmation failed. The link may have expired.");
         } else {
           setStatus("success");
           setTimeout(() => setLocation("/home"), 2500);
