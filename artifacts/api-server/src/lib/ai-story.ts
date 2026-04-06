@@ -1,7 +1,15 @@
 // ai-story.ts
-// Story continuation engine — calls the Anthropic Claude API to generate the next scene
-// based on the reader's choice, story world context, and previous scenes.
-// Implements the 4-Layer Prompt System from the story-continuation skill.
+// Story continuation engine — calls the Anthropic Claude API to generate the next scene.
+//
+// Cost optimizations applied:
+//  1. PROMPT CACHING — the large static system prompt (continuation directive + story bible)
+//     is marked with cache_control so it's only billed at 10% on cache hits.
+//  2. STORY SUMMARY — instead of passing raw transcript, we maintain a rolling compressed
+//     summary (~150 words) + only the immediately previous scene (~600 words).
+//     This keeps the user-message token count flat across a long playthrough.
+//  3. SPLIT SYSTEM PROMPT — static content is in one cached block; dynamic
+//     (arc position, late-game flags) is in a second un-cached block so the cache
+//     key stays stable for every call that shares the same story.
 
 import Anthropic from "@anthropic-ai/sdk";
 import { logger } from "./logger";
@@ -9,6 +17,10 @@ import { getStoryById, storiesData } from "./stories-data";
 
 const anthropic = new Anthropic();
 // Uses ANTHROPIC_API_KEY from environment automatically
+
+// ─────────────────────────────────────────────────────────────
+// Public types
+// ─────────────────────────────────────────────────────────────
 
 export interface Choice {
   id: string;
@@ -25,6 +37,15 @@ export interface StoryState {
     | "converging"
     | "climax"
     | "resolution";
+
+  // Rolling compressed summary of all scenes so far (kept ≤ 200 words by Claude).
+  // Replaces raw transcript to keep token cost flat across long playthroughs.
+  rollingSummary: string;
+
+  // The prose of only the most recent scene (for voice continuity).
+  // We do NOT accumulate all previous scenes — just the last one.
+  lastSceneProse: string;
+
   choicesMade: Array<{ turn: number; label: string; consequenceNote: string }>;
   relationshipStates: Record<string, string>;
   worldStateChanges: string[];
@@ -39,9 +60,9 @@ export interface GeneratedSegment {
   storyState: StoryState;
 }
 
-// ─────────────────────────────────────────────
-// Story lookup — accepts story ID or exact title
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Story lookup
+// ─────────────────────────────────────────────────────────────
 
 function resolveStory(storyIdOrTitle: string) {
   const byId = getStoryById(storyIdOrTitle);
@@ -59,10 +80,9 @@ function resolveStory(storyIdOrTitle: string) {
   return getStoryById(slug) || null;
 }
 
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 // Arc position derived from turn number
-// (matches skill's arc position guide)
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 
 function deriveArcPosition(nodeIndex: number): StoryState["arcPosition"] {
   const turn = nodeIndex + 1;
@@ -74,10 +94,14 @@ function deriveArcPosition(nodeIndex: number): StoryState["arcPosition"] {
   return "resolution";
 }
 
-// ─────────────────────────────────────────────
-// Layer 3 — Continuation Directive
-// Embedded from references/continuation-directive.md
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// BLOCK 1 (CACHED) — Story bible + continuation directive
+//
+// This block is IDENTICAL for every continuation call on the
+// same story, so it will hit the cache after the first request.
+// At ~1 000–1 500 tokens it saves ~90% on those tokens from
+// the second request onward.
+// ─────────────────────────────────────────────────────────────
 
 const CONTINUATION_DIRECTIVE = `
 ## Continuation Directive (Core Writing Instruction)
@@ -131,52 +155,30 @@ Structure every scene in three beats:
 - Generic world details that could appear in any story.
 - Choices that are really the same choice.
 - Choices that ignore the current scene.
+
+### Pacing Over Multiple Scenes
+- Scenes 1–2: Establish world, characters, tone
+- Scenes 3–4: Deepen, complicate, reveal
+- Scenes 5–6: Converge, escalate, approach climax
+- Scene 7+: Resolution arc — choices begin to close loops rather than open them
 `;
 
-// ─────────────────────────────────────────────
-// Build the system prompt (Layers 1 + 3)
-// ─────────────────────────────────────────────
-
-function buildSystemPrompt(
+function buildCachedSystemBlock(
   storyTitle: string,
   storyGenre: string,
   worldContext: string | undefined,
-  arcPosition: StoryState["arcPosition"],
-  isLateGame: boolean,
-  mayEnd: boolean,
 ): string {
   const worldContextBlock = worldContext
-    ? `\n## LAYER 1 — STORY BIBLE (IMMUTABLE CANON — never contradict this)\n${worldContext}\n`
+    ? `\n## STORY BIBLE (IMMUTABLE CANON — never contradict this)\n${worldContext}\n`
     : "";
-
-  const pacingGuide: Record<StoryState["arcPosition"], string> = {
-    opening:
-      "Ground the reader, establish world feel. Direction-based choices, low stakes.",
-    establishing:
-      "Introduce key characters and tensions. Values-based choices, beginning to diverge.",
-    deepening:
-      "Complicate, reveal, deepen relationships. Higher stakes, more morally textured choices.",
-    converging:
-      "Threads start to collide, pressure rises. Dilemma-based choices with real trade-offs.",
-    climax:
-      "Peak intensity, major consequences. Hard choices with no clean options.",
-    resolution:
-      "Loops close, consequences land. Choices resolve rather than open.",
-  };
 
   return `You are a master storyteller powering "Magpie — The Home of Breathing Books", an interactive choice-based reading platform.
 
 STORY: "${storyTitle}" (Genre: ${storyGenre})
 ${worldContextBlock}
-
-## LAYER 3 — CONTINUATION DIRECTIVE
 ${CONTINUATION_DIRECTIVE}
 
-## CURRENT ARC POSITION: ${arcPosition.toUpperCase()}
-Pacing guide for this position: ${pacingGuide[arcPosition]}
-${isLateGame ? "⚠ This is the late game — choices must feel higher stakes, the plot is accelerating toward resolution." : ""}
-
-## LAYER 4 — OUTPUT FORMAT
+## OUTPUT FORMAT
 Respond ONLY with a valid JSON object. No markdown fences, no preamble. Schema:
 
 {
@@ -203,6 +205,7 @@ Respond ONLY with a valid JSON object. No markdown fences, no preamble. Schema:
   ],
   "isEnding": false,
   "storyStateUpdate": {
+    "rollingSummary": "Updated compressed summary of the whole story so far (≤ 200 words). Merge the previous summary with what just happened. Preserve: key events, character relationship states, world changes, planted threads.",
     "relationshipStates": { "CharacterName": "current dynamic in ~10 words" },
     "worldStateChanges": ["what changed this turn"],
     "plantedThreads": ["new detail/hint dropped that should pay off later"],
@@ -216,59 +219,98 @@ CHOICE RULES:
 - No choice should be obviously superior
 - At least one choice must feel unexpected or surprising
 - Every choice must reference specific details from the current scene
-- Format: "You [action verb]..." — second person, present tense, concrete physical or social action
-
-${mayEnd ? 'If the story has reached a satisfying conclusion, set "isEnding": true and omit choices.' : ""}
-`;
+- Format: "You [action verb]..." — second person, present tense, concrete physical or social action`;
 }
 
-// ─────────────────────────────────────────────
-// Build the user message (Layer 2 — Story State)
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// BLOCK 2 (NOT CACHED) — Dynamic per-call system instructions
+//
+// Arc position and late-game flags change each turn, so they
+// must live outside the cached block to avoid poisoning the
+// cache key for all other calls.
+// ─────────────────────────────────────────────────────────────
+
+const pacingGuide: Record<StoryState["arcPosition"], string> = {
+  opening:
+    "Ground the reader, establish world feel. Direction-based choices, low stakes.",
+  establishing:
+    "Introduce key characters and tensions. Values-based choices, beginning to diverge.",
+  deepening:
+    "Complicate, reveal, deepen relationships. Higher stakes, more morally textured choices.",
+  converging:
+    "Threads start to collide, pressure rises. Dilemma-based choices with real trade-offs.",
+  climax:
+    "Peak intensity, major consequences. Hard choices with no clean options.",
+  resolution:
+    "Loops close, consequences land. Choices resolve rather than open.",
+};
+
+function buildDynamicSystemBlock(
+  arcPosition: StoryState["arcPosition"],
+  isLateGame: boolean,
+  mayEnd: boolean,
+): string {
+  return `## CURRENT ARC POSITION: ${arcPosition.toUpperCase()}
+Pacing guide: ${pacingGuide[arcPosition]}
+${isLateGame ? "⚠ LATE GAME — choices must feel higher stakes; plot is accelerating toward resolution." : ""}
+${mayEnd ? 'If the story has reached a satisfying conclusion, set "isEnding": true and omit choices.' : ""}`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// User message — uses rolling summary instead of full transcript
+//
+// Token cost breakdown per call (approx):
+//   Static system block  ~1 200 tokens  → 120 tokens on cache hit (10%)
+//   Dynamic system block ~  100 tokens  → always billed
+//   User message         ~  600 tokens  → always billed (summary + last scene + choice)
+//   Output               ~1 000 tokens  → always billed
+//
+// Compare to the original approach (full transcript):
+//   Turn 10 transcript could be 8 000+ tokens input. With summary it stays ~600.
+// ─────────────────────────────────────────────────────────────
 
 function buildUserMessage(
-  previousContext: string,
   choiceMade: string,
   nodeIndex: number,
   storyState: StoryState | null,
 ): string {
   const storyStateBlock = storyState
-    ? `
-## LAYER 2 — STORY STATE (living memory — use this, not the raw transcript)
+    ? `## STORY STATE (use this as ground truth — do not contradict it)
 Turn: ${storyState.turn}
 Arc position: ${storyState.arcPosition}
-Choices made:
-${storyState.choicesMade.map((c) => `  - Turn ${c.turn}: "${c.label}" → ${c.consequenceNote}`).join("\n")}
+
+Story so far (compressed summary — all key events, characters, world changes):
+${storyState.rollingSummary}
+
 Relationship states:
 ${Object.entries(storyState.relationshipStates)
   .map(([name, state]) => `  - ${name}: ${state}`)
   .join("\n")}
-World state changes:
-${storyState.worldStateChanges.map((w) => `  - ${w}`).join("\n")}
-Planted threads:
+
+Planted threads (pay off at least one if appropriate):
 ${storyState.plantedThreads.map((t) => `  - ${t}`).join("\n")}
+
 Active tensions:
 ${storyState.activeTensions.map((t) => `  - ${t}`).join("\n")}
+
+## Previous scene (for voice continuity only — do NOT recap it):
+${storyState.lastSceneProse}
 `
-    : "";
+    : "## First continuation — no previous state yet.\n";
 
   return `${storyStateBlock}
-## Previous story context (last 1–2 scenes for voice continuity):
-${previousContext}
-
 ## The reader chose: "${choiceMade}"
 
-Story beat ${nodeIndex + 1}. Continue the story based on this choice. Apply all four layers. Write the next scene now.`;
+Story beat ${nodeIndex + 1}. Write the next scene. Honour the choice, advance the story, end at a new decision point. Remember to update rollingSummary in storyStateUpdate.`;
 }
 
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 // generateStorySegment — main export
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 
 export async function generateStorySegment(
   storyIdOrTitle: string,
   genre: string,
-  previousContext: string,
   choiceMade: string,
   nodeIndex: number,
   currentStoryState: StoryState | null = null,
@@ -280,29 +322,59 @@ export async function generateStorySegment(
   const isLateGame = nodeIndex >= 12;
   const mayEnd = nodeIndex >= 18;
 
-  const systemPrompt = buildSystemPrompt(
-    storyTitle,
-    storyGenre,
-    story?.worldContext,
-    arcPosition,
-    isLateGame,
-    mayEnd,
-  );
+  // ── Prompt caching: split system into two content blocks ──
+  //
+  // Block 1: large static block → marked cache_control: ephemeral
+  //   Anthropic caches everything up to this breakpoint.
+  //   On cache hit, these ~1 200 tokens cost ~120 tokens (10%).
+  //
+  // Block 2: small dynamic block → NOT cached
+  //   Changes every turn so must stay outside the cache key.
+
+  const systemBlocks: Anthropic.Beta.PromptCaching.PromptCachingBetaTextBlockParam[] =
+    [
+      {
+        type: "text",
+        text: buildCachedSystemBlock(
+          storyTitle,
+          storyGenre,
+          story?.worldContext,
+        ),
+        cache_control: { type: "ephemeral" }, // ← cache breakpoint
+      },
+      {
+        type: "text",
+        text: buildDynamicSystemBlock(arcPosition, isLateGame, mayEnd),
+        // No cache_control here — this block changes every turn
+      },
+    ];
 
   const userMessage = buildUserMessage(
-    previousContext,
     choiceMade,
     nodeIndex,
     currentStoryState,
   );
 
   try {
-    const message = await anthropic.messages.create({
+    const message = await anthropic.beta.promptCaching.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 2048,
-      system: systemPrompt,
+      system: systemBlocks,
       messages: [{ role: "user", content: userMessage }],
     });
+
+    // Log cache performance so you can verify savings in dev
+    const usage =
+      message.usage as Anthropic.Beta.PromptCaching.PromptCachingBetaUsage;
+    logger.info(
+      {
+        input_tokens: usage.input_tokens,
+        cache_read_input_tokens: usage.cache_read_input_tokens ?? 0,
+        cache_creation_input_tokens: usage.cache_creation_input_tokens ?? 0,
+        output_tokens: usage.output_tokens,
+      },
+      "Claude API usage (cache_read > 0 means savings are active)",
+    );
 
     const content = message.content[0];
     if (content.type !== "text" || !content.text) {
@@ -317,11 +389,27 @@ export async function generateStorySegment(
 
     const parsed = JSON.parse(cleaned);
 
-    // Build updated story state from Claude's response + existing state
+    // ── Build updated story state ──────────────────────────────
+    //
+    // rollingSummary comes back from Claude (it merged the previous
+    // summary + this turn's events). We store ONLY the new scene
+    // prose as lastSceneProse — not the accumulation — so the
+    // user-message stays bounded.
+
     const turnNumber = nodeIndex + 1;
     const updatedStoryState: StoryState = {
       turn: turnNumber,
       arcPosition,
+
+      // Claude-generated compressed summary (≤ 200 words, all history)
+      rollingSummary:
+        parsed.storyStateUpdate?.rollingSummary ||
+        currentStoryState?.rollingSummary ||
+        "",
+
+      // Only the scene we just generated — NOT the full history
+      lastSceneProse: parsed.narrativeText || "",
+
       choicesMade: [
         ...(currentStoryState?.choicesMade || []),
         {
