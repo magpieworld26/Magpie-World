@@ -7,6 +7,7 @@ import LandingPage from "@/pages/landing";
 import LoginPage from "@/pages/login";
 import SignupPage from "@/pages/signup";
 import RecoverPage from "@/pages/recover";
+import VerifyOtpPage from "@/pages/verify-otp";
 import HomePage from "@/pages/home";
 import StoryDetailPage from "@/pages/story-detail";
 import ReaderPage from "@/pages/reader";
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/login" component={LoginPage} />
       <Route path="/signup" component={SignupPage} />
       <Route path="/recover" component={RecoverPage} />
+      <Route path="/verify-otp" component={VerifyOtpPage} />
       <Route path="/home" component={HomePage} />
       <Route path="/story/:storyId" component={StoryDetailPage} />
       <Route path="/read/:sessionId" component={ReaderPage} />

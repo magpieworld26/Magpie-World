@@ -88,11 +88,10 @@ export default function LoginPage() {
     setForgotLoading(true);
     setForgotFeedback(null);
     try {
-      const { error: err } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
-        redirectTo: getSiteUrl() + "/recover",
-      });
+      const { error: err } = await supabase.auth.resetPasswordForEmail(forgotEmail);
       if (err) throw err;
-      setForgotFeedback({ type: "success", msg: "Password reset email sent. Check your inbox." });
+      setForgotOpen(false);
+      setLocation(`/verify-otp?email=${encodeURIComponent(forgotEmail)}&type=recovery`);
     } catch (err: unknown) {
       setForgotFeedback({ type: "error", msg: err instanceof Error ? err.message : "Failed to send reset email" });
     } finally {
@@ -122,7 +121,7 @@ export default function LoginPage() {
           setAuthToken(data.session.access_token);
           setLocation("/home");
         } else {
-          setError("Account created! Please check your email to verify.");
+          setLocation(`/verify-otp?email=${encodeURIComponent(email)}&type=signup`);
         }
       } else {
         const { data, error: err } = await supabase.auth.signInWithPassword({ email, password });
@@ -489,7 +488,7 @@ export default function LoginPage() {
                   marginBottom: "12px",
                 }}
               >
-                {forgotLoading ? "Sending..." : "Send Reset Link"}
+                {forgotLoading ? "Sending..." : "Send OTP"}
               </button>
 
               <button
