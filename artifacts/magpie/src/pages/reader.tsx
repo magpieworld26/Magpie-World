@@ -137,7 +137,7 @@ export default function ReaderPage() {
           <button
             onClick={() => setLocation("/home")}
             style={{ background: "none", border: "none", color: "#00e5c8", cursor: "pointer", fontSize: "12px", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "2px", textTransform: "uppercase", padding: "0", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}
-          >HOME</button>
+            className="text-[15px] font-bold">← </button>
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "22px", letterSpacing: "0.08em", lineHeight: 1.1, color: "#fff" }}>
             {session.story.title}
           </div>
