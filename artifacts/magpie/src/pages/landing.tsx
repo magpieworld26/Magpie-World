@@ -117,7 +117,7 @@ export default function LandingPage() {
             TOP 5 <span style={{ background: "linear-gradient(90deg, #68e6c5, #4f98d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>THIS WEEK</span>
           </h2>
 
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", overflowY: "hidden", paddingTop: "20px", paddingBottom: "8px" }} className="scrollbar-hide">
             {top5.map((story, i) => (
               <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flexShrink: 0 }}>
                 <span style={{

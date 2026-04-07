@@ -262,7 +262,7 @@ export default function HomePage() {
               Continue <span style={{ color: "#00e5c8" }}>Reading</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "16px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "16px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px", paddingLeft: "16px" }} className="scrollbar-hide">
             {activeSessions.map(session => (
               <ContinueCard
                 key={session.id}
@@ -280,7 +280,7 @@ export default function HomePage() {
             New <span style={{ color: "#00e5c8" }}>Releases</span>
           </h2>
         </div>
-        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
+        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px", paddingLeft: "16px" }} className="scrollbar-hide">
           {newReleases.map(story => (
             <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
           ))}
@@ -294,7 +294,7 @@ export default function HomePage() {
               Top 10 <span style={{ color: "#00e5c8" }}>This Week</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", overflowY: "hidden", paddingTop: "20px", paddingBottom: "8px", paddingLeft: "16px" }} className="scrollbar-hide">
             {top10.slice(0, 10).map((story, i) => (
               <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flexShrink: 0 }}>
                 <span style={{
