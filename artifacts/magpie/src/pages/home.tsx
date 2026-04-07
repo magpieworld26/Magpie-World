@@ -39,6 +39,11 @@ function BookCard({ story, onClick }: { story: Story; onClick: () => void }) {
         position: "relative",
         border: "1px solid rgba(255,255,255,0.07)",
         background: story.coverGradient || COVER_CLASSES[0],
+        ...(story.coverImage ? {
+          backgroundImage: `url(${story.coverImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        } : {}),
       }}>
         <div style={{
           position: "absolute", top: "8px", left: "8px",
@@ -93,7 +98,15 @@ function ContinueCard({ session, onClick }: { session: StorySession; onClick: ()
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <div style={{ width: "100%", aspectRatio: "16/9", position: "relative", overflow: "hidden", background: session.story.coverGradient }}>
+      <div style={{
+        width: "100%", aspectRatio: "16/9", position: "relative", overflow: "hidden",
+        background: session.story.coverGradient,
+        ...(session.story.coverImage ? {
+          backgroundImage: `url(${session.story.coverImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        } : {}),
+      }}>
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "60%", background: "linear-gradient(to top, #0d1b2e, transparent)" }} />
       </div>
       <div style={{ padding: "14px 16px 16px" }}>
@@ -324,6 +337,11 @@ export default function HomePage() {
                     border: "1px solid rgba(255,255,255,0.08)",
                     cursor: "pointer",
                     background: story.coverGradient || COVER_CLASSES[i % COVER_CLASSES.length],
+                    ...(story.coverImage ? {
+                      backgroundImage: `url(${story.coverImage})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    } : {}),
                     transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s",
                   }}
                   onMouseEnter={e => {

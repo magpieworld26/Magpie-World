@@ -5,6 +5,7 @@ export interface StoryData {
   description: string;
   longDescription: string;
   coverGradient: string;
+  coverImage?: string;
   tags: string[];
   rating: string;
   chapterCount: number;
@@ -28,6 +29,7 @@ export const storiesData: StoryData[] = [
       "The kingdom of Valdenmere domesticated dragons four hundred years ago — and it shows. The Royal Roost's Crown dragons are vain, moody, and completely convinced the world revolves around them. When Belvane, your assigned Copperwing, retreats to his stall after being passed over for the Festival's lead formation, it falls to you — the youngest keeper on staff — to fix it. Your supervisor needs results. Your rival makes everything look effortless. And a twelve-foot dragon with tarnished-penny scales is curled up in the dark because nobody told him he was special. You've got twelve days, one terrible idea, and the only lullaby that's ever worked on him.",
     coverGradient:
       "linear-gradient(145deg, #7a3b10 0%, #b85c1a 40%, #e8832a 75%, #f0a050 100%)",
+    coverImage: "/covers/apology-to-a-dragon.png",
     tags: ["Comedy", "Dragons", "Fantasy", "Coming of Age"],
     rating: "★★★★☆",
     chapterCount: 8,
@@ -61,6 +63,7 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
       "Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin — a 40,000-square-mile stretch of unbroken tropical rainforest that has never been fully mapped. The pilot is dead. The coordinator is unconscious. GPS is gone, satellite phones may be broken, and the jungle is completely indifferent to whether anyone survives. You were hired three weeks ago to handle logistics. Now you're the one people keep looking at when decisions need to be made. Every choice has a cost. Every hour burns food and morale. And somewhere out there, the world doesn't know you're alive.",
     coverGradient:
       "linear-gradient(145deg, #0d2e14 0%, #1a4a20 40%, #0a2010 75%, #061508 100%)",
+    coverImage: "/covers/no-signal.png",
     tags: ["Survival", "Thriller", "Jungle", "Leadership"],
     rating: "★★★★★",
     chapterCount: 10,
@@ -108,6 +111,7 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
       "The Driftlands are a chain of floating islands scattered across an endless sky, each drifting on invisible currents that shift over days and weeks. New islands rise from the cloud layer every few months, carrying strange soil, unfamiliar plants, and sometimes ruins from civilisations lost to memory. Cartographers are the most respected people in this world — they chart what no one has seen before. Today is your first solo expedition. Island 7714 has just risen within glider range. Nobody has set foot on it yet. That'll be you. Your mentor's instructions are in your head. Your companion's enthusiasm is already pulling ahead of your careful training. And the island is humming beneath your feet in a way no island is supposed to.",
     coverGradient:
       "linear-gradient(145deg, #1a3a5c 0%, #2a5a8c 40%, #1a4070 75%, #0d2040 100%)",
+    coverImage: "/covers/the-driftlands.png",
     tags: ["Adventure", "Fantasy", "Exploration", "Coming of Age"],
     rating: "★★★★☆",
     chapterCount: 9,
@@ -173,6 +177,7 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
       "Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case. This morning, her diary appeared in your locker — the one she was compulsively protective of, the one you've seen her write in on the bus, at lunch, in free periods. You've read four entries on the bus home. Most of it is normal Maya. But the entry from eight days ago mentions a car. A plate number. Three times that week. And then, two days later: 'Told one person. Wish I hadn't.' The last entry stops mid-sentence. The car outside your bus stop matches the plates. Your phone has half a battery. The window is closing.",
     coverGradient:
       "linear-gradient(145deg, #0d1a2e 0%, #1a2a4a 40%, #0d1a35 75%, #060d1a 100%)",
+    coverImage: "/covers/the-last-entry.png",
     tags: ["Mystery", "Thriller", "Teen", "Missing Person"],
     rating: "★★★★★",
     chapterCount: 10,
@@ -207,6 +212,7 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
       "The Kingdom of Aldenmere runs on letters. The Messenger Guild is the backbone of civilisation. Messengers are trained to be invisible: fast, discreet, incurious. Reading a sealed letter is the worst crime in the Guild — punishable by expulsion, or worse. You are thirteen days into your first solo route. The seal on the Governor's letter cracked in the rain, and your fingers had other ideas. Three paragraphs. Formal language. A name. Your sister — the one the Guild said died two years ago on a route gone wrong. Alive. In this city. Right now. Someone powerful wants her hidden. Master Corvin's office is ten minutes away. And you're sitting on a wall in the market with the letter in your hands and no good options.",
     coverGradient:
       "linear-gradient(145deg, #2a1a0a 0%, #4a3015 40%, #6a4a20 75%, #3a2010 100%)",
+    coverImage: "/covers/the-unread-letter.png",
     tags: ["Historical Fantasy", "Mystery", "Family", "Loyalty vs Duty"],
     rating: "★★★★★",
     chapterCount: 10,

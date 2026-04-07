@@ -75,7 +75,15 @@ export default function StoryDetailPage() {
         display: "flex",
         alignItems: "flex-end",
       }}>
-        <div style={{ position: "absolute", inset: 0, background: story.coverGradient }} />
+        <div style={{
+          position: "absolute", inset: 0,
+          background: story.coverGradient,
+          ...(story.coverImage ? {
+            backgroundImage: `url(${story.coverImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          } : {}),
+        }} />
         <div style={{
           position: "absolute", inset: 0,
           background: "radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)",

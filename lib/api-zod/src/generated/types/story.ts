@@ -13,6 +13,7 @@ export interface Story {
   description: string;
   longDescription: string;
   coverGradient: string;
+  coverImage?: string;
   tags: string[];
   rating: string;
   chapterCount: number;
