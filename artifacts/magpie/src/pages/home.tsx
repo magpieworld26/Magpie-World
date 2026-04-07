@@ -167,7 +167,6 @@ export default function HomePage() {
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh", overflowX: "hidden", paddingTop: "72px" }}>
       <Navbar showSearch variant="home" searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-
       {/* HERO */}
       {!q && featured && (
         <div style={{ position: "relative", height: "88vh", minHeight: "580px", display: "flex", alignItems: "flex-end", padding: "0 4vw 90px", overflow: "hidden" }}>
@@ -250,12 +249,11 @@ export default function HomePage() {
                   fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "15px", letterSpacing: "1.5px", textTransform: "uppercase",
                   cursor: "pointer", backdropFilter: "blur(10px)",
                 }}
-              >ⓘ More Info</button>
+              >More Info</button>
             </div>
           </div>
         </div>
       )}
-
       {/* CONTINUE READING */}
       {!q && activeSessions.length > 0 && (
         <div style={{ padding: "0 4vw 50px" }}>
@@ -275,7 +273,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
       {/* NEW RELEASES */}
       {!q && <div style={{ padding: "0 4vw 50px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
@@ -289,7 +286,6 @@ export default function HomePage() {
           ))}
         </div>
       </div>}
-
       {/* TOP 10 */}
       {!q && top10.length > 0 && (
         <div style={{ padding: "0 4vw 50px" }}>
@@ -362,7 +358,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
       {/* ALL STORIES */}
       <div style={{ padding: "0 4vw 80px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
