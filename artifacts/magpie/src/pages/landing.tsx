@@ -117,20 +117,20 @@ export default function LandingPage() {
             TOP 5 <span style={{ background: "linear-gradient(90deg, #68e6c5, #4f98d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>THIS WEEK</span>
           </h2>
 
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
             {top5.map((story, i) => (
-              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flex: 1, minWidth: "220px", position: "relative" }}>
+              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flexShrink: 0 }}>
                 <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(7rem, 12vw, 11rem)",
+                  fontSize: "5rem",
                   lineHeight: 1,
-                  WebkitTextStroke: "2px #68e6c5",
+                  WebkitTextStroke: "1.5px #68e6c5",
                   color: "transparent",
                   position: "relative",
                   zIndex: 2,
                   flexShrink: 0,
-                  marginRight: "-18px",
-                  marginBottom: "-8px",
+                  marginRight: "-6px",
+                  marginBottom: "-4px",
                   userSelect: "none",
                   opacity: 0.85,
                 }}>{i + 1}</span>
@@ -140,7 +140,8 @@ export default function LandingPage() {
                     position: "relative",
                     borderRadius: "12px",
                     overflow: "hidden",
-                    flex: 1,
+                    width: "240px",
+                    flexShrink: 0,
                     aspectRatio: "16/9",
                     zIndex: 3,
                     border: "1px solid rgba(255,255,255,0.08)",

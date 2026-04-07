@@ -262,7 +262,7 @@ export default function HomePage() {
               Continue <span style={{ color: "#00e5c8" }}>Reading</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "16px", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "16px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
             {activeSessions.map(session => (
               <ContinueCard
                 key={session.id}
@@ -280,7 +280,7 @@ export default function HomePage() {
             New <span style={{ color: "#00e5c8" }}>Releases</span>
           </h2>
         </div>
-        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
           {newReleases.map(story => (
             <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
           ))}
@@ -294,20 +294,20 @@ export default function HomePage() {
               Top 10 <span style={{ color: "#00e5c8" }}>This Week</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingBottom: "8px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
             {top10.slice(0, 10).map((story, i) => (
-              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flex: 1, minWidth: "220px", position: "relative" }}>
+              <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flexShrink: 0 }}>
                 <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(7rem, 12vw, 11rem)",
+                  fontSize: "5rem",
                   lineHeight: 1,
-                  WebkitTextStroke: "2px #68e6c5",
+                  WebkitTextStroke: "1.5px #68e6c5",
                   color: "transparent",
                   position: "relative",
                   zIndex: 2,
                   flexShrink: 0,
-                  marginRight: "-18px",
-                  marginBottom: "-8px",
+                  marginRight: "-6px",
+                  marginBottom: "-4px",
                   userSelect: "none",
                   opacity: 0.85,
                 }}>{i + 1}</span>
@@ -317,7 +317,8 @@ export default function HomePage() {
                     position: "relative",
                     borderRadius: "12px",
                     overflow: "hidden",
-                    flex: 1,
+                    width: "240px",
+                    flexShrink: 0,
                     aspectRatio: "16/9",
                     zIndex: 3,
                     border: "1px solid rgba(255,255,255,0.08)",
