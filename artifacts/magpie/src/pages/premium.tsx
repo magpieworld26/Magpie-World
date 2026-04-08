@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import birdLogo from "@assets/image_1774626827305.png";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 declare global {
   interface Window {
@@ -72,6 +73,7 @@ export default function PremiumPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const { isMobile } = useWindowWidth();
 
   const handleSelectPlan = async (planId: string) => {
     setLoadingPlan(planId);
@@ -129,6 +131,7 @@ export default function PremiumPage() {
       minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
+      overflowX: "hidden",
     }}>
       {/* Header */}
       <header style={{
@@ -177,10 +180,10 @@ export default function PremiumPage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "60px 4vw 80px",
+        padding: isMobile ? "36px 16px 60px" : "60px 4vw 80px",
       }}>
         {/* Hero text */}
-        <div style={{ textAlign: "center", marginBottom: "60px", maxWidth: "600px" }}>
+        <div style={{ textAlign: "center", marginBottom: isMobile ? "36px" : "60px", maxWidth: "600px", padding: "0 8px" }}>
           <div style={{
             display: "inline-flex",
             alignItems: "center",
@@ -201,7 +204,7 @@ export default function PremiumPage() {
           </div>
           <h1 style={{
             fontFamily: "'Barlow Condensed', sans-serif",
-            fontSize: "clamp(42px, 6vw, 72px)",
+            fontSize: isMobile ? "clamp(36px, 10vw, 54px)" : "clamp(42px, 6vw, 72px)",
             fontWeight: 900,
             lineHeight: 0.95,
             textTransform: "uppercase",
@@ -210,7 +213,7 @@ export default function PremiumPage() {
             <span style={{ color: "#00e5c8" }}>Go</span> Premium
           </h1>
           <p style={{
-            fontSize: "16px",
+            fontSize: isMobile ? "14px" : "16px",
             lineHeight: 1.7,
             color: "rgba(255,255,255,0.65)",
             fontFamily: "'Barlow', sans-serif",
@@ -222,11 +225,13 @@ export default function PremiumPage() {
         {/* Plan cards */}
         <div style={{
           display: "flex",
-          gap: "24px",
-          flexWrap: "wrap",
+          gap: "16px",
+          flexDirection: isMobile ? "column" : "row",
+          flexWrap: isMobile ? "nowrap" : "wrap",
           justifyContent: "center",
           width: "100%",
-          maxWidth: "900px",
+          maxWidth: isMobile ? "420px" : "900px",
+          alignItems: isMobile ? "stretch" : "flex-start",
         }}>
           {PLANS.map(plan => (
             <div
@@ -235,23 +240,23 @@ export default function PremiumPage() {
                 background: plan.highlight ? "linear-gradient(160deg, #0d2a3a, #0a1e2e)" : "#0d1b2e",
                 border: plan.highlight ? "1.5px solid #00e5c8" : "1px solid rgba(0,229,200,0.18)",
                 borderRadius: "12px",
-                padding: "36px 32px",
-                minWidth: "240px",
-                flex: "1 1 240px",
-                maxWidth: "280px",
+                padding: isMobile ? "28px 24px" : "36px 32px",
+                flex: isMobile ? "unset" : "1 1 240px",
+                maxWidth: isMobile ? "none" : "280px",
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                flexDirection: isMobile ? "row" : "column",
+                alignItems: isMobile ? "center" : "center",
                 position: "relative",
                 boxShadow: plan.highlight ? "0 0 40px rgba(0,229,200,0.12)" : "none",
+                gap: isMobile ? "16px" : "0",
               }}
             >
               {plan.highlight && (
                 <div style={{
                   position: "absolute",
                   top: "-14px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
+                  left: isMobile ? "16px" : "50%",
+                  transform: isMobile ? "none" : "translateX(-50%)",
                   background: "#00e5c8",
                   color: "#060d1f",
                   fontFamily: "'Barlow Condensed', sans-serif",
@@ -263,92 +268,96 @@ export default function PremiumPage() {
                   borderRadius: "20px",
                 }}>Most Popular</div>
               )}
-              <div style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: "13px",
-                letterSpacing: "3px",
-                textTransform: "uppercase",
-                color: plan.highlight ? "#00e5c8" : "rgba(255,255,255,0.5)",
-                marginBottom: "8px",
-              }}>{plan.label}</div>
-              <div style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: "52px",
-                lineHeight: 1,
-                color: "#fff",
-                marginBottom: "4px",
-              }}>{plan.price}</div>
-              <div style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: "13px",
-                color: "rgba(255,255,255,0.4)",
-                marginBottom: "24px",
-              }}>{plan.priceNote}</div>
-              <div style={{
-                width: "100%",
-                padding: "14px 0",
-                borderTop: "1px solid rgba(255,255,255,0.07)",
-                borderBottom: "1px solid rgba(255,255,255,0.07)",
-                marginBottom: "28px",
-              }}>
+              {/* Left section on mobile: label + price */}
+              <div style={{ flex: isMobile ? "1" : "unset", textAlign: isMobile ? "left" : "center" }}>
                 <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginBottom: "10px",
-                }}>
-                  <span style={{ color: "#00e5c8", fontSize: "14px" }}>✓</span>
-                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
-                    Unlimited access to all books
-                  </span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-                  <span style={{ color: "#00e5c8", fontSize: "14px" }}>✓</span>
-                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
-                    {plan.duration} of access
-                  </span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ color: "#00e5c8", fontSize: "14px" }}>✓</span>
-                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
-                    All genres & new releases
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={() => handleSelectPlan(plan.id)}
-                disabled={loadingPlan !== null}
-                style={{
-                  width: "100%",
-                  background: plan.highlight ? "#00e5c8" : "transparent",
-                  border: "1.5px solid #00e5c8",
-                  color: plan.highlight ? "#060d1f" : "#00e5c8",
-                  padding: "13px 0",
-                  borderRadius: "4px",
                   fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "14px",
-                  letterSpacing: "2px",
+                  fontSize: "13px",
+                  letterSpacing: "3px",
                   textTransform: "uppercase",
-                  cursor: loadingPlan !== null ? "not-allowed" : "pointer",
-                  opacity: loadingPlan !== null && loadingPlan !== plan.id ? 0.5 : 1,
-                  transition: "opacity 0.2s",
-                }}
-              >
-                {loadingPlan === plan.id ? "Loading..." : `Choose ${plan.label}`}
-              </button>
+                  color: plan.highlight ? "#00e5c8" : "rgba(255,255,255,0.5)",
+                  marginBottom: "4px",
+                }}>{plan.label}</div>
+                <div style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: isMobile ? "36px" : "52px",
+                  lineHeight: 1,
+                  color: "#fff",
+                }}>{plan.price}</div>
+                <div style={{
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontSize: "12px",
+                  color: "rgba(255,255,255,0.4)",
+                }}>{plan.priceNote}</div>
+              </div>
+              {/* Right section on mobile: features + button */}
+              <div style={{ flex: isMobile ? "unset" : "unset", width: isMobile ? "auto" : "100%", display: "flex", flexDirection: "column", alignItems: isMobile ? "flex-end" : "stretch" }}>
+                {!isMobile && (
+                  <div style={{
+                    width: "100%",
+                    padding: "14px 0",
+                    borderTop: "1px solid rgba(255,255,255,0.07)",
+                    borderBottom: "1px solid rgba(255,255,255,0.07)",
+                    marginBottom: "28px",
+                    marginTop: "20px",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+                      <span style={{ color: "#00e5c8", fontSize: "14px" }}>✓</span>
+                      <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
+                        Unlimited access to all books
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+                      <span style={{ color: "#00e5c8", fontSize: "14px" }}>✓</span>
+                      <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
+                        {plan.duration} of access
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ color: "#00e5c8", fontSize: "14px" }}>✓</span>
+                      <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.85)" }}>
+                        All genres & new releases
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <button
+                  onClick={() => handleSelectPlan(plan.id)}
+                  disabled={loadingPlan !== null}
+                  style={{
+                    width: isMobile ? "auto" : "100%",
+                    background: plan.highlight ? "#00e5c8" : "transparent",
+                    border: "1.5px solid #00e5c8",
+                    color: plan.highlight ? "#060d1f" : "#00e5c8",
+                    padding: isMobile ? "10px 18px" : "13px 0",
+                    borderRadius: "4px",
+                    fontFamily: "'Barlow Condensed', sans-serif",
+                    fontWeight: 700,
+                    fontSize: "13px",
+                    letterSpacing: "2px",
+                    textTransform: "uppercase",
+                    cursor: loadingPlan !== null ? "not-allowed" : "pointer",
+                    opacity: loadingPlan !== null && loadingPlan !== plan.id ? 0.5 : 1,
+                    transition: "opacity 0.2s",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {loadingPlan === plan.id ? "Loading..." : `Choose ${plan.label}`}
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Footer note */}
         <p style={{
-          marginTop: "48px",
+          marginTop: "40px",
           fontFamily: "'Barlow Condensed', sans-serif",
           fontSize: "13px",
           color: "rgba(255,255,255,0.3)",
           letterSpacing: "0.5px",
           textAlign: "center",
+          padding: "0 16px",
         }}>
           Secure payment via Razorpay · No recurring charges · Cancel anytime
         </p>

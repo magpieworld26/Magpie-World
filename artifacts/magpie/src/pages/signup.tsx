@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { supabase } from "@/lib/supabase";
 import birdLogo from "@assets/image_1774626827305.png";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 export default function SignupPage() {
   const [, setLocation] = useLocation();
+  const { isMobile } = useWindowWidth();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -75,7 +77,7 @@ export default function SignupPage() {
             background: "rgba(15, 23, 42, 0.72)",
             border: "1px solid rgba(255,255,255,0.10)",
             borderRadius: "18px",
-            padding: "44px 44px",
+            padding: isMobile ? "28px 20px" : "44px 44px",
             backdropFilter: "blur(20px)",
             boxShadow: "0 24px 64px rgba(0,0,0,0.45), 0 0 0 1px rgba(104,230,197,0.05)",
             textAlign: "center",

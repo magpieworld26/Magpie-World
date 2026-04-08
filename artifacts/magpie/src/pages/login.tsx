@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation } from "wouter";
 import { supabase, setAuthToken, getSiteUrl } from "@/lib/supabase";
 import birdLogo from "@assets/image_1774626827305.png";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
+  const { isMobile } = useWindowWidth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -179,7 +181,7 @@ export default function LoginPage() {
             background: "rgba(15, 23, 42, 0.72)",
             border: "1px solid rgba(255,255,255,0.10)",
             borderRadius: "18px",
-            padding: "36px 44px",
+            padding: isMobile ? "28px 20px" : "36px 44px",
             backdropFilter: "blur(20px)",
             boxShadow: "0 24px 64px rgba(0,0,0,0.45), 0 0 0 1px rgba(104,230,197,0.05)",
           }}>
@@ -208,7 +210,7 @@ export default function LoginPage() {
             {/* Form */}
             <form onSubmit={handleSubmit}>
               {mode === "signup" && (
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "14px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "16px", marginBottom: "14px" }}>
                   <div>
                     <label style={{ display: "block", fontSize: "0.69rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#8fa8c0", marginBottom: "6px", fontFamily: "'Montserrat', sans-serif" }}>First Name</label>
                     <div style={{ position: "relative" }}>

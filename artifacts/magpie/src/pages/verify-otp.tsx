@@ -2,11 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { supabase, setAuthToken } from "@/lib/supabase";
 import birdLogo from "@assets/image_1774626827305.png";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 const RESEND_COOLDOWN = 60;
 
 export default function VerifyOtpPage() {
   const [, setLocation] = useLocation();
+  const { isMobile } = useWindowWidth();
 
   const params = new URLSearchParams(window.location.search);
   const email = params.get("email") || "";
@@ -199,7 +201,7 @@ export default function VerifyOtpPage() {
                 }}>
                   Enter Verification Code
                 </label>
-                <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <div style={{ display: "flex", gap: isMobile ? "6px" : "10px", justifyContent: "center" }}>
                   {otp.map((digit, i) => (
                     <input
                       key={i}
@@ -213,8 +215,8 @@ export default function VerifyOtpPage() {
                       onPaste={handlePaste}
                       autoFocus={i === 0}
                       style={{
-                        width: "48px",
-                        height: "56px",
+                        width: isMobile ? "40px" : "48px",
+                        height: isMobile ? "48px" : "56px",
                         background: "rgba(8, 18, 40, 0.65)",
                         border: `1px solid ${digit ? "rgba(104,230,197,0.4)" : "rgba(255,255,255,0.12)"}`,
                         borderRadius: "10px",

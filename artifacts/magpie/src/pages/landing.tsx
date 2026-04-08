@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
 import { api, type Story } from "@/lib/api";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 const TOP5_GRADIENTS = [
   "linear-gradient(145deg, #0d4a47 0%, #0a2a2e 60%, #061a25 100%)",
@@ -14,6 +15,7 @@ const TOP5_GRADIENTS = [
 export default function LandingPage() {
   const [, setLocation] = useLocation();
   const [stories, setStories] = useState<Story[]>([]);
+  const { isMobile, isTablet } = useWindowWidth();
 
   useEffect(() => {
     api.stories.list().then(d => setStories(d.stories)).catch(() => {});
@@ -26,29 +28,32 @@ export default function LandingPage() {
     { icon: "🔖", title: "Save & Continue", desc: "Life gets busy. Every choice is saved automatically. Pick up exactly where you left off, whether that's tomorrow or months from now." },
   ];
 
+  const sectionPadding = isMobile ? "48px 0" : "96px 0";
+  const containerPadding = isMobile ? "0 16px" : "0 24px";
+
   return (
     <div style={{ background: "#020617", color: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
       <Navbar variant="landing" />
 
       {/* HERO */}
-      <section id="home" style={{ position: "relative", minHeight: "85vh", overflow: "hidden", paddingTop: "96px" }}>
+      <section id="home" style={{ position: "relative", minHeight: isMobile ? "70vh" : "85vh", overflow: "hidden", paddingTop: "96px" }}>
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #020617, #03112d, #020617)" }} />
         <div style={{
           position: "relative",
           maxWidth: "1280px",
           margin: "0 auto",
-          padding: "32px 24px 80px",
-          minHeight: "78vh",
+          padding: isMobile ? "24px 16px 48px" : "32px 24px 80px",
+          minHeight: isMobile ? "60vh" : "78vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          gap: "32px",
+          gap: "24px",
         }}>
           <h1 style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(3rem, 10vw, 5.5rem)",
+            fontSize: isMobile ? "clamp(2.5rem, 12vw, 3.5rem)" : "clamp(3rem, 10vw, 5.5rem)",
             lineHeight: 0.88,
             color: "#fff",
             filter: "drop-shadow(0 25px 25px rgba(0,0,0,0.5))",
@@ -67,11 +72,12 @@ export default function LandingPage() {
 
           <p style={{
             maxWidth: "640px",
-            fontSize: "1.125rem",
+            fontSize: isMobile ? "0.95rem" : "1.125rem",
             color: "#e2e8f0",
             lineHeight: 1.7,
             margin: 0,
             fontFamily: "'Barlow', sans-serif",
+            padding: isMobile ? "0 8px" : "0",
           }}>
             Step into stories that breathe, evolve, and respond to you. Make choices that matter.
             Shape narratives that are uniquely yours. Experience literature that lives.
@@ -87,9 +93,9 @@ export default function LandingPage() {
                 background: "linear-gradient(90deg, #6be7c5, #4ea7d8)",
                 color: "#0f172a",
                 fontFamily: "'Montserrat', sans-serif",
-                fontSize: "1rem",
+                fontSize: isMobile ? "0.9rem" : "1rem",
                 fontWeight: 700,
-                padding: "14px 36px",
+                padding: isMobile ? "12px 28px" : "14px 36px",
                 borderRadius: "6px",
                 border: "none",
                 cursor: "pointer",
@@ -105,14 +111,14 @@ export default function LandingPage() {
       </section>
 
       {/* TRENDING */}
-      <section id="trending" style={{ padding: "96px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
+      <section id="trending" style={{ padding: sectionPadding, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding }}>
           <h2 style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
             letterSpacing: "0.14em",
             color: "#fff",
-            marginBottom: "40px",
+            marginBottom: isMobile ? "24px" : "40px",
           }}>
             TOP 5 <span style={{ background: "linear-gradient(90deg, #68e6c5, #4f98d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>THIS WEEK</span>
           </h2>
@@ -122,7 +128,7 @@ export default function LandingPage() {
               <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flexShrink: 0 }}>
                 <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "5rem",
+                  fontSize: isMobile ? "3rem" : "5rem",
                   lineHeight: 1,
                   WebkitTextStroke: "1.5px #68e6c5",
                   color: "transparent",
@@ -140,7 +146,7 @@ export default function LandingPage() {
                     position: "relative",
                     borderRadius: "12px",
                     overflow: "hidden",
-                    width: "240px",
+                    width: isMobile ? "160px" : isTablet ? "200px" : "240px",
                     flexShrink: 0,
                     aspectRatio: "16/9",
                     zIndex: 3,
@@ -175,30 +181,32 @@ export default function LandingPage() {
                     left: 0,
                     right: 0,
                     zIndex: 4,
-                    padding: "32px 16px 16px",
+                    padding: isMobile ? "20px 10px 10px" : "32px 16px 16px",
                     background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
                   }}>
                     <div style={{
                       fontFamily: "'Bebas Neue', sans-serif",
-                      fontSize: "clamp(1rem, 2vw, 1.35rem)",
+                      fontSize: isMobile ? "0.85rem" : "clamp(1rem, 2vw, 1.35rem)",
                       letterSpacing: "0.08em",
                       color: "#fff",
                       lineHeight: 1.1,
                       textTransform: "uppercase",
                     }}>{story.title}</div>
                     <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.55)", marginTop: "5px" }}>{story.genre}</div>
-                    <div style={{
-                      display: "inline-block",
-                      marginTop: "10px",
-                      fontSize: "0.62rem",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.14em",
-                      color: "#0f172a",
-                      background: "linear-gradient(90deg, #6be7c5, #4ea7d8)",
-                      padding: "5px 12px",
-                      borderRadius: "4px",
-                    }}>Read Now</div>
+                    {!isMobile && (
+                      <div style={{
+                        display: "inline-block",
+                        marginTop: "10px",
+                        fontSize: "0.62rem",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.14em",
+                        color: "#0f172a",
+                        background: "linear-gradient(90deg, #6be7c5, #4ea7d8)",
+                        padding: "5px 12px",
+                        borderRadius: "4px",
+                      }}>Read Now</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -209,13 +217,13 @@ export default function LandingPage() {
 
       {/* ABOUT */}
       <section id="about" style={{
-        padding: "96px 0",
+        padding: sectionPadding,
         borderTop: "1px solid rgba(255,255,255,0.05)",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
         background: "rgba(15,23,42,0.35)",
       }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
-          <div style={{ marginBottom: "48px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding }}>
+          <div style={{ marginBottom: isMobile ? "28px" : "48px" }}>
             <h2 style={{
               fontFamily: "'Bebas Neue', sans-serif",
               fontSize: "clamp(2.25rem, 6vw, 3.25rem)",
@@ -227,7 +235,7 @@ export default function LandingPage() {
               The world's first AI-powered interactive reading platform. We combine the immersion of great literature with the freedom of choice-driven narrative.
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
             {aboutCards.map(card => (
               <div
                 key={card.title}
@@ -275,8 +283,8 @@ export default function LandingPage() {
       </section>
 
       {/* VISION */}
-      <section id="vision" style={{ padding: "96px 0" }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+      <section id="vision" style={{ padding: sectionPadding }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding, textAlign: "center" }}>
           <h2 style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: "clamp(2.25rem, 6vw, 3.25rem)",
@@ -285,7 +293,7 @@ export default function LandingPage() {
             marginBottom: "24px",
           }}>Our Vision</h2>
           <p style={{
-            fontSize: "1.1rem",
+            fontSize: isMobile ? "0.95rem" : "1.1rem",
             color: "#cbd5e1",
             lineHeight: 1.8,
             maxWidth: "720px",
@@ -299,9 +307,9 @@ export default function LandingPage() {
               background: "linear-gradient(90deg, #6be7c5, #4ea7d8)",
               color: "#0f172a",
               fontFamily: "'Montserrat', sans-serif",
-              fontSize: "1rem",
+              fontSize: isMobile ? "0.9rem" : "1rem",
               fontWeight: 700,
-              padding: "14px 40px",
+              padding: isMobile ? "12px 28px" : "14px 40px",
               borderRadius: "6px",
               border: "none",
               cursor: "pointer",

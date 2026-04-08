@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
 import { api, type Story, type StorySession } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 const COVER_CLASSES = [
   "linear-gradient(160deg,#0d2a4a,#050f1e)",
@@ -15,7 +16,7 @@ const COVER_CLASSES = [
   "linear-gradient(160deg,#1a1a0d,#0a0a05)",
 ];
 
-function BookCard({ story, onClick }: { story: Story; onClick: () => void }) {
+function BookCard({ story, onClick, cardWidth }: { story: Story; onClick: () => void; cardWidth?: string }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
@@ -24,7 +25,7 @@ function BookCard({ story, onClick }: { story: Story; onClick: () => void }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         flexShrink: 0,
-        width: "240px",
+        width: cardWidth || "240px",
         cursor: "pointer",
         transition: "transform 0.25s",
         transform: hovered ? "scale(1.06) translateY(-5px)" : "scale(1)",
@@ -77,13 +78,13 @@ function BookCard({ story, onClick }: { story: Story; onClick: () => void }) {
   );
 }
 
-function ContinueCard({ session, onClick }: { session: StorySession; onClick: () => void }) {
+function ContinueCard({ session, onClick, cardWidth }: { session: StorySession; onClick: () => void; cardWidth?: string }) {
   const pct = Math.min(100, Math.round((session.nodeCount / 20) * 100));
   return (
     <div
       onClick={onClick}
       style={{
-        flexShrink: 0, width: "280px", background: "#0d1b2e",
+        flexShrink: 0, width: cardWidth || "280px", background: "#0d1b2e",
         border: "1px solid rgba(0,229,200,0.1)", borderRadius: "8px", overflow: "hidden",
         cursor: "pointer", transition: "transform 0.25s, border-color 0.25s, box-shadow 0.25s", position: "relative",
       }}
@@ -128,6 +129,7 @@ export default function HomePage() {
   const [sessions, setSessions] = useState<StorySession[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const { isMobile, isTablet } = useWindowWidth();
 
   useEffect(() => {
     const token = getAuthToken();
@@ -160,6 +162,9 @@ export default function HomePage() {
   const newReleases = filteredStories.slice(0, 8);
   const activeSessions = sessions.filter(s => s.status === "active");
 
+  const bookCardWidth = isMobile ? "160px" : isTablet ? "200px" : "240px";
+  const continueCardWidth = isMobile ? "200px" : isTablet ? "240px" : "280px";
+
   const handleReadStory = async (storyId: string) => {
     const existing = sessions.find(s => s.storyId === storyId && s.status === "active");
     if (existing) {
@@ -182,8 +187,15 @@ export default function HomePage() {
       <Navbar showSearch variant="home" searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       {/* HERO */}
       {!q && featured && (
-        <div style={{ position: "relative", height: "88vh", minHeight: "580px", display: "flex", alignItems: "flex-end", padding: "0 4vw 90px", overflow: "hidden" }}>
-          {/* Cover image background */}
+        <div style={{
+          position: "relative",
+          height: isMobile ? "50vh" : "88vh",
+          minHeight: isMobile ? "320px" : "580px",
+          display: "flex",
+          alignItems: "flex-end",
+          padding: isMobile ? "0 16px 40px" : "0 4vw 90px",
+          overflow: "hidden",
+        }}>
           <div style={{
             position: "absolute", inset: 0,
             background: featured.coverGradient || "linear-gradient(135deg,#060d1f 0%,#0a2040 100%)",
@@ -193,35 +205,37 @@ export default function HomePage() {
               backgroundPosition: "center top",
             } : {}),
           }} />
-          {/* Dark overlay for readability — stronger at bottom-left where text sits */}
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(6,13,31,0.82) 0%, rgba(6,13,31,0.55) 50%, rgba(6,13,31,0.25) 100%)" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(6,13,31,0.95) 0%, rgba(6,13,31,0.3) 40%, transparent 70%)" }} />
 
-          {/* Content */}
-          <div style={{ position: "relative", zIndex: 2, maxWidth: "500px" }}>
+          <div style={{ position: "relative", zIndex: 2, maxWidth: isMobile ? "100%" : "500px" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(0,229,200,.1)", border: "1px solid rgba(0,229,200,.3)", borderRadius: "20px", padding: "5px 14px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", color: "#00e5c8", marginBottom: "16px", fontFamily: "'Barlow Condensed', sans-serif" }}>
               <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00e5c8", animation: "pulse-dot 2s infinite" }} />
               Featured Story
             </div>
             <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", letterSpacing: "4px", color: "rgba(255,255,255,.6)", textTransform: "uppercase", marginBottom: "8px" }}>{featured.genre}</div>
-            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(52px,7vw,82px)", fontWeight: 900, lineHeight: 0.92, textTransform: "uppercase", marginBottom: "20px" }}>
+            <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: isMobile ? "clamp(36px,9vw,52px)" : "clamp(52px,7vw,82px)", fontWeight: 900, lineHeight: 0.92, textTransform: "uppercase", marginBottom: "20px" }}>
               {featured.title.split(" ").map((word, i) => (
                 <span key={i} style={i === 0 ? { color: "#00e5c8" } : {}}>{word} </span>
               ))}
             </h1>
-            <div style={{ display: "flex", gap: "14px", alignItems: "center", marginBottom: "16px" }}>
-              <div style={{ padding: "3px 10px", border: "1px solid rgba(0,229,200,.4)", borderRadius: "3px", fontSize: "11px", letterSpacing: "1px", color: "#00e5c8", fontFamily: "'Barlow Condensed', sans-serif" }}>{featured.rating}</div>
-              <span style={{ color: "#b0bec5", fontSize: "13px" }}>{featured.chapterCount} Chapters · {featured.readingTime}</span>
-            </div>
-            <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,.7)", marginBottom: "28px", maxWidth: "420px" }}>{featured.description}</p>
-            <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+            {!isMobile && (
+              <div style={{ display: "flex", gap: "14px", alignItems: "center", marginBottom: "16px" }}>
+                <div style={{ padding: "3px 10px", border: "1px solid rgba(0,229,200,.4)", borderRadius: "3px", fontSize: "11px", letterSpacing: "1px", color: "#00e5c8", fontFamily: "'Barlow Condensed', sans-serif" }}>{featured.rating}</div>
+                <span style={{ color: "#b0bec5", fontSize: "13px" }}>{featured.chapterCount} Chapters · {featured.readingTime}</span>
+              </div>
+            )}
+            {!isMobile && (
+              <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,.7)", marginBottom: "28px", maxWidth: "420px" }}>{featured.description}</p>
+            )}
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <button
                 onClick={() => handleReadStory(featured.id)}
                 style={{
                   display: "flex", alignItems: "center", gap: "10px",
                   background: "#00e5c8", color: "#060d1f", border: "none",
-                  padding: "14px 28px", borderRadius: "4px",
-                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "15px", letterSpacing: "1.5px", textTransform: "uppercase",
+                  padding: isMobile ? "11px 20px" : "14px 28px", borderRadius: "4px",
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: isMobile ? "13px" : "15px", letterSpacing: "1.5px", textTransform: "uppercase",
                   cursor: "pointer",
                 }}
               >▶ Start Reading</button>
@@ -230,8 +244,8 @@ export default function HomePage() {
                 style={{
                   display: "flex", alignItems: "center", gap: "10px",
                   background: "rgba(255,255,255,.1)", color: "#fff",
-                  border: "1px solid rgba(255,255,255,.2)", padding: "14px 28px", borderRadius: "4px",
-                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "15px", letterSpacing: "1.5px", textTransform: "uppercase",
+                  border: "1px solid rgba(255,255,255,.2)", padding: isMobile ? "11px 20px" : "14px 28px", borderRadius: "4px",
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: isMobile ? "13px" : "15px", letterSpacing: "1.5px", textTransform: "uppercase",
                   cursor: "pointer", backdropFilter: "blur(10px)",
                 }}
               >More Info</button>
@@ -241,17 +255,18 @@ export default function HomePage() {
       )}
       {/* CONTINUE READING */}
       {!q && activeSessions.length > 0 && (
-        <div style={{ padding: "0 4vw 50px" }}>
+        <div style={{ padding: isMobile ? "0 16px 36px" : "0 4vw 50px" }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
             <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
               Continue <span style={{ color: "#00e5c8" }}>Reading</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "16px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px", paddingLeft: "16px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "16px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
             {activeSessions.map(session => (
               <ContinueCard
                 key={session.id}
                 session={session}
+                cardWidth={continueCardWidth}
                 onClick={() => setLocation(`/read/${session.id}`)}
               />
             ))}
@@ -259,32 +274,32 @@ export default function HomePage() {
         </div>
       )}
       {/* NEW RELEASES */}
-      {!q && <div style={{ padding: "0 4vw 50px" }}>
+      {!q && <div style={{ padding: isMobile ? "0 16px 36px" : "0 4vw 50px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
             New <span style={{ color: "#00e5c8" }}>Releases</span>
           </h2>
         </div>
-        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px", paddingLeft: "16px" }} className="scrollbar-hide">
+        <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "12px", paddingBottom: "8px" }} className="scrollbar-hide">
           {newReleases.map(story => (
-            <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
+            <BookCard key={story.id} story={story} cardWidth={bookCardWidth} onClick={() => setLocation(`/story/${story.id}`)} />
           ))}
         </div>
       </div>}
       {/* TOP 10 */}
       {!q && top10.length > 0 && (
-        <div style={{ padding: "0 4vw 50px" }}>
+        <div style={{ padding: isMobile ? "0 16px 36px" : "0 4vw 50px" }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
             <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
               Top 10 <span style={{ color: "#00e5c8" }}>This Week</span>
             </h2>
           </div>
-          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", overflowY: "hidden", paddingTop: "20px", paddingBottom: "8px", paddingLeft: "16px" }} className="scrollbar-hide">
+          <div style={{ display: "flex", gap: "0", alignItems: "flex-end", overflowX: "auto", overflowY: "hidden", paddingTop: "20px", paddingBottom: "8px" }} className="scrollbar-hide">
             {top10.slice(0, 10).map((story, i) => (
               <div key={story.id} style={{ display: "flex", alignItems: "flex-end", flexShrink: 0 }}>
                 <span style={{
                   fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "5rem",
+                  fontSize: isMobile ? "3rem" : "5rem",
                   lineHeight: 1,
                   WebkitTextStroke: "1.5px #68e6c5",
                   color: "transparent",
@@ -302,7 +317,7 @@ export default function HomePage() {
                     position: "relative",
                     borderRadius: "12px",
                     overflow: "hidden",
-                    width: "240px",
+                    width: bookCardWidth,
                     flexShrink: 0,
                     aspectRatio: "16/9",
                     zIndex: 3,
@@ -332,12 +347,12 @@ export default function HomePage() {
                   }} />
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 4,
-                    padding: "32px 16px 16px",
+                    padding: isMobile ? "16px 10px 10px" : "32px 16px 16px",
                     background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)",
                   }}>
                     <div style={{
                       fontFamily: "'Bebas Neue', sans-serif",
-                      fontSize: "clamp(1rem, 2vw, 1.35rem)",
+                      fontSize: isMobile ? "0.8rem" : "clamp(1rem, 2vw, 1.35rem)",
                       letterSpacing: "0.08em",
                       color: "#fff", lineHeight: 1.1, textTransform: "uppercase",
                     }}>{story.title}</div>
@@ -350,7 +365,7 @@ export default function HomePage() {
         </div>
       )}
       {/* ALL STORIES */}
-      <div style={{ padding: "0 4vw 80px" }}>
+      <div style={{ padding: isMobile ? "0 16px 60px" : "0 4vw 80px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
           <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
             {q ? <>Search <span style={{ color: "#00e5c8" }}>Results</span></> : <>All <span style={{ color: "#00e5c8" }}>Stories</span></>}
@@ -367,7 +382,11 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "20px" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(240px, 1fr))",
+            gap: "20px",
+          }}>
             {filteredStories.map(story => (
               <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
             ))}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { api, type Story, type StorySession, type PremiumStatus } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
+import { useWindowWidth } from "@/hooks/use-mobile";
 
 export default function StoryDetailPage() {
   const { storyId } = useParams<{ storyId: string }>();
@@ -11,6 +12,7 @@ export default function StoryDetailPage() {
   const [premiumStatus, setPremiumStatus] = useState<PremiumStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
+  const { isMobile, isTablet } = useWindowWidth();
 
   useEffect(() => {
     if (!storyId) return;
@@ -58,6 +60,8 @@ export default function StoryDetailPage() {
   if (!story) return null;
 
   const isPremium = premiumStatus?.isPremium === true;
+  const heroPadding = isMobile ? "0 16px 28px" : "0 6vw 40px";
+  const contentPadding = isMobile ? "28px 16px 60px" : "40px 6vw 80px";
 
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh" }}>
@@ -75,7 +79,8 @@ export default function StoryDetailPage() {
       {/* Hero Banner */}
       <div style={{
         position: "relative",
-        height: "60vh",
+        height: isMobile ? "45vh" : "60vh",
+        minHeight: isMobile ? "260px" : "320px",
         overflow: "hidden",
         display: "flex",
         alignItems: "flex-end",
@@ -98,9 +103,8 @@ export default function StoryDetailPage() {
           background: "linear-gradient(to top, #060d1f 0%, transparent 100%)",
         }} />
 
-        {/* Title overlay */}
-        <div style={{ position: "relative", zIndex: 2, padding: "0 6vw 40px", width: "100%", maxWidth: "800px" }}>
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "12px" }}>
+        <div style={{ position: "relative", zIndex: 2, padding: heroPadding, width: "100%", maxWidth: "800px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
             {story.tags.map(tag => (
               <span key={tag} style={{
                 padding: "3px 10px", border: "1px solid rgba(0,229,200,.4)", borderRadius: "3px",
@@ -111,16 +115,16 @@ export default function StoryDetailPage() {
           </div>
           <h1 style={{
             fontFamily: "'Barlow Condensed', sans-serif",
-            fontSize: "clamp(40px,6vw,70px)",
+            fontSize: isMobile ? "clamp(28px,8vw,46px)" : "clamp(40px,6vw,70px)",
             fontWeight: 900,
             lineHeight: 0.95,
             textTransform: "uppercase",
             marginBottom: "12px",
           }}>{story.title}</h1>
-          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
             <span style={{ color: "#00e5c8", fontSize: "14px" }}>{story.rating}</span>
             <span style={{ color: "#b0bec5", fontSize: "13px" }}>{story.chapterCount} Chapters</span>
-            <span style={{ color: "#b0bec5", fontSize: "13px" }}>{story.readingTime}</span>
+            {!isMobile && <span style={{ color: "#b0bec5", fontSize: "13px" }}>{story.readingTime}</span>}
             <span style={{
               padding: "3px 10px", border: "1px solid rgba(0,229,200,.3)", borderRadius: "3px",
               fontSize: "11px", color: "#00e5c8", fontFamily: "'Barlow Condensed', sans-serif",
@@ -129,9 +133,9 @@ export default function StoryDetailPage() {
         </div>
       </div>
       {/* Content */}
-      <div style={{ padding: "40px 6vw 80px", maxWidth: "900px" }}>
+      <div style={{ padding: contentPadding, maxWidth: "900px" }}>
         {/* Action buttons */}
-        <div style={{ display: "flex", gap: "16px", marginBottom: "40px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "12px", marginBottom: "32px", flexWrap: "wrap" }}>
           {isPremium ? (
             <>
               <button
@@ -140,10 +144,11 @@ export default function StoryDetailPage() {
                 style={{
                   display: "flex", alignItems: "center", gap: "10px",
                   background: "#00e5c8", color: "#060d1f", border: "none",
-                  padding: "14px 32px", borderRadius: "4px",
-                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
+                  padding: isMobile ? "12px 24px" : "14px 32px", borderRadius: "4px",
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: isMobile ? "14px" : "16px", letterSpacing: "1.5px", textTransform: "uppercase",
                   cursor: starting ? "not-allowed" : "pointer",
                   opacity: starting ? 0.7 : 1,
+                  flex: isMobile ? "1" : "unset",
                 }}
               >
                 ▶ {starting ? "Starting..." : existingSession ? "Continue Reading" : "Read Now"}
@@ -162,9 +167,10 @@ export default function StoryDetailPage() {
                   style={{
                     display: "flex", alignItems: "center", gap: "10px",
                     background: "rgba(255,255,255,.1)", color: "#fff",
-                    border: "1px solid rgba(255,255,255,.2)", padding: "14px 32px", borderRadius: "4px",
-                    fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
+                    border: "1px solid rgba(255,255,255,.2)", padding: isMobile ? "12px 24px" : "14px 32px", borderRadius: "4px",
+                    fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: isMobile ? "14px" : "16px", letterSpacing: "1.5px", textTransform: "uppercase",
                     cursor: "pointer",
+                    flex: isMobile ? "1" : "unset",
                   }}
                 >+ New Story</button>
               )}
@@ -175,9 +181,10 @@ export default function StoryDetailPage() {
               style={{
                 display: "flex", alignItems: "center", gap: "10px",
                 background: "#00e5c8", color: "#060d1f", border: "none",
-                padding: "14px 32px", borderRadius: "4px",
-                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
+                padding: isMobile ? "12px 24px" : "14px 32px", borderRadius: "4px",
+                fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: isMobile ? "14px" : "16px", letterSpacing: "1.5px", textTransform: "uppercase",
                 cursor: "pointer",
+                width: isMobile ? "100%" : "auto",
               }}
             >★ Get Premium to Read</button>
           )}
@@ -185,11 +192,11 @@ export default function StoryDetailPage() {
 
         {!isPremium && (
           <div style={{
-            padding: "16px 20px",
+            padding: "14px 16px",
             background: "rgba(0,229,200,0.06)",
             border: "1px solid rgba(0,229,200,0.2)",
             borderRadius: "8px",
-            marginBottom: "32px",
+            marginBottom: "28px",
             fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "14px",
             color: "rgba(255,255,255,0.7)",
@@ -199,11 +206,11 @@ export default function StoryDetailPage() {
 
         {isPremium && existingSession && (
           <div style={{
-            padding: "16px 20px",
+            padding: "14px 16px",
             background: "rgba(0,229,200,0.08)",
             border: "1px solid rgba(0,229,200,0.3)",
             borderRadius: "8px",
-            marginBottom: "32px",
+            marginBottom: "28px",
             fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "14px",
             color: "#00e5c8",
@@ -213,22 +220,23 @@ export default function StoryDetailPage() {
         )}
 
         {/* Description */}
-        <div style={{ marginBottom: "40px" }}>
+        <div style={{ marginBottom: "36px" }}>
           <h2 style={{
             fontFamily: "'Barlow Condensed', sans-serif",
             fontSize: "14px", letterSpacing: "3px", color: "rgba(255,255,255,0.5)",
             textTransform: "uppercase", marginBottom: "16px",
           }}>About This Story</h2>
           <p style={{
-            fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.85)",
+            fontSize: isMobile ? "15px" : "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.85)",
             fontFamily: "'Barlow', sans-serif",
           }}>{story.longDescription}</p>
         </div>
 
         {/* Details */}
         <div style={{
-          display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-          gap: "16px", marginBottom: "40px",
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : isTablet ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(180px, 1fr))",
+          gap: "12px", marginBottom: "40px",
         }}>
           {[
             { label: "Genre", value: story.genre },
@@ -238,10 +246,10 @@ export default function StoryDetailPage() {
           ].map(item => (
             <div key={item.label} style={{
               background: "#0d1b2e", border: "1px solid rgba(0,229,200,0.1)",
-              borderRadius: "8px", padding: "16px",
+              borderRadius: "8px", padding: "14px",
             }}>
               <div style={{ fontSize: "10px", letterSpacing: "2px", color: "#00e5c8", textTransform: "uppercase", marginBottom: "6px", fontFamily: "'Barlow Condensed', sans-serif" }}>{item.label}</div>
-              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700 }}>{item.value}</div>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "15px", fontWeight: 700 }}>{item.value}</div>
             </div>
           ))}
         </div>
