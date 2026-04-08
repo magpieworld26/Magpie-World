@@ -1,14 +1,41 @@
 // ai-story.ts
-// Story continuation engine — calls the Anthropic Claude API to generate the next scene
-// based on the reader's choice, story world context, and previous scenes.
+// Story continuation engine — calls the Google Gemini API (gemini-2.5-flash-lite) to generate
+// the next scene based on the reader's choice, story world context, and previous scenes.
 // Implements the 4-Layer Prompt System from the story-continuation skill.
+//
+// PROMPT CACHING STRATEGY
+// ───────────────────────
+// The system prompt (Layer 1 story bible + Layer 3 continuation directive) is large (~2 000+
+// tokens) and identical for every turn of the same story. We use Gemini's **explicit context
+// caching** via `ai.caches.create()` to store it once and reference it by name on every
+// subsequent `generateContent` call. This avoids re-billing those tokens on every turn.
+//
+// Cache lifetime: 60 minutes (refreshed on each use so an active session never expires).
+// Cache key: one cache per story ID — stored in `storySystemPromptCacheNames`.
+//
+// Implicit caching (automatic on Gemini 2.5 models) is also active as a free bonus; if the
+// same tokens appear in the request prefix they may be served from the implicit cache too.
+//
+// SDK: @google/genai  (npm install @google/genai)
+// Uses GEMINI_API_KEY from environment automatically.
 
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 import { logger } from "./logger";
 import { getStoryById, storiesData } from "./stories-data";
 
-const anthropic = new Anthropic();
-// Uses ANTHROPIC_API_KEY from environment automatically
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const MODEL = "gemini-2.5-flash-lite";
+
+// ─────────────────────────────────────────────
+// In-process cache registry
+// Maps storyId → Gemini cachedContent resource name
+// ─────────────────────────────────────────────
+const storySystemPromptCacheNames = new Map<string, string>();
+
+// ─────────────────────────────────────────────
+// Public types (unchanged from original)
+// ─────────────────────────────────────────────
 
 export interface Choice {
   id: string;
@@ -61,7 +88,6 @@ function resolveStory(storyIdOrTitle: string) {
 
 // ─────────────────────────────────────────────
 // Arc position derived from turn number
-// (matches skill's arc position guide)
 // ─────────────────────────────────────────────
 
 function deriveArcPosition(nodeIndex: number): StoryState["arcPosition"] {
@@ -76,7 +102,6 @@ function deriveArcPosition(nodeIndex: number): StoryState["arcPosition"] {
 
 // ─────────────────────────────────────────────
 // Layer 3 — Continuation Directive
-// Embedded from references/continuation-directive.md
 // ─────────────────────────────────────────────
 
 const CONTINUATION_DIRECTIVE = `
@@ -134,35 +159,18 @@ Structure every scene in three beats:
 `;
 
 // ─────────────────────────────────────────────
-// Build the system prompt (Layers 1 + 3)
+// Build static system prompt text (Layers 1 + 3)
+// This is the content we will cache.
 // ─────────────────────────────────────────────
 
-function buildSystemPrompt(
+function buildStaticSystemPromptText(
   storyTitle: string,
   storyGenre: string,
   worldContext: string | undefined,
-  arcPosition: StoryState["arcPosition"],
-  isLateGame: boolean,
-  mayEnd: boolean,
 ): string {
   const worldContextBlock = worldContext
     ? `\n## LAYER 1 — STORY BIBLE (IMMUTABLE CANON — never contradict this)\n${worldContext}\n`
     : "";
-
-  const pacingGuide: Record<StoryState["arcPosition"], string> = {
-    opening:
-      "Ground the reader, establish world feel. Direction-based choices, low stakes.",
-    establishing:
-      "Introduce key characters and tensions. Values-based choices, beginning to diverge.",
-    deepening:
-      "Complicate, reveal, deepen relationships. Higher stakes, more morally textured choices.",
-    converging:
-      "Threads start to collide, pressure rises. Dilemma-based choices with real trade-offs.",
-    climax:
-      "Peak intensity, major consequences. Hard choices with no clean options.",
-    resolution:
-      "Loops close, consequences land. Choices resolve rather than open.",
-  };
 
   return `You are a master storyteller powering "Magpie — The Home of Breathing Books", an interactive choice-based reading platform.
 
@@ -171,10 +179,6 @@ ${worldContextBlock}
 
 ## LAYER 3 — CONTINUATION DIRECTIVE
 ${CONTINUATION_DIRECTIVE}
-
-## CURRENT ARC POSITION: ${arcPosition.toUpperCase()}
-Pacing guide for this position: ${pacingGuide[arcPosition]}
-${isLateGame ? "⚠ This is the late game — choices must feel higher stakes, the plot is accelerating toward resolution." : ""}
 
 ## LAYER 4 — OUTPUT FORMAT
 Respond ONLY with a valid JSON object. No markdown fences, no preamble. Schema:
@@ -217,9 +221,47 @@ CHOICE RULES:
 - At least one choice must feel unexpected or surprising
 - Every choice must reference specific details from the current scene
 - Format: "You [action verb]..." — second person, present tense, concrete physical or social action
-
-${mayEnd ? 'If the story has reached a satisfying conclusion, set "isEnding": true and omit choices.' : ""}
 `;
+}
+
+// ─────────────────────────────────────────────
+// Build the dynamic system instruction addendum
+// (arc position, late-game flag, may-end flag)
+// These change per-turn so they are NOT cached.
+// ─────────────────────────────────────────────
+
+function buildDynamicSystemAddendum(
+  arcPosition: StoryState["arcPosition"],
+  isLateGame: boolean,
+  mayEnd: boolean,
+): string {
+  const pacingGuide: Record<StoryState["arcPosition"], string> = {
+    opening:
+      "Ground the reader, establish world feel. Direction-based choices, low stakes.",
+    establishing:
+      "Introduce key characters and tensions. Values-based choices, beginning to diverge.",
+    deepening:
+      "Complicate, reveal, deepen relationships. Higher stakes, more morally textured choices.",
+    converging:
+      "Threads start to collide, pressure rises. Dilemma-based choices with real trade-offs.",
+    climax:
+      "Peak intensity, major consequences. Hard choices with no clean options.",
+    resolution:
+      "Loops close, consequences land. Choices resolve rather than open.",
+  };
+
+  return [
+    `## CURRENT ARC POSITION: ${arcPosition.toUpperCase()}`,
+    `Pacing guide for this position: ${pacingGuide[arcPosition]}`,
+    isLateGame
+      ? "⚠ This is the late game — choices must feel higher stakes, the plot is accelerating toward resolution."
+      : "",
+    mayEnd
+      ? 'If the story has reached a satisfying conclusion, set "isEnding": true and omit choices.'
+      : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 // ─────────────────────────────────────────────
@@ -231,6 +273,9 @@ function buildUserMessage(
   choiceMade: string,
   nodeIndex: number,
   storyState: StoryState | null,
+  arcPosition: StoryState["arcPosition"],
+  isLateGame: boolean,
+  mayEnd: boolean,
 ): string {
   const storyStateBlock = storyState
     ? `
@@ -252,13 +297,76 @@ ${storyState.activeTensions.map((t) => `  - ${t}`).join("\n")}
 `
     : "";
 
+  const dynamicAddendum = buildDynamicSystemAddendum(
+    arcPosition,
+    isLateGame,
+    mayEnd,
+  );
+
   return `${storyStateBlock}
+${dynamicAddendum}
+
 ## Previous story context (last 1–2 scenes for voice continuity):
 ${previousContext}
 
 ## The reader chose: "${choiceMade}"
 
 Story beat ${nodeIndex + 1}. Continue the story based on this choice. Apply all four layers. Write the next scene now.`;
+}
+
+// ─────────────────────────────────────────────
+// Resolve or create the cached system prompt
+// for a given story. Returns the cache name.
+// ─────────────────────────────────────────────
+
+async function getOrCreateSystemPromptCache(
+  storyKey: string,
+  storyTitle: string,
+  storyGenre: string,
+  worldContext: string | undefined,
+): Promise<string> {
+  // Return existing in-process cache name if available
+  const existing = storySystemPromptCacheNames.get(storyKey);
+  if (existing) {
+    // Refresh TTL so an active session never expires mid-play.
+    // Fire-and-forget; don't block the generation call.
+    ai.caches
+      .update({
+        name: existing,
+        config: { ttl: "3600s" },
+      })
+      .catch((err) =>
+        logger.warn({ err, storyKey }, "Failed to refresh cache TTL"),
+      );
+    return existing;
+  }
+
+  // Build the large static text that we want cached
+  const staticSystemText = buildStaticSystemPromptText(
+    storyTitle,
+    storyGenre,
+    worldContext,
+  );
+
+  // Create a Gemini explicit context cache for this story's system prompt.
+  // The minimum cacheable size is 1 024 tokens for Flash-Lite; our prompt
+  // comfortably exceeds this with the full Continuation Directive.
+  const cache = await ai.caches.create({
+    model: MODEL,
+    config: {
+      systemInstruction: staticSystemText,
+      ttl: "3600s", // 60 minutes; refreshed above on reuse
+    },
+  });
+
+  const cacheName = cache.name!;
+  storySystemPromptCacheNames.set(storyKey, cacheName);
+  logger.info(
+    { storyKey, cacheName, tokens: cache.usageMetadata?.totalTokenCount },
+    "Created Gemini context cache for story system prompt",
+  );
+
+  return cacheName;
 }
 
 // ─────────────────────────────────────────────
@@ -274,81 +382,128 @@ export async function generateStorySegment(
   currentStoryState: StoryState | null = null,
 ): Promise<GeneratedSegment> {
   const story = resolveStory(storyIdOrTitle);
-  const storyTitle = story?.title || storyIdOrTitle;
-  const storyGenre = story?.genre || genre;
+  const storyTitle = story?.title ?? storyIdOrTitle;
+  const storyGenre = story?.genre ?? genre;
+  const storyKey = story?.id ?? storyIdOrTitle;
   const arcPosition = deriveArcPosition(nodeIndex);
   const isLateGame = nodeIndex >= 12;
   const mayEnd = nodeIndex >= 18;
 
-  const systemPrompt = buildSystemPrompt(
-    storyTitle,
-    storyGenre,
-    story?.worldContext,
-    arcPosition,
-    isLateGame,
-    mayEnd,
-  );
+  // ── Step 1: ensure the static system prompt is cached ──
+  let cachedContentName: string | undefined;
+  try {
+    cachedContentName = await getOrCreateSystemPromptCache(
+      storyKey,
+      storyTitle,
+      storyGenre,
+      story?.worldContext,
+    );
+  } catch (cacheErr) {
+    // If caching fails (e.g. token count below minimum), fall back to
+    // including the system prompt inline. This keeps the story running.
+    logger.warn(
+      { cacheErr, storyKey },
+      "Context cache creation failed — falling back to inline system prompt",
+    );
+  }
 
+  // ── Step 2: build the per-turn user message (Layer 2 + dynamic arc) ──
   const userMessage = buildUserMessage(
     previousContext,
     choiceMade,
     nodeIndex,
     currentStoryState,
+    arcPosition,
+    isLateGame,
+    mayEnd,
   );
 
+  // ── Step 3: call Gemini ──
   try {
-    const message = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 4096,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userMessage }],
-    });
+    const generationConfig: Record<string, unknown> = {
+      maxOutputTokens: 4096,
+      temperature: 1.0,
+    };
 
-    const content = message.content[0];
-    if (content.type !== "text" || !content.text) {
-      throw new Error("Empty or unexpected response from Claude");
+    // If we have a cache, reference it; otherwise include the system prompt inline
+    if (cachedContentName) {
+      generationConfig.cachedContent = cachedContentName;
     }
 
+    const response = await ai.models.generateContent({
+      model: MODEL,
+      contents: [{ role: "user", parts: [{ text: userMessage }] }],
+      // When no cache, attach the static system prompt inline
+      ...(cachedContentName
+        ? {}
+        : {
+            config: {
+              systemInstruction: buildStaticSystemPromptText(
+                storyTitle,
+                storyGenre,
+                story?.worldContext,
+              ),
+            },
+          }),
+      config: generationConfig,
+    });
+
+    const rawText = response.text;
+    if (!rawText) {
+      throw new Error("Empty response from Gemini");
+    }
+
+    logger.info(
+      {
+        storyKey,
+        nodeIndex,
+        cachedTokens: response.usageMetadata?.cachedContentTokenCount ?? 0,
+        totalInputTokens: response.usageMetadata?.promptTokenCount ?? 0,
+        outputTokens: response.usageMetadata?.candidatesTokenCount ?? 0,
+      },
+      "Gemini generation complete",
+    );
+
     // Strip any accidental markdown fences before parsing
-    const cleaned = content.text
+    const cleaned = rawText
       .replace(/^```(?:json)?\s*/i, "")
       .replace(/\s*```$/, "")
       .trim();
 
     const parsed = JSON.parse(cleaned);
 
-    // Build updated story state from Claude's response + existing state
+    // Build updated story state from Gemini's response + existing state
     const turnNumber = nodeIndex + 1;
     const updatedStoryState: StoryState = {
       turn: turnNumber,
       arcPosition,
       choicesMade: [
-        ...(currentStoryState?.choicesMade || []),
+        ...(currentStoryState?.choicesMade ?? []),
         {
           turn: turnNumber,
           label: choiceMade,
           consequenceNote:
-            parsed.storyStateUpdate?.worldStateChanges?.[0] ||
+            parsed.storyStateUpdate?.worldStateChanges?.[0] ??
             "Choice consequence noted",
         },
       ],
       relationshipStates: {
-        ...(currentStoryState?.relationshipStates || {}),
-        ...(parsed.storyStateUpdate?.relationshipStates || {}),
+        ...(currentStoryState?.relationshipStates ?? {}),
+        ...(parsed.storyStateUpdate?.relationshipStates ?? {}),
       },
       worldStateChanges: [
-        ...(currentStoryState?.worldStateChanges || []),
-        ...(parsed.storyStateUpdate?.worldStateChanges || []),
+        ...(currentStoryState?.worldStateChanges ?? []),
+        ...(parsed.storyStateUpdate?.worldStateChanges ?? []),
       ],
       plantedThreads: [
-        ...(currentStoryState?.plantedThreads || []),
-        ...(parsed.storyStateUpdate?.plantedThreads || []),
+        ...(currentStoryState?.plantedThreads ?? []),
+        ...(parsed.storyStateUpdate?.plantedThreads ?? []),
       ],
-      activeTensions: parsed.storyStateUpdate?.activeTensions || [],
+      activeTensions: parsed.storyStateUpdate?.activeTensions ?? [],
     };
 
-    // Format choices: append subtext to the choice text for richer display
-    const choices: Choice[] = (parsed.choices || []).map(
+    // Format choices: append subtext to choice text for richer display
+    const choices: Choice[] = (parsed.choices ?? []).map(
       (c: {
         id: string;
         text: string;
@@ -362,13 +517,35 @@ export async function generateStorySegment(
     );
 
     return {
-      narrativeText: parsed.narrativeText || "The story continues...",
+      narrativeText: parsed.narrativeText ?? "The story continues...",
       choices,
-      isEnding: parsed.isEnding || false,
+      isEnding: parsed.isEnding ?? false,
       storyState: updatedStoryState,
     };
   } catch (err) {
-    logger.error({ err }, "Error generating story segment with Claude");
+    logger.error({ err }, "Error generating story segment with Gemini");
     throw err;
   }
+}
+
+// ─────────────────────────────────────────────
+// Cleanup helper — call on server shutdown or
+// when you want to explicitly evict a story cache
+// ─────────────────────────────────────────────
+
+export async function deleteStoryCaches(storyKeys?: string[]): Promise<void> {
+  const keys = storyKeys ?? [...storySystemPromptCacheNames.keys()];
+  await Promise.allSettled(
+    keys.map(async (key) => {
+      const name = storySystemPromptCacheNames.get(key);
+      if (!name) return;
+      try {
+        await ai.caches.delete({ name });
+        storySystemPromptCacheNames.delete(key);
+        logger.info({ key, name }, "Deleted Gemini context cache");
+      } catch (err) {
+        logger.warn({ err, key }, "Failed to delete Gemini context cache");
+      }
+    }),
+  );
 }
