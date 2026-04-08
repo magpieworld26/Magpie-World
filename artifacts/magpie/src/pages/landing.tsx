@@ -147,6 +147,11 @@ export default function LandingPage() {
                     border: "1px solid rgba(255,255,255,0.08)",
                     cursor: "pointer",
                     background: story.coverGradient || TOP5_GRADIENTS[i % TOP5_GRADIENTS.length],
+                    ...(story.coverImage ? {
+                      backgroundImage: `url(${story.coverImage})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    } : {}),
                     transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s",
                   }}
                   onMouseEnter={e => {

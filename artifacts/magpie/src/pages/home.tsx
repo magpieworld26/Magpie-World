@@ -183,47 +183,19 @@ export default function HomePage() {
       {/* HERO */}
       {!q && featured && (
         <div style={{ position: "relative", height: "88vh", minHeight: "580px", display: "flex", alignItems: "flex-end", padding: "0 4vw 90px", overflow: "hidden" }}>
+          {/* Cover image background */}
           <div style={{
             position: "absolute", inset: 0,
-            background: `radial-gradient(ellipse 60% 70% at 70% 40%, rgba(0,229,200,0.07) 0%,transparent 60%), linear-gradient(135deg,#060d1f 0%,#071526 40%,#0a2040 100%)`,
+            background: featured.coverGradient || "linear-gradient(135deg,#060d1f 0%,#0a2040 100%)",
+            ...(featured.coverImage ? {
+              backgroundImage: `url(${featured.coverImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+            } : {}),
           }} />
-          {/* Book art */}
-          <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "55%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-            <div style={{ position: "relative", width: "480px", height: "600px", transform: "perspective(1000px) rotateY(-12deg) rotateX(3deg)" }}>
-              {[3, 2, 1].map(i => (
-                <div key={i} style={{
-                  position: "absolute",
-                  width: "340px", height: "500px",
-                  top: `${50 + (3 - i) * 10}px`,
-                  left: `${60 + (3 - i) * 10}px`,
-                  background: i === 1 ? `linear-gradient(160deg,#071a35 0%,#030e1f 100%)` : `linear-gradient(160deg,#${i === 2 ? "112545" : "142a4a"},#0${i === 2 ? "a1e38" : "d2240"})`,
-                  borderRadius: "4px 12px 12px 4px",
-                  border: "1px solid rgba(0,229,200,0.15)",
-                  boxShadow: i === 1 ? "30px 30px 80px rgba(0,0,0,0.8),inset 0 0 40px rgba(0,229,200,0.03)" : "20px 20px 60px rgba(0,0,0,0.6)",
-                  opacity: i === 1 ? 1 : i === 2 ? 0.8 : 0.6,
-                  display: i === 1 ? "flex" : undefined,
-                  flexDirection: i === 1 ? "column" as const : undefined,
-                  alignItems: i === 1 ? "center" : undefined,
-                  justifyContent: i === 1 ? "center" : undefined,
-                  gap: i === 1 ? "16px" : undefined,
-                  padding: i === 1 ? "30px" : undefined,
-                  overflow: i === 1 ? "hidden" : undefined,
-                }}>
-                  {i === 1 && (
-                    <>
-                      <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "11px", letterSpacing: "4px", color: "#00e5c8", textTransform: "uppercase" }}>Featured Story</div>
-                      <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "42px", fontWeight: 900, lineHeight: 1, textAlign: "center", textTransform: "uppercase" }}>{featured.title}</div>
-                      <div style={{ width: "60px", height: "2px", background: "linear-gradient(to right, transparent, #00e5c8, transparent)" }} />
-                      <div style={{ fontSize: "12px", color: "rgba(255,255,255,.5)", textAlign: "center", lineHeight: 1.6 }}>{featured.genre}</div>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Fade overlays */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right,#060d1f 25%,transparent 55%,#060d1f 100%)" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,#060d1f 0%,transparent 30%)" }} />
+          {/* Dark overlay for readability — stronger at bottom-left where text sits */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(6,13,31,0.82) 0%, rgba(6,13,31,0.55) 50%, rgba(6,13,31,0.25) 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(6,13,31,0.95) 0%, rgba(6,13,31,0.3) 40%, transparent 70%)" }} />
 
           {/* Content */}
           <div style={{ position: "relative", zIndex: 2, maxWidth: "500px" }}>
