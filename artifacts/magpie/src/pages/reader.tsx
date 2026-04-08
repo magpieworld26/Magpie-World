@@ -53,18 +53,18 @@ export default function ReaderPage() {
   const storyEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const token = getAuthToken();
-    if (!token) { setLocation("/login"); return; }
     if (!sessionId) return;
-
-    api.sessions.get(sessionId).then(data => {
-      setSession(data.session);
-      setNodes(data.nodes);
-      setCurrentNode(data.currentNode);
-      if (!data.currentNode || data.currentNode.choices.length === 0) {
-        setStoryComplete(true);
-      }
-    }).catch(() => setLocation("/home")).finally(() => setLoading(false));
+    getAuthToken().then(token => {
+      if (!token) { setLocation("/login"); return; }
+      api.sessions.get(sessionId).then(data => {
+        setSession(data.session);
+        setNodes(data.nodes);
+        setCurrentNode(data.currentNode);
+        if (!data.currentNode || data.currentNode.choices.length === 0) {
+          setStoryComplete(true);
+        }
+      }).catch(() => setLocation("/home")).finally(() => setLoading(false));
+    });
   }, [sessionId, setLocation]);
 
   const handleChoice = async (choice: Choice) => {
@@ -84,6 +84,16 @@ export default function ReaderPage() {
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Something went wrong generating the next scene.";
+      if (
+        msg.toLowerCase().includes("invalid or expired token") ||
+        msg.toLowerCase().includes("invalid token") ||
+        msg.toLowerCase().includes("jwt expired") ||
+        msg.toLowerCase().includes("not authenticated") ||
+        msg.toLowerCase().includes("unauthorized")
+      ) {
+        setLocation("/login?reason=session_expired");
+        return;
+      }
       setGenerationError(msg);
       setChosenId(null);
       setShowChoices(true);

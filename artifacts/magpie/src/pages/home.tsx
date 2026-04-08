@@ -132,19 +132,20 @@ export default function HomePage() {
   const { isMobile, isTablet } = useWindowWidth();
 
   useEffect(() => {
-    const token = getAuthToken();
-    if (!token) {
-      setLocation("/login");
-      return;
-    }
+    getAuthToken().then(token => {
+      if (!token) {
+        setLocation("/login");
+        return;
+      }
 
-    Promise.all([
-      api.stories.list(),
-      api.sessions.list().catch(() => ({ sessions: [] })),
-    ]).then(([storiesData, sessionsData]) => {
-      setStories(storiesData.stories);
-      setSessions(sessionsData.sessions);
-    }).finally(() => setLoading(false));
+      Promise.all([
+        api.stories.list(),
+        api.sessions.list().catch(() => ({ sessions: [] })),
+      ]).then(([storiesData, sessionsData]) => {
+        setStories(storiesData.stories);
+        setSessions(sessionsData.sessions);
+      }).finally(() => setLoading(false));
+    });
   }, [setLocation]);
 
   const q = searchQuery.trim().toLowerCase();

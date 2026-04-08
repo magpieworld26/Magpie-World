@@ -44,8 +44,12 @@ export default function Navbar({ showSearch = false, variant = "landing", search
   const isCompact = isMobile;
 
   useEffect(() => {
-    if (variant === "home" && getAuthToken()) {
-      api.premium.status().then(s => setIsPremium(s.isPremium)).catch(() => setIsPremium(false));
+    if (variant === "home") {
+      getAuthToken().then(token => {
+        if (token) {
+          api.premium.status().then(s => setIsPremium(s.isPremium)).catch(() => setIsPremium(false));
+        }
+      });
     }
   }, [variant]);
 

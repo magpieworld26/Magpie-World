@@ -16,6 +16,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sessionExpiredBanner, setSessionExpiredBanner] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("reason") === "session_expired";
+  });
 
   const [forgotOpen, setForgotOpen] = useState(false);
   const [forgotEmail, setForgotEmail] = useState("");
@@ -185,6 +189,30 @@ export default function LoginPage() {
             backdropFilter: "blur(20px)",
             boxShadow: "0 24px 64px rgba(0,0,0,0.45), 0 0 0 1px rgba(104,230,197,0.05)",
           }}>
+            {/* Session expired banner */}
+            {sessionExpiredBanner && (
+              <div style={{
+                marginBottom: "20px", padding: "12px 16px",
+                background: "rgba(234,179,8,0.08)",
+                border: "1px solid rgba(234,179,8,0.25)",
+                borderRadius: "10px",
+                display: "flex", alignItems: "flex-start", gap: "10px",
+              }}>
+                <svg width="16" height="16" fill="none" stroke="#fbbf24" viewBox="0 0 24 24" style={{ flexShrink: 0, marginTop: "1px" }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#fbbf24", fontFamily: "'Montserrat', sans-serif", marginBottom: "2px" }}>Session expired</div>
+                  <div style={{ fontSize: "0.74rem", color: "rgba(251,191,36,0.75)", fontFamily: "'Montserrat', sans-serif" }}>Your session has expired. Please sign in again to continue reading.</div>
+                </div>
+                <button
+                  onClick={() => setSessionExpiredBanner(false)}
+                  style={{ marginLeft: "auto", background: "none", border: "none", color: "rgba(251,191,36,0.5)", cursor: "pointer", padding: "0", flexShrink: 0, fontSize: "1rem", lineHeight: 1 }}
+                  aria-label="Dismiss"
+                >×</button>
+              </div>
+            )}
+
             {/* Header */}
             <div style={{ textAlign: "center", marginBottom: "24px" }}>
               <h1 style={{

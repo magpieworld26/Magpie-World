@@ -11,8 +11,12 @@ export function getSiteUrl(): string {
 
 export const AUTH_TOKEN_KEY = "magpie_auth_token";
 
-export function getAuthToken(): string | null {
-  return localStorage.getItem(AUTH_TOKEN_KEY);
+export async function getAuthToken(): Promise<string | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.access_token) {
+    return session.access_token;
+  }
+  return null;
 }
 
 export function setAuthToken(token: string): void {
@@ -22,3 +26,13 @@ export function setAuthToken(token: string): void {
 export function clearAuthToken(): void {
   localStorage.removeItem(AUTH_TOKEN_KEY);
 }
+
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") {
+    if (session?.access_token) {
+      setAuthToken(session.access_token);
+    }
+  } else if (event === "SIGNED_OUT") {
+    clearAuthToken();
+  }
+});

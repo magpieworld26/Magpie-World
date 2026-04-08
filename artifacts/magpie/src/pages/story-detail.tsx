@@ -16,22 +16,23 @@ export default function StoryDetailPage() {
 
   useEffect(() => {
     if (!storyId) return;
-    const token = getAuthToken();
-    Promise.all([
-      api.stories.get(storyId),
-      token ? api.sessions.list().catch(() => ({ sessions: [] })) : Promise.resolve({ sessions: [] }),
-      token ? api.premium.status().catch(() => ({ isPremium: false })) : Promise.resolve({ isPremium: false }),
-    ]).then(([storyData, sessionsData, premiumData]) => {
-      setStory(storyData);
-      const existing = sessionsData.sessions.find((s: StorySession) => s.storyId === storyId && s.status === "active");
-      setExistingSession(existing || null);
-      setPremiumStatus(premiumData);
-    }).catch(() => setLocation("/home")).finally(() => setLoading(false));
+    getAuthToken().then(token => {
+      Promise.all([
+        api.stories.get(storyId),
+        token ? api.sessions.list().catch(() => ({ sessions: [] })) : Promise.resolve({ sessions: [] }),
+        token ? api.premium.status().catch(() => ({ isPremium: false })) : Promise.resolve({ isPremium: false }),
+      ]).then(([storyData, sessionsData, premiumData]) => {
+        setStory(storyData);
+        const existing = sessionsData.sessions.find((s: StorySession) => s.storyId === storyId && s.status === "active");
+        setExistingSession(existing || null);
+        setPremiumStatus(premiumData);
+      }).catch(() => setLocation("/home")).finally(() => setLoading(false));
+    });
   }, [storyId, setLocation]);
 
   const handleRead = async () => {
     if (!story) return;
-    const token = getAuthToken();
+    const token = await getAuthToken();
     if (!token) {
       setLocation("/login");
       return;
