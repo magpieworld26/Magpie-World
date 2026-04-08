@@ -11,6 +11,7 @@ import VerifyOtpPage from "@/pages/verify-otp";
 import HomePage from "@/pages/home";
 import StoryDetailPage from "@/pages/story-detail";
 import ReaderPage from "@/pages/reader";
+import PremiumPage from "@/pages/premium";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/home" component={HomePage} />
       <Route path="/story/:storyId" component={StoryDetailPage} />
       <Route path="/read/:sessionId" component={ReaderPage} />
+      <Route path="/premium" component={PremiumPage} />
       <Route component={NotFound} />
     </Switch>
   );

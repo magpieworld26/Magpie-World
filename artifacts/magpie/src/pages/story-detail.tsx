@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
-import { api, type Story, type StorySession } from "@/lib/api";
+import { api, type Story, type StorySession, type PremiumStatus } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 
 export default function StoryDetailPage() {
@@ -8,18 +8,22 @@ export default function StoryDetailPage() {
   const [, setLocation] = useLocation();
   const [story, setStory] = useState<Story | null>(null);
   const [existingSession, setExistingSession] = useState<StorySession | null>(null);
+  const [premiumStatus, setPremiumStatus] = useState<PremiumStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
 
   useEffect(() => {
     if (!storyId) return;
+    const token = getAuthToken();
     Promise.all([
       api.stories.get(storyId),
-      getAuthToken() ? api.sessions.list().catch(() => ({ sessions: [] })) : Promise.resolve({ sessions: [] }),
-    ]).then(([storyData, sessionsData]) => {
+      token ? api.sessions.list().catch(() => ({ sessions: [] })) : Promise.resolve({ sessions: [] }),
+      token ? api.premium.status().catch(() => ({ isPremium: false })) : Promise.resolve({ isPremium: false }),
+    ]).then(([storyData, sessionsData, premiumData]) => {
       setStory(storyData);
       const existing = sessionsData.sessions.find((s: StorySession) => s.storyId === storyId && s.status === "active");
       setExistingSession(existing || null);
+      setPremiumStatus(premiumData);
     }).catch(() => setLocation("/home")).finally(() => setLoading(false));
   }, [storyId, setLocation]);
 
@@ -52,6 +56,8 @@ export default function StoryDetailPage() {
   }
 
   if (!story) return null;
+
+  const isPremium = premiumStatus?.isPremium === true;
 
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh" }}>
@@ -128,43 +134,74 @@ export default function StoryDetailPage() {
       <div style={{ padding: "40px 6vw 80px", maxWidth: "900px" }}>
         {/* Action buttons */}
         <div style={{ display: "flex", gap: "16px", marginBottom: "40px", flexWrap: "wrap" }}>
-          <button
-            onClick={handleRead}
-            disabled={starting}
-            style={{
-              display: "flex", alignItems: "center", gap: "10px",
-              background: "#00e5c8", color: "#060d1f", border: "none",
-              padding: "14px 32px", borderRadius: "4px",
-              fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
-              cursor: starting ? "not-allowed" : "pointer",
-              opacity: starting ? 0.7 : 1,
-            }}
-          >
-            ▶ {starting ? "Starting..." : existingSession ? "Continue Reading" : "Read Now"}
-          </button>
-          {existingSession && (
+          {isPremium ? (
+            <>
+              <button
+                onClick={handleRead}
+                disabled={starting}
+                style={{
+                  display: "flex", alignItems: "center", gap: "10px",
+                  background: "#00e5c8", color: "#060d1f", border: "none",
+                  padding: "14px 32px", borderRadius: "4px",
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
+                  cursor: starting ? "not-allowed" : "pointer",
+                  opacity: starting ? 0.7 : 1,
+                }}
+              >
+                ▶ {starting ? "Starting..." : existingSession ? "Continue Reading" : "Read Now"}
+              </button>
+              {existingSession && (
+                <button
+                  onClick={async () => {
+                    setStarting(true);
+                    try {
+                      const session = await api.sessions.create(story.id);
+                      setLocation(`/read/${session.id}`);
+                    } catch {
+                      setStarting(false);
+                    }
+                  }}
+                  style={{
+                    display: "flex", alignItems: "center", gap: "10px",
+                    background: "rgba(255,255,255,.1)", color: "#fff",
+                    border: "1px solid rgba(255,255,255,.2)", padding: "14px 32px", borderRadius: "4px",
+                    fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
+                    cursor: "pointer",
+                  }}
+                >+ New Story</button>
+              )}
+            </>
+          ) : (
             <button
-              onClick={async () => {
-                setStarting(true);
-                try {
-                  const session = await api.sessions.create(story.id);
-                  setLocation(`/read/${session.id}`);
-                } catch {
-                  setStarting(false);
-                }
-              }}
+              onClick={() => setLocation("/premium")}
               style={{
                 display: "flex", alignItems: "center", gap: "10px",
-                background: "rgba(255,255,255,.1)", color: "#fff",
-                border: "1px solid rgba(255,255,255,.2)", padding: "14px 32px", borderRadius: "4px",
+                background: "#00e5c8", color: "#060d1f", border: "none",
+                padding: "14px 32px", borderRadius: "4px",
                 fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "16px", letterSpacing: "1.5px", textTransform: "uppercase",
                 cursor: "pointer",
               }}
-            >+ New Story</button>
+            >★ Get Premium to Read</button>
           )}
         </div>
 
-        {existingSession && (
+        {!isPremium && (
+          <div style={{
+            padding: "16px 20px",
+            background: "rgba(0,229,200,0.06)",
+            border: "1px solid rgba(0,229,200,0.2)",
+            borderRadius: "8px",
+            marginBottom: "32px",
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontSize: "14px",
+            color: "rgba(255,255,255,0.7)",
+            lineHeight: 1.6,
+          }}>
+            Premium membership gives you unlimited access to all stories. Choose a plan starting at ₹89/week.
+          </div>
+        )}
+
+        {isPremium && existingSession && (
           <div style={{
             padding: "16px 20px",
             background: "rgba(0,229,200,0.08)",

@@ -10,17 +10,18 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@google/genai": "^1.2.0",
     "@supabase/supabase-js": "^2.99.3",
     "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",
-    "@google/genai": "^1.2.0",
     "@workspace/integrations-openai-ai-server": "workspace:*",
     "cookie-parser": "^1.4.7",
     "cors": "^2",
     "drizzle-orm": "catalog:",
     "express": "^5",
     "pino": "^9",
-    "pino-http": "^10"
+    "pino-http": "^10",
+    "razorpay": "^2.9.6"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

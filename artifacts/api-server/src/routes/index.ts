@@ -4,6 +4,7 @@ import authRouter from "./auth";
 import storiesRouter from "./stories";
 import sessionsRouter from "./sessions";
 import aiRouter from "./ai";
+import premiumRouter from "./premium";
 
 const router: IRouter = Router();
 
@@ -12,5 +13,6 @@ router.use(authRouter);
 router.use(storiesRouter);
 router.use(sessionsRouter);
 router.use(aiRouter);
+router.use(premiumRouter);
 
 export default router;

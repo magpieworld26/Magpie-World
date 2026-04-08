@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { supabase, clearAuthToken } from "@/lib/supabase";
 import birdLogo from "@assets/image_1774626827305.png";
+import { api } from "@/lib/api";
+import { getAuthToken } from "@/lib/supabase";
 
 interface NavbarProps {
   showSearch?: boolean;
@@ -33,7 +35,28 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 export default function Navbar({ showSearch = false, variant = "landing", searchQuery = "", onSearchChange }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isPremium, setIsPremium] = useState<boolean | null>(null);
   const [, setLocation] = useLocation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (variant === "home" && getAuthToken()) {
+      api.premium.status().then(s => setIsPremium(s.isPremium)).catch(() => setIsPremium(false));
+    }
+  }, [variant]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen]);
 
   const handleSignIn = () => setLocation("/login");
 
@@ -41,6 +64,21 @@ export default function Navbar({ showSearch = false, variant = "landing", search
     await supabase.auth.signOut();
     clearAuthToken();
     setLocation("/");
+  };
+
+  const buttonStyle: React.CSSProperties = {
+    background: "transparent",
+    border: "1.5px solid #00e5c8",
+    color: "#00e5c8",
+    padding: "8px 22px",
+    borderRadius: "4px",
+    fontFamily: "'Barlow Condensed', sans-serif",
+    fontWeight: 700,
+    fontSize: "13px",
+    letterSpacing: "2px",
+    textTransform: "uppercase",
+    cursor: "pointer",
+    whiteSpace: "nowrap",
   };
 
   return (
@@ -132,40 +170,88 @@ export default function Navbar({ showSearch = false, variant = "landing", search
       {/* Actions */}
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         {variant === "home" ? (
-          <button
-            onClick={handleSignOut}
-            style={{
-              background: "transparent",
-              border: "1.5px solid #00e5c8",
-              color: "#00e5c8",
-              padding: "8px 22px",
-              borderRadius: "4px",
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontWeight: 700,
-              fontSize: "13px",
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}
-          >Sign Out</button>
+          <div ref={dropdownRef} style={{ position: "relative" }}>
+            <button
+              onClick={() => setDropdownOpen(prev => !prev)}
+              style={buttonStyle}
+            >Profile</button>
+            {dropdownOpen && (
+              <div style={{
+                position: "absolute",
+                top: "calc(100% + 8px)",
+                right: 0,
+                background: "#0d1b2e",
+                border: "1px solid rgba(0,229,200,0.25)",
+                borderRadius: "6px",
+                minWidth: "180px",
+                overflow: "hidden",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+                zIndex: 200,
+              }}>
+                {isPremium ? (
+                  <div style={{
+                    padding: "12px 18px",
+                    fontFamily: "'Barlow Condensed', sans-serif",
+                    fontSize: "12px",
+                    letterSpacing: "1.5px",
+                    textTransform: "uppercase",
+                    color: "#00e5c8",
+                    background: "rgba(0,229,200,0.08)",
+                    borderBottom: "1px solid rgba(0,229,200,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}>
+                    <span style={{ fontSize: "14px" }}>★</span> Premium Member
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => { setDropdownOpen(false); setLocation("/premium"); }}
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      padding: "12px 18px",
+                      background: "transparent",
+                      border: "none",
+                      borderBottom: "1px solid rgba(0,229,200,0.1)",
+                      color: "#00e5c8",
+                      fontFamily: "'Barlow Condensed', sans-serif",
+                      fontSize: "13px",
+                      letterSpacing: "1.5px",
+                      textTransform: "uppercase",
+                      textAlign: "left",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,229,200,0.08)")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >Get Premium</button>
+                )}
+                <button
+                  onClick={() => { setDropdownOpen(false); handleSignOut(); }}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    padding: "12px 18px",
+                    background: "transparent",
+                    border: "none",
+                    color: "#cbd5e1",
+                    fontFamily: "'Barlow Condensed', sans-serif",
+                    fontSize: "13px",
+                    letterSpacing: "1.5px",
+                    textTransform: "uppercase",
+                    textAlign: "left",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                >Sign Out</button>
+              </div>
+            )}
+          </div>
         ) : (
           <button
             onClick={handleSignIn}
-            style={{
-              background: "transparent",
-              border: "1.5px solid #00e5c8",
-              color: "#00e5c8",
-              padding: "8px 22px",
-              borderRadius: "4px",
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontWeight: 700,
-              fontSize: "13px",
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}
+            style={buttonStyle}
           >Sign In</button>
         )}
       </div>

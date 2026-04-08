@@ -80,6 +80,26 @@ export interface UserProfile {
   createdAt: string;
 }
 
+export interface PremiumStatus {
+  isPremium: boolean;
+  expiresAt?: string;
+  plan?: string;
+}
+
+export interface CreateOrderResponse {
+  orderId: string;
+  amount: number;
+  currency: string;
+  keyId: string;
+  plan: string;
+}
+
+export interface VerifyPaymentResponse {
+  success: boolean;
+  expiresAt: string;
+  plan: string;
+}
+
 export const api = {
   stories: {
     list: () => fetchApi<{ stories: Story[] }>("/stories"),
@@ -99,5 +119,17 @@ export const api = {
   },
   auth: {
     getProfile: () => fetchApi<UserProfile>("/auth/profile"),
+  },
+  premium: {
+    status: () => fetchApi<PremiumStatus>("/premium/status"),
+    createOrder: (plan: string) => fetchApi<CreateOrderResponse>("/premium/create-order", {
+      method: "POST",
+      body: JSON.stringify({ plan }),
+    }),
+    verifyPayment: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
+      fetchApi<VerifyPaymentResponse>("/premium/verify-payment", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
   },
 };

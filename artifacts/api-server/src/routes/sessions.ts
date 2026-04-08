@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
-import { db, storySessionsTable, storyNodesTable } from "@workspace/db";
-import { eq, and, asc } from "drizzle-orm";
+import { db, storySessionsTable, storyNodesTable, premiumMembershipsTable } from "@workspace/db";
+import { eq, and, asc, gt, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { type AuthenticatedRequest, requireAuth } from "../lib/auth-middleware";
 import { getStoryById, getInitialStoryNode } from "../lib/stories-data";
@@ -62,6 +62,25 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
 
   if (!parsed.success) {
     res.status(400).json({ message: "Invalid request body" });
+    return;
+  }
+
+  const now = new Date();
+  const [activeMembership] = await db
+    .select()
+    .from(premiumMembershipsTable)
+    .where(
+      and(
+        eq(premiumMembershipsTable.userId, userId),
+        eq(premiumMembershipsTable.status, "active"),
+        gt(premiumMembershipsTable.expiresAt, now)
+      )
+    )
+    .orderBy(desc(premiumMembershipsTable.expiresAt))
+    .limit(1);
+
+  if (!activeMembership) {
+    res.status(403).json({ message: "Premium membership required to start a reading session", code: "PREMIUM_REQUIRED" });
     return;
   }
 
