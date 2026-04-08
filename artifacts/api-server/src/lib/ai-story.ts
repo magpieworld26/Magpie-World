@@ -428,23 +428,17 @@ export async function generateStorySegment(
     // If we have a cache, reference it; otherwise include the system prompt inline
     if (cachedContentName) {
       generationConfig.cachedContent = cachedContentName;
+    } else {
+      generationConfig.systemInstruction = buildStaticSystemPromptText(
+        storyTitle,
+        storyGenre,
+        story?.worldContext,
+      );
     }
 
     const response = await ai.models.generateContent({
       model: MODEL,
       contents: [{ role: "user", parts: [{ text: userMessage }] }],
-      // When no cache, attach the static system prompt inline
-      ...(cachedContentName
-        ? {}
-        : {
-            config: {
-              systemInstruction: buildStaticSystemPromptText(
-                storyTitle,
-                storyGenre,
-                story?.worldContext,
-              ),
-            },
-          }),
       config: generationConfig,
     });
 
