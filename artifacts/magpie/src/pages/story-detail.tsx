@@ -72,7 +72,6 @@ export default function StoryDetailPage() {
           cursor: "pointer", fontSize: "18px", backdropFilter: "blur(10px)",
         }}
       >←</button>
-
       {/* Hero Banner */}
       <div style={{
         position: "relative",
@@ -129,7 +128,6 @@ export default function StoryDetailPage() {
           </div>
         </div>
       </div>
-
       {/* Content */}
       <div style={{ padding: "40px 6vw 80px", maxWidth: "900px" }}>
         {/* Action buttons */}
@@ -196,9 +194,7 @@ export default function StoryDetailPage() {
             fontSize: "14px",
             color: "rgba(255,255,255,0.7)",
             lineHeight: 1.6,
-          }}>
-            Premium membership gives you unlimited access to all stories. Choose a plan starting at ₹89/week.
-          </div>
+          }}>Premium membership gives you unlimited access to all stories. Choose a plan starting at ₹89.</div>
         )}
 
         {isPremium && existingSession && (
