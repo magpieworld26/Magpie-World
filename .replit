@@ -1,4 +1,4 @@
-modules = ["nodejs-24"]
+modules = ["nodejs-24", "postgresql-16"]
 
 [[artifacts]]
 id = "artifacts/api-server"
@@ -35,3 +35,6 @@ VITE_SITE_URL = "https://94d309d1-2d2d-47f0-b876-683d52cbe7a4-00-3b68sg2l84036-g
 
 [objectStorage]
 defaultBucketID = "replit-objstore-bec1f357-2ec7-46e8-b816-4d175fc74086"
+
+[nix]
+channel = "stable-25_05"

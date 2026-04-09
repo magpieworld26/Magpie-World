@@ -5,9 +5,11 @@
  * Magpie Interactive Reading Platform API
  * OpenAPI spec version: 0.1.0
  */
+import type { ChoiceConsequenceType } from "./choiceConsequenceType";
 
 export interface Choice {
   id: string;
   text: string;
   consequence?: string;
+  consequenceType?: ChoiceConsequenceType;
 }

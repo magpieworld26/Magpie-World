@@ -302,6 +302,8 @@ components:
           type: string
         coverGradient:
           type: string
+        coverImage:
+          type: string
         tags:
           type: array
           items:
@@ -383,6 +385,9 @@ components:
           type: string
         consequence:
           type: string
+        consequenceType:
+          type: string
+          enum: [good, neutral, bad, catastrophic]
       required: [id, text]
 
     SessionWithNodes:
@@ -413,6 +418,9 @@ components:
           type: string
         choiceText:
           type: string
+        consequenceType:
+          type: string
+          enum: [good, neutral, bad, catastrophic]
       required: [choiceId, choiceText]
 
     GenerateSegmentRequest:

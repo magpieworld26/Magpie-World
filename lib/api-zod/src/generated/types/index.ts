@@ -7,7 +7,9 @@
  */
 
 export * from "./choice";
+export * from "./choiceConsequenceType";
 export * from "./continueSessionRequest";
+export * from "./continueSessionRequestConsequenceType";
 export * from "./createSessionRequest";
 export * from "./error";
 export * from "./generatedSegment";

@@ -15,17 +15,12 @@ export interface Choice {
   text: string;
   consequence?: string;
   subtext?: string;
+  consequenceType?: "good" | "neutral" | "bad" | "catastrophic";
 }
 
 export interface StoryState {
   turn: number;
-  arcPosition:
-    | "opening"
-    | "establishing"
-    | "deepening"
-    | "converging"
-    | "climax"
-    | "resolution";
+  storyHealthScore: number;
   choicesMade: Array<{ turn: number; label: string; consequenceNote: string }>;
   relationshipStates: Record<string, string>;
   worldStateChanges: string[];
@@ -46,9 +41,9 @@ export interface GeneratedSegment {
 const storyResponseSchema = {
   type: Type.OBJECT,
   properties: {
-    narrativeText: { 
-      type: Type.STRING, 
-      description: "Scene prose (600–900 words, second-person present tense)" 
+    narrativeText: {
+      type: Type.STRING,
+      description: "Scene prose (1 word to 1500 words, second-person present tense, length chosen by AI based on narrative need)"
     },
     choices: {
       type: Type.ARRAY,
@@ -59,8 +54,12 @@ const storyResponseSchema = {
           text: { type: Type.STRING, description: "Concrete action in present tense" },
           consequence: { type: Type.STRING, description: "1-3 word thematic label" },
           subtext: { type: Type.STRING, description: "One sentence: what this path offers or risks" },
+          consequenceType: {
+            type: Type.STRING,
+            description: "The likely consequence type of this choice: 'good', 'neutral', 'bad', or 'catastrophic'",
+          },
         },
-        required: ["id", "text", "consequence", "subtext"],
+        required: ["id", "text", "consequence", "subtext", "consequenceType"],
       },
     },
     isEnding: { type: Type.BOOLEAN },
@@ -107,16 +106,6 @@ function resolveStory(storyIdOrTitle: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
   return getStoryById(slug) || null;
-}
-
-function deriveArcPosition(nodeIndex: number): StoryState["arcPosition"] {
-  const turn = nodeIndex + 1;
-  if (turn <= 1) return "opening";
-  if (turn <= 2) return "establishing";
-  if (turn <= 4) return "deepening";
-  if (turn <= 6) return "converging";
-  if (turn <= 8) return "climax";
-  return "resolution";
 }
 
 // ─────────────────────────────────────────────
@@ -189,6 +178,32 @@ const CONTINUATION_DIRECTIVE = `
 
 
 
+  ### CRITICAL: Reader Character Agency
+
+  - NEVER perform any action on behalf of the reader's character. You must not write "You decide to...", "You choose to...", "You run toward...", or any sentence where the reader's character initiates a new action.
+
+  - The prose shows ONLY: consequences of the choice just made, other characters' reactions, world changes, revelations, and backstory.
+
+  - All reader-character actions come ONLY through the choices presented at the end. The moment a new high-stakes decision is required, stop the prose and present choices.
+
+  - The reader's character may move, speak, or act ONLY as a direct mechanical consequence of the choice made — never beyond it.
+
+
+
+  ### Dynamic Prose Length
+
+  - Prose length ranges from 1 word to 1500 words. YOU choose the length based on narrative need.
+
+  - Use very short prose (1–50 words) for sudden revelations, shocking consequences, or moments of pure impact.
+
+  - Use medium prose (100–400 words) for standard scenes where consequences unfold at a measured pace.
+
+  - Use longer prose (500–1500 words) for complex, layered scenes with multiple characters, major world shifts, or deep emotional beats.
+
+  - Never pad to meet a minimum. Never truncate a scene that needs space to breathe.
+
+
+
   ### Pacing Mechanics
 
   - Deceleration principle: as you approach a decision point, slow down, lengthen sentences, add sensory detail.
@@ -199,17 +214,24 @@ const CONTINUATION_DIRECTIVE = `
 
 
 
-  ### Scene Architecture (600–900 words)
+  ### Dynamic Story Endings
 
-  Structure every scene in three beats:
+  - Stories do NOT end at a fixed turn count. You decide when to set isEnding: true.
 
-  - Beat 1 — Immediate consequence (2–3 sentences, no recap, show choice in motion)
+  - Set isEnding: true when the story has reached a dramatically satisfying stopping point — this can be early or late — driven entirely by the consequence chain so far.
 
-  - Beat 2 — Consequence unfolds (200–300 words, at least one unexpected element)
+  - When isEnding is true, provide no choices (empty array).
 
-  - Beat 3 — New ground (200–300 words, story genuinely advances)
+  - The ending tone is calibrated by the story health score provided in each turn:
+    - Score >= +8: spectacular win — everything the reader fought for is realised
+    - Score +4 to +7: good outcome — meaningful success with some costs
+    - Score +1 to +3: mixed result — partial win, something important was lost
+    - Score 0: ambiguous — neither victory nor defeat, open to interpretation
+    - Score -1 to -3: partial failure — the goal was missed, but survival remains
+    - Score -4 to -7: bad outcome — significant loss, lasting consequences
+    - Score <= -8: catastrophic loss — everything unravels, total defeat
 
-  - Deceleration (final 2–3 paragraphs, slow to decision point)
+  - Do not force an ending prematurely. But do not artificially extend a story that has reached its natural conclusion.
 
 
 
@@ -227,6 +249,8 @@ const CONTINUATION_DIRECTIVE = `
 
   - Choices that ignore the current scene.
 
+  - Acting on behalf of the reader beyond what their choice dictated.
+
   `;
 
 function buildSystemInstruction(storyTitle: string, storyGenre: string, worldContext?: string): string {
@@ -235,7 +259,7 @@ function buildSystemInstruction(storyTitle: string, storyGenre: string, worldCon
 }
 
 // ─────────────────────────────────────────────
-// Dynamic User Message (State & Pacing)
+// Dynamic User Message (State & Momentum)
 // ─────────────────────────────────────────────
 
 function buildUserMessage(
@@ -243,29 +267,27 @@ function buildUserMessage(
   choiceMade: string,
   nodeIndex: number,
   storyState: StoryState | null,
-  arcPosition: StoryState["arcPosition"]
+  totalWordCount: number,
+  forceEnding: boolean
 ): string {
-  const pacingGuide: Record<StoryState["arcPosition"], string> = {
-    opening: "Ground the reader. Direction-based choices, low stakes.",
-    establishing: "Introduce tensions. Values-based choices.",
-    deepening: "Complicate relationships. Higher stakes.",
-    converging: "Threads collide. Dilemmas with real trade-offs.",
-    climax: "Peak intensity. Hard choices with no clean options.",
-    resolution: "Loops close. Choices resolve rather than open.",
-  };
+  const healthScore = storyState?.storyHealthScore ?? 0;
 
   const stateBlock = storyState
-    ? `\n## STORY STATE\nArc: ${arcPosition} (${pacingGuide[arcPosition]})\nChoices made: ${storyState.choicesMade.map((c) => c.label).slice(-3).join(" -> ")}\nRelationships: ${JSON.stringify(storyState.relationshipStates)}\nActive Tensions: ${storyState.activeTensions.join(", ")}`
-    : `\n## STORY STATE\nArc: ${arcPosition} (${pacingGuide[arcPosition]})`;
+    ? `\n## STORY STATE\nStory Health Score: ${healthScore} (negative = bad/catastrophic trajectory; positive = good/heroic trajectory)\nTotal words written so far: ${totalWordCount}\nChoices made: ${storyState.choicesMade.map((c) => c.label).slice(-5).join(" -> ")}\nRelationships: ${JSON.stringify(storyState.relationshipStates)}\nActive Tensions: ${storyState.activeTensions.join(", ")}`
+    : `\n## STORY STATE\nStory Health Score: 0\nTotal words written so far: ${totalWordCount}`;
 
-  return `${stateBlock}
+  const forcingInstruction = forceEnding
+    ? `\n\n## IMPORTANT: STORY LIMIT APPROACHING\nThis story has exceeded ${totalWordCount} words and must conclude NOW. You MUST set isEnding: true in this turn and write a concluding scene. Do not present new choices.`
+    : "";
+
+  return `${stateBlock}${forcingInstruction}
 
 ## PREVIOUS SCENE CONTEXT:
 ${previousContext}
 
 ## READER CHOSE: "${choiceMade}"
 
-Write scene ${nodeIndex + 1}. Apply all directives and generate the consequence now.`;
+Write scene ${nodeIndex + 1}. Apply all directives. Show only the consequences of this choice — do NOT perform any new actions on behalf of the reader's character. Generate prose now.`;
 }
 
 // ─────────────────────────────────────────────
@@ -293,6 +315,20 @@ async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promis
 }
 
 // ─────────────────────────────────────────────
+// Health score delta from consequenceType
+// ─────────────────────────────────────────────
+
+export function healthScoreDelta(consequenceType: string | undefined): number {
+  switch (consequenceType) {
+    case "good": return 2;
+    case "neutral": return 0;
+    case "bad": return -2;
+    case "catastrophic": return -5;
+    default: return 0;
+  }
+}
+
+// ─────────────────────────────────────────────
 // Shared Result Builder
 // ─────────────────────────────────────────────
 
@@ -300,13 +336,15 @@ function buildGeneratedSegment(
   parsed: any,
   choiceMade: string,
   nodeIndex: number,
-  arcPosition: StoryState["arcPosition"],
-  currentStoryState: StoryState | null
+  currentStoryState: StoryState | null,
+  chosenConsequenceType?: string
 ): GeneratedSegment {
   const turnNumber = nodeIndex + 1;
+  const prevScore = currentStoryState?.storyHealthScore ?? 0;
+  const delta = healthScoreDelta(chosenConsequenceType);
   const updatedStoryState: StoryState = {
     turn: turnNumber,
-    arcPosition,
+    storyHealthScore: prevScore + delta,
     choicesMade: [
       ...(currentStoryState?.choicesMade ?? []),
       {
@@ -334,6 +372,7 @@ function buildGeneratedSegment(
     id: c.id,
     text: c.subtext ? `${c.text}\n${c.subtext}` : c.text,
     consequence: c.consequence,
+    consequenceType: c.consequenceType,
   }));
 
   return {
@@ -355,14 +394,16 @@ export async function generateStorySegment(
   choiceMade: string,
   nodeIndex: number,
   currentStoryState: StoryState | null = null,
+  totalWordCount: number = 0,
+  chosenConsequenceType?: string,
 ): Promise<GeneratedSegment> {
   const story = resolveStory(storyIdOrTitle);
   const storyTitle = story?.title ?? storyIdOrTitle;
   const storyGenre = story?.genre ?? genre;
-  const arcPosition = deriveArcPosition(nodeIndex);
+  const forceEnding = totalWordCount >= 47000;
 
   const systemInstruction = buildSystemInstruction(storyTitle, storyGenre, story?.worldContext);
-  const userMessage = buildUserMessage(previousContext, choiceMade, nodeIndex, currentStoryState, arcPosition);
+  const userMessage = buildUserMessage(previousContext, choiceMade, nodeIndex, currentStoryState, totalWordCount, forceEnding);
 
   try {
     const response = await executeWithRetry(async () => {
@@ -371,7 +412,7 @@ export async function generateStorySegment(
         contents: [{ role: "user", parts: [{ text: userMessage }] }],
         config: {
           systemInstruction,
-          maxOutputTokens: 4096,
+          maxOutputTokens: 6144,
           temperature: 0.9,
           responseMimeType: "application/json",
           responseSchema: storyResponseSchema,
@@ -392,7 +433,7 @@ export async function generateStorySegment(
     );
 
     const parsed = JSON.parse(response.text);
-    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, arcPosition, currentStoryState);
+    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, currentStoryState, chosenConsequenceType);
   } catch (err) {
     logger.error({ err }, "Fatal error generating story segment");
     throw err;
@@ -414,11 +455,13 @@ export async function generateStorySegmentStream(
   nodeIndex: number,
   onChunk: (text: string) => void,
   currentStoryState: StoryState | null = null,
+  totalWordCount: number = 0,
+  chosenConsequenceType?: string,
 ): Promise<GeneratedSegment> {
   const story = resolveStory(storyIdOrTitle);
   const storyTitle = story?.title ?? storyIdOrTitle;
   const storyGenre = story?.genre ?? genre;
-  const arcPosition = deriveArcPosition(nodeIndex);
+  const forceEnding = totalWordCount >= 47000;
 
   const isFreeWill = choiceId === "free-will";
   const effectiveChoiceMade = isFreeWill
@@ -426,7 +469,7 @@ export async function generateStorySegmentStream(
     : choiceMade;
 
   const systemInstruction = buildSystemInstruction(storyTitle, storyGenre, story?.worldContext);
-  const userMessage = buildUserMessage(previousContext, effectiveChoiceMade, nodeIndex, currentStoryState, arcPosition);
+  const userMessage = buildUserMessage(previousContext, effectiveChoiceMade, nodeIndex, currentStoryState, totalWordCount, forceEnding);
 
   try {
     const stream = await executeWithRetry(async () => {
@@ -435,7 +478,7 @@ export async function generateStorySegmentStream(
         contents: [{ role: "user", parts: [{ text: userMessage }] }],
         config: {
           systemInstruction,
-          maxOutputTokens: 4096,
+          maxOutputTokens: 6144,
           temperature: 0.9,
           responseMimeType: "application/json",
           responseSchema: storyResponseSchema,
@@ -573,7 +616,7 @@ export async function generateStorySegmentStream(
     );
 
     const parsed = JSON.parse(accumulated);
-    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, arcPosition, currentStoryState);
+    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, currentStoryState, chosenConsequenceType);
   } catch (err) {
     logger.error({ err }, "Fatal error streaming story segment");
     throw err;

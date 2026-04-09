@@ -34,6 +34,7 @@ export interface Story {
   description: string;
   longDescription: string;
   coverGradient: string;
+  coverImage?: string;
   tags: string[];
   rating: string;
   chapterCount: number;
@@ -64,10 +65,21 @@ export interface StorySession {
   story: Story;
 }
 
+export type ChoiceConsequenceType =
+  (typeof ChoiceConsequenceType)[keyof typeof ChoiceConsequenceType];
+
+export const ChoiceConsequenceType = {
+  good: "good",
+  neutral: "neutral",
+  bad: "bad",
+  catastrophic: "catastrophic",
+} as const;
+
 export interface Choice {
   id: string;
   text: string;
   consequence?: string;
+  consequenceType?: ChoiceConsequenceType;
 }
 
 export interface StoryNode {
@@ -91,9 +103,20 @@ export interface CreateSessionRequest {
   storyId: string;
 }
 
+export type ContinueSessionRequestConsequenceType =
+  (typeof ContinueSessionRequestConsequenceType)[keyof typeof ContinueSessionRequestConsequenceType];
+
+export const ContinueSessionRequestConsequenceType = {
+  good: "good",
+  neutral: "neutral",
+  bad: "bad",
+  catastrophic: "catastrophic",
+} as const;
+
 export interface ContinueSessionRequest {
   choiceId: string;
   choiceText: string;
+  consequenceType?: ContinueSessionRequestConsequenceType;
 }
 
 export interface GenerateSegmentRequest {

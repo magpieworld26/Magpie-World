@@ -53,6 +53,7 @@ export default function ReaderPage() {
         choice.id,
         choice.text,
         (chunk) => setStreamingText(prev => (prev ?? "") + chunk),
+        choice.consequenceType,
       );
       setStreamingText(null);
       setNodes(prev => [...prev, newNode]);
@@ -106,6 +107,8 @@ export default function ReaderPage() {
   const handleFreeWillSubmit = () => {
     const text = freeWillInput.trim();
     if (!text || choosing || chosenId) return;
+    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    if (wordCount > 50) return;
     setFreeWillInput("");
     handleChoice({ id: "free-will", text });
   };
@@ -174,62 +177,82 @@ export default function ReaderPage() {
             <div style={{ fontSize: "11px", letterSpacing: "2px", color: "rgba(0,229,200,0.5)", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Barlow Condensed', sans-serif" }}>
               Or write your own action…
             </div>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <input
-                type="text"
-                value={freeWillInput}
-                onChange={e => setFreeWillInput(e.target.value)}
-                onKeyDown={e => { if (e.key === "Enter") handleFreeWillSubmit(); }}
-                disabled={choosing || !!chosenId}
-                placeholder="Describe what you do…"
-                style={{
-                  flex: 1,
-                  background: "rgba(0,229,200,0.04)",
-                  border: "1.5px solid rgba(0,229,200,0.2)",
-                  borderRadius: "6px",
-                  padding: "10px 14px",
-                  color: "#fff",
-                  fontFamily: "'Barlow', sans-serif",
-                  fontSize: "14px",
-                  outline: "none",
-                  opacity: (choosing || !!chosenId) ? 0.4 : 1,
-                  transition: "border-color 0.2s",
-                }}
-                onFocus={e => { e.currentTarget.style.borderColor = "rgba(0,229,200,0.5)"; }}
-                onBlur={e => { e.currentTarget.style.borderColor = "rgba(0,229,200,0.2)"; }}
-              />
-              <button
-                onClick={handleFreeWillSubmit}
-                disabled={choosing || !!chosenId || !freeWillInput.trim()}
-                style={{
-                  background: "rgba(0,229,200,0.12)",
-                  border: "1.5px solid rgba(0,229,200,0.3)",
-                  borderRadius: "6px",
-                  padding: "10px 14px",
-                  color: "#00e5c8",
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontSize: "13px",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  cursor: (choosing || !!chosenId || !freeWillInput.trim()) ? "not-allowed" : "pointer",
-                  opacity: (choosing || !!chosenId || !freeWillInput.trim()) ? 0.4 : 1,
-                  transition: "background 0.2s, border-color 0.2s",
-                  flexShrink: 0,
-                }}
-                onMouseEnter={e => {
-                  if (!choosing && !chosenId && freeWillInput.trim()) {
-                    e.currentTarget.style.background = "rgba(0,229,200,0.2)";
-                    e.currentTarget.style.borderColor = "rgba(0,229,200,0.6)";
-                  }
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = "rgba(0,229,200,0.12)";
-                  e.currentTarget.style.borderColor = "rgba(0,229,200,0.3)";
-                }}
-              >
-                Go
-              </button>
-            </div>
+            {(() => {
+              const freeWillWordCount = freeWillInput.trim() ? freeWillInput.trim().split(/\s+/).filter(Boolean).length : 0;
+              const freeWillOverLimit = freeWillWordCount > 50;
+              return (
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <textarea
+                    value={freeWillInput}
+                    onChange={e => setFreeWillInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (!freeWillOverLimit) handleFreeWillSubmit(); } }}
+                    disabled={choosing || !!chosenId}
+                    placeholder="Describe what you do… (max 50 words)"
+                    rows={3}
+                    maxLength={300}
+                    style={{
+                      width: "100%",
+                      background: "rgba(0,229,200,0.04)",
+                      border: freeWillOverLimit ? "1.5px solid rgba(255,80,80,0.5)" : "1.5px solid rgba(0,229,200,0.2)",
+                      borderRadius: "6px",
+                      padding: "10px 14px",
+                      color: "#fff",
+                      fontFamily: "'Barlow', sans-serif",
+                      fontSize: "14px",
+                      outline: "none",
+                      opacity: (choosing || !!chosenId) ? 0.4 : 1,
+                      transition: "border-color 0.2s",
+                      resize: "vertical",
+                      boxSizing: "border-box",
+                    }}
+                    onFocus={e => { e.currentTarget.style.borderColor = freeWillOverLimit ? "rgba(255,80,80,0.7)" : "rgba(0,229,200,0.5)"; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = freeWillOverLimit ? "rgba(255,80,80,0.5)" : "rgba(0,229,200,0.2)"; }}
+                  />
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{
+                      fontSize: "11px",
+                      fontFamily: "'Barlow Condensed', sans-serif",
+                      letterSpacing: "1px",
+                      color: freeWillOverLimit ? "rgba(255,80,80,0.9)" : "rgba(0,229,200,0.4)",
+                      transition: "color 0.2s",
+                    }}>
+                      {freeWillWordCount} / 50 words{freeWillOverLimit ? " — too long" : ""}
+                    </span>
+                    <button
+                      onClick={handleFreeWillSubmit}
+                      disabled={choosing || !!chosenId || !freeWillInput.trim() || freeWillOverLimit}
+                      style={{
+                        background: "rgba(0,229,200,0.12)",
+                        border: "1.5px solid rgba(0,229,200,0.3)",
+                        borderRadius: "6px",
+                        padding: "8px 16px",
+                        color: "#00e5c8",
+                        fontFamily: "'Barlow Condensed', sans-serif",
+                        fontSize: "13px",
+                        letterSpacing: "1px",
+                        textTransform: "uppercase",
+                        cursor: (choosing || !!chosenId || !freeWillInput.trim() || freeWillOverLimit) ? "not-allowed" : "pointer",
+                        opacity: (choosing || !!chosenId || !freeWillInput.trim() || freeWillOverLimit) ? 0.4 : 1,
+                        transition: "background 0.2s, border-color 0.2s",
+                        flexShrink: 0,
+                      }}
+                      onMouseEnter={e => {
+                        if (!choosing && !chosenId && freeWillInput.trim() && !freeWillOverLimit) {
+                          e.currentTarget.style.background = "rgba(0,229,200,0.2)";
+                          e.currentTarget.style.borderColor = "rgba(0,229,200,0.6)";
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = "rgba(0,229,200,0.12)";
+                        e.currentTarget.style.borderColor = "rgba(0,229,200,0.3)";
+                      }}
+                    >
+                      Go
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </>
       )}

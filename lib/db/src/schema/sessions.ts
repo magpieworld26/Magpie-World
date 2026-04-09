@@ -9,6 +9,8 @@ export const storySessionsTable = pgTable("story_sessions", {
   status: text("status").notNull().default("active"),
   currentNodeId: text("current_node_id"),
   nodeCount: integer("node_count").notNull().default(0),
+  totalWordCount: integer("total_word_count").notNull().default(0),
+  storyHealthScore: integer("story_health_score").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });

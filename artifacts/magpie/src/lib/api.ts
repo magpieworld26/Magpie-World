@@ -47,6 +47,7 @@ export interface Choice {
   id: string;
   text: string;
   consequence?: string;
+  consequenceType?: "good" | "neutral" | "bad" | "catastrophic";
 }
 
 export interface StoryNode {
@@ -117,6 +118,7 @@ export const api = {
       choiceId: string,
       choiceText: string,
       onChunk: (text: string) => void,
+      consequenceType?: "good" | "neutral" | "bad" | "catastrophic",
     ): Promise<StoryNode> => {
       const token = await getAuthToken();
       const headers: Record<string, string> = {
@@ -128,7 +130,7 @@ export const api = {
       const response = await fetch(`${BASE_URL}/sessions/${id}/continue`, {
         method: "POST",
         headers,
-        body: JSON.stringify({ choiceId, choiceText }),
+        body: JSON.stringify({ choiceId, choiceText, consequenceType }),
       });
 
       if (!response.ok || !response.body) {

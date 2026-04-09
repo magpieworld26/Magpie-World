@@ -176,6 +176,9 @@ export const GetSessionResponse = zod.object({
           id: zod.string(),
           text: zod.string(),
           consequence: zod.string().optional(),
+          consequenceType: zod
+            .enum(["good", "neutral", "bad", "catastrophic"])
+            .optional(),
         }),
       ),
       nodeIndex: zod.number(),
@@ -194,6 +197,9 @@ export const GetSessionResponse = zod.object({
           id: zod.string(),
           text: zod.string(),
           consequence: zod.string().optional(),
+          consequenceType: zod
+            .enum(["good", "neutral", "bad", "catastrophic"])
+            .optional(),
         }),
       ),
       nodeIndex: zod.number(),
@@ -212,6 +218,9 @@ export const ContinueSessionParams = zod.object({
 export const ContinueSessionBody = zod.object({
   choiceId: zod.string(),
   choiceText: zod.string(),
+  consequenceType: zod
+    .enum(["good", "neutral", "bad", "catastrophic"])
+    .optional(),
 });
 
 export const ContinueSessionResponse = zod.object({
@@ -225,6 +234,9 @@ export const ContinueSessionResponse = zod.object({
       id: zod.string(),
       text: zod.string(),
       consequence: zod.string().optional(),
+      consequenceType: zod
+        .enum(["good", "neutral", "bad", "catastrophic"])
+        .optional(),
     }),
   ),
   nodeIndex: zod.number(),
@@ -249,6 +261,9 @@ export const GenerateStorySegmentResponse = zod.object({
       id: zod.string(),
       text: zod.string(),
       consequence: zod.string().optional(),
+      consequenceType: zod
+        .enum(["good", "neutral", "bad", "catastrophic"])
+        .optional(),
     }),
   ),
   isEnding: zod.boolean(),

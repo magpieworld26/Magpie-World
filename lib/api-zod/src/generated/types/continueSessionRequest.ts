@@ -5,8 +5,10 @@
  * Magpie Interactive Reading Platform API
  * OpenAPI spec version: 0.1.0
  */
+import type { ContinueSessionRequestConsequenceType } from "./continueSessionRequestConsequenceType";
 
 export interface ContinueSessionRequest {
   choiceId: string;
   choiceText: string;
+  consequenceType?: ContinueSessionRequestConsequenceType;
 }
