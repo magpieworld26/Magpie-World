@@ -189,10 +189,10 @@ export const api = {
       }),
   },
   contact: {
-    send: (subject: string, message: string) =>
+    send: (email: string, subject: string, message: string) =>
       fetchApi<{ success: boolean }>("/contact", {
         method: "POST",
-        body: JSON.stringify({ subject, message }),
+        body: JSON.stringify({ email, subject, message }),
       }),
   },
 };

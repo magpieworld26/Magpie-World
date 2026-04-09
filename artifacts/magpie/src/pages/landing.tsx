@@ -16,18 +16,20 @@ export default function LandingPage() {
   const [, setLocation] = useLocation();
   const [stories, setStories] = useState<Story[]>([]);
   const { isMobile, isTablet } = useWindowWidth();
+  const [contactEmail, setContactEmail] = useState("");
   const [contactSubject, setContactSubject] = useState("");
   const [contactMessage, setContactMessage] = useState("");
   const [contactStatus, setContactStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [contactError, setContactError] = useState("");
   async function handleContactSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!contactSubject.trim() || !contactMessage.trim()) return;
+    if (!contactEmail.trim() || !contactSubject.trim() || !contactMessage.trim()) return;
     setContactStatus("loading");
     setContactError("");
     try {
-      await api.contact.send(contactSubject.trim(), contactMessage.trim());
+      await api.contact.send(contactEmail.trim(), contactSubject.trim(), contactMessage.trim());
       setContactStatus("success");
+      setContactEmail("");
       setContactSubject("");
       setContactMessage("");
     } catch (err: unknown) {
@@ -413,6 +415,34 @@ export default function LandingPage() {
 
             {/* Right: contact form */}
             <form onSubmit={handleContactSubmit} style={{ flex: 1, display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
+              <div>
+                <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#94a3b8", marginBottom: "8px" }}>
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={contactEmail}
+                  onChange={e => setContactEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  maxLength={254}
+                  required
+                  style={{
+                    width: "100%",
+                    background: "rgba(15,23,42,0.7)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "8px",
+                    padding: "12px 14px",
+                    color: "#e2e8f0",
+                    fontSize: "0.9rem",
+                    outline: "none",
+                    boxSizing: "border-box",
+                    fontFamily: "'Barlow', sans-serif",
+                    transition: "border-color 0.2s",
+                  }}
+                  onFocus={e => (e.currentTarget.style.borderColor = "rgba(104,230,197,0.4)")}
+                  onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+                />
+              </div>
               <div>
                 <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#94a3b8", marginBottom: "8px" }}>
                   Subject
