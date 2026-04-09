@@ -8,6 +8,13 @@
       "when": 1775728857741,
       "tag": "0000_light_quasimodo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775763992177,
+      "tag": "0001_add_story_state_json",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "story_sessions" ADD COLUMN "story_state_json" text;

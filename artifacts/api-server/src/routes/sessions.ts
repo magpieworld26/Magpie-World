@@ -259,15 +259,44 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
   const healthDelta = healthScoreDelta(serverDerivedConsequenceType);
   const updatedHealthScore = currentHealthScore + healthDelta;
 
-  const currentStoryState = {
-    turn: newNodeIndex,
-    storyHealthScore: updatedHealthScore,
-    choicesMade: [],
-    relationshipStates: {},
-    worldStateChanges: [],
-    plantedThreads: [],
-    activeTensions: [],
-  };
+  let currentStoryState: import("../lib/ai-story.js").StoryState;
+  if (session.storyStateJson) {
+    try {
+      const raw = JSON.parse(session.storyStateJson);
+      currentStoryState = {
+        turn: typeof raw?.turn === "number" ? raw.turn : newNodeIndex,
+        storyHealthScore: updatedHealthScore,
+        choicesMade: Array.isArray(raw?.choicesMade) ? raw.choicesMade : [],
+        relationshipStates: (raw?.relationshipStates && typeof raw.relationshipStates === "object" && !Array.isArray(raw.relationshipStates)) ? raw.relationshipStates : {},
+        worldStateChanges: Array.isArray(raw?.worldStateChanges) ? raw.worldStateChanges : [],
+        plantedThreads: Array.isArray(raw?.plantedThreads) ? raw.plantedThreads : [],
+        activeTensions: Array.isArray(raw?.activeTensions) ? raw.activeTensions : [],
+        narrativeSummary: Array.isArray(raw?.narrativeSummary) ? raw.narrativeSummary : [],
+      };
+    } catch {
+      currentStoryState = {
+        turn: newNodeIndex,
+        storyHealthScore: updatedHealthScore,
+        choicesMade: [],
+        relationshipStates: {},
+        worldStateChanges: [],
+        plantedThreads: [],
+        activeTensions: [],
+        narrativeSummary: [],
+      };
+    }
+  } else {
+    currentStoryState = {
+      turn: newNodeIndex,
+      storyHealthScore: updatedHealthScore,
+      choicesMade: [],
+      relationshipStates: {},
+      worldStateChanges: [],
+      plantedThreads: [],
+      activeTensions: [],
+      narrativeSummary: [],
+    };
+  }
 
   const forceEnding = currentTotalWordCount >= FORCE_ENDING_THRESHOLD;
 
@@ -334,6 +363,7 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
         nodeCount: newNodeIndex + 1,
         totalWordCount: updatedTotalWordCount,
         storyHealthScore: updatedHealthScore,
+        storyStateJson: JSON.stringify(generated.storyState),
         status: isEnding ? "completed" : "active",
       })
       .where(eq(storySessionsTable.id, id));
