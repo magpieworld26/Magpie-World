@@ -293,6 +293,58 @@ async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promis
 }
 
 // ─────────────────────────────────────────────
+// Shared Result Builder
+// ─────────────────────────────────────────────
+
+function buildGeneratedSegment(
+  parsed: any,
+  choiceMade: string,
+  nodeIndex: number,
+  arcPosition: StoryState["arcPosition"],
+  currentStoryState: StoryState | null
+): GeneratedSegment {
+  const turnNumber = nodeIndex + 1;
+  const updatedStoryState: StoryState = {
+    turn: turnNumber,
+    arcPosition,
+    choicesMade: [
+      ...(currentStoryState?.choicesMade ?? []),
+      {
+        turn: turnNumber,
+        label: choiceMade,
+        consequenceNote: parsed.storyStateUpdate?.worldStateChanges?.[0] ?? "Consequence noted",
+      },
+    ],
+    relationshipStates: {
+      ...(currentStoryState?.relationshipStates ?? {}),
+      ...(parsed.storyStateUpdate?.relationshipStates ?? {}),
+    },
+    worldStateChanges: [
+      ...(currentStoryState?.worldStateChanges ?? []),
+      ...(parsed.storyStateUpdate?.worldStateChanges ?? []),
+    ],
+    plantedThreads: [
+      ...(currentStoryState?.plantedThreads ?? []),
+      ...(parsed.storyStateUpdate?.plantedThreads ?? []),
+    ],
+    activeTensions: parsed.storyStateUpdate?.activeTensions ?? [],
+  };
+
+  const choices: Choice[] = (parsed.choices ?? []).map((c: any) => ({
+    id: c.id,
+    text: c.subtext ? `${c.text}\n${c.subtext}` : c.text,
+    consequence: c.consequence,
+  }));
+
+  return {
+    narrativeText: parsed.narrativeText,
+    choices,
+    isEnding: parsed.isEnding ?? false,
+    storyState: updatedStoryState,
+  };
+}
+
+// ─────────────────────────────────────────────
 // Main Generator
 // ─────────────────────────────────────────────
 
@@ -339,51 +391,185 @@ export async function generateStorySegment(
       "Gemini generation successful"
     );
 
-    // Guaranteed safely parsed due to responseMimeType and schema
     const parsed = JSON.parse(response.text);
-
-    const turnNumber = nodeIndex + 1;
-    const updatedStoryState: StoryState = {
-      turn: turnNumber,
-      arcPosition,
-      choicesMade: [
-        ...(currentStoryState?.choicesMade ?? []),
-        {
-          turn: turnNumber,
-          label: choiceMade,
-          consequenceNote: parsed.storyStateUpdate?.worldStateChanges?.[0] ?? "Consequence noted",
-        },
-      ],
-      relationshipStates: {
-        ...(currentStoryState?.relationshipStates ?? {}),
-        ...(parsed.storyStateUpdate?.relationshipStates ?? {}),
-      },
-      worldStateChanges: [
-        ...(currentStoryState?.worldStateChanges ?? []),
-        ...(parsed.storyStateUpdate?.worldStateChanges ?? []),
-      ],
-      plantedThreads: [
-        ...(currentStoryState?.plantedThreads ?? []),
-        ...(parsed.storyStateUpdate?.plantedThreads ?? []),
-      ],
-      activeTensions: parsed.storyStateUpdate?.activeTensions ?? [],
-    };
-
-    // Format choices
-    const choices: Choice[] = (parsed.choices ?? []).map((c: any) => ({
-      id: c.id,
-      text: c.subtext ? `${c.text}\n${c.subtext}` : c.text,
-      consequence: c.consequence,
-    }));
-
-    return {
-      narrativeText: parsed.narrativeText,
-      choices,
-      isEnding: parsed.isEnding ?? false,
-      storyState: updatedStoryState,
-    };
+    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, arcPosition, currentStoryState);
   } catch (err) {
     logger.error({ err }, "Fatal error generating story segment");
+    throw err;
+  }
+}
+
+// ─────────────────────────────────────────────
+// Streaming Generator
+// Streams narrative text chunks via onChunk callback,
+// then resolves with the complete GeneratedSegment.
+// ─────────────────────────────────────────────
+
+export async function generateStorySegmentStream(
+  storyIdOrTitle: string,
+  genre: string,
+  previousContext: string,
+  choiceMade: string,
+  nodeIndex: number,
+  onChunk: (text: string) => void,
+  currentStoryState: StoryState | null = null,
+): Promise<GeneratedSegment> {
+  const story = resolveStory(storyIdOrTitle);
+  const storyTitle = story?.title ?? storyIdOrTitle;
+  const storyGenre = story?.genre ?? genre;
+  const arcPosition = deriveArcPosition(nodeIndex);
+
+  const systemInstruction = buildSystemInstruction(storyTitle, storyGenre, story?.worldContext);
+  const userMessage = buildUserMessage(previousContext, choiceMade, nodeIndex, currentStoryState, arcPosition);
+
+  try {
+    const stream = await executeWithRetry(async () => {
+      return await ai.models.generateContentStream({
+        model: MODEL,
+        contents: [{ role: "user", parts: [{ text: userMessage }] }],
+        config: {
+          systemInstruction,
+          maxOutputTokens: 4096,
+          temperature: 0.9,
+          responseMimeType: "application/json",
+          responseSchema: storyResponseSchema,
+        },
+      });
+    });
+
+    let accumulated = "";
+
+    // State machine to extract the narrativeText field from streamed JSON.
+    // The schema places narrativeText first, so we locate the field's opening
+    // quote, then stream characters until we hit the unescaped closing quote.
+    //
+    // Escape-state is tracked across chunk boundaries via `pendingBackslash`.
+    //
+    // The prefix regex is flexible: it matches `"narrativeText"` followed by
+    // optional whitespace, a colon, optional whitespace, then the opening `"`.
+    const NARRATIVE_PREFIX_RE = /"narrativeText"\s*:\s*"/;
+
+    let narrativeStarted = false;
+    let narrativeEnded = false;
+    let prefixBuf = "";
+    // Track that the previous character was an unprocessed backslash (cross-chunk).
+    let pendingBackslash = false;
+
+    // processNarrativeChars: feed characters from the raw JSON string value,
+    // decoding escape sequences, and call onChunk with decoded text.
+    // Returns `true` if the closing quote was found (narrative ended).
+    // unicodePending tracks partially-received \uXXXX sequences across chunk boundaries.
+    // It holds the digits collected so far (1-3 chars), or "" when not in a unicode escape.
+    let unicodePending = "";
+
+    function processNarrativeChars(chars: string): boolean {
+      let out = "";
+      let i = 0;
+      while (i < chars.length) {
+        // Resume a cross-chunk \uXXXX sequence
+        if (unicodePending.length > 0) {
+          while (unicodePending.length < 4 && i < chars.length) {
+            unicodePending += chars[i++];
+          }
+          if (unicodePending.length === 4) {
+            out += String.fromCharCode(parseInt(unicodePending, 16));
+            unicodePending = "";
+          }
+          continue;
+        }
+
+        // Resume a cross-chunk backslash
+        if (pendingBackslash) {
+          pendingBackslash = false;
+          const esc = chars[i];
+          if (esc === 'n') { out += '\n'; i++; }
+          else if (esc === 't') { out += '\t'; i++; }
+          else if (esc === 'r') { out += '\r'; i++; }
+          else if (esc === 'u') {
+            i++;
+            const remaining = chars.slice(i, i + 4);
+            if (remaining.length === 4) {
+              out += String.fromCharCode(parseInt(remaining, 16));
+              i += 4;
+            } else {
+              unicodePending = remaining;
+              i += remaining.length;
+            }
+          }
+          else { out += esc; i++; }
+          continue;
+        }
+
+        if (chars[i] === '\\') {
+          if (i + 1 < chars.length) {
+            const esc = chars[i + 1];
+            if (esc === 'n') { out += '\n'; i += 2; }
+            else if (esc === 't') { out += '\t'; i += 2; }
+            else if (esc === 'r') { out += '\r'; i += 2; }
+            else if (esc === 'u') {
+              i += 2;
+              const remaining = chars.slice(i, i + 4);
+              if (remaining.length === 4) {
+                out += String.fromCharCode(parseInt(remaining, 16));
+                i += 4;
+              } else {
+                unicodePending = remaining;
+                i += remaining.length;
+              }
+            }
+            else { out += esc; i += 2; }
+          } else {
+            pendingBackslash = true;
+            i++;
+          }
+          continue;
+        }
+
+        if (chars[i] === '"') {
+          // Unescaped quote: end of the narrative text value
+          if (out) onChunk(out);
+          return true;
+        }
+
+        out += chars[i];
+        i++;
+      }
+      if (out) onChunk(out);
+      return false;
+    }
+
+    for await (const chunk of stream) {
+      const text = chunk.text ?? "";
+      accumulated += text;
+
+      if (narrativeEnded) continue;
+
+      if (!narrativeStarted) {
+        prefixBuf += text;
+        const match = NARRATIVE_PREFIX_RE.exec(prefixBuf);
+        if (match) {
+          narrativeStarted = true;
+          const afterOpeningQuote = prefixBuf.slice(match.index + match[0].length);
+          if (afterOpeningQuote.length > 0) {
+            narrativeEnded = processNarrativeChars(afterOpeningQuote);
+          }
+        }
+      } else {
+        narrativeEnded = processNarrativeChars(text);
+      }
+    }
+
+    if (!accumulated) throw new Error("Empty response from Gemini");
+
+    logger.info(
+      { storyId: storyIdOrTitle, turn: nodeIndex + 1 },
+      "Gemini streaming generation successful"
+    );
+
+    const parsed = JSON.parse(accumulated);
+    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, arcPosition, currentStoryState);
+  } catch (err) {
+    logger.error({ err }, "Fatal error streaming story segment");
     throw err;
   }
 }

@@ -1,37 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { api, type StorySession, type StoryNode, type Choice } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
-
-function TypewriterText({ text, speed = 18, onDone }: { text: string; speed?: number; onDone?: () => void }) {
-  const [displayed, setDisplayed] = useState("");
-  const [idx, setIdx] = useState(0);
-  const doneRef = useRef(false);
-
-  useEffect(() => {
-    setDisplayed("");
-    setIdx(0);
-    doneRef.current = false;
-  }, [text]);
-
-  useEffect(() => {
-    if (idx >= text.length) {
-      if (!doneRef.current) {
-        doneRef.current = true;
-        onDone?.();
-      }
-      return;
-    }
-    const timer = setTimeout(() => {
-      setDisplayed(text.slice(0, idx + 1));
-      setIdx(i => i + 1);
-    }, speed);
-    return () => clearTimeout(timer);
-  }, [idx, text, speed, onDone]);
-
-  return <>{displayed}</>;
-}
 
 export default function ReaderPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -45,12 +16,11 @@ export default function ReaderPage() {
   const [loading, setLoading] = useState(true);
   const [choosing, setChoosing] = useState(false);
   const [chosenId, setChosenId] = useState<string | null>(null);
-  const [textDone, setTextDone] = useState(false);
   const [showChoices, setShowChoices] = useState(false);
   const [storyComplete, setStoryComplete] = useState(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const storyEndRef = useRef<HTMLDivElement>(null);
+  const [streamingText, setStreamingText] = useState<string | null>(null);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -62,6 +32,8 @@ export default function ReaderPage() {
         setCurrentNode(data.currentNode);
         if (!data.currentNode || data.currentNode.choices.length === 0) {
           setStoryComplete(true);
+        } else {
+          setShowChoices(true);
         }
       }).catch(() => setLocation("/home")).finally(() => setLoading(false));
     });
@@ -73,16 +45,25 @@ export default function ReaderPage() {
     setChoosing(true);
     setShowChoices(false);
     setGenerationError(null);
+    setStreamingText("");
     try {
-      const newNode = await api.sessions.continue(sessionId, choice.id, choice.text);
+      const newNode = await api.sessions.continueStream(
+        sessionId,
+        choice.id,
+        choice.text,
+        (chunk) => setStreamingText(prev => (prev ?? "") + chunk),
+      );
+      setStreamingText(null);
       setNodes(prev => [...prev, newNode]);
       setCurrentNode(newNode);
-      setTextDone(false);
       setChosenId(null);
       if (!newNode.choices || newNode.choices.length === 0) {
         setStoryComplete(true);
+      } else {
+        setShowChoices(true);
       }
     } catch (err) {
+      setStreamingText(null);
       const msg = err instanceof Error ? err.message : "Something went wrong generating the next scene.";
       if (
         msg.toLowerCase().includes("invalid or expired token") ||
@@ -101,18 +82,6 @@ export default function ReaderPage() {
       setChoosing(false);
     }
   };
-
-  useEffect(() => {
-    if (textDone && !storyComplete) {
-      setTimeout(() => setShowChoices(true), 400);
-    }
-  }, [textDone, storyComplete]);
-
-  useEffect(() => {
-    if (storyEndRef.current) {
-      storyEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [nodes, showChoices]);
 
   if (loading) {
     return (
@@ -370,15 +339,10 @@ export default function ReaderPage() {
             whiteSpace: "pre-line",
             minHeight: "160px",
           }}>
-            <TypewriterText
-              key={currentNode.id}
-              text={currentNode.narrativeText}
-              speed={14}
-              onDone={() => setTextDone(true)}
-            />
+            {streamingText !== null ? streamingText : currentNode.narrativeText}
           </div>
 
-          {choosing && (
+          {choosing && streamingText === null && (
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "40px" }}>
               <div style={{ display: "flex", gap: "6px" }}>
                 {[0, 1, 2].map(i => (
@@ -391,7 +355,7 @@ export default function ReaderPage() {
             </div>
           )}
 
-          {storyComplete && !choosing && (
+          {storyComplete && !choosing && streamingText === null && (
             <div style={{ marginTop: "60px", textAlign: "center" }}>
               <div style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "14px" }}>
                 <div style={{ flex: 1, height: "1px", background: "rgba(0,229,200,0.2)" }} />
@@ -412,8 +376,6 @@ export default function ReaderPage() {
               </div>
             </div>
           )}
-
-          <div ref={storyEndRef} style={{ height: "1px" }} />
         </div>
 
         {/* Choices below narrative on mobile */}
@@ -621,15 +583,10 @@ export default function ReaderPage() {
             whiteSpace: "pre-line",
             minHeight: "200px",
           }}>
-            <TypewriterText
-              key={currentNode.id}
-              text={currentNode.narrativeText}
-              speed={14}
-              onDone={() => setTextDone(true)}
-            />
+            {streamingText !== null ? streamingText : currentNode.narrativeText}
           </div>
 
-          {choosing && (
+          {choosing && streamingText === null && (
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "40px" }}>
               <div style={{ display: "flex", gap: "6px" }}>
                 {[0, 1, 2].map(i => (
@@ -642,7 +599,7 @@ export default function ReaderPage() {
             </div>
           )}
 
-          {storyComplete && !choosing && (
+          {storyComplete && !choosing && streamingText === null && (
             <div style={{ marginTop: "60px", textAlign: "center" }}>
               <div style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "14px" }}>
                 <div style={{ flex: 1, height: "1px", background: "rgba(0,229,200,0.2)" }} />
@@ -663,8 +620,6 @@ export default function ReaderPage() {
               </div>
             </div>
           )}
-
-          <div ref={storyEndRef} style={{ height: "1px" }} />
         </div>
       </div>
       {/* RIGHT SIDEBAR — Choices */}

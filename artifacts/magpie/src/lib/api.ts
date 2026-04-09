@@ -112,10 +112,64 @@ export const api = {
       body: JSON.stringify({ storyId }),
     }),
     get: (id: string) => fetchApi<{ session: StorySession; nodes: StoryNode[]; currentNode: StoryNode | null }>(`/sessions/${id}`),
-    continue: (id: string, choiceId: string, choiceText: string) => fetchApi<StoryNode>(`/sessions/${id}/continue`, {
-      method: "POST",
-      body: JSON.stringify({ choiceId, choiceText }),
-    }),
+    continueStream: async (
+      id: string,
+      choiceId: string,
+      choiceText: string,
+      onChunk: (text: string) => void,
+    ): Promise<StoryNode> => {
+      const token = await getAuthToken();
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+      };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const response = await fetch(`${BASE_URL}/sessions/${id}/continue`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ choiceId, choiceText }),
+      });
+
+      if (!response.ok || !response.body) {
+        const error = await response.json().catch(() => ({ message: "Request failed" }));
+        throw new Error(error.message || `Request failed with status ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() ?? "";
+
+        for (const part of parts) {
+          const lines = part.split("\n");
+          let eventName = "message";
+          let dataStr = "";
+          for (const line of lines) {
+            if (line.startsWith("event: ")) eventName = line.slice(7).trim();
+            else if (line.startsWith("data: ")) dataStr = line.slice(6).trim();
+          }
+          if (!dataStr) continue;
+          const data = JSON.parse(dataStr);
+          if (eventName === "chunk") {
+            onChunk(data.text);
+          } else if (eventName === "done") {
+            return data as StoryNode;
+          } else if (eventName === "error") {
+            throw new Error(data.message || "Generation failed");
+          }
+        }
+      }
+
+      throw new Error("Stream ended without a done event");
+    },
   },
   auth: {
     getProfile: () => fetchApi<UserProfile>("/auth/profile"),

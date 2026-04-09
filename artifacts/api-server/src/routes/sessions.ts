@@ -4,7 +4,7 @@ import { eq, and, asc, gt, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { type AuthenticatedRequest, requireAuth } from "../lib/auth-middleware";
 import { getStoryById, getInitialStoryNode } from "../lib/stories-data";
-import { generateStorySegment } from "../lib/ai-story";
+import { generateStorySegmentStream } from "../lib/ai-story";
 import {
   ListSessionsResponse,
   CreateSessionBody,
@@ -209,47 +209,64 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
 
   const newNodeIndex = session.nodeCount;
 
-  const generated = await generateStorySegment(
-    story.id,
-    story.genre,
-    previousContext,
-    choiceText,
-    newNodeIndex
-  );
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
 
-  const newNodeId = randomUUID();
-  const [newNode] = await db
-    .insert(storyNodesTable)
-    .values({
-      id: newNodeId,
-      sessionId: id,
-      parentNodeId: session.currentNodeId,
-      choiceMade: choiceText,
-      narrativeText: generated.narrativeText,
-      choicesJson: JSON.stringify(generated.choices),
-      nodeIndex: newNodeIndex,
-    })
-    .returning();
+  const sendEvent = (event: string, data: unknown) => {
+    res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+  };
 
-  await db
-    .update(storySessionsTable)
-    .set({
-      currentNodeId: newNodeId,
-      nodeCount: newNodeIndex + 1,
-      status: generated.isEnding ? "completed" : "active",
-    })
-    .where(eq(storySessionsTable.id, id));
+  try {
+    const generated = await generateStorySegmentStream(
+      story.id,
+      story.genre,
+      previousContext,
+      choiceText,
+      newNodeIndex,
+      (chunk) => sendEvent("chunk", { text: chunk }),
+    );
 
-  res.json(ContinueSessionResponse.parse({
-    id: newNode.id,
-    sessionId: newNode.sessionId,
-    parentNodeId: newNode.parentNodeId,
-    choiceMade: newNode.choiceMade,
-    narrativeText: newNode.narrativeText,
-    choices: parseChoices(newNode.choicesJson),
-    nodeIndex: newNode.nodeIndex,
-    createdAt: newNode.createdAt,
-  }));
+    const newNodeId = randomUUID();
+    const [newNode] = await db
+      .insert(storyNodesTable)
+      .values({
+        id: newNodeId,
+        sessionId: id,
+        parentNodeId: session.currentNodeId,
+        choiceMade: choiceText,
+        narrativeText: generated.narrativeText,
+        choicesJson: JSON.stringify(generated.choices),
+        nodeIndex: newNodeIndex,
+      })
+      .returning();
+
+    await db
+      .update(storySessionsTable)
+      .set({
+        currentNodeId: newNodeId,
+        nodeCount: newNodeIndex + 1,
+        status: generated.isEnding ? "completed" : "active",
+      })
+      .where(eq(storySessionsTable.id, id));
+
+    sendEvent("done", ContinueSessionResponse.parse({
+      id: newNode.id,
+      sessionId: newNode.sessionId,
+      parentNodeId: newNode.parentNodeId,
+      choiceMade: newNode.choiceMade,
+      narrativeText: newNode.narrativeText,
+      choices: parseChoices(newNode.choicesJson),
+      nodeIndex: newNode.nodeIndex,
+      createdAt: newNode.createdAt,
+    }));
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Generation failed";
+    sendEvent("error", { message });
+  } finally {
+    res.end();
+  }
 });
 
 export default router;
