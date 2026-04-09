@@ -482,9 +482,10 @@ ${UNIVERSAL_PROSE_RULES}`;
 // ─────────────────────────────────────────────
 
 function buildStoryMemoryBlock(storyState: StoryState | null): string {
-  if (!storyState || storyState.narrativeSummary.length === 0) return "";
-
-  const summaries = storyState.narrativeSummary;
+  // Guard against null/undefined state AND against old persisted state objects
+  // that pre-date the narrativeSummary field (it will be undefined, not []).
+  const summaries: string[] = storyState?.narrativeSummary ?? [];
+  if (!storyState || summaries.length === 0) return "";
 
   // Keep all summaries but cap total length to avoid token bloat.
   // Older summaries are condensed further if count is high.
@@ -505,9 +506,9 @@ function buildStoryMemoryBlock(storyState: StoryState | null): string {
   return `## STORY MEMORY (What Has Already Happened — Do NOT contradict this)
 ${memoryLines.join("\n")}
 
-Key relationships: ${JSON.stringify(storyState.relationshipStates)}
-Planted threads to honour: ${storyState.plantedThreads.slice(-5).join(", ") || "none"}
-Active tensions: ${storyState.activeTensions.join(", ") || "none"}
+Key relationships: ${JSON.stringify(storyState.relationshipStates ?? {})}
+Planted threads to honour: ${(storyState.plantedThreads ?? []).slice(-5).join(", ") || "none"}
+Active tensions: ${(storyState.activeTensions ?? []).join(", ") || "none"}
 `;
 }
 
@@ -530,7 +531,7 @@ function buildUserMessage(
   const stateBlock = `## STORY STATE
 Story Health Score: ${healthScore} (negative = bad/catastrophic trajectory; positive = good/heroic trajectory)
 Total words written so far: ${totalWordCount}
-Choices made: ${storyState?.choicesMade.map((c) => c.label).slice(-5).join(" → ") ?? "none"}`;
+Choices made: ${(storyState?.choicesMade ?? []).map((c) => c.label).slice(-5).join(" → ") || "none"}`;
 
   const forcingInstruction = forceEnding
     ? `\n\n## IMPORTANT: STORY LIMIT APPROACHING
