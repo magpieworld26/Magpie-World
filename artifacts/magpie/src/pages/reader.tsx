@@ -21,6 +21,7 @@ export default function ReaderPage() {
   const [generationError, setGenerationError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [streamingText, setStreamingText] = useState<string | null>(null);
+  const [freeWillInput, setFreeWillInput] = useState("");
 
   useEffect(() => {
     if (!sessionId) return;
@@ -102,6 +103,13 @@ export default function ReaderPage() {
 
   const previousNodes = nodes.filter(n => n.id !== currentNode.id);
 
+  const handleFreeWillSubmit = () => {
+    const text = freeWillInput.trim();
+    if (!text || choosing || chosenId) return;
+    setFreeWillInput("");
+    handleChoice({ id: "free-will", text });
+  };
+
   const choicesPanel = (
     <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
       {showChoices && currentNode.choices && currentNode.choices.length > 0 && (
@@ -161,6 +169,68 @@ export default function ReaderPage() {
               <span>{choice.text}</span>
             </button>
           ))}
+
+          <div style={{ marginTop: "8px", borderTop: "1px solid rgba(0,229,200,0.1)", paddingTop: "16px" }}>
+            <div style={{ fontSize: "11px", letterSpacing: "2px", color: "rgba(0,229,200,0.5)", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'Barlow Condensed', sans-serif" }}>
+              Or write your own action…
+            </div>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <input
+                type="text"
+                value={freeWillInput}
+                onChange={e => setFreeWillInput(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") handleFreeWillSubmit(); }}
+                disabled={choosing || !!chosenId}
+                placeholder="Describe what you do…"
+                style={{
+                  flex: 1,
+                  background: "rgba(0,229,200,0.04)",
+                  border: "1.5px solid rgba(0,229,200,0.2)",
+                  borderRadius: "6px",
+                  padding: "10px 14px",
+                  color: "#fff",
+                  fontFamily: "'Barlow', sans-serif",
+                  fontSize: "14px",
+                  outline: "none",
+                  opacity: (choosing || !!chosenId) ? 0.4 : 1,
+                  transition: "border-color 0.2s",
+                }}
+                onFocus={e => { e.currentTarget.style.borderColor = "rgba(0,229,200,0.5)"; }}
+                onBlur={e => { e.currentTarget.style.borderColor = "rgba(0,229,200,0.2)"; }}
+              />
+              <button
+                onClick={handleFreeWillSubmit}
+                disabled={choosing || !!chosenId || !freeWillInput.trim()}
+                style={{
+                  background: "rgba(0,229,200,0.12)",
+                  border: "1.5px solid rgba(0,229,200,0.3)",
+                  borderRadius: "6px",
+                  padding: "10px 14px",
+                  color: "#00e5c8",
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontSize: "13px",
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  cursor: (choosing || !!chosenId || !freeWillInput.trim()) ? "not-allowed" : "pointer",
+                  opacity: (choosing || !!chosenId || !freeWillInput.trim()) ? 0.4 : 1,
+                  transition: "background 0.2s, border-color 0.2s",
+                  flexShrink: 0,
+                }}
+                onMouseEnter={e => {
+                  if (!choosing && !chosenId && freeWillInput.trim()) {
+                    e.currentTarget.style.background = "rgba(0,229,200,0.2)";
+                    e.currentTarget.style.borderColor = "rgba(0,229,200,0.6)";
+                  }
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = "rgba(0,229,200,0.12)";
+                  e.currentTarget.style.borderColor = "rgba(0,229,200,0.3)";
+                }}
+              >
+                Go
+              </button>
+            </div>
+          </div>
         </>
       )}
     </div>

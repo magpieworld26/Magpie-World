@@ -188,7 +188,7 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
     return;
   }
 
-  const { choiceText } = parsed.data;
+  const { choiceId, choiceText } = parsed.data;
 
   const story = getStoryById(session.storyId);
   if (!story) {
@@ -223,6 +223,7 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
       story.id,
       story.genre,
       previousContext,
+      choiceId,
       choiceText,
       newNodeIndex,
       (chunk) => sendEvent("chunk", { text: chunk }),

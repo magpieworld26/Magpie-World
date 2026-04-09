@@ -409,6 +409,7 @@ export async function generateStorySegmentStream(
   storyIdOrTitle: string,
   genre: string,
   previousContext: string,
+  choiceId: string,
   choiceMade: string,
   nodeIndex: number,
   onChunk: (text: string) => void,
@@ -419,8 +420,13 @@ export async function generateStorySegmentStream(
   const storyGenre = story?.genre ?? genre;
   const arcPosition = deriveArcPosition(nodeIndex);
 
+  const isFreeWill = choiceId === "free-will";
+  const effectiveChoiceMade = isFreeWill
+    ? `The reader invented their own action: "${choiceMade}". Treat this as a fully consequential player decision and honour it directly in the narrative.`
+    : choiceMade;
+
   const systemInstruction = buildSystemInstruction(storyTitle, storyGenre, story?.worldContext);
-  const userMessage = buildUserMessage(previousContext, choiceMade, nodeIndex, currentStoryState, arcPosition);
+  const userMessage = buildUserMessage(previousContext, effectiveChoiceMade, nodeIndex, currentStoryState, arcPosition);
 
   try {
     const stream = await executeWithRetry(async () => {
