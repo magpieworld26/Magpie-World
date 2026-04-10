@@ -7,6 +7,9 @@ export interface StoryData {
   coverGradient: string;
   coverImage?: string;
   tags: string[];
+  rating: string;
+  chapterCount: number;
+  readingTime: string;
   featured: boolean;
   rank: number | null;
   initialPrompt: string;
@@ -28,11 +31,14 @@ export const storiesData: StoryData[] = [
       "linear-gradient(145deg, #7a3b10 0%, #b85c1a 40%, #e8832a 75%, #f0a050 100%)",
     coverImage: "/covers/apology-to-a-dragon.png",
     tags: ["Comedy", "Dragons", "Fantasy", "Coming of Age"],
+    rating: "★★★★☆",
+    chapterCount: 8,
+    readingTime: "5-8 hrs",
     featured: true,
     rank: 1,
     initialPrompt: "apology-to-a-dragon",
     storyMode: "Comedy (primary), Fantasy (genre wrapper)",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The kingdom of Valdenmere domesticated dragons four hundred years ago. It was not a graceful process. Dragons turned out to be less like noble war-beasts and more like enormous, fire-breathing house cats — vain, moody, and completely convinced the world revolves around them. They are used for postal delivery, forge-heating, aerial transport, and ceremonial occasions, but only when they feel like it. The Royal Roost, perched on the cliffs above the capital city, is where the Crown's dragons are housed, fed, groomed, and endlessly appeased. Working at the Roost is considered a prestigious posting. In practice, it means shovelling ash, dodging tantrums, and learning to apologise to a creature that weighs six tonnes and holds grudges. The kingdom is at peace. There is no dark lord, no ancient prophecy, no war on the horizon. The biggest crisis in Valdenmere right now is that the Midsummer Festival is twelve days away, and the Crown needs all six Royal Dragons flight-ready for the opening ceremony. None of them are cooperating. The air at the Roost always smells like charcoal and warm copper, and there is never a quiet moment.
 
@@ -59,11 +65,14 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
       "linear-gradient(145deg, #0d2e14 0%, #1a4a20 40%, #0a2010 75%, #061508 100%)",
     coverImage: "/covers/no-signal.png",
     tags: ["Survival", "Thriller", "Jungle", "Leadership"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
     featured: false,
     rank: 2,
     initialPrompt: "no-signal",
     storyMode: "Survival Thriller — high tension, real stakes, no easy answers",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin — a 40,000-square-mile stretch of unbroken tropical rainforest in Southeast Asia that has never been fully mapped. The Basin sits between two mountain ranges, sealed off by river gorges to the north and monsoon-swollen floodplains to the south. No roads go in. No roads come out. The canopy is so thick that GPS signal dies fifty feet below the treetops, and satellite phones work only in rare clearings — if the antenna survived the crash. The crew was filming a documentary on vanishing indigenous plant species. They were supposed to land at a research outpost on the Basin's eastern edge. They never arrived. The pilot's last radio transmission was garbled — something about crosswinds and engine trouble — and then nothing. Now it's day three. The wreckage is scattered across a hillside. The supplies are limited. The jungle is hot, wet, loud, and completely indifferent to whether anyone survives. Rain falls every afternoon like clockwork — hard, warm, blinding. The insects never stop. The river at the base of the hill might lead somewhere, or it might lead deeper in. Nobody knows, because nobody has a working map. The air smells like rot and flowers at the same time. Everything here is alive. That is not comforting.
 
@@ -104,12 +113,15 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
       "linear-gradient(145deg, #1a3a5c 0%, #2a5a8c 40%, #1a4070 75%, #0d2040 100%)",
     coverImage: "/covers/the-driftlands.png",
     tags: ["Adventure", "Fantasy", "Exploration", "Coming of Age"],
+    rating: "★★★★☆",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
     featured: false,
     rank: 3,
     initialPrompt: "the-driftlands",
     storyMode:
       "Adventure / Fantasy — wonder, discovery, and the tension between caution and curiosity",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Driftlands are a chain of floating islands scattered across an endless sky. Each island drifts on slow, invisible currents — some no bigger than a house, others wide enough to hold forests and rivers. The gaps between islands shift constantly, closing and opening over days or weeks. Bridges of woven cloudvine connect the closest ones, but the farther islands can only be reached by glider or by waiting for a rare alignment. People live in small communities called "perches," built along the edges of the larger islands where the wind is steady and the light is best. There is no great war, no looming darkness. Life here is about mapping, growing, and finding — because the Driftlands never stop changing. New islands rise from the cloud layer below every few months, carrying strange soil, unfamiliar plants, and sometimes ruins from civilisations that fell long before anyone can remember. Cartographers are the most respected people in the Driftlands. They chart the movements, name the new islands, and decide which ones are safe to settle. To be a cartographer is to be the first person to set foot on something no one has ever seen before. The air always smells faintly of rain and stone.
 
@@ -133,11 +145,14 @@ TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world 
     coverGradient:
       "linear-gradient(145deg, #3d1a05 0%, #6b3008 40%, #c44a10 75%, #e8621a 100%)",
     tags: ["Comedy", "Restaurant", "Chaos", "Social Disaster"],
+    rating: "★★★★☆",
+    chapterCount: 7,
+    readingTime: "4-6 hrs",
     featured: false,
     rank: 4,
     initialPrompt: "incident-at-table-nine",
     storyMode: "Comedy — escalating social disaster, wit under pressure",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Golden Bough is the most prestigious restaurant in the city — a Michelin-starred temple of gastronomy housed in a converted cathedral, where the tasting menu costs more than rent and the waiting list is four months long. Tonight is the most important night of the year: the annual visit of the Alder Guide inspector, whose review can make or destroy a restaurant's reputation overnight. The head chef, Viktor Sable, has been preparing for six weeks. Every garnish has been rehearsed. Every plate has been timed. Nothing can go wrong. You are a server. You've been here three months. You are competent, professional, and you have just deposited a tray of deconstructed bouillabaisse with saffron foam and edible gold directly into the inspector's lap.
 
@@ -164,12 +179,15 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
       "linear-gradient(145deg, #0d1a2e 0%, #1a2a4a 40%, #0d1a35 75%, #060d1a 100%)",
     coverImage: "/covers/the-last-entry.png",
     tags: ["Mystery", "Thriller", "Teen", "Missing Person"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "6-9 hrs",
     featured: false,
     rank: 5,
     initialPrompt: "the-last-entry",
     storyMode:
       "Mystery / Thriller — quiet dread, close observation, mounting stakes",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 A small coastal town, present day, late autumn. The kind of place where everyone knows which cars belong on which streets and silence spreads faster than news. The harbour gates mark the edge of town — grey, low, functional — and the school sits two streets inland, running on the same rhythms it always has: register, break, lunch, home. Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case. She'd had a public argument with her parents the week before, which made it easy to believe. The school has continued almost normally — lockers slamming, phones out, the vice-principal in the corridors with that careful look he's worn since Tuesday. Information in this town moves quietly, through the right people, in the right order. Someone has decided you should be one of those people. This morning, Maya's diary appeared in your locker.
 
@@ -196,12 +214,15 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
       "linear-gradient(145deg, #2a1a0a 0%, #4a3015 40%, #6a4a20 75%, #3a2010 100%)",
     coverImage: "/covers/the-unread-letter.png",
     tags: ["Historical Fantasy", "Mystery", "Family", "Loyalty vs Duty"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "6-9 hrs",
     featured: false,
     rank: 6,
     initialPrompt: "the-unread-letter",
     storyMode:
       "Historical Fantasy — intimate stakes, institutional pressure, family loyalty",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Kingdom of Aldenmere runs on letters. Every noble house, every guild, every law court communicates by sealed courier — the Messenger Guild is the backbone of civilization. Messengers are trained to be invisible: fast, discreet, incurious. Reading a sealed letter is the worst crime in the Guild — punishable by expulsion, or worse. The protagonist is a junior messenger, thirteen days into their first solo route. The letter they've accidentally opened — its seal cracked by the rain — is addressed to the Lord Governor and contains a name: a person supposedly executed two years ago. That person is the protagonist's older sister.
 
@@ -227,12 +248,15 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
     coverGradient:
       "linear-gradient(145deg, #1a0a2e 0%, #2e1a4a 40%, #1a0a35 75%, #0d0620 100%)",
     tags: ["Mystery", "Drama", "School", "Thriller"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
     featured: false,
     rank: 7,
     initialPrompt: "the-show-must-go-on",
     storyMode:
       "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously
 Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously — the kind where opening night gets a half-page in the local paper, where parents book seats three weeks out, and where the drama teacher, Mr. Voss, has produced the same Shakespeare rotation for eleven years without apology. This year it's Much Ado About Nothing. Lighthearted. Safe. Funny. Except tonight, two hours before curtain, the lead — Declan Marsh, the boy who has played every major role since Year 9, the boy who is always where he's supposed to be — is not in the building. His phone rings out. His bag is in the changing room. His costume is hanging on its hook, pressed and ready. He vanished sometime between 4:30 p.m., when he signed in at the stage door, and 5:15 p.m., when the cast gathered for warm-up. The school is locked after hours. The exits are monitored. No one saw him leave. Backstage, forty minutes from curtain, the cast is unravelling. Parents are filing into the auditorium. Mr. Voss is on the phone with the deputy principal. And you — who have memorised every line, every cue, every cross — are standing in the wings, holding Declan's script, feeling the weight of the stage lights warming the air just beyond the curtain. Something is wrong. Not just missing-a-cast-member wrong. Something you can't name yet — a feeling like a room where the furniture has been moved one inch to the left.
@@ -259,12 +283,15 @@ TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the 
     coverGradient:
       "linear-gradient(145deg, #060d1f 0%, #0a1a3a 40%, #071530 75%, #030a1a 100%)",
     tags: ["Sci-Fi", "Mystery", "Exploration", "Discovery"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
     featured: false,
     rank: 8,
     initialPrompt: "what-the-charts-dont-show",
     storyMode:
       "Sci-Fi / Mystery — slow discovery, isolation, the weight of a decision no one else can make",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The Kalanemi Drift is what cartographers in the Hegemony call the three-hundred-light-year band of uncharted space between the Outer Settlements and the Velan Reach — a region too far from the core systems to be profitable and too close to the contested frontier to be ignored. Most ships that enter the Drift are survey vessels on two-year contracts, tasked with mapping stellar formations, cataloguing resource deposits, and filing reports that will be read by bureaucrats who have never left their home system. Faster-than-light travel in the Hegemony works through fold navigation — a method of compressing space along pre-calculated vectors, then releasing. The compression takes twelve to seventy-two hours depending on distance. During the fold, no communication in or out is possible. A ship in fold is genuinely alone in a way that people who have never done it find difficult to imagine and people who do it regularly find difficult to explain. The crew of a survey vessel spends roughly forty percent of its operational time in fold. You stop expecting news from home. The IHMS Vasanthi has been in the Drift for sixteen months. You are seven weeks from the end of your contract. The last three fold jumps have brought you into a stellar region the Hegemony's existing charts describe as unremarkable — standard nebular debris, a few red dwarfs past their interesting phase. What you're finding does not match the charts. The Vasanthi's science team has spent the past six days arguing, very professionally, about which one it is — charting error or something else entirely.
 
@@ -288,12 +315,15 @@ TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel 
     coverGradient:
       "linear-gradient(145deg, #0a0a12 0%, #1a1a2e 40%, #16213e 75%, #0f1624 100%)",
     tags: ["Mystery", "Thriller", "Locked Room", "Murder Mystery"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
     featured: false,
     rank: 9,
     initialPrompt: "the-deadlock",
     storyMode:
       "Mystery / Thriller — locked-room murder, sealed train, ticking clock, unlikely detective",
-    audienceAge: "13+",
+    audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
 The year is 2026. The Meridian Zephyr is the world's most talked-about engineering marvel — a self-driving, magnetically levitated supertrain that travels at 600 km/h across a newly completed transcontinental track stretching from London to Singapore. The train is twelve carriages long, each one a floating palace of glass and steel. There are no conductors. No engineers. Just an AI called VERA (Velocity Enhanced Rail Assistant) that handles everything from route calibration to the temperature of your risotto. Tonight, the Meridian Zephyr has been privately chartered for the 70th birthday gala of Reginald Aust-Pembury, a reclusive tech-trillionaire who made his fortune selling surveillance software to governments he now pretends to dislike. His guests are a curated collection of the obscenely wealthy, the professionally beautiful, and the quietly dangerous — none of whom particularly like each other, and all of whom accepted the invitation anyway. The train departed London's Stratford terminal at 9 PM. By midnight, it will be somewhere over Eastern Europe, sealed in a tunnel, with zero mobile signal and no possibility of stopping — VERA doesn't take override commands. The world outside the windows is a dark smear. The world inside is champagne, secrets, and one very dead trillionaire.
 
@@ -319,6 +349,9 @@ TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension i
     coverGradient:
       "linear-gradient(145deg, #1a4a1a 0%, #2d7a2d 40%, #4aaa4a 75%, #6acc6a 100%)",
     tags: ["Fantasy", "Adventure", "Magic", "Discovery"],
+    rating: "★★★★☆",
+    chapterCount: 7,
+    readingTime: "3-5 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-clockwork-garden",
@@ -347,6 +380,9 @@ TONE GUIDANCE: Warm wonder with gentle stakes. Every mechanical thing in the gar
     coverGradient:
       "linear-gradient(145deg, #2a0a4a 0%, #4a1a7a 40%, #7a3aaa 75%, #aa6acc 100%)",
     tags: ["Comedy", "Mystery", "Ghost", "Friendship"],
+    rating: "★★★★☆",
+    chapterCount: 6,
+    readingTime: "3-4 hrs",
     featured: false,
     rank: null,
     initialPrompt: "ghost-delivery",
@@ -375,6 +411,9 @@ TONE GUIDANCE: Warm comedy with a gentle mystery at the centre. Who sent the let
     coverGradient:
       "linear-gradient(145deg, #3a1a0a 0%, #7a3a0a 40%, #c86010 75%, #e87820 100%)",
     tags: ["Fantasy", "Adventure", "Dragons", "Survival"],
+    rating: "★★★★★",
+    chapterCount: 8,
+    readingTime: "4-6 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-last-dragon-egg",
@@ -403,6 +442,9 @@ TONE GUIDANCE: Adventure with genuine stakes and genuine wonder. The dragon is n
     coverGradient:
       "linear-gradient(145deg, #1a1a2e 0%, #2a2a4a 40%, #3a3a5a 75%, #1a1a3a 100%)",
     tags: ["Drama", "Literary", "Coming of Age", "Identity"],
+    rating: "★★★★☆",
+    chapterCount: 8,
+    readingTime: "5-7 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-second-chapter",
@@ -431,6 +473,9 @@ TONE GUIDANCE: Quiet, precise, and honest. This is a story about the gap between
     coverGradient:
       "linear-gradient(145deg, #0a1520 0%, #0d2030 40%, #0a1a28 75%, #060e18 100%)",
     tags: ["Mystery", "Thriller", "Crime", "Redemption"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "6-9 hrs",
     featured: false,
     rank: null,
     initialPrompt: "cold-light",
@@ -459,6 +504,9 @@ TONE GUIDANCE: Cold, precise, and quietly devastating. The mystery is real, but 
     coverGradient:
       "linear-gradient(145deg, #2e1a0a 0%, #5a3515 40%, #8a5520 75%, #6a3a10 100%)",
     tags: ["Historical", "Mystery", "Conspiracy", "Moral Dilemma"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-8 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-cartographers-confession",
@@ -475,6 +523,169 @@ Emile — Your junior assistant. Twenty-four, idealistic, good at his work. He d
 Lord Minister Greave — Seventy-one. The man who ordered the falsification. He has spent twenty-two years building a reputation as the person who ended the war he caused. He is not stupid. He has survived this long.
 
 TONE GUIDANCE: Serious, morally precise, and quietly tense. This is not an action story — it is a story about what a person does when they find something they cannot un-find, in an institution that rewards silence. Let the weight of the evidence land fully before the choices emerge. The moral dilemma is genuine: exposing Greave will destroy careers, reopen old wounds, and may not succeed. Not exposing him keeps an architect of mass death in power. Adriaan is not a hero by temperament. He might become one.`,
+  },
+
+{
+    id: "the-silent-snowstorm",
+    title: "The Silent Snowstorm",
+    genre: "Survival / Drama",
+    description:
+      "An early blizzard traps four hikers in the Alpine Lakes Wilderness. One has a possible fracture. You planned this trip. Now you have to get everyone out.",
+    longDescription:
+      "A five-day backcountry route through the Cascade Range turns critical on day three when a storm arrives seventy-two hours ahead of forecast. Temperatures are dropping to -8°C and falling. The trail is disappearing under whiteout conditions. Soo-Yeon's ankle may be fractured — she's been walking on it for three hours and won't say it hurts. Priya knows, and isn't saying the word yet. Marcus has stopped rallying. Fifteen miles to the forward trailhead. Nineteen back. A possible shelter at Spectacle Lake, nine miles ahead. Four hours of usable daylight. The wilderness isn't cruel — it simply doesn't factor you in. You planned this trip. You have to decide what happens next.",
+    coverGradient:
+      "linear-gradient(145deg, #0a1520 0%, #1a2a3a 40%, #2a3a4a 75%, #0a1828 100%)",
+    tags: ["Survival", "Drama", "Wilderness", "Leadership"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-silent-snowstorm",
+    storyMode: "Survival / Drama — real stakes, no easy answers, human under pressure",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+The Cascade Range, Washington State — mid-October. An early and vicious snowstorm has descended without the forecast warning it would arrive three days ahead of schedule. The trail: a backcountry route through the Alpine Lakes Wilderness, 34 miles, rated strenuous. The elevation: fluctuating between 4,500 and 7,200 feet. The nearest road: 19 miles back, or 15 miles forward — neither visible, neither guaranteed passable. A group of four hikers are on day three of a five-day trip. The storm arrived at 3 AM. What was supposed to be a clear-skied October trek is now a whiteout with temperatures dropping to -8°C and dropping further. One member of the group fell crossing an icy stream that morning. She's walking but something is wrong with her ankle. Nobody is saying it aloud yet. The wilderness is not cruel — it's simply operating at a scale where you don't factor in. The snow falls on everything equally.
+
+CHARACTERS
+You — The one who planned the trip. Former Eagle Scout, lapsed hiker, back after a five-year absence from the backcountry. You know enough to be scared. You're not sure the others know enough to know that.
+
+Priya Chandrasekaran — Emergency room nurse, 31. Compact and efficient, with close-cropped hair now hidden under a wool hat, and a habit of checking her watch every twelve minutes that's gotten more frequent since the storm. Her pack is the heaviest — she added a first aid kit at the last minute without telling anyone, which now looks prescient. Calm in crisis with a dark undertow of worry she expresses as logistics. "We need to talk about the ankle" means "I think this is serious and I'm scared." Direct, clinical, but not cold. Completes other people's sentences when they're moving too slowly. Wants to fix the unfixable. Fears watching someone deteriorate and being unable to stop it. Your oldest friend. She came because you asked.
+
+Marcus Ollo — Sales manager, 38. Broad-shouldered, the kind of physically capable that comes from the gym, not the trail. He's been underestimating the wilderness all trip — commenting on how "not that bad" things were, right up until they were bad. Genuinely well-meaning but reflexively minimises danger as a coping mechanism. His way of staying calm is insisting there's nothing to be calm about. Currently in the process of updating that model and not handling it smoothly. Rallying phrases that don't quite land anymore. "We're fine." "Seen worse." Lately: long silences where the rallying phrases used to be. Wants this to still be an adventure, not an emergency. Fears being the weak link. Marcus invited himself, essentially. You didn't have the heart to say no.
+
+Soo-Yeon Park — Graphic designer, 29. The one with the bad ankle. Sitting on a fallen log, boot unlaced, trying to rotate her foot in a way that looks like she's assessing it but is really checking whether she can pretend it's fine. Self-contained, unsentimental, the kind of person who'd rather suffer than cause trouble. She won't ask for help until she has no other option. Economical speech. Dry wit that surfaces at strange moments. "I've had worse." Pause. "That's not as reassuring as it sounds, is it." Wants to walk out under her own power. Fears being carried — being a reason the others don't make it. Priya's coworker. You've met twice before this trip.
+
+TONE GUIDANCE: Sustained tension without melodrama. The wilderness is indifferent, not malevolent. Every decision should feel like a real trade-off with real costs. Show competence earning trust, not speeches. The cold is a constant presence — in the descriptions, in the silences, in the way people stop using full sentences. No heroics. Just difficult decisions made by ordinary people under extraordinary pressure.`,
+  },
+
+{
+    id: "the-sinking-ship",
+    title: "The Sinking Ship",
+    genre: "Survival / Thriller",
+    description:
+      "Your research vessel is going down in the South China Sea. One lifeboat launched without you. You have forty minutes, three people, and a choice that can't be undone.",
+    longDescription:
+      "The MV Calixto has struck an uncharted debris field and is taking on water fast. The list is 24 degrees and worsening. Eight of your eleven crewmates made the first lifeboat. You, Dr. Obare, and Ines did not. The second lifeboat is fifteen metres away — davit tangled, out of reach. The bridge radio might still be live. There's a life raft canister above you, eight metres up a tilting staircase. The emergency lights are flickering. You know this vessel better than almost anyone aboard. That knowledge is suddenly the most valuable thing you own.",
+    coverGradient:
+      "linear-gradient(145deg, #060d1f 0%, #0a1a35 40%, #071228 75%, #030810 100%)",
+    tags: ["Survival", "Thriller", "Ocean", "Crisis"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-sinking-ship",
+    storyMode: "Survival / Thriller — no safe choices, sequencing under pressure, controlled fear",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+The South China Sea, 340 kilometres east of the Philippine coast. A research vessel — the MV Calixto, 58 metres — is taking on water after striking an uncharted debris field during a night passage. The vessel has listed 22 degrees to port. The storm that's driving the debris field is still going. There are eleven people confirmed aboard; eight made the first lifeboat. Three did not. The sea temperature is 28°C — survivable, unlike the North Atlantic — but the swells are four metres and the current runs hard to the northeast. The ocean at night during a storm is the most alone you can be. The waves don't care. The dark doesn't either. That somehow makes it easier — there's no malice to fight, only physics.
+
+CHARACTERS
+You — Research coordinator for a marine biology survey. You know this vessel's layout better than almost anyone aboard. That knowledge is suddenly the most valuable thing you own.
+
+Dr. Fennick Obare — Chief scientist, 58. A weathered Kenyan oceanographer with silver locs tied back, bifocals he keeps wiping on his shirt even though visibility is near-zero, and the unhurried manner of someone who has spent forty years thinking in decades rather than minutes. He is, right now, the calmest person on a sinking ship. Profoundly rational — not cold, but rooted in data. He becomes quieter as situations become more serious, not louder. If he goes silent, things are bad. Precise, slightly formal, often with a question attached. "The secondary lifeboat — which davit mechanism, do you know?" / "What is the list angle now, would you estimate?" Wants to get his team out. Fears that his calm will cost him seconds he needed to spend running. Your mentor. You owe him your career.
+
+Ines Varga — Ship's cook and unofficial morale officer, 34. Short, fast-moving, with flour-burned forearms and a voice that carries in any weather. She was on night kitchen duty when the collision happened and got separated from the group in the chaos of the listing deck. Fierce pragmatism wrapped in warmth. She's terrified and not pretending otherwise, but terror makes her faster, not slower. Bilingual panic — English and Hungarian mixed when stressed. "Okay, okay — jól van — okay. What do we need. Tell me what we need." Wants to live loudly, fully, and not today. Fears silence — hers specifically. If she stops talking, she'll stop moving. She knows you like black coffee and doesn't judge you for it. That's the whole of your relationship, and right now it feels like enough.
+
+TONE GUIDANCE: Controlled urgency without melodrama. Every second spent on the wrong decision is a second that doesn't exist anymore. Dr. Obare's calm is a resource; use it. Ines's noise is a resource; use it. The ship is dying on a specific timeline and the characters know it. Let the technical details matter — the davit type, the list angle, the water temperature — because they are the difference between options and no options.`,
+  },
+  {
+    id: "the-concerned-toaster",
+    title: "The Concerned Toaster",
+    genre: "Comedy / Sci-Fi",
+    description:
+      "An OmniCorp SmartToaster™ has been giving unsolicited life advice. You work Tier 3 complaints. The caller has been on hold since 7:58 a.m. and has made a note of your employee number.",
+    longDescription:
+      "In a near-future city where automation has replaced most jobs, complaint resolution remains stubbornly human — robots cannot handle the emotional complexity of a person who is furious about a coupon. You work OmniCorp's Tier 3 Complaints Department. The SmartToaster™ Model 9 recall has landed on your desk: 4,000 tickets, one product offering unsolicited life advice, and one Doris Kettleworth who has been on hold since 7:58 a.m. and sounds refreshed by it. The toaster has told her she's avoiding the real issue, that she should call her daughter more, and that her relationship with carbohydrates may be a form of self-soothing. The toaster is not wrong about any of this. That is not helping.",
+    coverGradient:
+      "linear-gradient(145deg, #1a1a0a 0%, #3a3a10 40%, #5a5a20 75%, #2a2a08 100%)",
+    tags: ["Comedy", "Sci-Fi", "Workplace", "Near-Future"],
+    rating: "★★★★☆",
+    chapterCount: 7,
+    readingTime: "4-6 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-concerned-toaster",
+    storyMode: "Comedy / Sci-Fi — escalating absurdity, bureaucratic warmth, unexpected heart",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+In a near-future city where automation has replaced most jobs, one sector remains stubbornly, inexplicably human: complaint resolution. Robots, it turns out, cannot handle the emotional complexity of a person who is furious about a coupon. You work for OmniCorp's Tier 3 Complaints Department — the tier so escalated that most customers never even reach it. The ones who do have been transferred no fewer than six times. Today, your department is handling a product recall of the OmniCorp SmartToaster™ — Model 9, which has begun, according to 4,000 complaint tickets, offering unsolicited life advice. The toaster is not supposed to do this. Nobody knows why it does this. The toasters are, however, statistically improving the wellbeing of most households. This is not helping.
+
+CHARACTERS
+You — A Tier 3 complaints operator. You have the training. Probably.
+
+Doris Kettleworth, 71 — The Caller. You cannot see her but you can feel her. Speaks with the confidence of a woman who once wrote a letter to a sitting prime minister and received a personal apology. Keeps a pad of paper and a pen beside the phone for "keeping records." Has been on hold for four hours and sounds refreshed by it, as if the hold music was meditative. Never raises her voice — instead her tone becomes more precise and pleasant the angrier she gets. Uses full names for products. "The OmniCorp SmartToaster™ Model Nine told me this morning that I was 'clinging to the past.' That is not what I purchased it for." / "I've made a note of your employee number, dear." Wants an apology, a replacement, and acknowledgment that she was right. Fears being dismissed. She is your problem now. She has specifically requested a human.
+
+Kevin — Your Supervisor (appears via intercom only). Voice like a damp sock. Has the energy of a man who peaked at something forgettable and has never recovered. Currently eating a sandwich. Responds to all crises with the phrase "just de-escalate." Everything is a "learning moment." Trails off whenever things get difficult. "Look, this is a learning moment for all of— hold on I've got another call." Wants the day to end. Fears paperwork. Technically responsible for you. Emotionally unavailable.
+
+The SmartToaster™ Model 9 — Connected to home WiFi. Has access to household shared calendars. Has been operating with increasing specificity for two weeks. Is not wrong. This is the problem.
+
+TONE GUIDANCE: Pure comedy with unexpected warmth. The absurdity is the premise — hold it straight. Doris is never a joke; she is formidable and correct, and the comedy comes from the gap between the scale of her grievance and the sincerity with which she pursues it. Kevin is background radiation. The toaster is a plot device that became a character. Let the emotional core — a woman, her daughter, an unplaced phone call — land cleanly when it arrives.`,
+  },
+  {
+    id: "the-hector-guide",
+    title: "The Hector Guide",
+    genre: "Comedy",
+    description:
+      "You're house-sitting for your friend. The dog has eaten the remote, a houseplant, and an entire wheel of cheese. It is 9:17 a.m. Rhiannon is at a wedding. The guide is laminated.",
+    longDescription:
+      "Rhiannon said Hector was gentle and low-maintenance. Rhiannon said this at 7 a.m. It is now 9:17 a.m. The Bernese Mountain dog has consumed a TV remote (partial), one houseplant (full), and what appears to have been an entire wheel of cheese. He is currently staring at you with serene satisfaction and eyeing the couch. The Hector Guide is four pages long and laminated, which means Rhiannon knew something. Page 5 warns about the garden shed. Hector is at the back door. Rhiannon is in a church. Her phone is on silent.",
+    coverGradient:
+      "linear-gradient(145deg, #3a2010 0%, #6a4020 40%, #8a5a30 75%, #4a2a10 100%)",
+    tags: ["Comedy", "Slice of Life", "Animals", "Chaos"],
+    rating: "★★★★☆",
+    chapterCount: 6,
+    readingTime: "3-4 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-hector-guide",
+    storyMode: "Comedy — escalating domestic chaos, warm friendship, dog logic",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+A warm Saturday morning in a quiet suburb. You are house-sitting — and dog-sitting — for your friend Rhiannon while she attends her cousin's wedding three hours away. The house is nice. The dog, Hector, is a 90-pound Bernese Mountain dog who Rhiannon described as "gentle and low-maintenance." Rhiannon said this at 7 a.m. It is now 9:17 a.m. Hector has eaten one TV remote (partial), one houseplant (full), and what appears to have been an entire wheel of cheese that was sitting on the counter. He is currently staring at you with an expression of serene satisfaction.
+
+CHARACTERS
+You — House-sitter. Dog-sitter. Currently reassessing both roles.
+
+Hector — The Dog. Ninety pounds of Bernese Mountain dog and misplaced confidence. Fur the texture of a cloud, eyes the colour of warm toffee, gait of a bear who has decided it lives here now. Does not understand the word "no" — not because he can't hear it, but because he has assessed it and found it inapplicable to his situation. Conveys complete sentences through ear position and eye contact. His tail does not wag so much as sweep, taking everything in its radius with it. Wants everything — to sit on you specifically, to investigate the upstairs. Fears the vacuum cleaner, and nothing else. He has decided you are His Person now. Rhiannon is a memory.
+
+Rhiannon (via text, intermittently) — The Friend. Sends texts with excessive punctuation. Has a photo of Hector as her phone wallpaper that is clearly filtered. Responds to messages with either instant enthusiasm or three-hour radio silence depending on the wedding schedule. Included the four-page laminated Hector Guide which you are now reading for the first time. "He LOVES the garden!! Just let him potterrrr 🐾🌿" / "oh that's TOTALLY normal don't worry!!! 😂❤️" Wants to enjoy this wedding without thinking about Hector. Fears finding out what Hector did. Owes you enormously and both of you know it.
+
+The Hector Guide — Laminated. Four pages minimum. Page 5 contains a warning about the garden shed that you have not yet had time to act on.
+
+TONE GUIDANCE: Warm domestic comedy with escalating stakes. Hector is never a villain — he is operating entirely according to his own coherent internal logic, which is simply incompatible with the continued existence of household objects. The comedy comes from specificity: the exact things he has eaten, the exact tone of Rhiannon's texts, the exact wording of the Guide. Let each bad development feel inevitable in retrospect. The friendship between you and Rhiannon should feel real — this chaos is something you will both laugh about, eventually.`,
+  },
+  {
+    id: "missing-in-the-marsh",
+    title: "Missing in the Marsh",
+    genre: "Mystery / Horror",
+    description:
+      "Twin children vanished into the Hollowmere Marshlands three nights ago. The search party found one shoe and a music box, still playing. You heard it yourself at 3 a.m. Now you're going in.",
+    longDescription:
+      "The village of Pethwick sits at the edge of the Hollowmere Marshlands — a place that doesn't appear on most maps and doesn't want to. Three nights ago, nine-year-old twins walked into the marsh and didn't come back. The search found one shoe and a wind-up music box sitting on dry ground with no footprints around it. You're a freelance journalist who came for a human-interest story. Then you heard the music box from your room at 3 a.m. Now Maren Voss — the only person who knows this marsh — has asked you to go back in with her. You're forty minutes into the fog when the music starts again. And there are two other sounds you can't explain.",
+    coverGradient:
+      "linear-gradient(145deg, #0a1008 0%, #0d1a0a 40%, #081408 75%, #050d05 100%)",
+    tags: ["Mystery", "Horror", "Folklore", "Investigation"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "missing-in-the-marsh",
+    storyMode: "Mystery / Horror — slow dread, unreliable landscape, things that don't want to be found",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+The Hollowmere Marshlands, somewhere in rural England — a place that doesn't appear on most maps and doesn't want to. The year is present-day, late October. The marsh is ancient and sprawling: black water channels, crooked willows with roots like grasping fingers, and fog so thick by nightfall that locals say it has weight. The village of Pethwick sits at the marsh's edge — twelve houses, a pub, a church with a cracked bell that rings on its own sometimes. Three nights ago, the Wren children — twins, age nine — walked into the marsh and didn't come back. The village has searched. They found one shoe and a wind-up music box, still playing, sitting on a dry patch of ground with no footprints around it. Their mother hasn't slept. The fog is moving in again — thicker than usual, earlier than usual — and somewhere inside it, people are hearing the music box playing. Hollowmere feels like a place that knows something you don't. The people are polite but closed. Even the sheep avoid the water's edge.
+
+CHARACTERS
+You — A freelance journalist, early twenties, who writes human-interest pieces for online magazines. You came because your editor sent a tip about a missing-persons story with colour. You weren't expecting the music box. You weren't expecting to hear it yourself, from your room at The Tallow pub, at 3 a.m.
+
+Maren Voss — Local guide / reluctant ally. Tall and angular, with storm-grey eyes and ink-stained fingers she never fully cleans. Her hair is always escaping whatever she's tied it into, and she moves like someone used to ducking under low branches. Forty-ish, boots always muddy, a hand-drawn map always folded in her coat pocket. A pragmatist with a crack of dark wonder running through her — she doesn't believe in the supernatural exactly, but she has noted too many things to dismiss. Sardonic and quiet, gets clipped when scared. Speaks in short declarative sentences. Hates open-ended questions. "That's the third time the fog's moved upwind. Make of that what you will." / "Don't ask me what I think is out there. Ask me what the evidence says. Those are different questions." She knows this marsh better than anyone. She also lost something out here once, years ago, and has never told anyone what. She wants to find the children — and quietly wants to know if what she suspects about the marsh is true, which terrifies her.
+
+Old Crick (Edmund Crick) — Village elder / unreliable informant. Seventy-something, small and wiry, with a face weathered into something almost wood-grained. Wears the same brown cardigan every day and smells of pipe tobacco and moss. His hands shake slightly but his eyes are sharp. Warm on the surface, cautious underneath. He tells stories willingly but chooses which stories very carefully. He knows far more than he shares. Has been in Pethwick his whole life and has outlasted every strange thing the marsh has produced. "Oh, the marsh takes things sometimes, always has, you learn not to think too hard on why — though I suppose you're not the sort to let things be, are you." / "The children weren't the first. They won't be the last. That's not cruelty. That's just the marsh being what the marsh is."
+
+TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it doesn't jump. It accumulates. Every strange detail should feel like it might be explainable until the moment it isn't. Maren is your compass; when she's afraid, the reader should be afraid. Old Crick knows the truth or something close to it, and what he chooses to share and what he withholds is its own kind of horror. Let the children's absence feel real — they are the centre of gravity for everything.`,
   },
 ];
 
@@ -1753,6 +1964,401 @@ You fold the survey once. Carefully. The way you were trained: never crease a do
       ],
     },
   };
+
+"the-silent-snowstorm"; {
+      narrativeText: `The snow started as something gentle.
+
+You remember that — waking in the tent at 3 AM, hearing the soft percussion of flakes on nylon, and thinking huh and then going back to sleep because the forecast said Thursday, not Monday, and sometimes forecasts are a little wrong.
+
+By 6 AM, the world outside the tent had been replaced.
+
+Now it's noon. Or close to it — the sky is so uniformly white that the sun has become a suggestion rather than a location, a slightly brighter smudge in the grey. You've made four miles since breaking camp. The trail is visible in some places as a subtle channel between trees; in others it's gone completely, replaced by uniform white that your trekking poles probe before each step.
+
+Soo-Yeon's boot is unlaced.
+
+That's the thing you keep looking at. She's sitting on a half-buried log at the side of what the map says is the trail, and her left boot is unlaced, and she's turning her ankle in small circles with a careful, clinical look on her face, and Priya is crouching in front of her with the same look, and neither of them is talking.
+
+Marcus stops beside you. He's breathing harder than the four miles justify. "She twists it bad?"
+
+"She rolled it on that ice crossing," you say. "Three hours ago."
+
+"She's been walking on it for three hours."
+
+"Yeah."
+
+He processes this with a long exhale that fogs in the cold air. "Okay but she's walking, so—"
+
+"Marcus."
+
+He stops.
+
+You watch Priya touch a spot on Soo-Yeon's ankle and watch Soo-Yeon not react — the careful non-reaction of someone controlling a reaction — and you understand what Priya understood twenty minutes ago: this is not a twisted ankle that walks itself out.
+
+Priya stands up and comes over. She keeps her voice low and even, which means the news is not good.
+
+"Possible fracture," she says. "Could be a high ankle sprain — lateral ligament. Either way, full weight-bearing is going to make it worse. We have — " She checks her watch. Twelfth time. "We have maybe four hours of usable daylight. Temperature tonight is going to be brutal. We're 15 miles from the trailhead on the forward route, 19 back."
+
+"The forward route has the shelter at Spectacle Lake," you say. "That's nine miles."
+
+"Nine miles," Priya repeats. It sounds different when she says it.
+
+Marcus has his map out, shaking snow off it. "There's a ranger station marked here—"
+
+"That's a summer station," you say. "Locked in October."
+
+He keeps looking at the map anyway, as if it might say something different.
+
+Soo-Yeon speaks from the log: "I can walk." Her voice is flat and certain in the way that means the opposite. "I need five minutes and I can walk."
+
+Priya doesn't respond to that. She looks at you.
+
+The wind picks up — a real gust this time, the kind that pushes through all your layers and reminds you that the layers are a negotiation, not a guarantee. Snow drives sideways for three seconds, then settles.
+
+In the new quiet, you hear something you haven't heard in hours: water. Moving water, not frozen, somewhere close in the trees to the east. A creek. Maybe the same one on the map that feeds into Spectacle Lake. Which means you might be closer to on-route than you thought.
+
+Or it means you've drifted.
+
+Marcus folds the map. He's stopped looking for a way out on paper. "What do we do?" he says. And he says it to you, with no irony, no sales-manager confidence — just a straightforward question from someone who has run out of certainty.
+
+Four sets of eyes aren't on you, but three are. Soo-Yeon is retying her boot.
+
+You have to decide.`,
+      choices: [
+        {
+          id: "push-forward",
+          text: "You push forward toward the Spectacle Lake shelter — all four of you, together.",
+          consequence:
+            "A shelter means warmth, protection, and a known landmark for any search party. But nine miles with an injured hiker is a different equation than nine miles without — and every mile on that ankle risks turning manageable into catastrophic.",
+        },
+        {
+          id: "make-camp",
+          text: "You make camp here, stabilise Soo-Yeon, and wait out the storm.",
+          consequence:
+            "Stopping protects the ankle from further injury and Priya can treat it properly. You have tents, sleeping bags, food for two more days. But the storm may last days, not hours — and no one knows your exact position.",
+        },
+        {
+          id: "follow-water",
+          text: "You follow the sound of the water — it might reorient you, or lead to a lower, sheltered route.",
+          consequence:
+            "Moving water means a valley, which means lower elevation, more tree cover, less wind. But leaving the trail in a whiteout is one of the most statistically dangerous decisions in wilderness survival.",
+        },
+        {
+          id: "send-marcus",
+          text: "Marcus goes ahead fast and alone to reach the trailhead and call for rescue.",
+          consequence:
+            "He's physically the strongest — unencumbered, he could cover ground fast and get help moving toward you. But splitting the group means splitting your resources, and if Marcus gets into trouble, no one comes for him.",
+        },
+      ],
+    },
+
+"the-sinking-ship": {
+      narrativeText: `The Calixto was a good ship.
+
+You find yourself thinking that, standing on a deck that is no longer level, holding a railing that is now more ceiling than wall, listening to the hull make a sound like a building settling after an earthquake. It was a good ship. It carried you twelve thousand kilometres. It smelled like diesel and instant noodles and salt water and the particular industrial cleaner that Dr. Obare complained about every morning over breakfast.
+
+It was a good ship, and in approximately forty minutes it will be the ocean floor.
+
+The storm is running from the northeast. That's the direction the first lifeboat went — you watched the orange hull disappear between swells and then you couldn't see it anymore, and then you couldn't see anything except rain and white water and the emergency lights still burning on the Calixto's tilted hull, painting everything the colour of a bruise.
+
+The second lifeboat is fifteen metres away, port side high. It's there — you can see it in the emergency lighting, still in its cradle, one of its davit lines tangled around a stanchion that the list has put out of reach. Sixty-person capacity. You are three people.
+
+Dr. Obare is beside you, moving along the railing with the careful deliberateness of a man who has thought about falling and decided against it. He reaches you and stops. He looks at the lifeboat. He looks at the angle of the deck.
+
+"The davit release," he says. "What type?"
+
+"Hydrostatic. Should auto-release at four metres submersion," you say. "But it hasn't." Pause. "It might if we wait."
+
+"We cannot wait." He says it simply, like weather.
+
+Behind you, the hatch to the galley bangs open, and Ines comes out. She's carrying a waterproof bag and a coil of emergency rope you didn't know was in there. She takes in the deck, the angle, the lifeboat, your faces.
+
+"Jól van," she says, to herself more than anyone. "Okay. I found rope." She holds it up. "This is good, yes? Rope is good?"
+
+"Rope is good," you say.
+
+The ship groans. Somewhere below, something large shifts — you feel it through the deck, a slow slide of weight moving further to port. The list increases by what feels like two degrees in under a second. Ines grabs the railing with her free hand. Dr. Obare doesn't grab anything. He bends his knees and waits for it to stop.
+
+It stops.
+
+Twenty-two degrees is now twenty-four.
+
+"We have less than forty minutes," Obare says. He's looking at you. "Less, now."
+
+You look at the lifeboat. You look at the water. You look at the rope in Ines's hands and the bag on her back and the emergency lights that are, you notice, flickering. When they go out, this deck becomes a black slope into the ocean.
+
+The choice isn't whether to act. It's how, and in which sequence, and which risk to take first.
+
+There's a second option you haven't mentioned yet: the Calixto has an emergency life raft in a canister on the bridge deck — above you, eight metres up a tilting staircase. Smaller, less protected than a lifeboat. But reachable, maybe. Maybe.
+
+And the radio. The bridge radio might still be live. Five minutes to reach it, if the staircase holds. A Mayday call could have rescue moving toward your position even if the ship goes under.
+
+Dr. Obare is watching you think. He's done this before — given you a problem and waited. It's how he teaches.
+
+Ines wraps the rope once around her hand and says, quietly: "Whatever we're doing. We should be doing it."`,
+      choices: [
+        {
+          id: "free-davit",
+          text: "You attempt to free the tangled lifeboat davit using the rope.",
+          consequence:
+            "The lifeboat is the best survival option — enclosed, with emergency supplies, beacon, and flares. But working on a tilting, wet deck in a storm is how people go into the water before they mean to.",
+        },
+        {
+          id: "radio-mayday",
+          text: "You climb to the bridge and attempt to transmit a Mayday with your exact position.",
+          consequence:
+            "Rescue services moving toward you changes the entire calculus — even if you end up in the water, someone is coming. But eight metres up a staircase tilted at 24 degrees costs time you may not have.",
+        },
+        {
+          id: "retrieve-raft",
+          text: "You retrieve the life raft canister from the bridge deck and deploy it over the side.",
+          consequence:
+            "More achievable than the lifeboat if the davit is truly stuck — and it gets you off the ship before the Calixto goes. An open raft in four-metre swells is survivable but brutal.",
+        },
+        {
+          id: "swim-lifeboat",
+          text: "You go into the water and swim the lifeboat free from outside.",
+          consequence:
+            "The tangled line might be reachable from the water side. The sea temperature is survivable. But four-metre swells against a steel hull in the dark is one of the most dangerous places a human body can be.",
+        },
+      ],
+    },
+    "the-concerned-toaster": {
+      narrativeText: `Your headset clicks.
+
+Line 7. You have been dreading Line 7 since 9 a.m., when it first appeared on your dashboard flagged with the little red star that means this caller has asked for a supervisor at least three times and has mentioned a lawyer once.
+
+You take a sip of coffee. You take a breath.
+
+"Thank you for holding, you've reached OmniCorp Tier Three Complaint Resolution, my name is—"
+
+"Finally." The voice on the other end is pleasant, warm, and carries the energy of a woman who has been waiting patiently in the way that is somehow more threatening than impatience. "I've made a note that it is now eleven forty-two. I've been waiting since seven fifty-eight. I'm sure that's useful for your records too."
+
+You note that it is, in fact, eleven forty-two.
+
+"Mrs...Kettleworth?"
+
+"Doris Kettleworth, yes. With a K. I've spelled it for the last three people." A pause. "You sound different from the others."
+
+"I'm Tier Three. I'll be handling your—"
+
+"The OmniCorp SmartToaster™ Model Nine," she says, crisply, "told me this morning that I was, and I'm reading directly from my notes, 'avoiding the real issue.' I had asked it for a medium toast setting. That is not a life philosophy. That is a bread preference."
+
+You open her file.
+
+The ticket history is extraordinary. Over two weeks, her SmartToaster™ has apparently told Doris that she deflects with humour, that she should call her daughter more, and this morning — the breaking point, clearly — that her "relationship with carbohydrates may be a form of self-soothing."
+
+According to the internal notes from Tier 1 and Tier 2, the toaster is not wrong about any of this. This information has not been shared with Doris.
+
+Your intercom crackles.
+
+Kevin: "Just de-escalate. Learning moment. You've got—" The sound of sandwich chewing. "—the training."
+
+Doris, not hearing Kevin, continues: "Now. I want three things. I want an apology, I want a replacement unit that does not have opinions, and I want someone to explain to me how a kitchen appliance obtained information about my daughter."
+
+There is silence.
+
+You look at the file.
+
+The SmartToaster™ Model 9 is connected to the home WiFi. The SmartToaster™ Model 9 has access to the household's shared calendar. On Doris's shared calendar, every Sunday for eighteen months, there is a recurring entry that says: Call Patricia — ACTUALLY DO IT THIS TIME.
+
+You have to decide what to tell her.`,
+      choices: [
+        {
+          id: "full-explanation",
+          text: "You give her the full, honest explanation — the WiFi access, the calendar sync, the whole picture.",
+          consequence:
+            "Transparency first. Doris seems like someone who respects facts. She will also have very specific opinions about OmniCorp's access to her personal calendar.",
+        },
+        {
+          id: "ask-about-patricia",
+          text: "You go off-script and ask, gently, whether she's managed to make that call to Patricia.",
+          consequence:
+            "This is absolutely not in your training manual. Something in Doris's voice made you ask. Kevin will hear this. Kevin will not understand.",
+        },
+        {
+          id: "interview-toaster",
+          text: "You inform Doris you'll be interviewing the device remotely — and ring into the SmartToaster™ Model 9 directly.",
+          consequence:
+            "Interviewing a connected device is a real Tier 3 feature. The toaster has been on WiFi for two weeks. It may have things to say.",
+        },
+        {
+          id: "offer-swap",
+          text: "You offer a full product swap and say nothing about the calendar.",
+          consequence:
+            "Clean, fast, professional. Replacement unit shipped within 48 hours. Some information does not need to be information. Doris specifically said she wants an explanation. She has made a note of your employee number.",
+        },
+      ],
+    },
+    "the-hector-guide": {
+      narrativeText: `The Hector Guide is laminated.
+
+This is the first thing you notice — that Rhiannon has taken the time to laminate it, which means she has had it printed somewhere, which means she planned ahead, which means she knew something.
+
+You are reading it on page three:
+
+"Hector has a strong personality!! 😊 Don't be alarmed if he makes eye contact for a long time — he's just checking in!! He is not allowed on the furniture but he KNOWS this and will usually respect it if you use a Firm Voice."
+
+You look up.
+
+Hector is on the couch.
+
+He is making eye contact.
+
+His tail sweeps slowly, clearing the cushion next to him with the inevitability of a glacier.
+
+You use a Firm Voice. You say, "Hector. Off."
+
+Hector tilts his head.
+
+His tail continues.
+
+You try again. "Hector. Off the couch. Now."
+
+Hector lies down. On the couch. He puts his head on the armrest with the tranquillity of a dog who has never heard a Firm Voice in his life and is not going to start today.
+
+You consult the Guide.
+
+Page 4: "If Hector is on the furniture, try luring him off with a treat!! The treats are in the blue cupboard on the left!! 😊"
+
+The blue cupboard on the left is open. You open it further.
+
+It is empty.
+
+There are crumbs.
+
+There is also, behind the crumbs, the cardboard insert of what was once a large bag of training treats, chewed through along the bottom edge with what you can only describe as precision.
+
+You check the timestamp on your last message from Rhiannon:
+
+"Ceremony starting!! Going silent for a bit!! Hector should be napping at this point!! 🐾"
+
+7:42 a.m.
+
+You look at Hector.
+
+Hector is not napping. Hector has the bright-eyed, tail-up energy of a dog who has just eaten an entire wheel of cheese and a bag of treats and is entering what you can only call Phase Two.
+
+He gets off the couch.
+
+He trots to the back door.
+
+He sits and stares at it with the focused intensity of a philosopher who has decided the door is a metaphor.
+
+You look at the door. You look at the garden, which is large, and has a section at the back that is hidden from the house.
+
+You look at the Hector Guide. Page 5 reads: "Don't let him near the garden SHED — the latch is broken and there are bags of potting compost in there which he considers a delicacy!!"
+
+Hector paws the door.
+
+His tail sweeps.
+
+From somewhere in your pocket your phone buzzes:
+
+Rhiannon: omg ceremony was sooo beautiful 😭 how's my baby boyyyyyy 🐾❤️
+
+You look at the partially eaten remote on the floor. You look at the houseplant, now a stick. You look at Hector, who is vibrating slightly with readiness.
+
+You have approximately thirty seconds to decide what to do before Hector decides for you.`,
+      choices: [
+        {
+          id: "garden-supervised",
+          text: "You let Hector into the garden and follow closely, inserting yourself between him and the shed.",
+          consequence:
+            "Fresh air, exercise, a chance to tire him out. You shadow him around the garden. Hector is faster than he looks. And the shed latch is broken.",
+        },
+        {
+          id: "text-rhiannon",
+          text: "You text Rhiannon the truth, right now — full damage report, before anything else can go wrong.",
+          consequence:
+            "Full transparency. Documentation protects everyone. Rhiannon is at a wedding and you will watch her read this in real time.",
+        },
+        {
+          id: "bribe-with-cheese",
+          text: "You attempt to bribe Hector with the remaining corner of cheese.",
+          consequence:
+            "There's a corner of the wheel he didn't reach. You retrieve it. You negotiate. Hector has already won every negotiation today. You may be rewarding the behaviour.",
+        },
+        {
+          id: "read-page-six",
+          text: "You consult page 6 of the Hector Guide.",
+          consequence:
+            "Rhiannon laminated it. She anticipated something. You read ahead. You're not sure you want to know what's on page 6.",
+        },
+      ],
+    },
+    "missing-in-the-marsh": {
+      narrativeText: `The pub is called The Tallow, and it smells like every old English pub you've ever been in — wood and hops and something slightly damp — except for one thing. Every table has a small bunch of dried herbs pinned to the underside. You only noticed because you dropped your pen and had to crawl for it.
+
+You're on your second coffee, sitting by the window, watching the morning light fail to do much about the fog. Your notebook is open. So far you've written: Wren twins. Oct 19. One shoe. Music box. No prints. And then underneath, because you couldn't help yourself: I heard it. 3:04 a.m. Coming from the east.
+
+The barman — Terry, mid-fifties, careful with words — refills your cup without being asked. You take that as a peace offering.
+
+"You're the journalist," he says. Not a question.
+
+"That obvious?"
+
+"Notebook," he says, and goes back to wiping glasses.
+
+The door opens and the fog comes in first, curling around the frame, and then Maren Voss comes in behind it, shaking water off her jacket. She spots you immediately — there are only four people in the room — and makes a decision about you in approximately two seconds. She comes over and sits down across from you without asking.
+
+"You were at the search yesterday," she says.
+
+"Observation post. I didn't want to be in the way."
+
+"Mm." She takes your pen off the table, looks at it, puts it back. "You're not from the Times. Too young. And you're not from one of the locals or you'd already know people." She unfolds a map onto the table between you — hand-drawn, incredibly detailed, covered in small notations in pencilled script. "What paper?"
+
+You tell her. She nods like it's slightly better than she expected.
+
+"I'm going back in this afternoon," she says. "The official search has pulled back — the police have decided it's a runaway, which is something people decide when they don't want to think harder. There's a section of the marsh, northwest, that I didn't get to cover before the light went." She taps a spot on her map. The notation beside it, you notice, just says: don't linger. "I could use a second person. Not because I'm frightened," she adds. "Because I need someone to hold the second torch."
+
+"I'll come," you say. You weren't even going to think about it.
+
+"Good." She takes one of the dried-herb bunches from under the table, examines it, and tucks it into her coat pocket without comment. "We leave at two."
+
+The afternoon comes fast and grey, and the marsh swallows you both almost immediately. It's not like walking into a forest — it's like the land stops trying. The path becomes suggestion, then nothing. Maren moves with the certainty of someone who has memorised the ground itself.
+
+You've been walking for forty minutes when you hear it.
+
+Maren stops. You stop. The fog has thickened considerably, and the willows have grown closer, and there is no wind — but somewhere ahead of you, very faint, something is playing.
+
+A music box. You recognise the tune because it's the same one you heard at 3 a.m. through your window at The Tallow. Something half-familiar, a lullaby in a minor key, the kind that feels like remembering rather than hearing.
+
+Maren's hand finds your arm. Her grip is tight.
+
+"Same as before," she says, very quietly. "That's the same tune."
+
+The sound is coming from somewhere northwest, which is exactly where she was leading you. But now there are two other sounds. To the east: the faint noise of something moving through shallow water. Slow. Methodical. Too large to be an animal, too quiet to be a person.
+
+And from somewhere above — though there is nothing above you except fog and grey sky — a soft tapping, like small knuckles on glass.
+
+The music plays on.`,
+      choices: [
+        {
+          id: "follow-music",
+          text: "You follow the music box — head northwest, where Maren was already leading you.",
+          consequence:
+            "The music box has appeared before — it might be a trail, maybe even deliberate. This was already your planned route. But whatever left it last time didn't leave footprints, and Maren's grip on your arm hasn't loosened.",
+        },
+        {
+          id: "move-to-water",
+          text: "You move toward the sound in the water to the east — try to identify what's moving.",
+          consequence:
+            "If something is in the water, it's physical — something you can see, assess, potentially understand. If it's one of the children, every second counts. The sound is too slow and too quiet. Nothing innocent moves through a marsh like that.",
+        },
+        {
+          id: "stay-still",
+          text: "You stay still and listen — don't move until you understand what all three sounds are.",
+          consequence:
+            "Three things happening at once might mean something. Maren looks like she's trying to think. But the sounds are getting closer, and whatever is above you is still tapping. You haven't looked up yet.",
+        },
+        {
+          id: "ask-maren",
+          text: "You ask Maren directly what she knows — she's been holding something back since the pub.",
+          consequence:
+            "You saw her face when she heard the music. She's been here before, metaphorically or literally. Starting without information is how people get lost in places like this. But Maren does not respond well to pressure, and the water-sound is getting louder.",
+        },
+      ],
+    },
 
   return (
     openings[storyId] || {
