@@ -32,7 +32,7 @@ export const storiesData: StoryData[] = [
     rank: 1,
     initialPrompt: "apology-to-a-dragon",
     storyMode: "Comedy (primary), Fantasy (genre wrapper)",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 The kingdom of Valdenmere domesticated dragons four hundred years ago. It was not a graceful process. Dragons turned out to be less like noble war-beasts and more like enormous, fire-breathing house cats — vain, moody, and completely convinced the world revolves around them. They are used for postal delivery, forge-heating, aerial transport, and ceremonial occasions, but only when they feel like it. The Royal Roost, perched on the cliffs above the capital city, is where the Crown's dragons are housed, fed, groomed, and endlessly appeased. Working at the Roost is considered a prestigious posting. In practice, it means shovelling ash, dodging tantrums, and learning to apologise to a creature that weighs six tonnes and holds grudges. The kingdom is at peace. There is no dark lord, no ancient prophecy, no war on the horizon. The biggest crisis in Valdenmere right now is that the Midsummer Festival is twelve days away, and the Crown needs all six Royal Dragons flight-ready for the opening ceremony. None of them are cooperating. The air at the Roost always smells like charcoal and warm copper, and there is never a quiet moment.
 
@@ -63,7 +63,7 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
     rank: 2,
     initialPrompt: "no-signal",
     storyMode: "Survival Thriller — high tension, real stakes, no easy answers",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin — a 40,000-square-mile stretch of unbroken tropical rainforest in Southeast Asia that has never been fully mapped. The Basin sits between two mountain ranges, sealed off by river gorges to the north and monsoon-swollen floodplains to the south. No roads go in. No roads come out. The canopy is so thick that GPS signal dies fifty feet below the treetops, and satellite phones work only in rare clearings — if the antenna survived the crash. The crew was filming a documentary on vanishing indigenous plant species. They were supposed to land at a research outpost on the Basin's eastern edge. They never arrived. The pilot's last radio transmission was garbled — something about crosswinds and engine trouble — and then nothing. Now it's day three. The wreckage is scattered across a hillside. The supplies are limited. The jungle is hot, wet, loud, and completely indifferent to whether anyone survives. Rain falls every afternoon like clockwork — hard, warm, blinding. The insects never stop. The river at the base of the hill might lead somewhere, or it might lead deeper in. Nobody knows, because nobody has a working map. The air smells like rot and flowers at the same time. Everything here is alive. That is not comforting.
 
@@ -109,7 +109,7 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
     initialPrompt: "the-driftlands",
     storyMode:
       "Adventure / Fantasy — wonder, discovery, and the tension between caution and curiosity",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 The Driftlands are a chain of floating islands scattered across an endless sky. Each island drifts on slow, invisible currents — some no bigger than a house, others wide enough to hold forests and rivers. The gaps between islands shift constantly, closing and opening over days or weeks. Bridges of woven cloudvine connect the closest ones, but the farther islands can only be reached by glider or by waiting for a rare alignment. People live in small communities called "perches," built along the edges of the larger islands where the wind is steady and the light is best. There is no great war, no looming darkness. Life here is about mapping, growing, and finding — because the Driftlands never stop changing. New islands rise from the cloud layer below every few months, carrying strange soil, unfamiliar plants, and sometimes ruins from civilisations that fell long before anyone can remember. Cartographers are the most respected people in the Driftlands. They chart the movements, name the new islands, and decide which ones are safe to settle. To be a cartographer is to be the first person to set foot on something no one has ever seen before. The air always smells faintly of rain and stone.
 
@@ -137,7 +137,7 @@ TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world 
     rank: 4,
     initialPrompt: "incident-at-table-nine",
     storyMode: "Comedy — escalating social disaster, wit under pressure",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 The Golden Bough is the most prestigious restaurant in the city — a Michelin-starred temple of gastronomy housed in a converted cathedral, where the tasting menu costs more than rent and the waiting list is four months long. Tonight is the most important night of the year: the annual visit of the Alder Guide inspector, whose review can make or destroy a restaurant's reputation overnight. The head chef, Viktor Sable, has been preparing for six weeks. Every garnish has been rehearsed. Every plate has been timed. Nothing can go wrong. You are a server. You've been here three months. You are competent, professional, and you have just deposited a tray of deconstructed bouillabaisse with saffron foam and edible gold directly into the inspector's lap.
 
@@ -169,7 +169,7 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
     initialPrompt: "the-last-entry",
     storyMode:
       "Mystery / Thriller — quiet dread, close observation, mounting stakes",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 A small coastal town, present day, late autumn. The kind of place where everyone knows which cars belong on which streets and silence spreads faster than news. The harbour gates mark the edge of town — grey, low, functional — and the school sits two streets inland, running on the same rhythms it always has: register, break, lunch, home. Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case. She'd had a public argument with her parents the week before, which made it easy to believe. The school has continued almost normally — lockers slamming, phones out, the vice-principal in the corridors with that careful look he's worn since Tuesday. Information in this town moves quietly, through the right people, in the right order. Someone has decided you should be one of those people. This morning, Maya's diary appeared in your locker.
 
@@ -201,7 +201,7 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
     initialPrompt: "the-unread-letter",
     storyMode:
       "Historical Fantasy — intimate stakes, institutional pressure, family loyalty",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 The Kingdom of Aldenmere runs on letters. Every noble house, every guild, every law court communicates by sealed courier — the Messenger Guild is the backbone of civilization. Messengers are trained to be invisible: fast, discreet, incurious. Reading a sealed letter is the worst crime in the Guild — punishable by expulsion, or worse. The protagonist is a junior messenger, thirteen days into their first solo route. The letter they've accidentally opened — its seal cracked by the rain — is addressed to the Lord Governor and contains a name: a person supposedly executed two years ago. That person is the protagonist's older sister.
 
@@ -232,7 +232,7 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
     initialPrompt: "the-show-must-go-on",
     storyMode:
       "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously
 Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously — the kind where opening night gets a half-page in the local paper, where parents book seats three weeks out, and where the drama teacher, Mr. Voss, has produced the same Shakespeare rotation for eleven years without apology. This year it's Much Ado About Nothing. Lighthearted. Safe. Funny. Except tonight, two hours before curtain, the lead — Declan Marsh, the boy who has played every major role since Year 9, the boy who is always where he's supposed to be — is not in the building. His phone rings out. His bag is in the changing room. His costume is hanging on its hook, pressed and ready. He vanished sometime between 4:30 p.m., when he signed in at the stage door, and 5:15 p.m., when the cast gathered for warm-up. The school is locked after hours. The exits are monitored. No one saw him leave. Backstage, forty minutes from curtain, the cast is unravelling. Parents are filing into the auditorium. Mr. Voss is on the phone with the deputy principal. And you — who have memorised every line, every cue, every cross — are standing in the wings, holding Declan's script, feeling the weight of the stage lights warming the air just beyond the curtain. Something is wrong. Not just missing-a-cast-member wrong. Something you can't name yet — a feeling like a room where the furniture has been moved one inch to the left.
@@ -264,7 +264,7 @@ TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the 
     initialPrompt: "what-the-charts-dont-show",
     storyMode:
       "Sci-Fi / Mystery — slow discovery, isolation, the weight of a decision no one else can make",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 The Kalanemi Drift is what cartographers in the Hegemony call the three-hundred-light-year band of uncharted space between the Outer Settlements and the Velan Reach — a region too far from the core systems to be profitable and too close to the contested frontier to be ignored. Most ships that enter the Drift are survey vessels on two-year contracts, tasked with mapping stellar formations, cataloguing resource deposits, and filing reports that will be read by bureaucrats who have never left their home system. Faster-than-light travel in the Hegemony works through fold navigation — a method of compressing space along pre-calculated vectors, then releasing. The compression takes twelve to seventy-two hours depending on distance. During the fold, no communication in or out is possible. A ship in fold is genuinely alone in a way that people who have never done it find difficult to imagine and people who do it regularly find difficult to explain. The crew of a survey vessel spends roughly forty percent of its operational time in fold. You stop expecting news from home. The IHMS Vasanthi has been in the Drift for sixteen months. You are seven weeks from the end of your contract. The last three fold jumps have brought you into a stellar region the Hegemony's existing charts describe as unremarkable — standard nebular debris, a few red dwarfs past their interesting phase. What you're finding does not match the charts. The Vasanthi's science team has spent the past six days arguing, very professionally, about which one it is — charting error or something else entirely.
 
@@ -293,7 +293,7 @@ TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel 
     initialPrompt: "the-deadlock",
     storyMode:
       "Mystery / Thriller — locked-room murder, sealed train, ticking clock, unlikely detective",
-    audienceAge: "13–18",
+    audienceAge: "13+",
     worldContext: `WORLD & STORY CONTEXT
 The year is 2026. The Meridian Zephyr is the world's most talked-about engineering marvel — a self-driving, magnetically levitated supertrain that travels at 600 km/h across a newly completed transcontinental track stretching from London to Singapore. The train is twelve carriages long, each one a floating palace of glass and steel. There are no conductors. No engineers. Just an AI called VERA (Velocity Enhanced Rail Assistant) that handles everything from route calibration to the temperature of your risotto. Tonight, the Meridian Zephyr has been privately chartered for the 70th birthday gala of Reginald Aust-Pembury, a reclusive tech-trillionaire who made his fortune selling surveillance software to governments he now pretends to dislike. His guests are a curated collection of the obscenely wealthy, the professionally beautiful, and the quietly dangerous — none of whom particularly like each other, and all of whom accepted the invitation anyway. The train departed London's Stratford terminal at 9 PM. By midnight, it will be somewhere over Eastern Europe, sealed in a tunnel, with zero mobile signal and no possibility of stopping — VERA doesn't take override commands. The world outside the windows is a dark smear. The world inside is champagne, secrets, and one very dead trillionaire.
 
