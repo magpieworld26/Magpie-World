@@ -43,9 +43,7 @@ export default function LandingPage() {
   }, []);
 
   const top5 = stories.filter(s => s.rank !== null && s.rank !== undefined).sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99)).slice(0, 5);
-  const aboutCards = [
-    { icon: "🔖", title: "Save & Continue", desc: "Life gets busy. Every choice is saved automatically. Pick up exactly where you left off, whether that's tomorrow or months from now." },
-  ];
+  const aboutCards: { icon: string; title: string; desc: string }[] = [];
 
   const sectionPadding = isMobile ? "48px 0" : "96px 0";
   const containerPadding = isMobile ? "0 16px" : "0 24px";
