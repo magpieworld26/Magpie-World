@@ -423,7 +423,6 @@ export default function LandingPage() {
                   type="email"
                   value={contactEmail}
                   onChange={e => setContactEmail(e.target.value)}
-                  placeholder="your@email.com"
                   maxLength={254}
                   required
                   style={{
@@ -451,7 +450,6 @@ export default function LandingPage() {
                   type="text"
                   value={contactSubject}
                   onChange={e => setContactSubject(e.target.value)}
-                  placeholder="What's on your mind?"
                   maxLength={200}
                   required
                   style={{
@@ -478,7 +476,6 @@ export default function LandingPage() {
                 <textarea
                   value={contactMessage}
                   onChange={e => setContactMessage(e.target.value)}
-                  placeholder="Your message..."
                   maxLength={5000}
                   required
                   rows={5}

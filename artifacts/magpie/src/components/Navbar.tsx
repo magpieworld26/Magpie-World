@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { supabase, clearAuthToken } from "@/lib/supabase";
-import birdLogo from "@assets/image_1774626827305.png";
+import birdLogo from "@assets/LOGO 3.png";
 import { api } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
