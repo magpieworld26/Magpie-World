@@ -214,20 +214,6 @@ export default function LandingPage() {
                       textTransform: "uppercase",
                     }}>{story.title}</div>
                     <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.55)", marginTop: "5px" }}>{story.genre}</div>
-                    {!isMobile && (
-                      <div style={{
-                        display: "inline-block",
-                        marginTop: "10px",
-                        fontSize: "0.62rem",
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.14em",
-                        color: "#0f172a",
-                        background: "linear-gradient(90deg, #6be7c5, #4ea7d8)",
-                        padding: "5px 12px",
-                        borderRadius: "4px",
-                      }}>Read Now</div>
-                    )}
                   </div>
                 </div>
               </div>
