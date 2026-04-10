@@ -55,7 +55,6 @@ export default function LandingPage() {
   return (
     <div style={{ background: "#020617", color: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
       <Navbar variant="landing" />
-
       {/* HERO */}
       <section id="home" style={{ position: "relative", minHeight: isMobile ? "70vh" : "85vh", overflow: "hidden", paddingTop: "96px" }}>
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #020617, #03112d, #020617)" }} />
@@ -130,7 +129,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
       {/* TRENDING */}
       <section id="trending" style={{ padding: sectionPadding, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding }}>
@@ -221,7 +219,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
       {/* ABOUT */}
       <section id="about" style={{
         padding: sectionPadding,
@@ -238,9 +235,7 @@ export default function LandingPage() {
               color: "#fff",
               marginBottom: "12px",
             }}>About Magpie</h2>
-            <p style={{ fontSize: "0.875rem", color: "#cbd5e1", lineHeight: 1.7, maxWidth: "640px" }}>
-              The world's first AI-powered interactive reading platform. We combine the immersion of great literature with the freedom of choice-driven narrative.
-            </p>
+            <p style={{ fontSize: "0.875rem", color: "#cbd5e1", lineHeight: 1.7, maxWidth: "640px" }}>Welcome to the home of breathing books. The story evolves with every choice, every step, every decision you make. Each story starts with a hand-crafted premium opening scene and everything after that is controlled only by you. Handle dragons, survive ambushes, battle pirates, negotiate with goblins, and explore infinite possibilities. Make your story truly your own. Experience gripping storylines, exciting characters, and adventurous landscapes only at Magpie.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
             {aboutCards.map(card => (
@@ -288,7 +283,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
       {/* VISION */}
       <section id="vision" style={{ padding: sectionPadding }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding, textAlign: "center" }}>
@@ -326,7 +320,6 @@ export default function LandingPage() {
           </button>
         </div>
       </section>
-
       {/* CONTACT US */}
       <section id="contact" style={{
         padding: sectionPadding,
@@ -536,7 +529,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer style={{
         textAlign: "center",
