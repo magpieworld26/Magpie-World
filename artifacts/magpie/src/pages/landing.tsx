@@ -230,7 +230,7 @@ export default function LandingPage() {
             }}>About Magpie</h2>
             <p
               style={{ fontSize: "0.875rem", color: "#cbd5e1", lineHeight: 1.7, maxWidth: "640px" }}
-              className="text-[15px]">Welcome to the home of breathing books. The story evolves with every choice, every step, every decision you make. Each story starts with a hand-crafted premium opening scene and everything after that is controlled only by you. Handle dragons, survive ambushes, battle pirates, negotiate with goblins, and explore infinite possibilities. Make your story truly your own. Experience gripping storylines, exciting characters, and adventurous landscapes only at Magpie.</p>
+              className="text-center text-[17px]">Welcome to the home of breathing books. The story evolves with every choice, every step, every decision you make. Each story starts with a hand-crafted premium opening scene and everything after that is controlled only by you. Handle dragons, survive ambushes, battle pirates, negotiate with goblins, and explore infinite possibilities. Make your story truly your own. Experience gripping storylines, exciting characters, and adventurous landscapes only at Magpie.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
             {aboutCards.map(card => (
