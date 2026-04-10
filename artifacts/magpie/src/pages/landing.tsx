@@ -44,7 +44,6 @@ export default function LandingPage() {
 
   const top5 = stories.filter(s => s.rank !== null && s.rank !== undefined).sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99)).slice(0, 5);
   const aboutCards = [
-    { icon: "🤖", title: "AI-Powered Narratives", desc: "Our advanced AI generates rich, contextually aware story continuations that maintain consistency, tone, and character voice across your entire journey." },
     { icon: "🔖", title: "Save & Continue", desc: "Life gets busy. Every choice is saved automatically. Pick up exactly where you left off, whether that's tomorrow or months from now." },
   ];
 
