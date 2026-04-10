@@ -94,10 +94,7 @@ export default function LandingPage() {
             margin: 0,
             fontFamily: "'Barlow', sans-serif",
             padding: isMobile ? "0 8px" : "0",
-          }}>
-            Step into stories that breathe, evolve, and respond to you. Make choices that matter.
-            Shape narratives that are uniquely yours. Experience literature that lives.
-          </p>
+          }}>Explore interactive fictions across all genres. Begin stories with exciting opening scenes. Take choices and let the story continue itself!</p>
 
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "16px" }}>
             <button
