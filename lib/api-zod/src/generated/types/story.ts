@@ -15,9 +15,9 @@ export interface Story {
   coverGradient: string;
   coverImage?: string;
   tags: string[];
-  rating: string;
-  chapterCount: number;
-  readingTime: string;
+  rating?: string;
+  chapterCount?: number;
+  readingTime?: string;
   featured: boolean;
   rank?: number | null;
   initialPrompt: string;
