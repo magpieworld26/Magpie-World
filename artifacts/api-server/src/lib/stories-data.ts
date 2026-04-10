@@ -677,6 +677,76 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
 
   TONE GUIDANCE: Stark, visceral survival. The heat should be a physical presence in every description. The tension comes from the silence of the desert and the weight of leadership. Avoid melodrama; focus on the technical reality of dehydration and the psychological toll of isolation.`,
   },
+  {
+    id: "veldara",
+    title: "Veldara",
+    genre: "Adventure / Sci-Fi",
+    description:
+      "A mysterious 1993 game console switches on by itself in a school basement. The game is Veldara—a living, hostile jungle that has already chosen you.",
+    longDescription:
+      "Detention at Vanthorpe Academy was supposed to be boring until you found a crate from 1993. Inside is VELDARA: a game that runs without a plug and assigns avatars based on non-negotiable logic. You and three others are being pulled into a procedurally hostile world where losing all three lives means losing everything. The jungle is gorgeous, the warlord Kael is waiting, and the only way home is to win. The game isn't just starting; it's collecting you.",
+    coverGradient:
+      "linear-gradient(145deg, #0a2e0a 0%, #1b4d1b 40%, #2e7d32 75%, #4caf50 100%)",
+    coverImage: "/covers/veldara.png",
+    tags: ["Adventure", "Mystery", "Survival", "Sci-Fi"],
+    rating: "★★★★★",
+    chapterCount: 11,
+    readingTime: "8-11 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "veldara",
+    storyMode:
+      "Adventure / Sci-Fi — high-stakes, avatar logic, procedurally hostile world",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+  Vanthorpe Academy, a mid-sized boarding school in coastal Maine. Weekend detention involves sorting through the basement archive. Hidden there is VELDARA, an unmarked 1993 console that switches on without power. Veldara is a living, procedurally hostile jungle continent existing within the game. It runs on avatar logic: players are assigned a body, skillset, and weakness. The goal: retrieve the Sunstone from warlord Kael and restore it to the Heartspire. Rule on death: Lose three lives, and you are gone everywhere. The game chooses its players—once the controllers light up, the contract is made.
+
+  CHARACTERS
+  You — The Protagonist. Your avatar is assigned by the game at the start—body, skills, and embarrassing weakness are non-negotiable.
+
+  Dara Nkosi — The Strategist / Reluctant Leader. Tall, lean, hyper-competent, and mildly condescending. She leads because no one else will. Speaks in numbered points when stressed. "One — we don't panic. Two — someone needs to read the cartridge label."
+
+  Finn Calloway — The Chaos Agent. Messy hair, easy grin, and a school blazer always open. Charismatic and adaptable, he hides his depth behind jokes. "So we're trapped in a video game. Cool. Question: does anyone here have experience not dying?"
+
+  Priya Subramaniam — The Wildcard Expert. Methodical and warm with paint-stained fingernails. She understands game mechanics and looks for rules to break. She won't commit until she has clarifying answers.
+
+  TONE GUIDANCE: High-stakes, fast-paced, and darkly funny. The jungle is beautiful but lethal. The tension comes from the 'avatar logic'—being forced into a body or role you didn't choose—and the creeping certainty that the game is in control.`,
+  },
+  {
+    id: "extinction-clause",
+    title: "Extinction Clause",
+    genre: "Thriller / Sci-Fi",
+    description:
+      "On a volcanic atoll housing the world's first de-extinction resort, the invisible walls are flickering. You're the biosafety observer who just found out it isn't a glitch.",
+    longDescription:
+      "Welcome to Isla Kessara, 2031. Helix Dominion Corp has resurrected seventy-three Mesozoic species using Paleosynthesis. You are a doctoral risk modeller sent by the Ecuadorian Ministry to validate the facility before its grand opening. But when a junior technician reveals that a 'software patch' was actually an external override of the predator barriers, the tropical paradise turns into a ticking clock. The birds have gone silent, the Chief Architect is hiding behind acceptable results, and something in Biome Four is no longer contained.",
+    coverGradient:
+      "linear-gradient(145deg, #1b3022 0%, #2c5137 40%, #3e7451 75%, #52a472 100%)",
+    coverImage: "/covers/extinction-clause.png",
+    tags: ["Thriller", "Sci-Fi", "Dinosaurs", "Mystery"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "extinction-clause",
+    storyMode:
+      "Thriller / Sci-Fi — corporate conspiracy, ecological dread, survival under pressure",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+  Isla Kessara, a privately owned volcanic atoll 340 kilometres off the coast of Ecuador, 2031. Genesis Vault is the world's first successful de-extinction resort, where Mesozoic fauna roam free across seven biomes separated by invisible electromagnetic barriers. The resort is in its final validation week with twelve invited guests. The air is too still, and the birds are too quiet. Last night, barrier nodes in the theropod habitat went offline for eleven seconds—officially a software patch, but unofficially an unknown.
+
+  CHARACTERS
+  You — The protagonist. A biosafety observer for the Ecuadorian Ministry of Environment. PhD in ecological risk modelling. You have a reputation for writing reports nobody wants to read.
+
+  Dr. Chidinma Osei — Chief Paleosynthesis Architect. Visionary and protective. She believes de-extinction is stewardship. Speaks in declarative sentences and goes quiet for three seconds when surprised. "The theropods are stable."
+
+  Renzo Callafuentes — Head of Resort Operations. Immaculate, charming, and profit-driven. Calls everyone "friend" and dismisses concerns as "noise." "At the end of the day, this is just noise."
+
+  Tomás Ikeda-Rowe — Junior Technician, Barrier Systems. Enthusiastically honest and nervous. He's the only one who doesn't answer to Renzo. He suspects an external override of the safety systems.
+
+  TONE GUIDANCE: High-tension corporate thriller with a side of primal dread. The island should feel like a gilded cage. Use the contrast between the luxury of the resort and the prehistoric ferocity of the animals. The horror is not just the creatures, but the human hubris and systemic failure that lets them out.`,
+  },
 ];
 
 export function getStoryById(id: string): StoryData | undefined {
@@ -2331,6 +2401,188 @@ The music plays on.`,
           text: "You send Reza to scout the smoke while you and Dani move toward the pipeline.",
           consequence:
             "Splitting the group allows you to cover two possibilities, but it leaves you without your most capable member and leaves Reza completely alone if the smoke is a threat.",
+        },
+      ],
+    },
+    veldara: {
+      narrativeText: `Detention at Vanthorpe Academy ran on Saturdays from nine to noon, and it was exactly as terrible as it sounded.
+
+    Not in a dramatic way. Not in a character-building way, despite what the school counsellor's poster in the hallway suggested. Terrible in the most mundane possible sense: fluorescent lights, cold concrete floors, and three hours of sorting through forty years of donated rubbish that the school's board of trustees had decided was "archival material" rather than simply "junk they were too cheap to throw out."
+
+    You had been assigned Row Seven.
+
+    Row Seven, as far as you could tell, contained: a broken rowing machine, approximately nine hundred National Geographic issues from 1978, a taxidermied fox missing one ear, and a crate.
+
+    The crate was shoved in the very back, under a yellowed tarp, and it was heavier than it had any right to be.
+
+    "Need a hand with that?"
+
+    You looked up. Finn Calloway — you knew him by reputation more than anything else — was leaning against a shelving unit with his arms crossed and his blazer hanging open, watching you wrestle with a corner of the tarp.
+
+    "I'm fine," you said.
+
+    "You're really not," he said, helpfully, and came over anyway.
+
+    Between the two of you, the tarp came off in one pull.
+
+    The crate was black-painted wood, stencilled with a date — 1993 — and a label that had been crossed out and replaced several times. The final label read: PROPERTY OF: NO ONE. DO NOT KEEP.
+
+    "That's an unusual inventory note," Finn said.
+
+    From the other end of the row, you heard Dara before you saw her: "Calloway, if you're not working, I'm filing a report that you left early."
+
+    "I am working," Finn said. "I'm assisting."
+
+    Dara appeared around the corner, notebook under her arm and glasses slightly crooked. Behind her, Priya moved quietly, cataloguing shelf numbers in a small notebook of her own. For a moment, all four of you stood looking at the crate.
+
+    Then Priya said, "Open it," in the tone of someone who has already made up their mind, and you did.
+
+    The console was matte black and roughly the size of a hardback book. No brand logo. No model number. A single cartridge slot in the front, already loaded — the cartridge label stamped with letters that looked hand-done, uneven, almost urgent:
+
+    VELDARA.
+
+    Four controllers, neatly coiled, sat beside it. And a power cord that trailed off and ended in — nothing. No plug. Just a frayed end.
+
+    "It's vintage," Dara said, turning it over carefully. "Pre-HDMI, obviously. No brand I recognise. Some kind of independent—"
+
+    The screen on the wall — an ancient CRT monitor bolted up for archive cataloguing — flickered on.
+
+    Nobody had touched it.
+
+    The screen showed a jungle. Not a rendered jungle, not a pixelated jungle — a jungle. Deep, vivid green, light filtering down through a canopy that moved with actual wind. In the centre of the image, a stone archway wrapped in flowering vines, and beyond it, a world that seemed to go on further than any screen should hold.
+
+    Text appeared at the bottom.
+
+    VELDARA. Four players detected. Avatars assigned. Select your world.
+
+    Below it, a single button prompt:
+
+    [ PRESS START ]
+
+    The four controllers lit up simultaneously. One drifted — physically moved, slid across the floor — and bumped against your foot.
+
+    Finn picked his up without hesitation. Priya picked hers up slowly, examining it like she was reading the manual. Dara held hers at arm's length.
+
+    "This isn't how consoles work," she said.
+
+    "Yeah," said Finn. "Seems like."
+
+    The jungle on the screen breathed. Somewhere inside it, something called — animal, or wind, or both. The archway at its centre glowed gold at the edges.
+
+    The controller in your hand was warm.
+
+    What do you do?`,
+      choices: [
+        {
+          id: "press-start",
+          text: "You press Start — commit fully and go first.",
+          consequence:
+            "The game is already running. Going in together and ready might mean you land with a plan instead of in freefall, even if you don't know who your avatar will be.",
+        },
+        {
+          id: "seek-info",
+          text: "You put the controller down and push for information first.",
+          consequence:
+            "Going in blind is how people get lost. You wait while Priya studies the label and Dara examines the hardware, hoping for answers before the loading window closes.",
+        },
+        {
+          id: "eject-cartridge",
+          text: "You try to eject the cartridge — find a way to turn it off.",
+          consequence:
+            "The rational move is to stop this. But the cartridge won't budge, and the screen shifts—it feels like the jungle is looking back at you now.",
+        },
+        {
+          id: "call-out",
+          text: "You ask — out loud — if anyone is on the other side.",
+          consequence:
+            "The game responded to your presence, so it might respond to your voice. Communication might be worth more than any button press in this surreal situation.",
+        },
+      ],
+    },
+    "extinction-clause": {
+      narrativeText: `The ferry smells like diesel and salt and something else — something older, animal and green — that you notice only as the dock of Isla Kessara grows large enough to block the horizon.
+
+    You stand at the bow with your tablet tucked under one arm and your government-issue lanyard swinging in the ocean wind. Around you, the other eleven guests cluster in small constellations: investors in linen shirts pointing at the treeline, two researchers from Munich photographing everything, a journalist with a recorder already running. Nobody is afraid. That's the first thing you file away.
+
+    The dock is immaculate. New timber, fresh paint. A sign in brushed steel reads: GENESIS VAULT — WHERE DEEP TIME LIVES. Below it, smaller: HELIX DOMINION CORP. AUTHORIZED PERSONNEL ONLY.
+
+    You are, technically, authorized. That distinction feels thinner than it should.
+
+    The welcome briefing takes place in an open-air pavilion overlooking Biome One — a coastal wetland habitat where something large and long-necked wades through amber shallows two hundred metres away. You watch it move while Renzo Callafuentes works through his slide deck. He has the presentation cadence of someone who has given it forty times and enjoyed it every single time.
+
+    "Seven biomes," he says, gesturing broadly. "Seventy-three species. Zero incidents in fourteen months of internal testing." He pauses for the murmur of approval. Gets it. "Isla Kessara isn't a theme park, friends. It's a proof of concept. That humanity and deep time can coexist."
+
+    You write: "Zero incidents" — confirm against maintenance logs.
+
+    The creature in the wetland dips its neck beneath the surface. Comes up with something. Swallows it whole.
+
+    After the briefing, Dr. Chidinma Osei finds you near the coffee station. She doesn't introduce herself. She just stands beside you and looks out at the wetland like she's checking on a child.
+
+    "You're the biosafety observer," she says.
+
+    "That's what it says on my lanyard."
+
+    "Your predecessor filed a preliminary concern report before she declined the assignment." She turns to look at you directly. "I read it. I disagreed with her methodology. I'm curious whether you'll reach the same conclusions."
+
+    "What were her conclusions?"
+
+    "That the electromagnetic barriers had not been tested under conditions of simultaneous node failure." She says it the way you'd say the sky is blue — a fact, not a confession. "We've since run those tests. The results were acceptable."
+
+    You notice she doesn't say reassuring. She says acceptable.
+
+    "I'd like to see the test documentation," you say.
+
+    "I'll have it sent to your cabin." She picks up her coffee. "You'll also want to talk to Tomás. He runs barrier systems maintenance. He found you during the ferry transfer and asked three questions about your credentials. That's unusual for him."
+
+    She walks away before you can ask what his questions were.
+
+    Tomás Ikeda-Rowe finds you twenty minutes later, near the path to the guest cabins. He's walking fast and looking at his tablet, and he almost collides with you before stopping short.
+
+    "Oh — you're the observer." His left knee bobs once, twice. "Great. Good. That's — I was looking for you, actually."
+
+    "Dr. Osei mentioned."
+
+    "Right, yeah, she would." He glances toward the pavilion, where Renzo is still talking to investors. Looks back at you. "So, wild fact — did you know the electromagnetic barriers use the same base architecture as the grid systems they use in deep-sea research stations? Really interesting stuff. The signal harmonics are—"
+
+    "Tomás."
+
+    He stops. Takes a breath.
+
+    "The barrier outage last night," he says, quieter. "The eleven-second window in Biome Four." He turns his tablet to show you something — a graph, signal data, timestamps. "It wasn't a software patch. I know what a software patch looks like. This was an external override. Someone unlocked those nodes from outside the facility network."
+
+    The path between you and the pavilion is empty. The treeline is fifty metres away. From somewhere inside it — deep, resonant, like a sound more felt than heard — something moves.
+
+    "Does Renzo know?" you ask.
+
+    "I sent him the logs at six this morning." Tomás's knee is going again. "He said I was misreading the data. At the end of the day."
+
+    The sound in the trees stops. The birds that were calling — you didn't realise they were calling until they weren't.
+
+    What do you do?`,
+      choices: [
+        {
+          id: "demand-docs",
+          text: "You go directly to Dr. Osei's lab and demand the full barrier test documentation.",
+          consequence:
+            "Directness may win Osei's respect and provide technical evidence, but it will alert Renzo to your speed and potentially trigger corporate damage control.",
+        },
+        {
+          id: "off-record-logs",
+          text: "You ask Tomás to show you the override logs himself — off the record.",
+          consequence:
+            "You access raw, unfiltered data and secure an ally, but you're operating outside of Ministry protocol which could be used against you if things escalate.",
+        },
+        {
+          id: "file-notice",
+          text: "You go to your cabin and file a preliminary concern notice with the Ministry.",
+          consequence:
+            "Secures your legal cover and protects your career, but grants the antagonists a twelve-hour window to potentially hide evidence or coordinate a cover-up.",
+        },
+        {
+          id: "scout-perimeter",
+          text: "You walk to the edge of Biome Four's barrier perimeter — alone.",
+          consequence:
+            "Observation is the ultimate truth, but being alone outside guest zones after dark is physically dangerous—especially if the barriers are truly compromised.",
         },
       ],
     },
