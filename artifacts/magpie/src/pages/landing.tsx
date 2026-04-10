@@ -213,89 +213,30 @@ export default function LandingPage() {
         </div>
       </section>
       {/* ABOUT */}
-      <section id="about" style={{
-        padding: sectionPadding,
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-        background: "rgba(15,23,42,0.35)",
-      }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding }}>
-          <div style={{ marginBottom: isMobile ? "28px" : "48px" }}>
-            <h2 style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: "clamp(2.25rem, 6vw, 3.25rem)",
-              letterSpacing: "0.04em",
-              color: "#fff",
-              marginBottom: "12px",
-            }}>About Magpie</h2>
-            <p
-              style={{ fontSize: "0.875rem", color: "#cbd5e1", lineHeight: 1.7, maxWidth: "640px" }}
-              className="text-center text-[17px]">Welcome to the home of breathing books. The story evolves with every choice, every step, every decision you make. Each story starts with a hand-crafted premium opening scene and everything after that is controlled only by you. Handle dragons, survive ambushes, battle pirates, negotiate with goblins, and explore infinite possibilities. Make your story truly your own. Experience gripping storylines, exciting characters, and adventurous landscapes only at Magpie.</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-            {aboutCards.map(card => (
-              <div
-                key={card.title}
-                style={{
-                  borderRadius: "14px",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  background: "rgba(15,23,42,0.55)",
-                  padding: "28px 24px",
-                  backdropFilter: "blur(8px)",
-                  transition: "border-color 0.3s, transform 0.3s",
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = "rgba(104,230,197,0.3)";
-                  e.currentTarget.style.transform = "translateY(-5px)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-                  e.currentTarget.style.transform = "";
-                }}
-              >
-                <div style={{
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "8px",
-                  marginBottom: "18px",
-                  background: "rgba(104,230,197,0.1)",
-                  border: "1px solid rgba(104,230,197,0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "20px",
-                }}>{card.icon}</div>
-                <h3 style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "1.3rem",
-                  letterSpacing: "0.06em",
-                  color: "#fff",
-                  marginBottom: "10px",
-                }}>{card.title}</h3>
-                <p style={{ fontSize: "0.85rem", color: "#94a3b8", lineHeight: 1.65 }}>{card.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* VISION */}
-      <section id="vision" style={{ padding: sectionPadding }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: containerPadding, textAlign: "center" }}>
+      <section id="about" style={{ padding: sectionPadding, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ maxWidth: "800px", margin: "0 auto", padding: containerPadding, textAlign: "center" }}>
           <h2 style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: "clamp(2.25rem, 6vw, 3.25rem)",
             letterSpacing: "0.04em",
             color: "#fff",
-            marginBottom: "24px",
+            marginBottom: "20px",
+          }}>About Magpie</h2>
+          <p style={{ fontSize: isMobile ? "0.95rem" : "1rem", color: "#cbd5e1", lineHeight: 1.8 }}>Welcome to the home of breathing books. The story evolves with every choice, every step, every decision you make. Each story starts with a hand-crafted premium opening scene and everything after that is controlled only by you. Handle dragons, survive ambushes, battle pirates, negotiate with goblins, and explore infinite possibilities. Make your story truly your own. Experience gripping storylines, exciting characters, and adventurous landscapes only at Magpie.</p>
+        </div>
+      </section>
+      {/* VISION */}
+      <section id="vision" style={{ padding: sectionPadding, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ maxWidth: "800px", margin: "0 auto", padding: containerPadding, textAlign: "center" }}>
+          <h2 style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: "clamp(2.25rem, 6vw, 3.25rem)",
+            letterSpacing: "0.04em",
+            color: "#fff",
+            marginBottom: "20px",
           }}>Our Vision</h2>
-          <p style={{
-            fontSize: isMobile ? "0.95rem" : "1.1rem",
-            color: "#cbd5e1",
-            lineHeight: 1.8,
-            maxWidth: "720px",
-            margin: "0 auto 40px",
-          }}>I still remember the day I read my first proper book – ‘The Golden Statue Plot: Geronimo Stilton Series, Book 55.’ It was my first experience with genuine reading and it was truly transformative. I completed reading the entire book in 3 hours and thus began my reading journey. Throughout my schooling days, fictions have been an integral part of my student life. Reading as a form of entertainment are massively underrated in today’s age. Magpie is committed to ignite the passion for reading in the new generation kids and to rekindle the nostalgic interactive fiction experience from the 90s in a cool new form!
-          Don’t mistake fictions to just be a form of entertainment – as it is so much more! Fictions are a great way to improve vocabulary, grammar, and the subtle nuances of language. From my personal experience, someone who starts reading at an early age has a massive advantage academically. This is because they develop a great command over their language. Thus, they are able to formulate their thoughts into words properly and they develop amazing comprehension skills which help them understand textbooks and rely less on tutoring. Good comprehension skills help greatly in academics and are heavily tested in popular exams like the SAT and the Olympiads. Therefore, Magpie provides a mode of entertainment which also caters to these crucial educational aspects. We have blended interactive storytelling with evergreen reading styles at Magpie and we aim to inspire millions of people discover and enjoy the magic of reading.</p>
+          <p style={{ fontSize: isMobile ? "0.95rem" : "1rem", color: "#cbd5e1", lineHeight: 1.8, marginBottom: "20px" }}>I still remember the day I read my first proper book – ‘The Golden Statue Plot: Geronimo Stilton Series, Book 55.’ It was my first experience with genuine reading and it was truly transformative. I completed reading the entire book in 3 hours and thus began my reading journey. Throughout my schooling days, fictions have been an integral part of my student life. Reading as a form of entertainment are massively underrated in today’s age. Magpie is committed to ignite the passion for reading in the new generation kids and to rekindle the nostalgic interactive fiction experience from the 90s in a cool new form!</p>
+          <p style={{ fontSize: isMobile ? "0.95rem" : "1rem", color: "#cbd5e1", lineHeight: 1.8, marginBottom: "40px" }}>Don’t mistake fictions to just be a form of entertainment – as it is so much more! Fictions are a great way to improve vocabulary, grammar, and the subtle nuances of language. From my personal experience, someone who starts reading at an early age has a massive advantage academically. This is because they develop a great command over their language. Thus, they are able to formulate their thoughts into words properly and they develop amazing comprehension skills which help them understand textbooks and rely less on tutoring. Good comprehension skills help greatly in academics and are heavily tested in popular exams like the SAT and the Olympiads. Therefore, Magpie provides a mode of entertainment which also caters to these crucial educational aspects. We have blended interactive storytelling with evergreen reading styles at Magpie and we aim to inspire millions of people discover and enjoy the magic of reading.</p>
           <button
             onClick={() => setLocation("/home")}
             style={{
