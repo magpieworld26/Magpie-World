@@ -223,17 +223,6 @@ export default function StoryDetailPage() {
               flexWrap: "wrap",
             }}
           >
-            <span style={{ color: "#00e5c8", fontSize: "14px" }}>
-              {story.rating}
-            </span>
-            <span style={{ color: "#b0bec5", fontSize: "13px" }}>
-              {story.chapterCount} Chapters
-            </span>
-            {!isMobile && (
-              <span style={{ color: "#b0bec5", fontSize: "13px" }}>
-                {story.readingTime}
-              </span>
-            )}
             <span
               style={{
                 padding: "3px 10px",
@@ -245,6 +234,18 @@ export default function StoryDetailPage() {
               }}
             >
               {story.genre}
+            </span>
+            <span
+              style={{
+                padding: "3px 10px",
+                border: "1px solid rgba(0,229,200,.3)",
+                borderRadius: "3px",
+                fontSize: "11px",
+                color: "#00e5c8",
+                fontFamily: "'Barlow Condensed', sans-serif",
+              }}
+            >
+              {story.audienceAge}
             </span>
           </div>
         </div>
@@ -428,9 +429,7 @@ export default function StoryDetailPage() {
         >
           {[
             { label: "Genre", value: story.genre },
-            { label: "Rating", value: story.rating },
-            { label: "Chapters", value: `${story.chapterCount} chapters` },
-            { label: "Reading Time", value: story.readingTime },
+            { label: "Age Rating", value: story.audienceAge },
           ].map((item) => (
             <div
               key={item.label}

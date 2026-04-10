@@ -241,8 +241,7 @@ export default function HomePage() {
             </h1>
             {!isMobile && (
               <div style={{ display: "flex", gap: "14px", alignItems: "center", marginBottom: "16px" }}>
-                <div style={{ padding: "3px 10px", border: "1px solid rgba(0,229,200,.4)", borderRadius: "3px", fontSize: "11px", letterSpacing: "1px", color: "#00e5c8", fontFamily: "'Barlow Condensed', sans-serif" }}>{featured.rating}</div>
-                <span style={{ color: "#b0bec5", fontSize: "13px" }}>{featured.chapterCount} Chapters · {featured.readingTime}</span>
+                <div style={{ padding: "3px 10px", border: "1px solid rgba(0,229,200,.4)", borderRadius: "3px", fontSize: "11px", letterSpacing: "1px", color: "#00e5c8", fontFamily: "'Barlow Condensed', sans-serif" }}>{featured.audienceAge}</div>
               </div>
             )}
             {!isMobile && (

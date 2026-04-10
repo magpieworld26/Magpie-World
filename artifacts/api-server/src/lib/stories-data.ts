@@ -7,9 +7,6 @@ export interface StoryData {
   coverGradient: string;
   coverImage?: string;
   tags: string[];
-  rating: string;
-  chapterCount: number;
-  readingTime: string;
   featured: boolean;
   rank: number | null;
   initialPrompt: string;
@@ -31,9 +28,6 @@ export const storiesData: StoryData[] = [
       "linear-gradient(145deg, #7a3b10 0%, #b85c1a 40%, #e8832a 75%, #f0a050 100%)",
     coverImage: "/covers/apology-to-a-dragon.png",
     tags: ["Comedy", "Dragons", "Fantasy", "Coming of Age"],
-    rating: "★★★★☆",
-    chapterCount: 8,
-    readingTime: "5-8 hrs",
     featured: true,
     rank: 1,
     initialPrompt: "apology-to-a-dragon",
@@ -65,9 +59,6 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
       "linear-gradient(145deg, #0d2e14 0%, #1a4a20 40%, #0a2010 75%, #061508 100%)",
     coverImage: "/covers/no-signal.png",
     tags: ["Survival", "Thriller", "Jungle", "Leadership"],
-    rating: "★★★★★",
-    chapterCount: 10,
-    readingTime: "7-10 hrs",
     featured: false,
     rank: 2,
     initialPrompt: "no-signal",
@@ -113,9 +104,6 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
       "linear-gradient(145deg, #1a3a5c 0%, #2a5a8c 40%, #1a4070 75%, #0d2040 100%)",
     coverImage: "/covers/the-driftlands.png",
     tags: ["Adventure", "Fantasy", "Exploration", "Coming of Age"],
-    rating: "★★★★☆",
-    chapterCount: 9,
-    readingTime: "6-9 hrs",
     featured: false,
     rank: 3,
     initialPrompt: "the-driftlands",
@@ -145,9 +133,6 @@ TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world 
     coverGradient:
       "linear-gradient(145deg, #3d1a05 0%, #6b3008 40%, #c44a10 75%, #e8621a 100%)",
     tags: ["Comedy", "Restaurant", "Chaos", "Social Disaster"],
-    rating: "★★★★☆",
-    chapterCount: 7,
-    readingTime: "4-6 hrs",
     featured: false,
     rank: 4,
     initialPrompt: "incident-at-table-nine",
@@ -179,9 +164,6 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
       "linear-gradient(145deg, #0d1a2e 0%, #1a2a4a 40%, #0d1a35 75%, #060d1a 100%)",
     coverImage: "/covers/the-last-entry.png",
     tags: ["Mystery", "Thriller", "Teen", "Missing Person"],
-    rating: "★★★★★",
-    chapterCount: 10,
-    readingTime: "6-9 hrs",
     featured: false,
     rank: 5,
     initialPrompt: "the-last-entry",
@@ -214,9 +196,6 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
       "linear-gradient(145deg, #2a1a0a 0%, #4a3015 40%, #6a4a20 75%, #3a2010 100%)",
     coverImage: "/covers/the-unread-letter.png",
     tags: ["Historical Fantasy", "Mystery", "Family", "Loyalty vs Duty"],
-    rating: "★★★★★",
-    chapterCount: 10,
-    readingTime: "6-9 hrs",
     featured: false,
     rank: 6,
     initialPrompt: "the-unread-letter",
@@ -248,9 +227,6 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
     coverGradient:
       "linear-gradient(145deg, #1a0a2e 0%, #2e1a4a 40%, #1a0a35 75%, #0d0620 100%)",
     tags: ["Mystery", "Drama", "School", "Thriller"],
-    rating: "★★★★★",
-    chapterCount: 9,
-    readingTime: "6-9 hrs",
     featured: false,
     rank: 7,
     initialPrompt: "the-show-must-go-on",
@@ -283,9 +259,6 @@ TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the 
     coverGradient:
       "linear-gradient(145deg, #060d1f 0%, #0a1a3a 40%, #071530 75%, #030a1a 100%)",
     tags: ["Sci-Fi", "Mystery", "Exploration", "Discovery"],
-    rating: "★★★★★",
-    chapterCount: 10,
-    readingTime: "7-10 hrs",
     featured: false,
     rank: 8,
     initialPrompt: "what-the-charts-dont-show",
@@ -315,9 +288,6 @@ TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel 
     coverGradient:
       "linear-gradient(145deg, #0a0a12 0%, #1a1a2e 40%, #16213e 75%, #0f1624 100%)",
     tags: ["Mystery", "Thriller", "Locked Room", "Murder Mystery"],
-    rating: "★★★★★",
-    chapterCount: 10,
-    readingTime: "7-10 hrs",
     featured: false,
     rank: 9,
     initialPrompt: "the-deadlock",
@@ -349,9 +319,6 @@ TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension i
     coverGradient:
       "linear-gradient(145deg, #1a4a1a 0%, #2d7a2d 40%, #4aaa4a 75%, #6acc6a 100%)",
     tags: ["Fantasy", "Adventure", "Magic", "Discovery"],
-    rating: "★★★★☆",
-    chapterCount: 7,
-    readingTime: "3-5 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-clockwork-garden",
@@ -380,9 +347,6 @@ TONE GUIDANCE: Warm wonder with gentle stakes. Every mechanical thing in the gar
     coverGradient:
       "linear-gradient(145deg, #2a0a4a 0%, #4a1a7a 40%, #7a3aaa 75%, #aa6acc 100%)",
     tags: ["Comedy", "Mystery", "Ghost", "Friendship"],
-    rating: "★★★★☆",
-    chapterCount: 6,
-    readingTime: "3-4 hrs",
     featured: false,
     rank: null,
     initialPrompt: "ghost-delivery",
@@ -411,9 +375,6 @@ TONE GUIDANCE: Warm comedy with a gentle mystery at the centre. Who sent the let
     coverGradient:
       "linear-gradient(145deg, #3a1a0a 0%, #7a3a0a 40%, #c86010 75%, #e87820 100%)",
     tags: ["Fantasy", "Adventure", "Dragons", "Survival"],
-    rating: "★★★★★",
-    chapterCount: 8,
-    readingTime: "4-6 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-last-dragon-egg",
@@ -442,9 +403,6 @@ TONE GUIDANCE: Adventure with genuine stakes and genuine wonder. The dragon is n
     coverGradient:
       "linear-gradient(145deg, #1a1a2e 0%, #2a2a4a 40%, #3a3a5a 75%, #1a1a3a 100%)",
     tags: ["Drama", "Literary", "Coming of Age", "Identity"],
-    rating: "★★★★☆",
-    chapterCount: 8,
-    readingTime: "5-7 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-second-chapter",
@@ -473,9 +431,6 @@ TONE GUIDANCE: Quiet, precise, and honest. This is a story about the gap between
     coverGradient:
       "linear-gradient(145deg, #0a1520 0%, #0d2030 40%, #0a1a28 75%, #060e18 100%)",
     tags: ["Mystery", "Thriller", "Crime", "Redemption"],
-    rating: "★★★★★",
-    chapterCount: 10,
-    readingTime: "6-9 hrs",
     featured: false,
     rank: null,
     initialPrompt: "cold-light",
@@ -504,9 +459,6 @@ TONE GUIDANCE: Cold, precise, and quietly devastating. The mystery is real, but 
     coverGradient:
       "linear-gradient(145deg, #2e1a0a 0%, #5a3515 40%, #8a5520 75%, #6a3a10 100%)",
     tags: ["Historical", "Mystery", "Conspiracy", "Moral Dilemma"],
-    rating: "★★★★★",
-    chapterCount: 9,
-    readingTime: "6-8 hrs",
     featured: false,
     rank: null,
     initialPrompt: "the-cartographers-confession",
