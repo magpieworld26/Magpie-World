@@ -46,13 +46,7 @@ function BookCard({ story, onClick, cardWidth }: { story: Story; onClick: () => 
           backgroundPosition: "center",
         } : {}),
       }}>
-        <div style={{
-          position: "absolute", top: "8px", left: "8px",
-          width: "20px", height: "20px", background: "#00e5c8", borderRadius: "3px",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 900, color: "#060d1f",
-          zIndex: 2,
-        }}>M</div>
+        
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2,
           padding: "20px 12px 12px",
