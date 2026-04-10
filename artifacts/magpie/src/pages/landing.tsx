@@ -294,9 +294,8 @@ export default function LandingPage() {
             lineHeight: 1.8,
             maxWidth: "720px",
             margin: "0 auto 40px",
-          }}>
-            We believe every reader deserves to be the hero of their own story. Magpie is building the future of literature — where books breathe, respond, and grow with you. Where every story is a collaboration between human imagination and artificial intelligence.
-          </p>
+          }}>I still remember the day I read my first proper book – ‘The Golden Statue Plot: Geronimo Stilton Series, Book 55.’ It was my first experience with genuine reading and it was truly transformative. I completed reading the entire book in 3 hours and thus began my reading journey. Throughout my schooling days, fictions have been an integral part of my student life. Reading as a form of entertainment are massively underrated in today’s age. Magpie is committed to ignite the passion for reading in the new generation kids and to rekindle the nostalgic interactive fiction experience from the 90s in a cool new form!
+          Don’t mistake fictions to just be a form of entertainment – as it is so much more! Fictions are a great way to improve vocabulary, grammar, and the subtle nuances of language. From my personal experience, someone who starts reading at an early age has a massive advantage academically. This is because they develop a great command over their language. Thus, they are able to formulate their thoughts into words properly and they develop amazing comprehension skills which help them understand textbooks and rely less on tutoring. Good comprehension skills help greatly in academics and are heavily tested in popular exams like the SAT and the Olympiads. Therefore, Magpie provides a mode of entertainment which also caters to these crucial educational aspects. We have blended interactive storytelling with evergreen reading styles at Magpie and we aim to inspire millions of people discover and enjoy the magic of reading.</p>
           <button
             onClick={() => setLocation("/home")}
             style={{
