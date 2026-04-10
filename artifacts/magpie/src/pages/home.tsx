@@ -166,20 +166,9 @@ export default function HomePage() {
     { label: "Drama & Literary", match: g => /drama|literary|historical|slice/i.test(g) },
   ];
 
-  const AGE_BUCKETS: { label: string; key: string }[] = [
-    { label: "Kids (8–12)", key: "8–12" },
-    { label: "Teens (13–18)", key: "13–18" },
-    { label: "Adults (18+)", key: "18+" },
-  ];
-
   const genreRows = GENRE_BUCKETS.map(bucket => ({
     label: bucket.label,
     stories: stories.filter(s => bucket.match(s.genre)),
-  })).filter(row => row.stories.length > 0);
-
-  const ageRows = AGE_BUCKETS.map(bucket => ({
-    label: bucket.label,
-    stories: stories.filter(s => s.audienceAge === bucket.key),
   })).filter(row => row.stories.length > 0);
 
   const bookCardWidth = isMobile ? "160px" : isTablet ? "200px" : "240px";
@@ -239,11 +228,6 @@ export default function HomePage() {
                 <span key={i} style={i === 0 ? { color: "#00e5c8" } : {}}>{word} </span>
               ))}
             </h1>
-            {!isMobile && (
-              <div style={{ display: "flex", gap: "14px", alignItems: "center", marginBottom: "16px" }}>
-                <div style={{ padding: "3px 10px", border: "1px solid rgba(0,229,200,.4)", borderRadius: "3px", fontSize: "11px", letterSpacing: "1px", color: "#00e5c8", fontFamily: "'Barlow Condensed', sans-serif" }}>{featured.audienceAge}</div>
-              </div>
-            )}
             {!isMobile && (
               <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,.7)", marginBottom: "28px", maxWidth: "420px" }}>{featured.description}</p>
             )}
@@ -423,28 +407,6 @@ export default function HomePage() {
             </h2>
           </div>
           {genreRows.map(row => (
-            <div key={row.label} style={{ padding: isMobile ? "0 16px 32px" : "0 4vw 40px" }}>
-              <div style={{ marginBottom: "14px" }}>
-                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>{row.label}</span>
-              </div>
-              <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "8px", paddingBottom: "8px" }} className="scrollbar-hide">
-                {row.stories.map(story => (
-                  <BookCard key={story.id} story={story} cardWidth={bookCardWidth} onClick={() => setLocation(`/story/${story.id}`)} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      {/* AGE GROUP CAROUSELS */}
-      {!q && ageRows.length > 0 && (
-        <div style={{ padding: isMobile ? "0 0 60px" : "0 0 80px" }}>
-          <div style={{ padding: isMobile ? "0 16px 16px" : "0 4vw 16px" }}>
-            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
-              Browse by <span style={{ color: "#00e5c8" }}>Age Group</span>
-            </h2>
-          </div>
-          {ageRows.map(row => (
             <div key={row.label} style={{ padding: isMobile ? "0 16px 32px" : "0 4vw 40px" }}>
               <div style={{ marginBottom: "14px" }}>
                 <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>{row.label}</span>

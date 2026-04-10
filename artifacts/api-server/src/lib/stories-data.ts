@@ -339,99 +339,6 @@ Viktor Chasse — Wildcard / Tech billionaire and Reginald's oldest rival. Extre
 TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension is real — a murder has happened, you're being framed, the clock is ticking — but the protagonist is fundamentally decent and slightly out of his depth, which creates room for warmth and humour. Nisha provides the trope-savvy commentary. The wealthy guests are all performing for each other. VERA, the AI, is relentlessly helpful in ways that are sometimes useful and sometimes deeply unhelpful. Every scene should balance genuine stakes with the comedy of an ordinary person navigating extraordinary circumstances.`,
   },
   {
-    id: "the-clockwork-garden",
-    title: "The Clockwork Garden",
-    genre: "Fantasy / Adventure",
-    description:
-      "Behind the old greenhouse, you've found a garden that runs on gears and wishes. The gardener left a note. The rose is ticking. You have until sunset.",
-    longDescription:
-      "The abandoned greenhouse at the edge of Millbrook Park has been locked for as long as anyone can remember. But today the lock is open, the gate is ajar, and inside — past rows of dusty clay pots and broken glass — is a door that leads somewhere impossible. The Clockwork Garden is alive with gears and singing pipes, flowers that chime on the hour, and a giant sundial that counts down to something nobody will explain. The gardener who built it left a notebook. You've read the first three pages. You're not sure you should have.",
-    coverGradient:
-      "linear-gradient(145deg, #1a4a1a 0%, #2d7a2d 40%, #4aaa4a 75%, #6acc6a 100%)",
-    tags: ["Fantasy", "Adventure", "Magic", "Discovery"],
-    rating: "★★★★☆",
-    chapterCount: 7,
-    readingTime: "3-5 hrs",
-    featured: false,
-    rank: null,
-    initialPrompt: "the-clockwork-garden",
-    storyMode: "Fantasy / Adventure — wonder, problem-solving, gentle stakes",
-    audienceAge: "8–12",
-    worldContext: `WORLD & STORY CONTEXT
-Millbrook is a quiet town with a park at its centre. Most people walk past the old greenhouse without looking twice — it's been locked for sixty years, surrounded by overgrown ivy and a rusted fence. What almost nobody knows is that behind the greenhouse, through a door hidden by climbing roses, is a garden that should not exist. The Clockwork Garden was built by an inventor named Mira Voss over forty years ago. Everything in it runs on gears, springs, and a kind of energy Mira called "whimsy" — which behaves a lot like ordinary mechanics except when it doesn't. Flowers open and close on schedule. Bees made of hammered copper collect brass pollen. A waterfall flows uphill between the hours of three and five. The sundial in the centre has seventeen hands, each measuring something different. The garden has been running without a gardener for sixty years, which is too long, and things have started to go slightly wrong in small and important ways. Mira left a notebook with instructions. You have found the notebook. You have also found the garden. These two facts are probably connected.
-
-CHARACTERS
-You — A curious kid who followed a cat through the unlocked gate and found something impossible.
-
-Pip — Your best friend. Practical, funny, and allergic to bees — which is a problem in a garden full of copper ones. Wants to figure out how things work. Always has a hypothesis. Sometimes the hypothesis is right.
-
-The Notebook — Mira's handwritten record of the garden's rules and secrets. Some pages are missing. Some pages warn about specific things. You are not always sure which warnings you should have read before you did the thing.
-
-TONE GUIDANCE: Warm wonder with gentle stakes. Every mechanical thing in the garden should feel genuinely magical — not frightening, but surprising. Problems are puzzles to solve together. The stakes are real (the sundial counts down to something) but never scary. Let curiosity drive every scene. Pip's humour lightens tense moments. The garden rewards kindness and cleverness.`,
-  },
-  {
-    id: "ghost-delivery",
-    title: "Ghost Delivery",
-    genre: "Comedy / Mystery",
-    description:
-      "The package was addressed to someone who has been dead for thirty years. You delivered it anyway. Now the ghost wants to write back.",
-    longDescription:
-      "Your summer job at Crumble & Sons Postal Service seemed simple enough: pick up, deliver, get paid. Nobody mentioned that the Whistleby house at the top of the hill was occupied by a ghost named Edmund who has been waiting thirty years for a letter that never came. He got it today — delivered by you, by accident, because you misread the street number. Now Edmund has a reply he wants you to post. The problem is that Edmund's return address doesn't exist anymore. The second problem is that Edmund is very chatty. The third problem is that whoever sent the original letter is still alive and might not know Edmund is a ghost. This is not in your job description.",
-    coverGradient:
-      "linear-gradient(145deg, #2a0a4a 0%, #4a1a7a 40%, #7a3aaa 75%, #aa6acc 100%)",
-    tags: ["Comedy", "Mystery", "Ghost", "Friendship"],
-    rating: "★★★★☆",
-    chapterCount: 6,
-    readingTime: "3-4 hrs",
-    featured: false,
-    rank: null,
-    initialPrompt: "ghost-delivery",
-    storyMode: "Comedy / Mystery — warm, funny, gently spooky",
-    audienceAge: "8–12",
-    worldContext: `WORLD & STORY CONTEXT
-The town of Plimpton is perfectly ordinary in almost every way. Houses have gardens. The bakery smells like cinnamon on Thursdays. The old Whistleby house at the top of Harrow Hill has been empty since 1994 — or so everyone says. Edmund Whistleby, who lived there until he didn't, never quite left. He's not frightening. He's just stuck. He's been waiting for a letter for thirty years, and he has very specific opinions about the postal service, the correct temperature for tea, and the films that came out after 1993 (he missed all of them and is catching up slowly via conversations with the living). The letter arrived today — misdelivered by you, because Harrow Hill and Harrow Close are genuinely confusingly named, and the house number didn't help. Edmund was delighted. Now he wants to respond, and he needs a postal carrier with functioning hands.
-
-CHARACTERS
-You — A kid doing a summer postal job. You have not previously delivered mail to a ghost. You are adapting.
-
-Edmund Whistleby — The Ghost. Seventies, in the warm cardigan-and-slippers sense. Polite, curious, occasionally confused by modern technology, and absolutely thrilled to have a visitor. He is not scary. He would be very upset if you found him scary. He makes excellent invisible tea.
-
-Your supervisor — Has never mentioned ghosts in the training materials. This feels like an oversight.
-
-TONE GUIDANCE: Warm comedy with a gentle mystery at the centre. Who sent the letter, and why now? Edmund is funny because he's so specific — about manners, about the weather, about the correct way to fold a letter. The comedy comes from the gap between the very normal (postal delivery) and the very not (ghost). Let the friendship develop naturally. The mystery is sweet, not dark.`,
-  },
-  {
-    id: "the-last-dragon-egg",
-    title: "The Last Dragon Egg",
-    genre: "Fantasy",
-    description:
-      "You found an egg in the mountain pass. It's warm. It's humming. And something very large has been following your footprints in the snow.",
-    longDescription:
-      "The mountain pass through the Greycrown range is supposed to be safe — your family has crossed it every autumn for generations. This year, halfway through, you spot something in a hollow beneath the ice: an egg. It's the size of a watermelon, covered in iridescent scales, and unmistakably warm despite the freezing air. Your grandmother's stories said the last dragons left these mountains a century ago. Your grandmother's stories are usually right. Whatever left this egg behind was very large. And whatever is following you through the snow wants it back.",
-    coverGradient:
-      "linear-gradient(145deg, #3a1a0a 0%, #7a3a0a 40%, #c86010 75%, #e87820 100%)",
-    tags: ["Fantasy", "Adventure", "Dragons", "Survival"],
-    rating: "★★★★★",
-    chapterCount: 8,
-    readingTime: "4-6 hrs",
-    featured: false,
-    rank: null,
-    initialPrompt: "the-last-dragon-egg",
-    storyMode: "Fantasy — wonder and danger, brave choices, earned trust",
-    audienceAge: "8–12",
-    worldContext: `WORLD & STORY CONTEXT
-The Greycrown Mountains form the spine of the known world. Merchants, farmers, and the occasional shepherd have crossed the Greycrown pass for five hundred years. The mountains are cold, rocky, and completely ordinary — or they have been, for the past hundred years, since the last dragons were said to have left. Before that, the Greycrown was dragon territory. The evidence is still there if you know where to look: scorched ledges, enormous claw-marks worn smooth by weather, the occasional scale half-buried in ice. Your family crosses the pass every autumn to reach the winter markets in Stonefield. You've done it five times. Nothing has ever happened — until now. The egg you've found is not a chicken egg. It is not a goose egg. It is warm, humming faintly, and covered in tiny iridescent scales that catch the light like hammered copper. It weighs exactly as much as it should weigh if it were going to hatch soon. In the snow behind you, something has left prints. The prints are large. They are fresh. They are getting closer.
-
-CHARACTERS
-You — Eleven years old. Sensible, mostly. Brave when you have to be. You've read all the dragon books in the village library, which you thought was just interesting and now turns out to be relevant.
-
-Gran — Your grandmother. She knows the old stories better than anyone. She's waiting at the winter camp, two hours ahead. She'll know what to do — if you can reach her.
-
-The Egg — Warm. Humming. Occasionally shifting. Making a decision on its own timeline.
-
-TONE GUIDANCE: Adventure with genuine stakes and genuine wonder. The dragon is not a villain — it is a parent, and something more ancient than that. The tension comes from not knowing whether the thing following you is dangerous or desperate. Let the egg feel alive. Let the mountains feel enormous. Every choice should feel like it matters, but the story should never be cruel.`,
-  },
-  {
     id: "the-second-chapter",
     title: "The Second Chapter",
     genre: "Literary / Drama",
@@ -1613,181 +1520,6 @@ VERA's pleasant voice chimed from the ceiling.
         },
       ],
     },
-    "the-clockwork-garden": {
-      narrativeText: `The gate is open.
-
-You've walked past the old greenhouse at the edge of Millbrook Park maybe a thousand times. Your gran said it's been locked since before she was born. Ivy has grown over the fence in loops so thick you couldn't see through them even if you tried. But today, walking home from the library with your bag digging into your shoulder, you saw it: the gate, slightly open. Just a few centimetres. Just enough to see through.
-
-Inside the greenhouse, the dusty clay pots are still there. The broken glass still crunches on the floor. But at the back, where the old potting bench should be, there's a door.
-
-It's made of dark wood, with a brass handle shaped like a coiled vine. Someone has oiled it recently — the hinges don't squeak when you push it open.
-
-What's behind it makes you stop walking entirely.
-
-The Clockwork Garden is enormous — far bigger than the greenhouse could possibly contain. Flowerbeds stretch in every direction, bordered by low copper fences engraved with leaves. In the centre, a giant sundial rises ten feet off the ground, its face covered in small moving hands that tick and rotate in patterns you can't read yet. Everywhere you look, things are moving: a butterfly made of hammered silver loops between brass flowers that open and close on hidden springs; a fountain in the corner flows upward, water climbing the air before it falls back down; a line of small copper birds perches on a fence, and as you watch, the first one turns its head and looks at you.
-
-The air smells like rain and metal and something warm you can't name.
-
-On the gate post, someone has taped a note. The handwriting is small and careful:
-
-*If you found this, the garden needs tending. The sundial counts down to the Uncoiling — this happens every sixty years, and it has been sixty-one. The clockwork rose in the east bed has already begun to tick too fast. Please don't touch it until you've read the notebook. The notebook is under the bench by the fountain.*
-
-*Also: mind the copper bees. They don't sting, but they're very opinionated.*
-
-*— M. Voss*
-
-Pip appears at your elbow, slightly out of breath — they must have followed you from the library.
-
-"Okay," Pip says, staring. "I have a lot of questions."
-
-From across the garden, a sound rises — a faint ticking, faster than everything else, coming from the east bed where a rose made of interlocking bronze petals is spinning slowly on its stem.
-
-The note said not to touch it until you've read the notebook. The notebook is across the garden, by the fountain. The rose is right there. And the gate is still open behind you.`,
-      choices: [
-        {
-          id: "find-notebook",
-          text: "You head straight for the notebook under the fountain bench.",
-          consequence:
-            "The gardener's instructions are the safest place to start — if the notebook explains what the Uncoiling is and what the rose means, you'll know what you're dealing with before you touch anything.",
-        },
-        {
-          id: "examine-rose",
-          text: "You go to the east bed to look at the ticking rose — without touching it.",
-          consequence:
-            "Looking isn't touching. And the note said the rose is ticking too fast, which means something is already wrong. You need to know how wrong before you read about how to fix it.",
-        },
-        {
-          id: "explore-garden",
-          text: "You and Pip explore the whole garden first, mapping it out before you do anything.",
-          consequence:
-            "You can't fix something you don't understand, and you don't understand any of this yet. A circuit of the garden — careful, no touching — will tell you what you're working with.",
-        },
-        {
-          id: "call-for-help",
-          text: "You decide to fetch a grown-up before you do anything else.",
-          consequence:
-            "This is clearly not a normal situation, and whoever left that note might want someone responsible involved. The question is: who would actually believe you?",
-        },
-      ],
-    },
-    "ghost-delivery": {
-      narrativeText: `The package has been sitting on your handlebars for the last ten minutes while you stand outside the gate of 14 Harrow Hill trying to decide whether the house is occupied or not.
-
-It definitely looks occupied. The curtains are closed in a precise way — not drawn hastily, but folded exactly even, the way someone does them on purpose. There's a mat on the step that says WELCOME in letters that have faded to a pale cream. A milk bottle stands by the door, empty and clean.
-
-But the garden path is overgrown with grass growing through the cracks. There's ivy on the gate that's been there long enough to work its roots into the ironwork. And the brass knocker — shaped like a fox — has been polished so recently you can see your own face in it, which doesn't match the rest of the place at all.
-
-The address on the package says: Mr. E. Whistleby, 14 Harrow Hill, Plimpton.
-
-You checked your list twice. The Plimpton delivery is supposed to be 14 Harrow Close — which is completely different, and also where a Mrs. Burgess is probably waiting for her parcel right now. But you misread Close as Hill, which sounds like a simple mistake, except that it's taken you twenty minutes to cycle up said Hill and you're not going to cycle back down empty-handed.
-
-You knock. The fox knocker makes a sound that's louder than you expected.
-
-There is a very long pause.
-
-Then the door opens.
-
-The man standing in the doorway is wearing a cardigan the colour of autumn leaves. He has the kind of face that looks permanently kind, with reading glasses pushed up on his forehead. He is also, quite clearly, slightly transparent.
-
-Not completely transparent — not like in films where you can see straight through. More like he's made of something that's mostly there. You can see the hallway behind him, faintly. You can also see, very clearly, the expression on his face when he looks at the package in your hands.
-
-He lights up.
-
-"A letter," he says, and his voice is quiet and warm, like a radio playing in another room. "At last. I was beginning to think — but never mind." He holds out his hand.
-
-You look at his hand, which is slightly transparent. You look at the label on the package. You look back at him.
-
-"Are you," you say carefully, "Mr. Whistleby?"
-
-"Edmund Whistleby, yes." He nods. "I've been expecting something from Dorset for thirty years, give or take." A pause. "Will you come in for tea? I've been practising the kettle."
-
-The sensible thing is to explain the mistake and leave. The package isn't even his. Well — it has his name on it. But the address is wrong and he is a ghost and your supervisor definitely did not cover this in training.
-
-Edmund Whistleby is still holding out his slightly-transparent hand, looking at the parcel like it contains something he's been missing for a very long time.`,
-      choices: [
-        {
-          id: "give-parcel-stay-tea",
-          text: "You give him the parcel and accept the tea.",
-          consequence:
-            "He's been waiting thirty years for something. And you're curious — about the ghost, about Dorset, about what's inside. The tea can't hurt. Probably.",
-        },
-        {
-          id: "give-parcel-leave",
-          text: "You give him the parcel but explain you have other deliveries to make.",
-          consequence:
-            "Polite and professional. He gets his parcel, you get back on your bike, and you can think about the whole ghost thing on the way to Mrs. Burgess.",
-        },
-        {
-          id: "ask-questions-first",
-          text: "You ask him: what is this parcel, and who sent it from Dorset?",
-          consequence:
-            "Before you hand over a parcel that was addressed wrong to a ghost who's been waiting thirty years, you want to know what it is.",
-        },
-        {
-          id: "keep-parcel",
-          text: "You explain the mix-up — this parcel might belong to someone else.",
-          consequence:
-            "The label has his name. But the address is wrong and you're not sure about the rules for delivering post to a ghost.",
-        },
-      ],
-    },
-    "the-last-dragon-egg": {
-      narrativeText: `The pass is exactly as cold as it always is — cold enough that your breath comes out in visible clouds and the snow makes that specific squeaking sound underfoot that means it hasn't melted and refrozen, that it's clean and deep and very, very old.
-
-Gran is two hours ahead, already at the winter camp on the far side. You've crossed the Greycrown pass five times in your life. This is the most straightforward part — a wide corridor between two peaks, open sky above, the path marked with cairns your great-grandfather built.
-
-You should be making good time. You've stopped because of the hollow.
-
-It's just off the path, beneath an overhang of ice — a natural bowl in the rock, sheltered from the wind. You nearly walked past it. You would have, if something hadn't caught the light.
-
-The egg is the size of a watermelon.
-
-The scales covering its shell are tiny — smaller than your thumbnail — and iridescent in the way that no rock or ice is ever iridescent. They catch the weak winter light and break it into copper and green and gold. You are wearing thick gloves, but when you crouch and hover your hand an inch above the surface, you can feel the warmth radiating off it. In the freezing mountain air. Under an ice overhang. That has been in shadow for months.
-
-The egg is alive.
-
-You know it the way you know the difference between a stone and a sleeping animal. There's a faint vibration when you get very close — a slow, deep hum. Like something dreaming.
-
-Your grandmother's stories said dragons left the Greycrown a hundred years ago. Your grandmother also said their nests smelled like hot copper and old stone, and that a dragon's egg would stay warm for three years after laying even without the parent. She said dragons don't abandon eggs. Ever. Unless something very bad happened to them, or they had to flee very quickly, and they couldn't carry it with them.
-
-She also said that whatever a dragon left behind, it would come back for.
-
-You look behind you.
-
-The pass is wide and white and silent. The cairns stand at their usual distances. The sky is grey and still.
-
-But in the snow, ten metres back, there are prints. They were not there when you walked through that spot twenty minutes ago.
-
-They are large. Each one is longer than your forearm, four-clawed, pressed three centimetres deep into packed snow. They're heading toward you. And the last one — the most recent one — is only a few metres away.
-
-Something very large has been following your footprints. And it knows you've found its egg.`,
-      choices: [
-        {
-          id: "take-egg-run",
-          text: "You take the egg and move as fast as you can toward Gran's camp.",
-          consequence:
-            "Gran knows the old stories better than anyone. If you can reach her with the egg, she'll know what to do.",
-        },
-        {
-          id: "leave-egg-stay",
-          text: "You step away from the egg and wait where you are, hands visible.",
-          consequence:
-            "If the dragon is watching, showing that you're not stealing the egg might be the only thing that keeps you safe.",
-        },
-        {
-          id: "hide-and-watch",
-          text: "You back into the hollow, out of the wind, and wait to see what comes.",
-          consequence:
-            "You need to see what you're dealing with before you make any decision that can't be undone.",
-        },
-        {
-          id: "leave-egg-and-go",
-          text: "You leave the egg exactly where you found it and walk quickly toward camp without looking back.",
-          consequence:
-            "You didn't take it. You didn't touch it. Maybe that's enough.",
-        },
-      ],
-    },
     "the-second-chapter": {
       narrativeText: `The boxes have been on the floor for eleven weeks.
 
@@ -1963,9 +1695,7 @@ You fold the survey once. Carefully. The way you were trained: never crease a do
         },
       ],
     },
-  };
-
-"the-silent-snowstorm"; {
+    "the-silent-snowstorm": {
       narrativeText: `The snow started as something gentle.
 
 You remember that — waking in the tent at 3 AM, hearing the soft percussion of flakes on nylon, and thinking huh and then going back to sleep because the forecast said Thursday, not Monday, and sometimes forecasts are a little wrong.
@@ -2359,6 +2089,401 @@ The music plays on.`,
         },
       ],
     },
+    "the-silent-snowstorm": {
+      narrativeText: `The snow started as something gentle.
+
+You remember that — waking in the tent at 3 AM, hearing the soft percussion of flakes on nylon, and thinking huh and then going back to sleep because the forecast said Thursday, not Monday, and sometimes forecasts are a little wrong.
+
+By 6 AM, the world outside the tent had been replaced.
+
+Now it's noon. Or close to it — the sky is so uniformly white that the sun has become a suggestion rather than a location, a slightly brighter smudge in the grey. You've made four miles since breaking camp. The trail is visible in some places as a subtle channel between trees; in others it's gone completely, replaced by uniform white that your trekking poles probe before each step.
+
+Soo-Yeon's boot is unlaced.
+
+That's the thing you keep looking at. She's sitting on a half-buried log at the side of what the map says is the trail, and her left boot is unlaced, and she's turning her ankle in small circles with a careful, clinical look on her face, and Priya is crouching in front of her with the same look, and neither of them is talking.
+
+Marcus stops beside you. He's breathing harder than the four miles justify. "She twists it bad?"
+
+"She rolled it on that ice crossing," you say. "Three hours ago."
+
+"She's been walking on it for three hours."
+
+"Yeah."
+
+He processes this with a long exhale that fogs in the cold air. "Okay but she's walking, so—"
+
+"Marcus."
+
+He stops.
+
+You watch Priya touch a spot on Soo-Yeon's ankle and watch Soo-Yeon not react — the careful non-reaction of someone controlling a reaction — and you understand what Priya understood twenty minutes ago: this is not a twisted ankle that walks itself out.
+
+Priya stands up and comes over. She keeps her voice low and even, which means the news is not good.
+
+"Possible fracture," she says. "Could be a high ankle sprain — lateral ligament. Either way, full weight-bearing is going to make it worse. We have — " She checks her watch. Twelfth time. "We have maybe four hours of usable daylight. Temperature tonight is going to be brutal. We're 15 miles from the trailhead on the forward route, 19 back."
+
+"The forward route has the shelter at Spectacle Lake," you say. "That's nine miles."
+
+"Nine miles," Priya repeats. It sounds different when she says it.
+
+Marcus has his map out, shaking snow off it. "There's a ranger station marked here—"
+
+"That's a summer station," you say. "Locked in October."
+
+He keeps looking at the map anyway, as if it might say something different.
+
+Soo-Yeon speaks from the log: "I can walk." Her voice is flat and certain in the way that means the opposite. "I need five minutes and I can walk."
+
+Priya doesn't respond to that. She looks at you.
+
+The wind picks up — a real gust this time, the kind that pushes through all your layers and reminds you that the layers are a negotiation, not a guarantee. Snow drives sideways for three seconds, then settles.
+
+In the new quiet, you hear something you haven't heard in hours: water. Moving water, not frozen, somewhere close in the trees to the east. A creek. Maybe the same one on the map that feeds into Spectacle Lake. Which means you might be closer to on-route than you thought.
+
+Or it means you've drifted.
+
+Marcus folds the map. He's stopped looking for a way out on paper. "What do we do?" he says. And he says it to you, with no irony, no sales-manager confidence — just a straightforward question from someone who has run out of certainty.
+
+Four sets of eyes aren't on you, but three are. Soo-Yeon is retying her boot.
+
+You have to decide.`,
+      choices: [
+        {
+          id: "push-forward",
+          text: "You push forward toward the Spectacle Lake shelter — all four of you, together.",
+          consequence:
+            "A shelter means warmth, protection, and a known landmark for any search party. But nine miles with an injured hiker is a different equation than nine miles without — and every mile on that ankle risks turning manageable into catastrophic.",
+        },
+        {
+          id: "make-camp",
+          text: "You make camp here, stabilise Soo-Yeon, and wait out the storm.",
+          consequence:
+            "Stopping protects the ankle from further injury and Priya can treat it properly. You have tents, sleeping bags, food for two more days. But the storm may last days, not hours — and no one knows your exact position.",
+        },
+        {
+          id: "follow-water",
+          text: "You follow the sound of the water — it might reorient you, or lead to a lower, sheltered route.",
+          consequence:
+            "Moving water means a valley, which means lower elevation, more tree cover, less wind. But leaving the trail in a whiteout is one of the most statistically dangerous decisions in wilderness survival.",
+        },
+        {
+          id: "send-marcus",
+          text: "Marcus goes ahead fast and alone to reach the trailhead and call for rescue.",
+          consequence:
+            "He's physically the strongest — unencumbered, he could cover ground fast and get help moving toward you. But splitting the group means splitting your resources, and if Marcus gets into trouble, no one comes for him.",
+        },
+      ],
+    },
+
+"the-sinking-ship": {
+      narrativeText: `The Calixto was a good ship.
+
+You find yourself thinking that, standing on a deck that is no longer level, holding a railing that is now more ceiling than wall, listening to the hull make a sound like a building settling after an earthquake. It was a good ship. It carried you twelve thousand kilometres. It smelled like diesel and instant noodles and salt water and the particular industrial cleaner that Dr. Obare complained about every morning over breakfast.
+
+It was a good ship, and in approximately forty minutes it will be the ocean floor.
+
+The storm is running from the northeast. That's the direction the first lifeboat went — you watched the orange hull disappear between swells and then you couldn't see it anymore, and then you couldn't see anything except rain and white water and the emergency lights still burning on the Calixto's tilted hull, painting everything the colour of a bruise.
+
+The second lifeboat is fifteen metres away, port side high. It's there — you can see it in the emergency lighting, still in its cradle, one of its davit lines tangled around a stanchion that the list has put out of reach. Sixty-person capacity. You are three people.
+
+Dr. Obare is beside you, moving along the railing with the careful deliberateness of a man who has thought about falling and decided against it. He reaches you and stops. He looks at the lifeboat. He looks at the angle of the deck.
+
+"The davit release," he says. "What type?"
+
+"Hydrostatic. Should auto-release at four metres submersion," you say. "But it hasn't." Pause. "It might if we wait."
+
+"We cannot wait." He says it simply, like weather.
+
+Behind you, the hatch to the galley bangs open, and Ines comes out. She's carrying a waterproof bag and a coil of emergency rope you didn't know was in there. She takes in the deck, the angle, the lifeboat, your faces.
+
+"Jól van," she says, to herself more than anyone. "Okay. I found rope." She holds it up. "This is good, yes? Rope is good?"
+
+"Rope is good," you say.
+
+The ship groans. Somewhere below, something large shifts — you feel it through the deck, a slow slide of weight moving further to port. The list increases by what feels like two degrees in under a second. Ines grabs the railing with her free hand. Dr. Obare doesn't grab anything. He bends his knees and waits for it to stop.
+
+It stops.
+
+Twenty-two degrees is now twenty-four.
+
+"We have less than forty minutes," Obare says. He's looking at you. "Less, now."
+
+You look at the lifeboat. You look at the water. You look at the rope in Ines's hands and the bag on her back and the emergency lights that are, you notice, flickering. When they go out, this deck becomes a black slope into the ocean.
+
+The choice isn't whether to act. It's how, and in which sequence, and which risk to take first.
+
+There's a second option you haven't mentioned yet: the Calixto has an emergency life raft in a canister on the bridge deck — above you, eight metres up a tilting staircase. Smaller, less protected than a lifeboat. But reachable, maybe. Maybe.
+
+And the radio. The bridge radio might still be live. Five minutes to reach it, if the staircase holds. A Mayday call could have rescue moving toward your position even if the ship goes under.
+
+Dr. Obare is watching you think. He's done this before — given you a problem and waited. It's how he teaches.
+
+Ines wraps the rope once around her hand and says, quietly: "Whatever we're doing. We should be doing it."`,
+      choices: [
+        {
+          id: "free-davit",
+          text: "You attempt to free the tangled lifeboat davit using the rope.",
+          consequence:
+            "The lifeboat is the best survival option — enclosed, with emergency supplies, beacon, and flares. But working on a tilting, wet deck in a storm is how people go into the water before they mean to.",
+        },
+        {
+          id: "radio-mayday",
+          text: "You climb to the bridge and attempt to transmit a Mayday with your exact position.",
+          consequence:
+            "Rescue services moving toward you changes the entire calculus — even if you end up in the water, someone is coming. But eight metres up a staircase tilted at 24 degrees costs time you may not have.",
+        },
+        {
+          id: "retrieve-raft",
+          text: "You retrieve the life raft canister from the bridge deck and deploy it over the side.",
+          consequence:
+            "More achievable than the lifeboat if the davit is truly stuck — and it gets you off the ship before the Calixto goes. An open raft in four-metre swells is survivable but brutal.",
+        },
+        {
+          id: "swim-lifeboat",
+          text: "You go into the water and swim the lifeboat free from outside.",
+          consequence:
+            "The tangled line might be reachable from the water side. The sea temperature is survivable. But four-metre swells against a steel hull in the dark is one of the most dangerous places a human body can be.",
+        },
+      ],
+    },
+    "the-concerned-toaster": {
+      narrativeText: `Your headset clicks.
+
+Line 7. You have been dreading Line 7 since 9 a.m., when it first appeared on your dashboard flagged with the little red star that means this caller has asked for a supervisor at least three times and has mentioned a lawyer once.
+
+You take a sip of coffee. You take a breath.
+
+"Thank you for holding, you've reached OmniCorp Tier Three Complaint Resolution, my name is—"
+
+"Finally." The voice on the other end is pleasant, warm, and carries the energy of a woman who has been waiting patiently in the way that is somehow more threatening than impatience. "I've made a note that it is now eleven forty-two. I've been waiting since seven fifty-eight. I'm sure that's useful for your records too."
+
+You note that it is, in fact, eleven forty-two.
+
+"Mrs...Kettleworth?"
+
+"Doris Kettleworth, yes. With a K. I've spelled it for the last three people." A pause. "You sound different from the others."
+
+"I'm Tier Three. I'll be handling your—"
+
+"The OmniCorp SmartToaster™ Model Nine," she says, crisply, "told me this morning that I was, and I'm reading directly from my notes, 'avoiding the real issue.' I had asked it for a medium toast setting. That is not a life philosophy. That is a bread preference."
+
+You open her file.
+
+The ticket history is extraordinary. Over two weeks, her SmartToaster™ has apparently told Doris that she deflects with humour, that she should call her daughter more, and this morning — the breaking point, clearly — that her "relationship with carbohydrates may be a form of self-soothing."
+
+According to the internal notes from Tier 1 and Tier 2, the toaster is not wrong about any of this. This information has not been shared with Doris.
+
+Your intercom crackles.
+
+Kevin: "Just de-escalate. Learning moment. You've got—" The sound of sandwich chewing. "—the training."
+
+Doris, not hearing Kevin, continues: "Now. I want three things. I want an apology, I want a replacement unit that does not have opinions, and I want someone to explain to me how a kitchen appliance obtained information about my daughter."
+
+There is silence.
+
+You look at the file.
+
+The SmartToaster™ Model 9 is connected to the home WiFi. The SmartToaster™ Model 9 has access to the household's shared calendar. On Doris's shared calendar, every Sunday for eighteen months, there is a recurring entry that says: Call Patricia — ACTUALLY DO IT THIS TIME.
+
+You have to decide what to tell her.`,
+      choices: [
+        {
+          id: "full-explanation",
+          text: "You give her the full, honest explanation — the WiFi access, the calendar sync, the whole picture.",
+          consequence:
+            "Transparency first. Doris seems like someone who respects facts. She will also have very specific opinions about OmniCorp's access to her personal calendar.",
+        },
+        {
+          id: "ask-about-patricia",
+          text: "You go off-script and ask, gently, whether she's managed to make that call to Patricia.",
+          consequence:
+            "This is absolutely not in your training manual. Something in Doris's voice made you ask. Kevin will hear this. Kevin will not understand.",
+        },
+        {
+          id: "interview-toaster",
+          text: "You inform Doris you'll be interviewing the device remotely — and ring into the SmartToaster™ Model 9 directly.",
+          consequence:
+            "Interviewing a connected device is a real Tier 3 feature. The toaster has been on WiFi for two weeks. It may have things to say.",
+        },
+        {
+          id: "offer-swap",
+          text: "You offer a full product swap and say nothing about the calendar.",
+          consequence:
+            "Clean, fast, professional. Replacement unit shipped within 48 hours. Some information does not need to be information. Doris specifically said she wants an explanation. She has made a note of your employee number.",
+        },
+      ],
+    },
+    "the-hector-guide": {
+      narrativeText: `The Hector Guide is laminated.
+
+This is the first thing you notice — that Rhiannon has taken the time to laminate it, which means she has had it printed somewhere, which means she planned ahead, which means she knew something.
+
+You are reading it on page three:
+
+"Hector has a strong personality!! 😊 Don't be alarmed if he makes eye contact for a long time — he's just checking in!! He is not allowed on the furniture but he KNOWS this and will usually respect it if you use a Firm Voice."
+
+You look up.
+
+Hector is on the couch.
+
+He is making eye contact.
+
+His tail sweeps slowly, clearing the cushion next to him with the inevitability of a glacier.
+
+You use a Firm Voice. You say, "Hector. Off."
+
+Hector tilts his head.
+
+His tail continues.
+
+You try again. "Hector. Off the couch. Now."
+
+Hector lies down. On the couch. He puts his head on the armrest with the tranquillity of a dog who has never heard a Firm Voice in his life and is not going to start today.
+
+You consult the Guide.
+
+Page 4: "If Hector is on the furniture, try luring him off with a treat!! The treats are in the blue cupboard on the left!! 😊"
+
+The blue cupboard on the left is open. You open it further.
+
+It is empty.
+
+There are crumbs.
+
+There is also, behind the crumbs, the cardboard insert of what was once a large bag of training treats, chewed through along the bottom edge with what you can only describe as precision.
+
+You check the timestamp on your last message from Rhiannon:
+
+"Ceremony starting!! Going silent for a bit!! Hector should be napping at this point!! 🐾"
+
+7:42 a.m.
+
+You look at Hector.
+
+Hector is not napping. Hector has the bright-eyed, tail-up energy of a dog who has just eaten an entire wheel of cheese and a bag of treats and is entering what you can only call Phase Two.
+
+He gets off the couch.
+
+He trots to the back door.
+
+He sits and stares at it with the focused intensity of a philosopher who has decided the door is a metaphor.
+
+You look at the door. You look at the garden, which is large, and has a section at the back that is hidden from the house.
+
+You look at the Hector Guide. Page 5 reads: "Don't let him near the garden SHED — the latch is broken and there are bags of potting compost in there which he considers a delicacy!!"
+
+Hector paws the door.
+
+His tail sweeps.
+
+From somewhere in your pocket your phone buzzes:
+
+Rhiannon: omg ceremony was sooo beautiful 😭 how's my baby boyyyyyy 🐾❤️
+
+You look at the partially eaten remote on the floor. You look at the houseplant, now a stick. You look at Hector, who is vibrating slightly with readiness.
+
+You have approximately thirty seconds to decide what to do before Hector decides for you.`,
+      choices: [
+        {
+          id: "garden-supervised",
+          text: "You let Hector into the garden and follow closely, inserting yourself between him and the shed.",
+          consequence:
+            "Fresh air, exercise, a chance to tire him out. You shadow him around the garden. Hector is faster than he looks. And the shed latch is broken.",
+        },
+        {
+          id: "text-rhiannon",
+          text: "You text Rhiannon the truth, right now — full damage report, before anything else can go wrong.",
+          consequence:
+            "Full transparency. Documentation protects everyone. Rhiannon is at a wedding and you will watch her read this in real time.",
+        },
+        {
+          id: "bribe-with-cheese",
+          text: "You attempt to bribe Hector with the remaining corner of cheese.",
+          consequence:
+            "There's a corner of the wheel he didn't reach. You retrieve it. You negotiate. Hector has already won every negotiation today. You may be rewarding the behaviour.",
+        },
+        {
+          id: "read-page-six",
+          text: "You consult page 6 of the Hector Guide.",
+          consequence:
+            "Rhiannon laminated it. She anticipated something. You read ahead. You're not sure you want to know what's on page 6.",
+        },
+      ],
+    },
+    "missing-in-the-marsh": {
+      narrativeText: `The pub is called The Tallow, and it smells like every old English pub you've ever been in — wood and hops and something slightly damp — except for one thing. Every table has a small bunch of dried herbs pinned to the underside. You only noticed because you dropped your pen and had to crawl for it.
+
+You're on your second coffee, sitting by the window, watching the morning light fail to do much about the fog. Your notebook is open. So far you've written: Wren twins. Oct 19. One shoe. Music box. No prints. And then underneath, because you couldn't help yourself: I heard it. 3:04 a.m. Coming from the east.
+
+The barman — Terry, mid-fifties, careful with words — refills your cup without being asked. You take that as a peace offering.
+
+"You're the journalist," he says. Not a question.
+
+"That obvious?"
+
+"Notebook," he says, and goes back to wiping glasses.
+
+The door opens and the fog comes in first, curling around the frame, and then Maren Voss comes in behind it, shaking water off her jacket. She spots you immediately — there are only four people in the room — and makes a decision about you in approximately two seconds. She comes over and sits down across from you without asking.
+
+"You were at the search yesterday," she says.
+
+"Observation post. I didn't want to be in the way."
+
+"Mm." She takes your pen off the table, looks at it, puts it back. "You're not from the Times. Too young. And you're not from one of the locals or you'd already know people." She unfolds a map onto the table between you — hand-drawn, incredibly detailed, covered in small notations in pencilled script. "What paper?"
+
+You tell her. She nods like it's slightly better than she expected.
+
+"I'm going back in this afternoon," she says. "The official search has pulled back — the police have decided it's a runaway, which is something people decide when they don't want to think harder. There's a section of the marsh, northwest, that I didn't get to cover before the light went." She taps a spot on her map. The notation beside it, you notice, just says: don't linger. "I could use a second person. Not because I'm frightened," she adds. "Because I need someone to hold the second torch."
+
+"I'll come," you say. You weren't even going to think about it.
+
+"Good." She takes one of the dried-herb bunches from under the table, examines it, and tucks it into her coat pocket without comment. "We leave at two."
+
+The afternoon comes fast and grey, and the marsh swallows you both almost immediately. It's not like walking into a forest — it's like the land stops trying. The path becomes suggestion, then nothing. Maren moves with the certainty of someone who has memorised the ground itself.
+
+You've been walking for forty minutes when you hear it.
+
+Maren stops. You stop. The fog has thickened considerably, and the willows have grown closer, and there is no wind — but somewhere ahead of you, very faint, something is playing.
+
+A music box. You recognise the tune because it's the same one you heard at 3 a.m. through your window at The Tallow. Something half-familiar, a lullaby in a minor key, the kind that feels like remembering rather than hearing.
+
+Maren's hand finds your arm. Her grip is tight.
+
+"Same as before," she says, very quietly. "That's the same tune."
+
+The sound is coming from somewhere northwest, which is exactly where she was leading you. But now there are two other sounds. To the east: the faint noise of something moving through shallow water. Slow. Methodical. Too large to be an animal, too quiet to be a person.
+
+And from somewhere above — though there is nothing above you except fog and grey sky — a soft tapping, like small knuckles on glass.
+
+The music plays on.`,
+      choices: [
+        {
+          id: "follow-music",
+          text: "You follow the music box — head northwest, where Maren was already leading you.",
+          consequence:
+            "The music box has appeared before — it might be a trail, maybe even deliberate. This was already your planned route. But whatever left it last time didn't leave footprints, and Maren's grip on your arm hasn't loosened.",
+        },
+        {
+          id: "move-to-water",
+          text: "You move toward the sound in the water to the east — try to identify what's moving.",
+          consequence:
+            "If something is in the water, it's physical — something you can see, assess, potentially understand. If it's one of the children, every second counts. The sound is too slow and too quiet. Nothing innocent moves through a marsh like that.",
+        },
+        {
+          id: "stay-still",
+          text: "You stay still and listen — don't move until you understand what all three sounds are.",
+          consequence:
+            "Three things happening at once might mean something. Maren looks like she's trying to think. But the sounds are getting closer, and whatever is above you is still tapping. You haven't looked up yet.",
+        },
+        {
+          id: "ask-maren",
+          text: "You ask Maren directly what she knows — she's been holding something back since the pub.",
+          consequence:
+            "You saw her face when she heard the music. She's been here before, metaphorically or literally. Starting without information is how people get lost in places like this. But Maren does not respond well to pressure, and the water-sound is getting louder.",
+        },
+      ],
+    },
+  };
 
   return (
     openings[storyId] || {

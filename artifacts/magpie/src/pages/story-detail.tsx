@@ -235,18 +235,6 @@ export default function StoryDetailPage() {
             >
               {story.genre}
             </span>
-            <span
-              style={{
-                padding: "3px 10px",
-                border: "1px solid rgba(0,229,200,.3)",
-                borderRadius: "3px",
-                fontSize: "11px",
-                color: "#00e5c8",
-                fontFamily: "'Barlow Condensed', sans-serif",
-              }}
-            >
-              {story.audienceAge}
-            </span>
           </div>
         </div>
       </div>
@@ -429,7 +417,6 @@ export default function StoryDetailPage() {
         >
           {[
             { label: "Genre", value: story.genre },
-            { label: "Age Rating", value: story.audienceAge },
           ].map((item) => (
             <div
               key={item.label}
