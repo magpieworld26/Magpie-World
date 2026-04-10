@@ -41,6 +41,7 @@ export interface Story {
   featured: boolean;
   rank: number | null;
   initialPrompt: string;
+  audienceAge?: string;
 }
 
 export interface Choice {

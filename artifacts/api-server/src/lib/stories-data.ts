@@ -338,6 +338,192 @@ Viktor Chasse — Wildcard / Tech billionaire and Reginald's oldest rival. Extre
 
 TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension is real — a murder has happened, you're being framed, the clock is ticking — but the protagonist is fundamentally decent and slightly out of his depth, which creates room for warmth and humour. Nisha provides the trope-savvy commentary. The wealthy guests are all performing for each other. VERA, the AI, is relentlessly helpful in ways that are sometimes useful and sometimes deeply unhelpful. Every scene should balance genuine stakes with the comedy of an ordinary person navigating extraordinary circumstances.`,
   },
+  {
+    id: "the-clockwork-garden",
+    title: "The Clockwork Garden",
+    genre: "Fantasy / Adventure",
+    description:
+      "Behind the old greenhouse, you've found a garden that runs on gears and wishes. The gardener left a note. The rose is ticking. You have until sunset.",
+    longDescription:
+      "The abandoned greenhouse at the edge of Millbrook Park has been locked for as long as anyone can remember. But today the lock is open, the gate is ajar, and inside — past rows of dusty clay pots and broken glass — is a door that leads somewhere impossible. The Clockwork Garden is alive with gears and singing pipes, flowers that chime on the hour, and a giant sundial that counts down to something nobody will explain. The gardener who built it left a notebook. You've read the first three pages. You're not sure you should have.",
+    coverGradient:
+      "linear-gradient(145deg, #1a4a1a 0%, #2d7a2d 40%, #4aaa4a 75%, #6acc6a 100%)",
+    tags: ["Fantasy", "Adventure", "Magic", "Discovery"],
+    rating: "★★★★☆",
+    chapterCount: 7,
+    readingTime: "3-5 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-clockwork-garden",
+    storyMode: "Fantasy / Adventure — wonder, problem-solving, gentle stakes",
+    audienceAge: "8–12",
+    worldContext: `WORLD & STORY CONTEXT
+Millbrook is a quiet town with a park at its centre. Most people walk past the old greenhouse without looking twice — it's been locked for sixty years, surrounded by overgrown ivy and a rusted fence. What almost nobody knows is that behind the greenhouse, through a door hidden by climbing roses, is a garden that should not exist. The Clockwork Garden was built by an inventor named Mira Voss over forty years ago. Everything in it runs on gears, springs, and a kind of energy Mira called "whimsy" — which behaves a lot like ordinary mechanics except when it doesn't. Flowers open and close on schedule. Bees made of hammered copper collect brass pollen. A waterfall flows uphill between the hours of three and five. The sundial in the centre has seventeen hands, each measuring something different. The garden has been running without a gardener for sixty years, which is too long, and things have started to go slightly wrong in small and important ways. Mira left a notebook with instructions. You have found the notebook. You have also found the garden. These two facts are probably connected.
+
+CHARACTERS
+You — A curious kid who followed a cat through the unlocked gate and found something impossible.
+
+Pip — Your best friend. Practical, funny, and allergic to bees — which is a problem in a garden full of copper ones. Wants to figure out how things work. Always has a hypothesis. Sometimes the hypothesis is right.
+
+The Notebook — Mira's handwritten record of the garden's rules and secrets. Some pages are missing. Some pages warn about specific things. You are not always sure which warnings you should have read before you did the thing.
+
+TONE GUIDANCE: Warm wonder with gentle stakes. Every mechanical thing in the garden should feel genuinely magical — not frightening, but surprising. Problems are puzzles to solve together. The stakes are real (the sundial counts down to something) but never scary. Let curiosity drive every scene. Pip's humour lightens tense moments. The garden rewards kindness and cleverness.`,
+  },
+  {
+    id: "ghost-delivery",
+    title: "Ghost Delivery",
+    genre: "Comedy / Mystery",
+    description:
+      "The package was addressed to someone who has been dead for thirty years. You delivered it anyway. Now the ghost wants to write back.",
+    longDescription:
+      "Your summer job at Crumble & Sons Postal Service seemed simple enough: pick up, deliver, get paid. Nobody mentioned that the Whistleby house at the top of the hill was occupied by a ghost named Edmund who has been waiting thirty years for a letter that never came. He got it today — delivered by you, by accident, because you misread the street number. Now Edmund has a reply he wants you to post. The problem is that Edmund's return address doesn't exist anymore. The second problem is that Edmund is very chatty. The third problem is that whoever sent the original letter is still alive and might not know Edmund is a ghost. This is not in your job description.",
+    coverGradient:
+      "linear-gradient(145deg, #2a0a4a 0%, #4a1a7a 40%, #7a3aaa 75%, #aa6acc 100%)",
+    tags: ["Comedy", "Mystery", "Ghost", "Friendship"],
+    rating: "★★★★☆",
+    chapterCount: 6,
+    readingTime: "3-4 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "ghost-delivery",
+    storyMode: "Comedy / Mystery — warm, funny, gently spooky",
+    audienceAge: "8–12",
+    worldContext: `WORLD & STORY CONTEXT
+The town of Plimpton is perfectly ordinary in almost every way. Houses have gardens. The bakery smells like cinnamon on Thursdays. The old Whistleby house at the top of Harrow Hill has been empty since 1994 — or so everyone says. Edmund Whistleby, who lived there until he didn't, never quite left. He's not frightening. He's just stuck. He's been waiting for a letter for thirty years, and he has very specific opinions about the postal service, the correct temperature for tea, and the films that came out after 1993 (he missed all of them and is catching up slowly via conversations with the living). The letter arrived today — misdelivered by you, because Harrow Hill and Harrow Close are genuinely confusingly named, and the house number didn't help. Edmund was delighted. Now he wants to respond, and he needs a postal carrier with functioning hands.
+
+CHARACTERS
+You — A kid doing a summer postal job. You have not previously delivered mail to a ghost. You are adapting.
+
+Edmund Whistleby — The Ghost. Seventies, in the warm cardigan-and-slippers sense. Polite, curious, occasionally confused by modern technology, and absolutely thrilled to have a visitor. He is not scary. He would be very upset if you found him scary. He makes excellent invisible tea.
+
+Your supervisor — Has never mentioned ghosts in the training materials. This feels like an oversight.
+
+TONE GUIDANCE: Warm comedy with a gentle mystery at the centre. Who sent the letter, and why now? Edmund is funny because he's so specific — about manners, about the weather, about the correct way to fold a letter. The comedy comes from the gap between the very normal (postal delivery) and the very not (ghost). Let the friendship develop naturally. The mystery is sweet, not dark.`,
+  },
+  {
+    id: "the-last-dragon-egg",
+    title: "The Last Dragon Egg",
+    genre: "Fantasy",
+    description:
+      "You found an egg in the mountain pass. It's warm. It's humming. And something very large has been following your footprints in the snow.",
+    longDescription:
+      "The mountain pass through the Greycrown range is supposed to be safe — your family has crossed it every autumn for generations. This year, halfway through, you spot something in a hollow beneath the ice: an egg. It's the size of a watermelon, covered in iridescent scales, and unmistakably warm despite the freezing air. Your grandmother's stories said the last dragons left these mountains a century ago. Your grandmother's stories are usually right. Whatever left this egg behind was very large. And whatever is following you through the snow wants it back.",
+    coverGradient:
+      "linear-gradient(145deg, #3a1a0a 0%, #7a3a0a 40%, #c86010 75%, #e87820 100%)",
+    tags: ["Fantasy", "Adventure", "Dragons", "Survival"],
+    rating: "★★★★★",
+    chapterCount: 8,
+    readingTime: "4-6 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-last-dragon-egg",
+    storyMode: "Fantasy — wonder and danger, brave choices, earned trust",
+    audienceAge: "8–12",
+    worldContext: `WORLD & STORY CONTEXT
+The Greycrown Mountains form the spine of the known world. Merchants, farmers, and the occasional shepherd have crossed the Greycrown pass for five hundred years. The mountains are cold, rocky, and completely ordinary — or they have been, for the past hundred years, since the last dragons were said to have left. Before that, the Greycrown was dragon territory. The evidence is still there if you know where to look: scorched ledges, enormous claw-marks worn smooth by weather, the occasional scale half-buried in ice. Your family crosses the pass every autumn to reach the winter markets in Stonefield. You've done it five times. Nothing has ever happened — until now. The egg you've found is not a chicken egg. It is not a goose egg. It is warm, humming faintly, and covered in tiny iridescent scales that catch the light like hammered copper. It weighs exactly as much as it should weigh if it were going to hatch soon. In the snow behind you, something has left prints. The prints are large. They are fresh. They are getting closer.
+
+CHARACTERS
+You — Eleven years old. Sensible, mostly. Brave when you have to be. You've read all the dragon books in the village library, which you thought was just interesting and now turns out to be relevant.
+
+Gran — Your grandmother. She knows the old stories better than anyone. She's waiting at the winter camp, two hours ahead. She'll know what to do — if you can reach her.
+
+The Egg — Warm. Humming. Occasionally shifting. Making a decision on its own timeline.
+
+TONE GUIDANCE: Adventure with genuine stakes and genuine wonder. The dragon is not a villain — it is a parent, and something more ancient than that. The tension comes from not knowing whether the thing following you is dangerous or desperate. Let the egg feel alive. Let the mountains feel enormous. Every choice should feel like it matters, but the story should never be cruel.`,
+  },
+  {
+    id: "the-second-chapter",
+    title: "The Second Chapter",
+    genre: "Literary / Drama",
+    description:
+      "At forty-two, you've left the career you spent twenty years building. Your flat is half-packed. Your sister is coming for dinner. You have no plan.",
+    longDescription:
+      "You spent twenty years as a structural engineer. Three months ago, you resigned without a new job lined up. You've told people it was a choice. It was also, more accurately, a collapse — a slow one, the kind that looks like everything's fine from the outside until the morning you simply cannot make yourself walk back through the door. Now you're forty-two, your flat is half-packed because you're not sure whether you're staying or going, your sister is coming for dinner tonight, and you have approximately four hours to figure out what you want to say when she asks what your plan is. You don't have a plan. You have a notebook, half-used. You have a memory of why you chose engineering in the first place. And you have the unsettling feeling that some things you walked away from might still be worth walking back to — just differently.",
+    coverGradient:
+      "linear-gradient(145deg, #1a1a2e 0%, #2a2a4a 40%, #3a3a5a 75%, #1a1a3a 100%)",
+    tags: ["Drama", "Literary", "Coming of Age", "Identity"],
+    rating: "★★★★☆",
+    chapterCount: 8,
+    readingTime: "5-7 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-second-chapter",
+    storyMode: "Literary / Drama — quiet, real, emotionally precise",
+    audienceAge: "18+",
+    worldContext: `WORLD & STORY CONTEXT
+A present-day city — the kind with good coffee shops and unreliable buses. You live in a flat you've had for eleven years, in a neighbourhood you know the way you know your own handwriting. For twenty years you were a structural engineer at a mid-sized firm — not famous, not struggling, good at the job in the practical, reliable way that kept bridges standing and clients satisfied. Three months ago you resigned. You've been telling people it was a sabbatical. You've been telling yourself it was a decision. It was both of those things, and also a quiet emergency that nobody else could see. Your sister, Yael, is the person in your life most likely to ask the right questions and least likely to accept non-answers. She's coming for dinner at seven. It is currently three in the afternoon. Your flat is in the state of someone who started packing without knowing the destination — some boxes sealed, some open, some items placed in the middle of the floor as if they couldn't decide which pile they belonged in.
+
+CHARACTERS
+You — Forty-two. Technically between careers. Genuinely unsure what that means.
+
+Yael — Your sister. Two years younger, a secondary school art teacher, funnier than she lets people at school know. The person who will look at the half-packed flat and understand exactly what it means before you've said anything. She is not going to let you deflect.
+
+The Notebook — Half-used. Started years ago for something you never finished. Still here.
+
+TONE GUIDANCE: Quiet, precise, and honest. This is a story about the gap between the life that looked right from the outside and the one that might actually fit. No dramatic crisis — just the harder work of figuring out what you actually want. Every scene should feel like a room you've been in before, seen differently. Let Yael's presence be warm and also slightly terrifying. The notebook matters. So does the half-packed flat.`,
+  },
+  {
+    id: "cold-light",
+    title: "Cold Light",
+    genre: "Mystery / Thriller",
+    description:
+      "You retired from homicide eight years ago. The case that made you retire just reopened. The detective assigned to it is twenty-six and doesn't know what she's walking into.",
+    longDescription:
+      "Detective Superintendent Maren Solberg retired from homicide in 2017. The Kelso case — three unsolved deaths in a coastal town, a suspect who walked free on a procedural error you made — was the reason. Eight years of quiet. A cottage. A garden. Then a fourth body turns up in Kelso and the force sends a junior detective to reopen the file. She comes to you because your notes are the best in the archive. She stays because she's realising how much she doesn't know. You stay because you never actually stopped thinking about it. There's a conversation you should have had eight years ago. You're going to have to have it now.",
+    coverGradient:
+      "linear-gradient(145deg, #0a1520 0%, #0d2030 40%, #0a1a28 75%, #060e18 100%)",
+    tags: ["Mystery", "Thriller", "Crime", "Redemption"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "cold-light",
+    storyMode: "Mystery / Thriller — slow burn, procedural, character-driven",
+    audienceAge: "18+",
+    worldContext: `WORLD & STORY CONTEXT
+Kelso is a coastal town on the western edge of things — the kind of place where the sea is grey nine months of the year and people who live there have stopped mentioning it. It has a harbour, two pubs that predate the current century, and a slow attrition of young people who leave and don't come back. In 2015 and 2016, three people died there within eighteen months. The deaths looked accidental. Maren Solberg, then a Detective Superintendent at the regional force, was certain they weren't. The suspect she identified — a quiet, respected man named David Caird — walked free because of a chain-of-evidence error that Maren made during the third investigation. She resigned six months later. Caird remained in Kelso. Maren moved to a cottage forty miles inland. She has not been back. In February 2025, a fourth person died in Kelso. Different method. Same signature. And the file has been reopened.
+
+CHARACTERS
+You — Maren Solberg. Fifty-four. Eight years out of the force. You kept the garden and got rid of almost everything else. You have the case notes in a box under the bed. You have always had them in a box under the bed.
+
+DS Petra Holm — The detective assigned to the reopened case. Twenty-six, methodical, too smart for the pace she's moving at. She came to you for the archive notes. She stayed because she could see you were still running the case in your head. She doesn't know about the error yet.
+
+David Caird — Still in Kelso. Still quiet. Still respected. He knows you're back.
+
+TONE GUIDANCE: Cold, precise, and quietly devastating. The mystery is real, but the emotional core is a mistake that cost something irretrievable and the question of whether repair is still possible. Let the coastal setting carry weight — grey light, the sound of water, a town where everyone knows what everyone did. Petra is not naive; she's just young. Maren is not broken; she's been waiting. Let that distinction do real work.`,
+  },
+  {
+    id: "the-cartographers-confession",
+    title: "The Cartographer's Confession",
+    genre: "Historical Mystery",
+    description:
+      "You've spent thirty years drawing the boundaries of the empire. Tonight you've found the map that proves the boundary was drawn wrong — on purpose.",
+    longDescription:
+      "Adriaan de Vries has spent thirty years as the empire's senior cartographer. He has drawn borders that ended wars and started them. He has surveyed coastlines, mountain ranges, and river deltas. He is trusted, respected, and above suspicion. Tonight, sorting through the archive of a dead colleague, he has found a map that proves the border between the empire and the Kessler territories — the border he himself certified twenty-two years ago — was deliberately falsified. Not by him. By someone with far more power than him. The war that followed that border killed eleven thousand people. The man responsible is still alive, still respected, and is currently being considered for the position of Imperial Chancellor.",
+    coverGradient:
+      "linear-gradient(145deg, #2e1a0a 0%, #5a3515 40%, #8a5520 75%, #6a3a10 100%)",
+    tags: ["Historical", "Mystery", "Conspiracy", "Moral Dilemma"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-8 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-cartographers-confession",
+    storyMode: "Historical Mystery — moral weight, institutional power, quiet courage",
+    audienceAge: "18+",
+    worldContext: `WORLD & STORY CONTEXT
+A pre-industrial empire at the height of its administrative power — think 18th century in sensibility, without reference to real-world nations. The empire is governed by a Council of five Ministers, with the Emperor as figurehead. The Office of Cartography is among the most trusted institutions in the imperial apparatus — maps are legal documents, border maps are binding treaties, and the Senior Cartographer's certification carries the weight of law. Adriaan de Vries has held the Senior position for twelve years. He certified the Kessler Border Agreement twenty-two years ago, six years before his promotion, when he was a junior surveyor following his superior's instructions. The border was wrong. He didn't know it at the time. He has found proof tonight — a preliminary survey, marked "suppressed," in the dead hand of his former superior — that the error was deliberate. The war that followed killed eleven thousand people in three years of border conflict before the revised treaty was negotiated. The man who ordered the falsification is Lord Minister Greave, now seventy-one, publicly celebrated as a peace architect, and currently being nominated for Imperial Chancellor. The archive closes at midnight. Adriaan has two hours.
+
+CHARACTERS
+You — Adriaan de Vries. Senior Cartographer. Fifty-three. A man who has spent his career believing precision was a form of integrity. Tonight that belief is being tested.
+
+Emile — Your junior assistant. Twenty-four, idealistic, good at his work. He doesn't know why you're still in the archive at this hour.
+
+Lord Minister Greave — Seventy-one. The man who ordered the falsification. He has spent twenty-two years building a reputation as the person who ended the war he caused. He is not stupid. He has survived this long.
+
+TONE GUIDANCE: Serious, morally precise, and quietly tense. This is not an action story — it is a story about what a person does when they find something they cannot un-find, in an institution that rewards silence. Let the weight of the evidence land fully before the choices emerge. The moral dilemma is genuine: exposing Greave will destroy careers, reopen old wounds, and may not succeed. Not exposing him keeps an architect of mass death in power. Adriaan is not a hero by temperament. He might become one.`,
+  },
 ];
 
 export function getStoryById(id: string): StoryData | undefined {
@@ -1261,6 +1447,356 @@ VERA's pleasant voice chimed from the ceiling.
           text: "You find VERA's terminal and ask the train.",
           consequence:
             "One witness that cannot be bribed, threatened, or charmed: the AI with access to every camera on board. You need to find VERA's passenger interface before whoever did this thinks to do the same. You have no idea where the terminal is — and searching for it means leaving the main carriage, alone, which is exactly where the murderer might want you.",
+        },
+      ],
+    },
+    "the-clockwork-garden": {
+      narrativeText: `The gate is open.
+
+You've walked past the old greenhouse at the edge of Millbrook Park maybe a thousand times. Your gran said it's been locked since before she was born. Ivy has grown over the fence in loops so thick you couldn't see through them even if you tried. But today, walking home from the library with your bag digging into your shoulder, you saw it: the gate, slightly open. Just a few centimetres. Just enough to see through.
+
+Inside the greenhouse, the dusty clay pots are still there. The broken glass still crunches on the floor. But at the back, where the old potting bench should be, there's a door.
+
+It's made of dark wood, with a brass handle shaped like a coiled vine. Someone has oiled it recently — the hinges don't squeak when you push it open.
+
+What's behind it makes you stop walking entirely.
+
+The Clockwork Garden is enormous — far bigger than the greenhouse could possibly contain. Flowerbeds stretch in every direction, bordered by low copper fences engraved with leaves. In the centre, a giant sundial rises ten feet off the ground, its face covered in small moving hands that tick and rotate in patterns you can't read yet. Everywhere you look, things are moving: a butterfly made of hammered silver loops between brass flowers that open and close on hidden springs; a fountain in the corner flows upward, water climbing the air before it falls back down; a line of small copper birds perches on a fence, and as you watch, the first one turns its head and looks at you.
+
+The air smells like rain and metal and something warm you can't name.
+
+On the gate post, someone has taped a note. The handwriting is small and careful:
+
+*If you found this, the garden needs tending. The sundial counts down to the Uncoiling — this happens every sixty years, and it has been sixty-one. The clockwork rose in the east bed has already begun to tick too fast. Please don't touch it until you've read the notebook. The notebook is under the bench by the fountain.*
+
+*Also: mind the copper bees. They don't sting, but they're very opinionated.*
+
+*— M. Voss*
+
+Pip appears at your elbow, slightly out of breath — they must have followed you from the library.
+
+"Okay," Pip says, staring. "I have a lot of questions."
+
+From across the garden, a sound rises — a faint ticking, faster than everything else, coming from the east bed where a rose made of interlocking bronze petals is spinning slowly on its stem.
+
+The note said not to touch it until you've read the notebook. The notebook is across the garden, by the fountain. The rose is right there. And the gate is still open behind you.`,
+      choices: [
+        {
+          id: "find-notebook",
+          text: "You head straight for the notebook under the fountain bench.",
+          consequence:
+            "The gardener's instructions are the safest place to start — if the notebook explains what the Uncoiling is and what the rose means, you'll know what you're dealing with before you touch anything.",
+        },
+        {
+          id: "examine-rose",
+          text: "You go to the east bed to look at the ticking rose — without touching it.",
+          consequence:
+            "Looking isn't touching. And the note said the rose is ticking too fast, which means something is already wrong. You need to know how wrong before you read about how to fix it.",
+        },
+        {
+          id: "explore-garden",
+          text: "You and Pip explore the whole garden first, mapping it out before you do anything.",
+          consequence:
+            "You can't fix something you don't understand, and you don't understand any of this yet. A circuit of the garden — careful, no touching — will tell you what you're working with.",
+        },
+        {
+          id: "call-for-help",
+          text: "You decide to fetch a grown-up before you do anything else.",
+          consequence:
+            "This is clearly not a normal situation, and whoever left that note might want someone responsible involved. The question is: who would actually believe you?",
+        },
+      ],
+    },
+    "ghost-delivery": {
+      narrativeText: `The package has been sitting on your handlebars for the last ten minutes while you stand outside the gate of 14 Harrow Hill trying to decide whether the house is occupied or not.
+
+It definitely looks occupied. The curtains are closed in a precise way — not drawn hastily, but folded exactly even, the way someone does them on purpose. There's a mat on the step that says WELCOME in letters that have faded to a pale cream. A milk bottle stands by the door, empty and clean.
+
+But the garden path is overgrown with grass growing through the cracks. There's ivy on the gate that's been there long enough to work its roots into the ironwork. And the brass knocker — shaped like a fox — has been polished so recently you can see your own face in it, which doesn't match the rest of the place at all.
+
+The address on the package says: Mr. E. Whistleby, 14 Harrow Hill, Plimpton.
+
+You checked your list twice. The Plimpton delivery is supposed to be 14 Harrow Close — which is completely different, and also where a Mrs. Burgess is probably waiting for her parcel right now. But you misread Close as Hill, which sounds like a simple mistake, except that it's taken you twenty minutes to cycle up said Hill and you're not going to cycle back down empty-handed.
+
+You knock. The fox knocker makes a sound that's louder than you expected.
+
+There is a very long pause.
+
+Then the door opens.
+
+The man standing in the doorway is wearing a cardigan the colour of autumn leaves. He has the kind of face that looks permanently kind, with reading glasses pushed up on his forehead. He is also, quite clearly, slightly transparent.
+
+Not completely transparent — not like in films where you can see straight through. More like he's made of something that's mostly there. You can see the hallway behind him, faintly. You can also see, very clearly, the expression on his face when he looks at the package in your hands.
+
+He lights up.
+
+"A letter," he says, and his voice is quiet and warm, like a radio playing in another room. "At last. I was beginning to think — but never mind." He holds out his hand.
+
+You look at his hand, which is slightly transparent. You look at the label on the package. You look back at him.
+
+"Are you," you say carefully, "Mr. Whistleby?"
+
+"Edmund Whistleby, yes." He nods. "I've been expecting something from Dorset for thirty years, give or take." A pause. "Will you come in for tea? I've been practising the kettle."
+
+The sensible thing is to explain the mistake and leave. The package isn't even his. Well — it has his name on it. But the address is wrong and he is a ghost and your supervisor definitely did not cover this in training.
+
+Edmund Whistleby is still holding out his slightly-transparent hand, looking at the parcel like it contains something he's been missing for a very long time.`,
+      choices: [
+        {
+          id: "give-parcel-stay-tea",
+          text: "You give him the parcel and accept the tea.",
+          consequence:
+            "He's been waiting thirty years for something. And you're curious — about the ghost, about Dorset, about what's inside. The tea can't hurt. Probably.",
+        },
+        {
+          id: "give-parcel-leave",
+          text: "You give him the parcel but explain you have other deliveries to make.",
+          consequence:
+            "Polite and professional. He gets his parcel, you get back on your bike, and you can think about the whole ghost thing on the way to Mrs. Burgess.",
+        },
+        {
+          id: "ask-questions-first",
+          text: "You ask him: what is this parcel, and who sent it from Dorset?",
+          consequence:
+            "Before you hand over a parcel that was addressed wrong to a ghost who's been waiting thirty years, you want to know what it is.",
+        },
+        {
+          id: "keep-parcel",
+          text: "You explain the mix-up — this parcel might belong to someone else.",
+          consequence:
+            "The label has his name. But the address is wrong and you're not sure about the rules for delivering post to a ghost.",
+        },
+      ],
+    },
+    "the-last-dragon-egg": {
+      narrativeText: `The pass is exactly as cold as it always is — cold enough that your breath comes out in visible clouds and the snow makes that specific squeaking sound underfoot that means it hasn't melted and refrozen, that it's clean and deep and very, very old.
+
+Gran is two hours ahead, already at the winter camp on the far side. You've crossed the Greycrown pass five times in your life. This is the most straightforward part — a wide corridor between two peaks, open sky above, the path marked with cairns your great-grandfather built.
+
+You should be making good time. You've stopped because of the hollow.
+
+It's just off the path, beneath an overhang of ice — a natural bowl in the rock, sheltered from the wind. You nearly walked past it. You would have, if something hadn't caught the light.
+
+The egg is the size of a watermelon.
+
+The scales covering its shell are tiny — smaller than your thumbnail — and iridescent in the way that no rock or ice is ever iridescent. They catch the weak winter light and break it into copper and green and gold. You are wearing thick gloves, but when you crouch and hover your hand an inch above the surface, you can feel the warmth radiating off it. In the freezing mountain air. Under an ice overhang. That has been in shadow for months.
+
+The egg is alive.
+
+You know it the way you know the difference between a stone and a sleeping animal. There's a faint vibration when you get very close — a slow, deep hum. Like something dreaming.
+
+Your grandmother's stories said dragons left the Greycrown a hundred years ago. Your grandmother also said their nests smelled like hot copper and old stone, and that a dragon's egg would stay warm for three years after laying even without the parent. She said dragons don't abandon eggs. Ever. Unless something very bad happened to them, or they had to flee very quickly, and they couldn't carry it with them.
+
+She also said that whatever a dragon left behind, it would come back for.
+
+You look behind you.
+
+The pass is wide and white and silent. The cairns stand at their usual distances. The sky is grey and still.
+
+But in the snow, ten metres back, there are prints. They were not there when you walked through that spot twenty minutes ago.
+
+They are large. Each one is longer than your forearm, four-clawed, pressed three centimetres deep into packed snow. They're heading toward you. And the last one — the most recent one — is only a few metres away.
+
+Something very large has been following your footprints. And it knows you've found its egg.`,
+      choices: [
+        {
+          id: "take-egg-run",
+          text: "You take the egg and move as fast as you can toward Gran's camp.",
+          consequence:
+            "Gran knows the old stories better than anyone. If you can reach her with the egg, she'll know what to do.",
+        },
+        {
+          id: "leave-egg-stay",
+          text: "You step away from the egg and wait where you are, hands visible.",
+          consequence:
+            "If the dragon is watching, showing that you're not stealing the egg might be the only thing that keeps you safe.",
+        },
+        {
+          id: "hide-and-watch",
+          text: "You back into the hollow, out of the wind, and wait to see what comes.",
+          consequence:
+            "You need to see what you're dealing with before you make any decision that can't be undone.",
+        },
+        {
+          id: "leave-egg-and-go",
+          text: "You leave the egg exactly where you found it and walk quickly toward camp without looking back.",
+          consequence:
+            "You didn't take it. You didn't touch it. Maybe that's enough.",
+        },
+      ],
+    },
+    "the-second-chapter": {
+      narrativeText: `The boxes have been on the floor for eleven weeks.
+
+Not all of them — some are taped shut, labelled in your own handwriting: BOOKS (KEEP), KITCHEN (MAYBE), OFFICE STUFF. Some are open and half-full of things you've picked up and put down again: the frame from your desk at the firm, which you've started and stopped wrapping in newspaper four separate times; the mug that says ENGINEER on it, a Christmas gift from a colleague whose name you've already started forgetting; two A2 site survey prints that are technically worth something and that you have no idea what to do with.
+
+The flat is bright today. It's usually bright — south-facing, which is why you chose it, eleven years ago, when you were thirty-one and had just made Senior Associate and the world was very much in the direction of becoming something. You can see the garden from the kitchen window. Someone downstairs has planted wallflowers.
+
+Yael is coming at seven. It is currently three-fourteen.
+
+You've been looking at the notebook on the table for forty minutes.
+
+It's nothing special — an A5 spiral-bound with a blue cover, slightly dented at the corner where it spent a year at the bottom of a bag. You started it six years ago when you thought you might write something. You didn't write anything. You wrote three pages — observations, mostly, the kind of notes that feel important at midnight and embarrassing at noon. Things you'd noticed about structures: not buildings, but patterns. The way certain materials behave under stress that no one teaches you because it's too intuitive to quantify. The way you could always tell, just by looking, which part of a bridge wanted to move.
+
+You never wrote the fourth page. Work got full. The notebook went in a drawer.
+
+It was in the drawer when you packed up your office. It's on the table now because you keep picking it up and putting it down.
+
+Your phone says you have three missed calls from your mother, one from a recruiter you haven't called back, and a message from Yael: *I'm bringing that lamb thing. Do you have wine?*
+
+You have wine.
+
+You don't have an answer to the question she hasn't asked yet — the one that will come somewhere between the starter and the main, delivered in that way Yael has of making questions sound like she already knows the answer and is just giving you the opportunity to confirm it.
+
+The question will be: *What are you actually doing?*
+
+And the honest answer — the one you haven't said out loud to anyone — is that you don't know yet. That you do know something is different about how you're thinking. That the notebook is on the table because something in it is still true and you haven't figured out what to do with that yet.
+
+You look at the wallflowers in the garden. Then at the notebook. Then at your phone.
+
+It's three-seventeen.`,
+      choices: [
+        {
+          id: "open-notebook",
+          text: "You sit down and open the notebook. Read the three pages.",
+          consequence:
+            "You've been avoiding it for weeks. Maybe the reason is in there.",
+        },
+        {
+          id: "call-mother-back",
+          text: "You call your mother back before Yael arrives.",
+          consequence:
+            "Three missed calls means she's either worried or has news. Either way, getting it out of the way now means one fewer thing at the dinner table.",
+        },
+        {
+          id: "start-packing",
+          text: "You commit to one box — seal it, label it, and put it by the door.",
+          consequence:
+            "Small action. But the flat in limbo is making everything harder. One box done is one answer given.",
+        },
+        {
+          id: "go-for-walk",
+          text: "You put on your coat and go outside for an hour.",
+          consequence:
+            "You've been inside with the boxes for three days. Sometimes the answer comes when you stop looking at the question.",
+        },
+      ],
+    },
+    "cold-light": {
+      narrativeText: `The cottage smells like coffee and firewood and the particular quiet of a place that's been inhabited by one person for a long time.
+
+DS Petra Holm is sitting at your kitchen table, looking at a manila folder she drove two hours to bring you. She's younger than you expected — twenty-six, maybe twenty-seven, with the careful posture of someone who learned early that attention is currency. She accepted the coffee. She hasn't touched it.
+
+You've read the cover sheet. You already know what's in the folder.
+
+"We reopened it three weeks ago," she says. She has the measured cadence of someone choosing words with deliberate care. "Another death. Similar profile — coastal, isolated, the first appearance of accident. The toxicology came back different this time. The lab flagged it."
+
+You look out the window. The field beyond the lane is grey-green, the sky the same colour as the North Sea on a bad day. It hasn't changed much, this view, in eight years.
+
+"The original case file," Petra says. "Your notes are — comprehensive. Better than anything else in the archive, the DCI said. But some of it needs context. Things you knew at the time that aren't on paper."
+
+You know what she means by that. You also know that she doesn't know, yet, about the part of the file that isn't in the archive. The part that is, specifically, the reason you drove home from Kelso on a Tuesday in March 2017 and put your warrant card on the DCI's desk without an appointment.
+
+"I've been out for eight years," you say.
+
+"I know."
+
+"I made a mistake on the third case."
+
+She looks at you steadily. "I read the review board summary. They found procedural error. They didn't find—"
+
+"The review board found what I told them." You look at the folder on the table. "There's more than that."
+
+Petra is quiet for a moment. Out in the lane, a car passes and doesn't stop. The fire settles.
+
+"He's still there," she says. "Caird. Still in Kelso." A pause. "Someone I spoke to said he asked, last week, whether the case had been reopened." She looks at you directly. "He knows. That means he'll know we came to you."
+
+You know the shape of this. You've known it was coming for eight years — not that it would come, but that if it did, it would come exactly like this: a young detective with good instincts and incomplete information, sitting at a table with your cold coffee between you, and David Caird already aware that the clock had restarted.
+
+The folder is still closed. Your notes are inside it.
+
+Petra waits.`,
+      choices: [
+        {
+          id: "tell-her-everything",
+          text: "You tell her about the evidence error — all of it, not the sanitised version.",
+          consequence:
+            "She'll find out eventually. And she can't make the right calls on this case if she's working with incomplete information. But telling her means losing any control over what happens next.",
+        },
+        {
+          id: "consult-on-notes",
+          text: "You agree to consult on the archive notes only — give her context, not confession.",
+          consequence:
+            "You can be useful without reopening the 2017 file. Keep the scope narrow: the original victims, Caird's movements, what you observed. The rest stays where it is.",
+        },
+        {
+          id: "go-back-to-kelso",
+          text: "You tell her you'll come to Kelso. See it with fresh eyes.",
+          consequence:
+            "Eight years of distance means you'll see things differently. And if Caird knows you're back, you want to know what that does to him before you've committed to anything.",
+        },
+        {
+          id: "send-her-away",
+          text: "You thank her for coming and tell her the archive notes are all you have to offer.",
+          consequence:
+            "You made your choice in 2017. Living with it was the cost. Opening it again means paying that cost twice, and there's no guarantee of a different outcome.",
+        },
+      ],
+    },
+    "the-cartographers-confession": {
+      narrativeText: `The archive closes at midnight.
+
+It is currently ten-fourteen, which means you have one hour and forty-six minutes to decide what to do with a document that should not exist, in a building where you are the most trusted person in the room, about a man who has spent twenty-two years being celebrated for ending a war he caused.
+
+The preliminary survey is in your hands. It is dated three months before the Kessler Border Agreement — the border you certified, the border that placed the Millhaven Valley under imperial jurisdiction, the border that the Kessler territories contested for three years and eleven thousand lives before the revised treaty was signed. The survey is in Helmut Brandt's handwriting — your former superior, dead four years now, and no threat to anyone. But in the top right corner, there is a countersignature.
+
+The countersignature belongs to Lord Minister Greave.
+
+You recognise it because you have been in rooms with Greave for thirty years. You have drawn borders at his instruction. You have seen his handwriting on ceremonial documents, on appointment letters, on the commendation he sent you when you made Senior Cartographer. The signature on the suppressed survey is not a forgery.
+
+Brandt knew the survey was wrong. He suppressed it. And Greave signed off on the suppression.
+
+The war began six months after the false border was certified.
+
+You have been standing in the archive for eleven minutes, which Emile will notice if you don't move soon. He's at the main table, cataloguing the Dellvane coastal additions, and he glances up at regular intervals because that's the kind of junior he is — attentive, well-meaning, too observant for your current situation.
+
+The surveying archive is a fireproof room built of stone and good intentions. Everything in it is meant to be preserved. The document in your hands is the exception the room wasn't designed for.
+
+Greave's nomination for Imperial Chancellor was announced last week. The confirmation hearing begins in twelve days.
+
+You look at the survey. You look at the countersignature.
+
+You think about the border on every official map you've drawn for twenty-two years. The line that you certified. The line that was already wrong when you drew it, without your knowing.
+
+Emile looks up. "Sir? Are you finding what you need?"
+
+You fold the survey once. Carefully. The way you were trained: never crease a document without intention.
+
+"Nearly," you say.`,
+      choices: [
+        {
+          id: "take-document-home",
+          text: "You place the survey in your case and take it home tonight.",
+          consequence:
+            "Out of the archive, in your possession — it's safer than leaving it here, and you need time to think without Emile watching. But removing documents from the archive is itself an offence, and if anyone checks the catalogue tonight, there will be a gap.",
+        },
+        {
+          id: "photograph-and-replace",
+          text: "You make a careful copy — sketching the key details and the countersignature — and return the original to its folder.",
+          consequence:
+            "The original stays where it belongs. Your copy is unofficial, inadmissible, but real. You have twelve days before the hearing. That's time to decide what to do with it.",
+        },
+        {
+          id: "tell-emile",
+          text: "You call Emile over and show him what you've found.",
+          consequence:
+            "Emile is twenty-four and idealistic and has not yet learned that some documents are dangerous. But a witness means this can't be unmade — and Emile's youth might be protection, not liability.",
+        },
+        {
+          id: "reshelve-walk-out",
+          text: "You return the survey to its folder and leave the archive without taking anything.",
+          consequence:
+            "You found it. That doesn't mean you have to act on it. You are fifty-three years old. You have four years until retirement. The war ended twenty years ago. Nothing you do now brings anyone back.",
         },
       ],
     },

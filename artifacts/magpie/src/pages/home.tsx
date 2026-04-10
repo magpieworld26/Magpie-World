@@ -163,6 +163,31 @@ export default function HomePage() {
   const newReleases = filteredStories.slice(0, 8);
   const activeSessions = sessions.filter(s => s.status === "active");
 
+  const GENRE_BUCKETS: { label: string; match: (g: string) => boolean }[] = [
+    { label: "Fantasy", match: g => /fantasy|magic|dragon/i.test(g) },
+    { label: "Mystery & Thriller", match: g => /mystery|thriller|detective|crime|noir/i.test(g) },
+    { label: "Sci-Fi", match: g => /sci-fi|scifi|science fiction|space/i.test(g) },
+    { label: "Comedy", match: g => /comedy|absurd|humou?r|satire/i.test(g) },
+    { label: "Adventure", match: g => /adventure|survival|exploration/i.test(g) },
+    { label: "Drama & Literary", match: g => /drama|literary|historical|slice/i.test(g) },
+  ];
+
+  const AGE_BUCKETS: { label: string; key: string }[] = [
+    { label: "Kids (8–12)", key: "8–12" },
+    { label: "Teens (13–18)", key: "13–18" },
+    { label: "Adults (18+)", key: "18+" },
+  ];
+
+  const genreRows = GENRE_BUCKETS.map(bucket => ({
+    label: bucket.label,
+    stories: stories.filter(s => bucket.match(s.genre)),
+  })).filter(row => row.stories.length > 0);
+
+  const ageRows = AGE_BUCKETS.map(bucket => ({
+    label: bucket.label,
+    stories: stories.filter(s => s.audienceAge === bucket.key),
+  })).filter(row => row.stories.length > 0);
+
   const bookCardWidth = isMobile ? "160px" : isTablet ? "200px" : "240px";
   const continueCardWidth = isMobile ? "200px" : isTablet ? "240px" : "280px";
 
@@ -365,35 +390,81 @@ export default function HomePage() {
           </div>
         </div>
       )}
-      {/* ALL STORIES */}
-      <div style={{ padding: isMobile ? "0 16px 60px" : "0 4vw 80px" }}>
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
-          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
-            {q ? <>Search <span style={{ color: "#00e5c8" }}>Results</span></> : <>All <span style={{ color: "#00e5c8" }}>Stories</span></>}
-          </h2>
+      {/* SEARCH RESULTS */}
+      {q && (
+        <div style={{ padding: isMobile ? "0 16px 60px" : "0 4vw 80px" }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "20px" }}>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
+              Search <span style={{ color: "#00e5c8" }}>Results</span>
+            </h2>
+          </div>
+          {filteredStories.length === 0 ? (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", gap: "16px" }}>
+              <div style={{ fontSize: "48px", opacity: 0.3 }}>🔍</div>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
+                No stories found
+              </div>
+              <div style={{ fontSize: "14px", color: "rgba(255,255,255,0.35)", textAlign: "center", maxWidth: "320px" }}>
+                No stories match "<span style={{ color: "rgba(0,229,200,0.7)" }}>{searchQuery.trim()}</span>". Try a different title, genre, or tag.
+              </div>
+            </div>
+          ) : (
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(240px, 1fr))",
+              gap: "20px",
+            }}>
+              {filteredStories.map(story => (
+                <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
+              ))}
+            </div>
+          )}
         </div>
-        {filteredStories.length === 0 && q ? (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", gap: "16px" }}>
-            <div style={{ fontSize: "48px", opacity: 0.3 }}>🔍</div>
-            <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
-              No stories found
-            </div>
-            <div style={{ fontSize: "14px", color: "rgba(255,255,255,0.35)", textAlign: "center", maxWidth: "320px" }}>
-              No stories match "<span style={{ color: "rgba(0,229,200,0.7)" }}>{searchQuery.trim()}</span>". Try a different title, genre, or tag.
-            </div>
+      )}
+      {/* GENRE CAROUSELS */}
+      {!q && genreRows.length > 0 && (
+        <div style={{ padding: isMobile ? "0 0 20px" : "0 0 20px" }}>
+          <div style={{ padding: isMobile ? "0 16px 16px" : "0 4vw 16px" }}>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
+              Browse by <span style={{ color: "#00e5c8" }}>Genre</span>
+            </h2>
           </div>
-        ) : (
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(auto-fill, minmax(240px, 1fr))",
-            gap: "20px",
-          }}>
-            {filteredStories.map(story => (
-              <BookCard key={story.id} story={story} onClick={() => setLocation(`/story/${story.id}`)} />
-            ))}
+          {genreRows.map(row => (
+            <div key={row.label} style={{ padding: isMobile ? "0 16px 32px" : "0 4vw 40px" }}>
+              <div style={{ marginBottom: "14px" }}>
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>{row.label}</span>
+              </div>
+              <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "8px", paddingBottom: "8px" }} className="scrollbar-hide">
+                {row.stories.map(story => (
+                  <BookCard key={story.id} story={story} cardWidth={bookCardWidth} onClick={() => setLocation(`/story/${story.id}`)} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* AGE GROUP CAROUSELS */}
+      {!q && ageRows.length > 0 && (
+        <div style={{ padding: isMobile ? "0 0 60px" : "0 0 80px" }}>
+          <div style={{ padding: isMobile ? "0 16px 16px" : "0 4vw 16px" }}>
+            <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>
+              Browse by <span style={{ color: "#00e5c8" }}>Age Group</span>
+            </h2>
           </div>
-        )}
-      </div>
+          {ageRows.map(row => (
+            <div key={row.label} style={{ padding: isMobile ? "0 16px 32px" : "0 4vw 40px" }}>
+              <div style={{ marginBottom: "14px" }}>
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>{row.label}</span>
+              </div>
+              <div style={{ display: "flex", gap: "14px", overflowX: "auto", paddingTop: "8px", paddingBottom: "8px" }} className="scrollbar-hide">
+                {row.stories.map(story => (
+                  <BookCard key={story.id} story={story} cardWidth={bookCardWidth} onClick={() => setLocation(`/story/${story.id}`)} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

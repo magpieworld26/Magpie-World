@@ -61,6 +61,7 @@ export const ListStoriesResponse = zod.object({
       featured: zod.boolean(),
       rank: zod.number().nullish(),
       initialPrompt: zod.string(),
+      audienceAge: zod.string().optional(),
     }),
   ),
 });
@@ -87,6 +88,7 @@ export const GetStoryResponse = zod.object({
   featured: zod.boolean(),
   rank: zod.number().nullish(),
   initialPrompt: zod.string(),
+  audienceAge: zod.string().optional(),
 });
 
 /**
