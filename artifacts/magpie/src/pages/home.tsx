@@ -208,11 +208,6 @@ function ContinueCard({
           {session.story.title}
         </div>
         <div
-          style={{ fontSize: "12px", color: "#b0bec5", marginBottom: "12px" }}
-        >
-          Chapter {session.nodeCount} · {session.status}
-        </div>
-        <div
           style={{
             height: "3px",
             background: "rgba(255,255,255,0.1)",
