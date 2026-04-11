@@ -35,7 +35,7 @@ export const storiesData: StoryData[] = [
     chapterCount: 8,
     readingTime: "5-8 hrs",
     featured: false,
-    rank: 1,
+    rank: null,
     initialPrompt: "apology-to-a-dragon",
     storyMode: "Comedy (primary), Fantasy (genre wrapper)",
     audienceAge: "13–18",
@@ -69,7 +69,7 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
     chapterCount: 10,
     readingTime: "7-10 hrs",
     featured: true,
-    rank: 2,
+    rank: 1,
     initialPrompt: "no-signal",
     storyMode: "Survival Thriller — high tension, real stakes, no easy answers",
     audienceAge: "13–18",
@@ -117,7 +117,7 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
     chapterCount: 9,
     readingTime: "6-9 hrs",
     featured: false,
-    rank: 3,
+    rank: 9,
     initialPrompt: "the-driftlands",
     storyMode:
       "Adventure / Fantasy — wonder, discovery, and the tension between caution and curiosity",
@@ -150,7 +150,7 @@ TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world 
     chapterCount: 7,
     readingTime: "4-6 hrs",
     featured: false,
-    rank: 4,
+    rank: null,
     initialPrompt: "incident-at-table-nine",
     storyMode: "Comedy — escalating social disaster, wit under pressure",
     audienceAge: "13–18",
@@ -323,7 +323,7 @@ TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel 
     chapterCount: 10,
     readingTime: "7-10 hrs",
     featured: false,
-    rank: 9,
+    rank: 2,
     initialPrompt: "the-deadlock",
     storyMode:
       "Mystery / Thriller — locked-room murder, sealed train, ticking clock, unlikely detective",
@@ -492,7 +492,7 @@ TONE GUIDANCE: Sustained tension without melodrama. The wilderness is indifferen
     chapterCount: 9,
     readingTime: "6-9 hrs",
     featured: false,
-    rank: null,
+    rank: 10,
     initialPrompt: "the-sinking-ship",
     storyMode:
       "Survival / Thriller — no safe choices, sequencing under pressure, controlled fear",
@@ -693,13 +693,13 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     chapterCount: 11,
     readingTime: "8-11 hrs",
     featured: false,
-    rank: null,
+    rank: 3,
     initialPrompt: "veldara",
     storyMode:
       "Adventure / Sci-Fi — high-stakes, avatar logic, procedurally hostile world",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-  Vanthorpe Academy, a mid-sized boarding school in coastal Maine. Weekend detention involves sorting through the basement archive. Hidden there is VELDARA, an unmarked 1993 console that switches on without power. Veldara is a living, procedurally hostile jungle continent existing within the game. It runs on avatar logic: players are assigned a body, skillset, and weakness. The goal: retrieve the Sunstone from warlord Kael and restore it to the Heartspire. Rule on death: Lose three lives, and you are gone everywhere. The game chooses its players—once the controllers light up, the contract is made.
+  Vanthorpe Academy, a mid-sized boarding school in coastal Maine. Weekend detention involves sorting through the basement archive. Hidden there is VELDARA, an unmarked 1993 console that switches on without power. Veldara is a living, procedurally hostile jungle continent existing within the game. It runs on avatar logic: players are assigned a body, skillset, and weakness. The goal: retrieve the Sunstone from warlord Kael and restore it to the Heartspire. Rule on death: Lose three lives, and you are gone everywhere. The game chooses its players—once the controllers light up, the contract is made. No matter what you do, the game will suck you in. The jungle is gorgeous, the warlord Kael is waiting, and the only way home is to win.
 
   CHARACTERS
   You — The Protagonist. Your avatar is assigned by the game at the start—body, skills, and embarrassing weakness are non-negotiable.
@@ -728,7 +728,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     chapterCount: 10,
     readingTime: "7-10 hrs",
     featured: false,
-    rank: null,
+    rank: 4,
     initialPrompt: "extinction-clause",
     storyMode:
       "Thriller / Sci-Fi — corporate conspiracy, ecological dread, survival under pressure",

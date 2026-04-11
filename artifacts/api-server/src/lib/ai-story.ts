@@ -49,7 +49,7 @@ const storyResponseSchema = {
     },
     sceneSummary: {
       type: Type.STRING,
-      description: "A concise 1-3 sentence summary of what just happened in this scene. Include key facts, decisions made, and any important reveals. This will be used as story memory in future turns."
+      description: "A 10-15 sentence summary of what just happened in this scene. Include key facts, decisions made, and any important reveals. This will be used as story memory in future turns."
     },
     choices: {
       type: Type.ARRAY,
@@ -133,14 +133,10 @@ Every scene must contain at least one unexpected element:
 READER CHARACTER AGENCY
 - NEVER perform any high-stakes action on behalf of the reader's character
 - The prose shows ONLY: consequences of the choice made, other characters' reactions, world changes, revelations, backstory
-- All reader-character actions come ONLY through the choices presented at the end
 - The reader's character may move, speak, or act ONLY as a direct mechanical consequence of the choice made — never beyond it
 
 SENTENCE RHYTHM
-Vary sentence length deliberately. Long sentences build atmosphere. Short sentences land impact. One-word paragraphs are permitted for maximum effect.
-
-SHOW, DON'T TELL
-Never write "You feel nervous." Write what nervous looks like. Never write "He was untrustworthy." Write what he does.
+Vary sentence length deliberately.
 
 SECOND PERSON, PRESENT TENSE
 Throughout. "You step into the corridor" not "She stepped."
