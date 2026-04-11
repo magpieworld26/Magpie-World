@@ -84,6 +84,10 @@ export default function ReaderPage() {
         setChoicesForNodeId(newNode.id);
         setShowChoices(true);
       }
+      requestAnimationFrame(() => {
+        const el = mobileScrollRef.current || desktopScrollRef.current;
+        if (el) el.scrollTop = el.scrollHeight;
+      });
     } catch (err) {
       setStreamingText(null);
       const msg =
