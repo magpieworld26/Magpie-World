@@ -229,9 +229,6 @@ function ContinueCard({
             }}
           />
         </div>
-        <div style={{ fontSize: "11px", color: "#b0bec5", marginTop: "6px" }}>
-          {pct}% through
-        </div>
       </div>
     </div>
   );
