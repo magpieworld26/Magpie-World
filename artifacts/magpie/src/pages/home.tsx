@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
 import { api, type Story, type StorySession, type PremiumStatus } from "@/lib/api";
@@ -266,6 +266,10 @@ export default function HomePage() {
     });
   }, [setLocation]);
 
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+  const heroTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const q = searchQuery.trim().toLowerCase();
   const filteredStories = q
     ? stories.filter(
@@ -282,6 +286,32 @@ export default function HomePage() {
   const top10 = filteredStories
     .filter((s) => s.rank !== null && s.rank !== undefined)
     .sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
+
+  const heroStories = top10.length > 0 ? top10.slice(0, 10) : (filteredStories[0] ? [filteredStories[0]] : []);
+
+  const goToHeroSlide = useCallback((index: number) => {
+    setHeroIndex(index);
+    if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+    if (!heroPaused) {
+      heroTimerRef.current = setInterval(() => {
+        setHeroIndex((prev) => (prev + 1) % heroStories.length);
+      }, 5500);
+    }
+  }, [heroPaused, heroStories.length]);
+
+  useEffect(() => {
+    if (heroStories.length <= 1 || heroPaused) {
+      if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+      return;
+    }
+    heroTimerRef.current = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % heroStories.length);
+    }, 5500);
+    return () => {
+      if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+    };
+  }, [heroStories.length, heroPaused]);
+
   const newReleases = filteredStories.slice(0, 8);
   const activeSessions = sessions.filter((s) => s.status === "active");
 
@@ -366,178 +396,286 @@ export default function HomePage() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
-      {/* HERO */}
-      {!q && featured && (
-        <div
-          style={{
-            position: "relative",
-            height: isMobile ? "50vh" : "88vh",
-            minHeight: isMobile ? "320px" : "580px",
-            display: "flex",
-            alignItems: "flex-end",
-            padding: isMobile ? "0 16px 40px" : "0 4vw 90px",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                featured.coverGradient ||
-                "linear-gradient(135deg,#060d1f 0%,#0a2040 100%)",
-              ...(featured.coverImage
-                ? {
-                    backgroundImage: `url(${featured.coverImage})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center top",
-                  }
-                : {}),
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to right, rgba(6,13,31,0.82) 0%, rgba(6,13,31,0.55) 50%, rgba(6,13,31,0.25) 100%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to top, rgba(6,13,31,0.95) 0%, rgba(6,13,31,0.3) 40%, transparent 70%)",
-            }}
-          />
-
+      {/* HERO CAROUSEL */}
+      {!q && heroStories.length > 0 && (() => {
+        const safeIndex = heroIndex % heroStories.length;
+        const activeStory = heroStories[safeIndex];
+        return (
           <div
             style={{
               position: "relative",
-              zIndex: 2,
-              maxWidth: isMobile ? "100%" : "500px",
+              height: isMobile ? "50vh" : "88vh",
+              minHeight: isMobile ? "320px" : "580px",
+              display: "flex",
+              alignItems: "flex-end",
+              padding: isMobile ? "0 16px 40px" : "0 4vw 90px",
+              overflow: "hidden",
+              userSelect: "none",
             }}
+            onMouseEnter={() => setHeroPaused(true)}
+            onMouseLeave={() => setHeroPaused(false)}
           >
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "rgba(0,229,200,.1)",
-                border: "1px solid rgba(0,229,200,.3)",
-                borderRadius: "20px",
-                padding: "5px 14px",
-                fontSize: "11px",
-                letterSpacing: "3px",
-                textTransform: "uppercase",
-                color: "#00e5c8",
-                marginBottom: "16px",
-                fontFamily: "'Barlow Condensed', sans-serif",
-              }}
-            >
-              <span
+            {/* Slide backgrounds — crossfade via opacity */}
+            {heroStories.map((story, i) => (
+              <div
+                key={story.id}
                 style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: "#00e5c8",
-                  animation: "pulse-dot 2s infinite",
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    story.coverGradient ||
+                    "linear-gradient(135deg,#060d1f 0%,#0a2040 100%)",
+                  ...(story.coverImage
+                    ? {
+                        backgroundImage: `url(${story.coverImage})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center top",
+                      }
+                    : {}),
+                  opacity: i === safeIndex ? 1 : 0,
+                  transition: "opacity 0.7s ease",
                 }}
               />
-              Featured Story
-            </div>
+            ))}
             <div
               style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: "12px",
-                letterSpacing: "4px",
-                color: "rgba(255,255,255,.6)",
-                textTransform: "uppercase",
-                marginBottom: "8px",
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(to right, rgba(6,13,31,0.82) 0%, rgba(6,13,31,0.55) 50%, rgba(6,13,31,0.25) 100%)",
               }}
-            >
-              {featured.genre}
-            </div>
-            <h1
+            />
+            <div
               style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: isMobile
-                  ? "clamp(36px,9vw,52px)"
-                  : "clamp(52px,7vw,82px)",
-                fontWeight: 900,
-                lineHeight: 0.92,
-                textTransform: "uppercase",
-                marginBottom: "20px",
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(to top, rgba(6,13,31,0.95) 0%, rgba(6,13,31,0.3) 40%, transparent 70%)",
+              }}
+            />
+
+            {/* Prev arrow */}
+            {heroStories.length > 1 && (
+              <button
+                onClick={() => goToHeroSlide((safeIndex - 1 + heroStories.length) % heroStories.length)}
+                aria-label="Previous story"
+                style={{
+                  position: "absolute",
+                  left: isMobile ? "8px" : "20px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  zIndex: 10,
+                  background: "rgba(6,13,31,0.55)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "50%",
+                  width: isMobile ? "36px" : "44px",
+                  height: isMobile ? "36px" : "44px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "#fff",
+                  fontSize: isMobile ? "16px" : "20px",
+                  backdropFilter: "blur(8px)",
+                  transition: "background 0.2s",
+                }}
+              >
+                ‹
+              </button>
+            )}
+
+            {/* Next arrow */}
+            {heroStories.length > 1 && (
+              <button
+                onClick={() => goToHeroSlide((safeIndex + 1) % heroStories.length)}
+                aria-label="Next story"
+                style={{
+                  position: "absolute",
+                  right: isMobile ? "8px" : "20px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  zIndex: 10,
+                  background: "rgba(6,13,31,0.55)",
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  borderRadius: "50%",
+                  width: isMobile ? "36px" : "44px",
+                  height: isMobile ? "36px" : "44px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "#fff",
+                  fontSize: isMobile ? "16px" : "20px",
+                  backdropFilter: "blur(8px)",
+                  transition: "background 0.2s",
+                }}
+              >
+                ›
+              </button>
+            )}
+
+            {/* Story content */}
+            <div
+              style={{
+                position: "relative",
+                zIndex: 2,
+                maxWidth: isMobile ? "100%" : "500px",
               }}
             >
-              {featured.title.split(" ").map((word, i) => (
-                <span key={i} style={i === 0 ? { color: "#00e5c8" } : {}}>
-                  {word}{" "}
-                </span>
-              ))}
-            </h1>
-            {!isMobile && (
-              <p
+              <div
                 style={{
-                  fontSize: "15px",
-                  lineHeight: 1.7,
-                  color: "rgba(255,255,255,.7)",
-                  marginBottom: "28px",
-                  maxWidth: "420px",
-                }}
-              >
-                {featured.description}
-              </p>
-            )}
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <button
-                onClick={() => handleReadStory(featured.id)}
-                style={{
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
-                  gap: "10px",
-                  background: "#00e5c8",
-                  color: "#060d1f",
-                  border: "none",
-                  padding: isMobile ? "11px 20px" : "14px 28px",
-                  borderRadius: "4px",
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  fontSize: isMobile ? "13px" : "15px",
-                  letterSpacing: "1.5px",
+                  gap: "8px",
+                  background: "rgba(0,229,200,.1)",
+                  border: "1px solid rgba(0,229,200,.3)",
+                  borderRadius: "20px",
+                  padding: "5px 14px",
+                  fontSize: "11px",
+                  letterSpacing: "3px",
                   textTransform: "uppercase",
-                  cursor: "pointer",
+                  color: "#00e5c8",
+                  marginBottom: "16px",
+                  fontFamily: "'Barlow Condensed', sans-serif",
                 }}
               >
-                ▶ Start Reading
-              </button>
-              <button
-                onClick={() => setLocation(`/story/${featured.id}`)}
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    background: "#00e5c8",
+                    animation: "pulse-dot 2s infinite",
+                  }}
+                />
+                {activeStory.rank != null ? `#${activeStory.rank} Top Story` : "Featured Story"}
+              </div>
+              <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  background: "rgba(255,255,255,.1)",
-                  color: "#fff",
-                  border: "1px solid rgba(255,255,255,.2)",
-                  padding: isMobile ? "11px 20px" : "14px 28px",
-                  borderRadius: "4px",
                   fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  fontSize: isMobile ? "13px" : "15px",
-                  letterSpacing: "1.5px",
+                  fontSize: "12px",
+                  letterSpacing: "4px",
+                  color: "rgba(255,255,255,.6)",
                   textTransform: "uppercase",
-                  cursor: "pointer",
-                  backdropFilter: "blur(10px)",
+                  marginBottom: "8px",
                 }}
               >
-                More Info
-              </button>
+                {activeStory.genre}
+              </div>
+              <h1
+                style={{
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontSize: isMobile
+                    ? "clamp(36px,9vw,52px)"
+                    : "clamp(52px,7vw,82px)",
+                  fontWeight: 900,
+                  lineHeight: 0.92,
+                  textTransform: "uppercase",
+                  marginBottom: "20px",
+                }}
+              >
+                {activeStory.title.split(" ").map((word, i) => (
+                  <span key={i} style={i === 0 ? { color: "#00e5c8" } : {}}>
+                    {word}{" "}
+                  </span>
+                ))}
+              </h1>
+              {!isMobile && (
+                <p
+                  style={{
+                    fontSize: "15px",
+                    lineHeight: 1.7,
+                    color: "rgba(255,255,255,.7)",
+                    marginBottom: "28px",
+                    maxWidth: "420px",
+                  }}
+                >
+                  {activeStory.description}
+                </p>
+              )}
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <button
+                  onClick={() => handleReadStory(activeStory.id)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    background: "#00e5c8",
+                    color: "#060d1f",
+                    border: "none",
+                    padding: isMobile ? "11px 20px" : "14px 28px",
+                    borderRadius: "4px",
+                    fontFamily: "'Barlow Condensed', sans-serif",
+                    fontWeight: 700,
+                    fontSize: isMobile ? "13px" : "15px",
+                    letterSpacing: "1.5px",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                  }}
+                >
+                  ▶ Start Reading
+                </button>
+                <button
+                  onClick={() => setLocation(`/story/${activeStory.id}`)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    background: "rgba(255,255,255,.1)",
+                    color: "#fff",
+                    border: "1px solid rgba(255,255,255,.2)",
+                    padding: isMobile ? "11px 20px" : "14px 28px",
+                    borderRadius: "4px",
+                    fontFamily: "'Barlow Condensed', sans-serif",
+                    fontWeight: 700,
+                    fontSize: isMobile ? "13px" : "15px",
+                    letterSpacing: "1.5px",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                    backdropFilter: "blur(10px)",
+                  }}
+                >
+                  More Info
+                </button>
+              </div>
             </div>
+
+            {/* Indicator dots */}
+            {heroStories.length > 1 && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: isMobile ? "12px" : "20px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  zIndex: 10,
+                  display: "flex",
+                  gap: "8px",
+                  alignItems: "center",
+                }}
+              >
+                {heroStories.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goToHeroSlide(i)}
+                    aria-label={`Go to story ${i + 1}`}
+                    style={{
+                      width: i === safeIndex ? "24px" : "8px",
+                      height: "8px",
+                      borderRadius: "4px",
+                      background: i === safeIndex ? "#00e5c8" : "rgba(255,255,255,0.4)",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                      transition: "width 0.3s ease, background 0.3s ease",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        );
+      })()}
       {/* CONTINUE READING */}
       {!q && activeSessions.length > 0 && (
         <div style={{ padding: isMobile ? "0 16px 36px" : "0 4vw 50px" }}>
