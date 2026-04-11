@@ -8,7 +8,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // ⚠️ IMPORTANT: Copy your exact MODEL string from your old ai-story.ts and paste it here.
 // Context caching works best with a pinned version like "gemini-1.5-flash-001".
 // Do NOT guess — use whatever string was already working for you.
-const MODEL = "gemini-2.5-flash-lite-001";
+const MODEL = "gemini-2.5-flash-lite";
 
 // ─────────────────────────────────────────────
 // Public types
