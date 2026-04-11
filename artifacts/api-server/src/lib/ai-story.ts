@@ -2,8 +2,14 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { logger } from "./logger";
 import { getStoryById, storiesData } from "./stories-data";
+
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const MODEL = "gemini-2.5-flash-lite";
+
+// ⚠️ IMPORTANT: Copy your exact MODEL string from your old ai-story.ts and paste it here.
+// Context caching works best with a pinned version like "gemini-1.5-flash-001".
+// Do NOT guess — use whatever string was already working for you.
+const MODEL = "gemini-2.5-flash-lite-001";
+
 // ─────────────────────────────────────────────
 // Public types
 // ─────────────────────────────────────────────
@@ -14,6 +20,7 @@ export interface Choice {
   subtext?: string;
   consequenceType?: "good" | "neutral" | "bad" | "catastrophic";
 }
+
 export interface StoryState {
   turn: number;
   storyHealthScore: number;
@@ -25,12 +32,14 @@ export interface StoryState {
   narrativeSummary: string[];
   targetEndingChoices?: number;
 }
+
 export interface GeneratedSegment {
   narrativeText: string;
   choices: Choice[];
   isEnding: boolean;
   storyState: StoryState;
 }
+
 // ─────────────────────────────────────────────
 // Output Schema Definition
 // ─────────────────────────────────────────────
@@ -105,6 +114,7 @@ const storyResponseSchema = {
     "storyStateUpdate",
   ],
 };
+
 // ─────────────────────────────────────────────
 // Utilities
 // ─────────────────────────────────────────────
@@ -121,6 +131,7 @@ function resolveStory(storyIdOrTitle: string) {
     .replace(/^-|-$/g, "");
   return getStoryById(slug) || null;
 }
+
 // ─────────────────────────────────────────────
 // Universal Prose Rules (injected for ALL genres)
 // ─────────────────────────────────────────────
@@ -196,6 +207,7 @@ Ending tone is calibrated by story health score:
 - Lengthy sensory descriptions, atmospheric padding, or scene-setting monologues.
 - Stopping the story for trivial or low-stakes choices.
 `;
+
 // ─────────────────────────────────────────────
 // Genre-Specific Writing Style Blocks
 // ─────────────────────────────────────────────
@@ -222,6 +234,7 @@ Outside, the sound that wasn't quite wind scraped against the walls.
 "So we have one hour," you said.
 "We have one hour if he doesn't know we're here." She pulled her hand back. Her fingertips were faintly blue. "He knows."
 `;
+
 const GENRE_STYLE_SCIFI = `
 ### Writing Style: SCIENCE FICTION
 Inspired by: Philip K. Dick (paranoia and reality), N.K. Jemisin (second-person as alienation)
@@ -244,6 +257,7 @@ The readout said 0.0 anomalies. It had said 0.0 anomalies yesterday, and the day
 "Or it means it stopped checking." You pulled up the raw feed. Numbers that looked normal. Numbers that looked too normal. "Rei. When did you last run a manual sweep?"
 She was quiet for exactly one second too long.
 `;
+
 const GENRE_STYLE_MYSTERY = `
 ### Writing Style: MYSTERY / THRILLER
 Inspired by: Gillian Flynn (psychological intimacy), Raymond Chandler (hardboiled voice)
@@ -268,6 +282,7 @@ She looked at the table.
 Something moved across her face — too fast to name.
 "Is that a crime?"
 `;
+
 const GENRE_STYLE_HORROR = `
 ### Writing Style: HORROR
 Inspired by: Shirley Jackson (psychological dread), Stephen King (ordinary rendered monstrous)
@@ -292,6 +307,7 @@ You looked at the ceiling. The sound moved. Slowly. From above the kitchen to ab
 "Milk?" he said.
 He was still not turning around. You realised, standing there, that he hadn't turned around once since you'd come inside.
 `;
+
 const GENRE_STYLE_ROMANCE = `
 ### Writing Style: ROMANCE / EMOTIONAL DRAMA
 Inspired by: Sally Rooney (contemporary interiority), Jane Austen (social subtext)
@@ -315,6 +331,7 @@ She looked at you then. Not the way she usually did — quickly, checking — bu
 "And?" she said.
 You didn't have an answer that wouldn't change everything.
 `;
+
 const GENRE_STYLE_COMEDY = `
 ### Writing Style: COMEDY / ABSURDIST
 Inspired by: Terry Pratchett (satirical warmth), Douglas Adams (cosmic absurdism), P.G. Wodehouse (perfect comic timing)
@@ -338,6 +355,7 @@ You looked at the goat. The goat looked back at you with the profound disinteres
 "It ate a hat."
 "Yes," said the Minister. He sat down. He looked suddenly very tired. "Yes. It did."
 `;
+
 const GENRE_STYLE_LITERARY = `
 ### Writing Style: SLICE-OF-LIFE / LITERARY FICTION
 Inspired by: Haruki Murakami (magical realism of the mundane), Alice Munro (compressed revelation)
@@ -360,6 +378,7 @@ You looked at the window. The garden. The specific quality of October light.
 "Old habit," you said.
 He nodded, and you understood he was filing it away — another piece of you he was learning to read.
 `;
+
 const GENRE_STYLE_ADVENTURE = `
 ### Writing Style: EXPLORATION / ADVENTURE
 Inspired by: Ursula K. Le Guin (anthropological wonder), Susanna Clarke (annotated strangeness)
@@ -374,6 +393,7 @@ THE DIALOGUE IMPERATIVE
 Even in exploration stories, dialogue punctuates discovery.
 Companion voices respond, question, and reflect back what was found.
 `;
+
 // ─────────────────────────────────────────────
 // Genre Normaliser + Style Selector
 // ─────────────────────────────────────────────
@@ -421,6 +441,7 @@ function normaliseGenre(genre: string): string {
   if (g.includes("adventure") || g.includes("exploration")) return "adventure";
   return "literary";
 }
+
 function getGenreStyleBlock(genre: string): string {
   const normalised = normaliseGenre(genre);
   if (normalised === "fantasy") return GENRE_STYLE_FANTASY;
@@ -433,22 +454,26 @@ function getGenreStyleBlock(genre: string): string {
   if (normalised === "adventure") return GENRE_STYLE_ADVENTURE;
   return GENRE_STYLE_LITERARY;
 }
+
 // ─────────────────────────────────────────────
 // System Prompt Builder
+//
+// storyArc is intentionally NOT included here. The system instruction
+// is what gets cached — it must be identical across all turns for every
+// user on the same story. storyArc is dynamic (only needed for turns 1-5)
+// so it lives in buildUserMessage() instead.
 // ─────────────────────────────────────────────
 function buildSystemInstruction(
   storyTitle: string,
   storyGenre: string,
   worldContext?: string,
-  storyArc?: string,
 ): string {
   const worldContextBlock = worldContext
     ? `\n## STORY BIBLE (Immutable Canon)\n${worldContext}\n`
     : "";
-  const storyArcBlock = storyArc
-    ? `\n## NARRATIVE ARC GUIDANCE\nThis guidance describes the intended shape of the early story. Use it as a compass, not a script — the reader's choices drive the actual path.\n${storyArc}\n`
-    : "";
+
   const genreStyleBlock = getGenreStyleBlock(storyGenre);
+
   return `You are a master interactive fiction writer. Write like a thriller — fast, forward-moving, no filler. Every scene should feel like it's racing toward the next turning point. The reader is not being told a story. They are inside one, and it never slows down.
 
 Every scene you write must do three things simultaneously:
@@ -457,12 +482,132 @@ Every scene you write must do three things simultaneously:
 3. Leave the reader wanting — end at the edge of what comes next, with momentum
 
 STORY: "${storyTitle}" (Genre: ${storyGenre})
-${worldContextBlock}${storyArcBlock}
+${worldContextBlock}
 ## GENRE-SPECIFIC WRITING STYLE
 ${genreStyleBlock}
 ## UNIVERSAL PROSE RULES
 ${UNIVERSAL_PROSE_RULES}`;
 }
+
+// ─────────────────────────────────────────────
+// Context Cache Registry
+//
+// One cache per story, shared across ALL users reading that story.
+// Two data structures work together:
+//
+//   systemPromptCacheRegistry  — maps cache key → { Gemini cache name, expiry }
+//   cacheCreationInProgress    — maps cache key → in-flight Promise
+//
+// The in-flight Promise is the race condition fix. If 50 users start the
+// same story at the exact same moment before any cache exists, they all
+// await the same Promise. One cache gets created, everyone uses it.
+// Without this, 50 separate cache-create calls fire simultaneously.
+// ─────────────────────────────────────────────
+interface CacheEntry {
+  name: string; // Gemini cache resource name e.g. "cachedContents/abc123"
+  expiresAt: number; // ms since epoch
+}
+
+const systemPromptCacheRegistry = new Map<string, CacheEntry>();
+const cacheCreationInProgress = new Map<string, Promise<string | null>>();
+
+const CACHE_TTL_SECONDS = 7200; // 2 hour cache lifetime
+const CACHE_REFRESH_BUFFER_MS = 5 * 60 * 1000; // recreate if <5 min left
+
+function buildCacheKey(storyIdOrTitle: string, genre: string): string {
+  return `${storyIdOrTitle}::${normaliseGenre(genre)}`;
+}
+
+async function getOrCreateSystemCache(
+  storyIdOrTitle: string,
+  genre: string,
+  systemInstruction: string,
+): Promise<string | null> {
+  const key = buildCacheKey(storyIdOrTitle, genre);
+  const now = Date.now();
+
+  // ── 1. Return live cache if we already have one ──────────────────────────
+  const existing = systemPromptCacheRegistry.get(key);
+  if (existing && existing.expiresAt > now + CACHE_REFRESH_BUFFER_MS) {
+    logger.info(
+      { key, cacheName: existing.name },
+      "Reusing system prompt cache",
+    );
+    return existing.name;
+  }
+
+  // ── 2. If another request is already creating this cache, wait for it ────
+  const inFlight = cacheCreationInProgress.get(key);
+  if (inFlight) {
+    logger.info({ key }, "Cache creation in flight — awaiting shared promise");
+    return inFlight;
+  }
+
+  // ── 3. No live cache, no in-flight creation — start one ──────────────────
+  const creationPromise: Promise<string | null> = (async () => {
+    try {
+      const cache = await ai.caches.create({
+        model: MODEL,
+        config: {
+          systemInstruction,
+          ttl: `${CACHE_TTL_SECONDS}s`,
+          displayName: `story-system-${key}`,
+        },
+      });
+
+      systemPromptCacheRegistry.set(key, {
+        name: cache.name,
+        expiresAt: Date.now() + CACHE_TTL_SECONDS * 1000,
+      });
+
+      logger.info(
+        { key, cacheName: cache.name },
+        "System prompt cache created",
+      );
+      return cache.name;
+    } catch (err) {
+      // Caching is a performance optimisation, not a correctness requirement.
+      // If it fails for any reason (wrong model version, prompt too short,
+      // quota issue) the story continues normally — just without the savings.
+      logger.warn(
+        { err, key },
+        "Cache creation failed — falling back to direct system instruction",
+      );
+      return null;
+    } finally {
+      // Always clean up the in-flight marker so future requests can retry
+      cacheCreationInProgress.delete(key);
+    }
+  })();
+
+  cacheCreationInProgress.set(key, creationPromise);
+  return creationPromise;
+}
+
+// ─────────────────────────────────────────────
+// Shared config builder
+//
+// Handles the cachedContent vs systemInstruction switch in one place.
+// cachedContent and systemInstruction are mutually exclusive in Gemini's API.
+// If caching succeeded (name returned), use cachedContent.
+// If caching failed (null returned), fall back to systemInstruction directly —
+// identical to the original code, just without the cost/latency benefit.
+// ─────────────────────────────────────────────
+function buildGenerateConfig(
+  cachedContentName: string | null,
+  systemInstruction: string,
+) {
+  return {
+    ...(cachedContentName
+      ? { cachedContent: cachedContentName }
+      : { systemInstruction }),
+    maxOutputTokens: 6144,
+    temperature: 0.9,
+    responseMimeType: "application/json",
+    responseSchema: storyResponseSchema,
+  };
+}
+
 // ─────────────────────────────────────────────
 // Story Memory Builder
 // Builds the COMPLETE, uncompressed narrative history.
@@ -473,8 +618,6 @@ function buildStoryMemoryBlock(storyState: StoryState | null): string {
   const summaries: string[] = storyState?.narrativeSummary ?? [];
   if (!storyState || summaries.length === 0) return "";
 
-  // Keep ALL summaries — never compress or truncate.
-  // Each summary is ground truth; dropping any risks continuity failures.
   const memoryLines = summaries.map((s, i) => `[Turn ${i + 1}]: ${s}`);
 
   const choiceHistory = (storyState.choicesMade ?? [])
@@ -495,6 +638,7 @@ ACTIVE TENSIONS (keep alive unless resolved): ${(storyState.activeTensions ?? []
 
 `;
 }
+
 // ─────────────────────────────────────────────
 // Dynamic User Message
 // ─────────────────────────────────────────────
@@ -505,6 +649,7 @@ function buildUserMessage(
   storyState: StoryState | null,
   totalWordCount: number,
   forceEnding: boolean,
+  storyArc: string | undefined,
   choiceCount: number = 0,
   targetEndingChoices: number = 40,
   forceEndingByChoices: boolean = false,
@@ -514,6 +659,15 @@ function buildUserMessage(
 
   const stateBlock = `## STORY STATE
 Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far: ${totalWordCount} | Choices made: ${choiceCount}/${targetEndingChoices} (hard cap: 40)`;
+
+  // Story arc is only included for the first 5 turns (nodeIndex 0–4).
+  // After turn 5 the story has its own established momentum and characters —
+  // repeating the arc adds noise and wastes tokens on every request.
+  const STORY_ARC_TURN_LIMIT = 5;
+  const storyArcBlock =
+    storyArc && nodeIndex < STORY_ARC_TURN_LIMIT
+      ? `\n## NARRATIVE ARC GUIDANCE\nThis guidance describes the intended shape of the early story. Use it as a compass, not a script — the reader's choices drive the actual path.\n${storyArc}\n`
+      : "";
 
   let forcingInstruction = "";
   if (forceEnding || forceEndingByChoices) {
@@ -538,7 +692,7 @@ The story has ${choiceCount} choices out of a maximum of ${targetEndingChoices}.
       : "";
 
   return `${stateBlock}
-
+${storyArcBlock}
 ${storyMemoryBlock}## PREVIOUS SCENE (full text — authoritative record is in STORY HISTORY above):
 ${previousContext}
 
@@ -546,6 +700,7 @@ ${previousContext}
 ${continuityCheck}${forcingInstruction}
 Write scene ${nodeIndex + 1} now. Begin directly with the consequence of the choice — do not recap or summarise what just happened.`;
 }
+
 // ─────────────────────────────────────────────
 // Exponential Backoff Retry Wrapper
 // ─────────────────────────────────────────────
@@ -574,6 +729,7 @@ async function executeWithRetry<T>(
   }
   throw new Error("Max retries exceeded");
 }
+
 // ─────────────────────────────────────────────
 // Health score delta from consequenceType
 // ─────────────────────────────────────────────
@@ -591,6 +747,7 @@ export function healthScoreDelta(consequenceType: string | undefined): number {
       return 0;
   }
 }
+
 // ─────────────────────────────────────────────
 // Shared Result Builder
 // ─────────────────────────────────────────────
@@ -605,8 +762,6 @@ function buildGeneratedSegment(
   const prevScore = currentStoryState?.storyHealthScore ?? 0;
   const delta = healthScoreDelta(chosenConsequenceType);
 
-  // Append the AI-generated scene summary to our rolling narrative memory.
-  // This is the mechanism that prevents context loss across long stories.
   const newSummary =
     parsed.sceneSummary ?? `Turn ${turnNumber}: Player chose "${choiceMade}".`;
   const updatedNarrativeSummary = [
@@ -658,6 +813,7 @@ function buildGeneratedSegment(
     storyState: updatedStoryState,
   };
 }
+
 // ─────────────────────────────────────────────
 // Main Generator
 // ─────────────────────────────────────────────
@@ -680,8 +836,14 @@ export async function generateStorySegment(
     storyTitle,
     storyGenre,
     story?.worldContext,
-    story?.storyArc,
   );
+
+  const cachedContentName = await getOrCreateSystemCache(
+    storyIdOrTitle,
+    storyGenre,
+    systemInstruction,
+  );
+
   const userMessage = buildUserMessage(
     previousContext,
     choiceMade,
@@ -689,6 +851,7 @@ export async function generateStorySegment(
     currentStoryState,
     totalWordCount,
     forceEnding,
+    story?.storyArc,
   );
 
   try {
@@ -696,13 +859,7 @@ export async function generateStorySegment(
       return await ai.models.generateContent({
         model: MODEL,
         contents: [{ role: "user", parts: [{ text: userMessage }] }],
-        config: {
-          systemInstruction,
-          maxOutputTokens: 6144,
-          temperature: 0.9,
-          responseMimeType: "application/json",
-          responseSchema: storyResponseSchema,
-        },
+        config: buildGenerateConfig(cachedContentName, systemInstruction),
       });
     });
 
@@ -714,6 +871,8 @@ export async function generateStorySegment(
         turn: nodeIndex + 1,
         promptTokens: response.usageMetadata?.promptTokenCount,
         outputTokens: response.usageMetadata?.candidatesTokenCount,
+        cachedTokens: response.usageMetadata?.cachedContentTokenCount,
+        cacheHit: !!cachedContentName,
       },
       "Gemini generation successful",
     );
@@ -731,6 +890,7 @@ export async function generateStorySegment(
     throw err;
   }
 }
+
 // ─────────────────────────────────────────────
 // Streaming Generator
 // ─────────────────────────────────────────────
@@ -763,8 +923,14 @@ export async function generateStorySegmentStream(
     storyTitle,
     storyGenre,
     story?.worldContext,
-    story?.storyArc,
   );
+
+  const cachedContentName = await getOrCreateSystemCache(
+    storyIdOrTitle,
+    storyGenre,
+    systemInstruction,
+  );
+
   const userMessage = buildUserMessage(
     previousContext,
     effectiveChoiceMade,
@@ -772,6 +938,7 @@ export async function generateStorySegmentStream(
     currentStoryState,
     totalWordCount,
     forceEnding,
+    story?.storyArc,
     choiceCount,
     targetEndingChoices,
     forceEndingByChoices,
@@ -782,13 +949,7 @@ export async function generateStorySegmentStream(
       return await ai.models.generateContentStream({
         model: MODEL,
         contents: [{ role: "user", parts: [{ text: userMessage }] }],
-        config: {
-          systemInstruction,
-          maxOutputTokens: 6144,
-          temperature: 0.9,
-          responseMimeType: "application/json",
-          responseSchema: storyResponseSchema,
-        },
+        config: buildGenerateConfig(cachedContentName, systemInstruction),
       });
     });
 
@@ -926,11 +1087,34 @@ export async function generateStorySegmentStream(
     throw err;
   }
 }
+
 // ─────────────────────────────────────────────
-// Cleanup (kept to prevent breaking imports)
+// Cache Cleanup
+//
+// Call this to explicitly delete caches from Gemini's servers before their
+// TTL expires — useful on story completion or server shutdown to avoid
+// unnecessary storage billing.
 // ─────────────────────────────────────────────
-export async function deleteStoryCaches(_storyKeys?: string[]): Promise<void> {
-  logger.info(
-    "Explicit caching removed; implicit caching active. No manual cleanup needed.",
-  );
+export async function deleteStoryCaches(storyKeys?: string[]): Promise<void> {
+  const keysToDelete = storyKeys ?? [...systemPromptCacheRegistry.keys()];
+
+  for (const key of keysToDelete) {
+    const entry = systemPromptCacheRegistry.get(key);
+    if (!entry) continue;
+
+    try {
+      await ai.caches.delete({ name: entry.name });
+      systemPromptCacheRegistry.delete(key);
+      logger.info(
+        { key, cacheName: entry.name },
+        "Deleted system prompt cache",
+      );
+    } catch (err) {
+      logger.warn(
+        { key, err },
+        "Failed to delete cache — may have already expired",
+      );
+      systemPromptCacheRegistry.delete(key);
+    }
+  }
 }
