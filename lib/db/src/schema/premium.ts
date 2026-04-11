@@ -25,9 +25,24 @@ export const premiumPendingOrdersTable = pgTable("premium_pending_orders", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const storyPurchasesTable = pgTable("story_purchases", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  storyId: text("story_id").notNull(),
+  amountPaise: integer("amount_paise").notNull(),
+  razorpayOrderId: text("razorpay_order_id"),
+  razorpayPaymentId: text("razorpay_payment_id"),
+  status: text("status").notNull().default("pending"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
 export const insertPremiumMembershipSchema = createInsertSchema(premiumMembershipsTable).omit({ createdAt: true, updatedAt: true });
 export const insertPremiumPendingOrderSchema = createInsertSchema(premiumPendingOrdersTable).omit({ createdAt: true });
+export const insertStoryPurchaseSchema = createInsertSchema(storyPurchasesTable).omit({ createdAt: true, updatedAt: true });
 export type InsertPremiumMembership = z.infer<typeof insertPremiumMembershipSchema>;
 export type InsertPremiumPendingOrder = z.infer<typeof insertPremiumPendingOrderSchema>;
+export type InsertStoryPurchase = z.infer<typeof insertStoryPurchaseSchema>;
 export type PremiumMembership = typeof premiumMembershipsTable.$inferSelect;
 export type PremiumPendingOrder = typeof premiumPendingOrdersTable.$inferSelect;
+export type StoryPurchase = typeof storyPurchasesTable.$inferSelect;

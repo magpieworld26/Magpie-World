@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, storySessionsTable, storyNodesTable, premiumMembershipsTable, usersTable } from "@workspace/db";
+import { db, storySessionsTable, storyNodesTable, premiumMembershipsTable, storyPurchasesTable, usersTable } from "@workspace/db";
 import { eq, and, asc, gt, desc, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { type AuthenticatedRequest, requireAuth } from "../lib/auth-middleware";
@@ -146,6 +146,66 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
     });
     session = inserted;
   } else {
+    const [unredeemedPurchase] = await db
+      .select()
+      .from(storyPurchasesTable)
+      .where(
+        and(
+          eq(storyPurchasesTable.userId, userId),
+          eq(storyPurchasesTable.storyId, storyId),
+          eq(storyPurchasesTable.status, "purchased")
+        )
+      )
+      .limit(1);
+
+    if (unredeemedPurchase) {
+      const purchaseResult = await db.transaction(async (tx) => {
+        const [updated] = await tx
+          .update(storyPurchasesTable)
+          .set({ status: "redeemed" })
+          .where(
+            and(
+              eq(storyPurchasesTable.id, unredeemedPurchase.id),
+              eq(storyPurchasesTable.status, "purchased")
+            )
+          )
+          .returning();
+
+        if (!updated) return null;
+
+        const [s] = await tx
+          .insert(storySessionsTable)
+          .values({
+            id: sessionId,
+            storyId,
+            userId,
+            status: "active",
+            currentNodeId: nodeId,
+            nodeCount: 1,
+            totalWordCount: initialWordCount,
+            storyHealthScore: 0,
+            storyStateJson: initialStoryStateJson,
+          })
+          .returning();
+        await tx.insert(storyNodesTable).values({
+          id: nodeId,
+          sessionId,
+          parentNodeId: null,
+          choiceMade: null,
+          narrativeText: initialNode.narrativeText,
+          choicesJson: JSON.stringify(initialNode.choices),
+          nodeIndex: 0,
+        });
+        return s;
+      });
+
+      if (purchaseResult) {
+        session = purchaseResult;
+        const sessionWithStory = buildSessionResponse(session);
+        res.status(201).json({ ...sessionWithStory, isStoryPurchase: true });
+        return;
+      }
+    }
     const result = await db.transaction(async (tx) => {
       const userEmail = `user-${userId}@magpie.app`;
       await tx

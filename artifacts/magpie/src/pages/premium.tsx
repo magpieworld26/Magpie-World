@@ -350,17 +350,29 @@ export default function PremiumPage() {
         </div>
 
         {/* Footer note */}
-        <p style={{
+        <div style={{
           marginTop: "40px",
-          fontFamily: "'Barlow Condensed', sans-serif",
-          fontSize: "13px",
-          color: "rgba(255,255,255,0.3)",
-          letterSpacing: "0.5px",
           textAlign: "center",
           padding: "0 16px",
         }}>
-          Secure payment via Razorpay · No recurring charges · Cancel anytime
-        </p>
+          <p style={{
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontSize: "15px",
+            color: "rgba(255,255,255,0.5)",
+            letterSpacing: "0.5px",
+            marginBottom: "12px",
+          }}>
+            Or buy a single story for ₹29
+          </p>
+          <p style={{
+            fontFamily: "'Barlow Condensed', sans-serif",
+            fontSize: "13px",
+            color: "rgba(255,255,255,0.3)",
+            letterSpacing: "0.5px",
+          }}>
+            Secure payment via Razorpay · No recurring charges · Cancel anytime
+          </p>
+        </div>
       </div>
     </div>
   );

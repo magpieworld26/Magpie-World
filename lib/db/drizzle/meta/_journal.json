@@ -15,6 +15,13 @@
       "when": 1775763992177,
       "tag": "0001_add_story_state_json",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775931899213,
+      "tag": "0003_add_story_purchases",
+      "breakpoints": true
     }
   ]
 }

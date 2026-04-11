@@ -91,6 +91,17 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+## Features
+
+### Single Story Purchase (₹29)
+Users can buy individual stories for ₹29 instead of subscribing to premium. A purchase grants one complete reading session. The flow uses Razorpay checkout (same pattern as premium subscriptions). Key components:
+- DB table: `story_purchases` (in `lib/db/src/schema/premium.ts`)
+- API endpoints: `POST /premium/buy-story`, `POST /premium/verify-story-purchase` (in `artifacts/api-server/src/routes/premium.ts`)
+- Session creation checks unredeemed purchases between premium and free trial checks (in `artifacts/api-server/src/routes/sessions.ts`)
+- `GET /premium/status` returns `purchasedStoryIds` array
+- Story detail page shows "Buy This Story – ₹29" button for non-premium users without free trials
+- Premium page mentions the single-story option
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.

@@ -8,6 +8,18 @@ import {
 } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
+
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise(resolve => {
+    if (window.Razorpay) { resolve(true); return; }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
 
 export default function StoryDetailPage() {
   const { storyId } = useParams<{ storyId: string }>();
@@ -21,7 +33,9 @@ export default function StoryDetailPage() {
   );
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
+  const [buyingStory, setBuyingStory] = useState(false);
   const { isMobile, isTablet } = useWindowWidth();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!storyId) return;
@@ -72,6 +86,56 @@ export default function StoryDetailPage() {
     }
   };
 
+  const handleBuyStory = async () => {
+    if (!story || !storyId) return;
+    const token = await getAuthToken();
+    if (!token) { setLocation("/login"); return; }
+    setBuyingStory(true);
+    try {
+      const loaded = await loadRazorpayScript();
+      if (!loaded) {
+        toast({ title: "Error", description: "Failed to load payment module. Please try again.", variant: "destructive" });
+        setBuyingStory(false);
+        return;
+      }
+      const order = await api.premium.buyStory(storyId);
+      const options = {
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Magpie",
+        description: `Single Story: ${story.title}`,
+        order_id: order.orderId,
+        handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+          try {
+            await api.premium.verifyStoryPurchase({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            setBuyingStory(false);
+            toast({ title: "Story Purchased!", description: "You can now start reading this story." });
+            setPremiumStatus(prev => prev ? {
+              ...prev,
+              purchasedStoryIds: [...(prev.purchasedStoryIds || []), storyId],
+            } : prev);
+          } catch {
+            setBuyingStory(false);
+            toast({ title: "Verification Error", description: "Payment received but verification failed. Please contact support.", variant: "destructive" });
+          }
+        },
+        theme: { color: "#00e5c8" },
+        modal: { ondismiss: () => setBuyingStory(false) },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to initiate payment";
+      toast({ title: "Error", description: message, variant: "destructive" });
+      setBuyingStory(false);
+    }
+  };
+
   if (loading) {
     return (
       <div
@@ -103,10 +167,11 @@ export default function StoryDetailPage() {
   const freeTrialsRemaining = premiumStatus?.freeTrialsRemaining ?? 0;
   const hasFreeTrial = !isPremium && freeTrialsRemaining > 0;
   const trialsExhausted = !isPremium && freeTrialsRemaining === 0 && (premiumStatus?.freeTrialsUsed ?? 0) > 0;
+  const hasPurchasedStory = !!(storyId && premiumStatus?.purchasedStoryIds?.includes(storyId));
   const heroPadding = isMobile ? "0 16px 28px" : "0 6vw 40px";
   const contentPadding = isMobile ? "28px 16px 60px" : "40px 6vw 80px";
 
-  const canRead = isPremium || hasFreeTrial || !!existingSession;
+  const canRead = isPremium || hasFreeTrial || hasPurchasedStory || !!existingSession;
 
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh" }}>
@@ -328,28 +393,54 @@ export default function StoryDetailPage() {
               )}
             </>
           ) : (
-            <button
-              onClick={() => setLocation("/premium")}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                background: "#00e5c8",
-                color: "#060d1f",
-                border: "none",
-                padding: isMobile ? "12px 24px" : "14px 32px",
-                borderRadius: "4px",
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: isMobile ? "14px" : "16px",
-                letterSpacing: "1.5px",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                width: isMobile ? "100%" : "auto",
-              }}
-            >
-              ★ Get Premium to Read
-            </button>
+            <>
+              <button
+                onClick={handleBuyStory}
+                disabled={buyingStory}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  background: "#00e5c8",
+                  color: "#060d1f",
+                  border: "none",
+                  padding: isMobile ? "12px 24px" : "14px 32px",
+                  borderRadius: "4px",
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontWeight: 700,
+                  fontSize: isMobile ? "14px" : "16px",
+                  letterSpacing: "1.5px",
+                  textTransform: "uppercase",
+                  cursor: buyingStory ? "not-allowed" : "pointer",
+                  opacity: buyingStory ? 0.7 : 1,
+                  flex: isMobile ? "1" : "unset",
+                }}
+              >
+                {buyingStory ? "Processing..." : "Buy This Story – ₹29"}
+              </button>
+              <button
+                onClick={() => setLocation("/premium")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  background: "rgba(255,255,255,.1)",
+                  color: "#fff",
+                  border: "1px solid rgba(255,255,255,.2)",
+                  padding: isMobile ? "12px 24px" : "14px 32px",
+                  borderRadius: "4px",
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontWeight: 700,
+                  fontSize: isMobile ? "14px" : "16px",
+                  letterSpacing: "1.5px",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                  flex: isMobile ? "1" : "unset",
+                }}
+              >
+                ★ Go Premium
+              </button>
+            </>
           )}
         </div>
 
@@ -388,8 +479,8 @@ export default function StoryDetailPage() {
             }}
           >
             {trialsExhausted
-              ? "You've used your 2 free trials. Upgrade to premium for unlimited access to all stories — starting at ₹89."
-              : "Premium membership gives you unlimited access to all stories. Choose a plan starting at ₹89."}
+              ? "You've used your 2 free trials. Buy this story for ₹29 for a single read, or upgrade to premium for unlimited access — starting at ₹89."
+              : "Buy this story for ₹29 for a single read, or get premium for unlimited access to all stories — starting at ₹89."}
           </div>
         )}
 

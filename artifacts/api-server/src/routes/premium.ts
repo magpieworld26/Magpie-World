@@ -1,9 +1,10 @@
 import { Router, type IRouter } from "express";
 import crypto from "crypto";
 import { createRequire } from "module";
-import { db, premiumMembershipsTable, premiumPendingOrdersTable, usersTable } from "@workspace/db";
+import { db, premiumMembershipsTable, premiumPendingOrdersTable, storyPurchasesTable, usersTable } from "@workspace/db";
 import { eq, and, gt, desc } from "drizzle-orm";
 import { type AuthenticatedRequest, requireAuth } from "../lib/auth-middleware";
+import { getStoryById } from "../lib/stories-data";
 
 const require = createRequire(import.meta.url);
 const Razorpay = require("razorpay");
@@ -33,7 +34,7 @@ router.get("/premium/status", requireAuth, async (req: AuthenticatedRequest, res
   const userId = req.userId!;
   const now = new Date();
 
-  const [[membership], [userRow]] = await Promise.all([
+  const [[membership], [userRow], purchasedStories] = await Promise.all([
     db
       .select()
       .from(premiumMembershipsTable)
@@ -50,15 +51,25 @@ router.get("/premium/status", requireAuth, async (req: AuthenticatedRequest, res
       .select({ freeTrialsUsed: usersTable.freeTrialsUsed })
       .from(usersTable)
       .where(eq(usersTable.id, userId)),
+    db
+      .select({ storyId: storyPurchasesTable.storyId })
+      .from(storyPurchasesTable)
+      .where(
+        and(
+          eq(storyPurchasesTable.userId, userId),
+          eq(storyPurchasesTable.status, "purchased")
+        )
+      ),
   ]);
 
   const freeTrialsUsed = userRow?.freeTrialsUsed ?? 0;
   const freeTrialsRemaining = Math.max(0, FREE_TRIALS_MAX - freeTrialsUsed);
+  const purchasedStoryIds = purchasedStories.map(p => p.storyId);
 
   if (membership) {
-    res.json({ isPremium: true, expiresAt: membership.expiresAt, plan: membership.plan, freeTrialsUsed, freeTrialsRemaining });
+    res.json({ isPremium: true, expiresAt: membership.expiresAt, plan: membership.plan, freeTrialsUsed, freeTrialsRemaining, purchasedStoryIds });
   } else {
-    res.json({ isPremium: false, freeTrialsUsed, freeTrialsRemaining });
+    res.json({ isPremium: false, freeTrialsUsed, freeTrialsRemaining, purchasedStoryIds });
   }
 });
 
@@ -196,6 +207,131 @@ router.post("/premium/verify-payment", requireAuth, async (req: AuthenticatedReq
     const message = err instanceof Error ? err.message : "Payment verification failed";
     if (message === "Order already processed") {
       res.status(409).json({ message: "Payment already verified for this order" });
+    } else {
+      res.status(500).json({ message });
+    }
+  }
+});
+
+const SINGLE_STORY_PRICE_PAISE = 2900;
+
+router.post("/premium/buy-story", requireAuth, async (req: AuthenticatedRequest, res): Promise<void> => {
+  const userId = req.userId!;
+  const { storyId } = req.body as { storyId: string };
+
+  if (!storyId || typeof storyId !== "string") {
+    res.status(400).json({ message: "storyId is required" });
+    return;
+  }
+
+  const story = getStoryById(storyId);
+  if (!story) {
+    res.status(404).json({ message: "Story not found" });
+    return;
+  }
+
+  try {
+    const { client: razorpay, keyId } = getRazorpayClient();
+
+    const order = await razorpay.orders.create({
+      amount: SINGLE_STORY_PRICE_PAISE,
+      currency: "INR",
+      receipt: `story-${storyId.substring(0, 12)}-${Date.now()}`.substring(0, 40),
+      notes: { userId, storyId, type: "single_story" },
+    });
+
+    const purchaseId = `sp_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    await db.insert(storyPurchasesTable).values({
+      id: purchaseId,
+      userId,
+      storyId,
+      amountPaise: SINGLE_STORY_PRICE_PAISE,
+      razorpayOrderId: order.id,
+      status: "pending",
+    });
+
+    res.json({
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      keyId,
+      storyId,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Failed to create order";
+    res.status(500).json({ message });
+  }
+});
+
+router.post("/premium/verify-story-purchase", requireAuth, async (req: AuthenticatedRequest, res): Promise<void> => {
+  const userId = req.userId!;
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body as {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+  };
+
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+    res.status(400).json({ message: "Missing required payment verification fields" });
+    return;
+  }
+
+  const [pendingPurchase] = await db
+    .select()
+    .from(storyPurchasesTable)
+    .where(
+      and(
+        eq(storyPurchasesTable.razorpayOrderId, razorpay_order_id),
+        eq(storyPurchasesTable.userId, userId),
+        eq(storyPurchasesTable.status, "pending")
+      )
+    )
+    .limit(1);
+
+  if (!pendingPurchase) {
+    res.status(400).json({ message: "Purchase not found or already processed" });
+    return;
+  }
+
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  if (!keySecret) {
+    res.status(500).json({ message: "Payment verification not configured" });
+    return;
+  }
+
+  const expectedSignature = crypto
+    .createHmac("sha256", keySecret)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest("hex");
+
+  if (expectedSignature !== razorpay_signature) {
+    res.status(400).json({ message: "Payment signature verification failed" });
+    return;
+  }
+
+  try {
+    await db.transaction(async (tx) => {
+      const [updated] = await tx
+        .update(storyPurchasesTable)
+        .set({ status: "purchased", razorpayPaymentId: razorpay_payment_id })
+        .where(
+          and(
+            eq(storyPurchasesTable.id, pendingPurchase.id),
+            eq(storyPurchasesTable.status, "pending")
+          )
+        )
+        .returning();
+
+      if (!updated) {
+        throw new Error("Purchase already processed");
+      }
+    });
+
+    res.json({ success: true, storyId: pendingPurchase.storyId });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Payment verification failed";
+    if (message === "Purchase already processed") {
+      res.status(409).json({ message });
     } else {
       res.status(500).json({ message });
     }

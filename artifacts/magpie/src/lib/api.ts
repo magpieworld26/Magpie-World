@@ -87,6 +87,7 @@ export interface PremiumStatus {
   plan?: string;
   freeTrialsUsed?: number;
   freeTrialsRemaining?: number;
+  purchasedStoryIds?: string[];
 }
 
 export interface CreateSessionResponse {
@@ -116,6 +117,19 @@ export interface VerifyPaymentResponse {
   success: boolean;
   expiresAt: string;
   plan: string;
+}
+
+export interface BuyStoryOrderResponse {
+  orderId: string;
+  amount: number;
+  currency: string;
+  keyId: string;
+  storyId: string;
+}
+
+export interface VerifyStoryPurchaseResponse {
+  success: boolean;
+  storyId: string;
 }
 
 export const api = {
@@ -201,6 +215,15 @@ export const api = {
     }),
     verifyPayment: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
       fetchApi<VerifyPaymentResponse>("/premium/verify-payment", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    buyStory: (storyId: string) => fetchApi<BuyStoryOrderResponse>("/premium/buy-story", {
+      method: "POST",
+      body: JSON.stringify({ storyId }),
+    }),
+    verifyStoryPurchase: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
+      fetchApi<VerifyStoryPurchaseResponse>("/premium/verify-story-purchase", {
         method: "POST",
         body: JSON.stringify(data),
       }),
