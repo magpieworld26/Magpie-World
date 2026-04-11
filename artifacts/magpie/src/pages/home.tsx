@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
+import ScrollRow from "@/components/ScrollRow";
 import { api, type Story, type StorySession, type PremiumStatus } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
@@ -699,11 +700,9 @@ export default function HomePage() {
               Continue <span style={{ color: "#00e5c8" }}>Reading</span>
             </h2>
           </div>
-          <div
+          <ScrollRow
             style={{
-              display: "flex",
               gap: "16px",
-              overflowX: "auto",
               paddingTop: "12px",
               paddingBottom: "8px",
             }}
@@ -717,7 +716,7 @@ export default function HomePage() {
                 onClick={() => setLocation(`/read/${session.id}`)}
               />
             ))}
-          </div>
+          </ScrollRow>
         </div>
       )}
       {/* NEW RELEASES */}
@@ -743,11 +742,9 @@ export default function HomePage() {
               New <span style={{ color: "#00e5c8" }}>Releases</span>
             </h2>
           </div>
-          <div
+          <ScrollRow
             style={{
-              display: "flex",
               gap: "14px",
-              overflowX: "auto",
               paddingTop: "12px",
               paddingBottom: "8px",
             }}
@@ -761,7 +758,7 @@ export default function HomePage() {
                 onClick={() => setLocation(`/story/${story.id}`)}
               />
             ))}
-          </div>
+          </ScrollRow>
         </div>
       )}
       {/* TOP 10 */}
@@ -787,12 +784,10 @@ export default function HomePage() {
               Top 10 <span style={{ color: "#00e5c8" }}>This Week</span>
             </h2>
           </div>
-          <div
+          <ScrollRow
             style={{
-              display: "flex",
               gap: "0",
               alignItems: "flex-end",
-              overflowX: "auto",
               overflowY: "hidden",
               paddingTop: "20px",
               paddingBottom: "8px",
@@ -911,7 +906,7 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
-          </div>
+          </ScrollRow>
         </div>
       )}
       {/* SEARCH RESULTS */}
@@ -1034,11 +1029,9 @@ export default function HomePage() {
                   {row.label}
                 </span>
               </div>
-              <div
+              <ScrollRow
                 style={{
-                  display: "flex",
                   gap: "14px",
-                  overflowX: "auto",
                   paddingTop: "8px",
                   paddingBottom: "8px",
                 }}
@@ -1052,7 +1045,7 @@ export default function HomePage() {
                     onClick={() => setLocation(`/story/${story.id}`)}
                   />
                 ))}
-              </div>
+              </ScrollRow>
             </div>
           ))}
         </div>
