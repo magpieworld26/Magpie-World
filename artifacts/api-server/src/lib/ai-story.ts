@@ -564,7 +564,7 @@ async function getOrCreateSystemCache(
         { key, cacheName: cache.name },
         "System prompt cache created",
       );
-      return cache.name;
+      return cache.name ?? null;
     } catch (err) {
       // Caching is a performance optimisation, not a correctness requirement.
       // If it fails for any reason (wrong model version, prompt too short,
