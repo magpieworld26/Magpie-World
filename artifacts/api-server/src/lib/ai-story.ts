@@ -556,7 +556,7 @@ async function getOrCreateSystemCache(
       });
 
       systemPromptCacheRegistry.set(key, {
-        name: cache.name,
+        name: cache.name!,
         expiresAt: Date.now() + CACHE_TTL_SECONDS * 1000,
       });
 
