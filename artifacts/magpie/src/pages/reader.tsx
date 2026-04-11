@@ -521,72 +521,6 @@ export default function ReaderPage() {
 
   return (
     <div style={{ display: "flex", height: "100vh", background: "#060d1f", color: "#fff", overflow: "hidden" }}>
-      {/* LEFT SIDEBAR — Book Map & Progress */}
-      <div style={{
-        width: "260px",
-        flexShrink: 0,
-        height: "100vh",
-        overflow: "hidden auto",
-        background: "#060d1f",
-        borderRight: "1px solid rgba(0,229,200,0.1)",
-        display: "flex",
-        flexDirection: "column",
-      }} className="scrollbar-hide">
-        <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid rgba(0,229,200,0.1)" }}>
-          <button
-            onClick={() => setLocation("/home")}
-            style={{ background: "none", border: "none", color: "#00e5c8", cursor: "pointer", fontSize: "12px", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "2px", textTransform: "uppercase", padding: "0", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}
-            className="text-[15px] font-bold">← </button>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "22px", letterSpacing: "0.08em", lineHeight: 1.1, color: "#fff" }}>
-            {session.story.title}
-          </div>
-          <div style={{ fontSize: "11px", color: "#00e5c8", letterSpacing: "2px", textTransform: "uppercase", marginTop: "4px", fontFamily: "'Barlow Condensed', sans-serif" }}>
-            {session.story.genre}
-          </div>
-        </div>
-
-        <div style={{ padding: "16px 20px", borderBottom: "1px solid rgba(0,229,200,0.08)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", marginBottom: "8px" }}>
-            <span style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "1px", textTransform: "uppercase" }}>Progress</span>
-            <span style={{ color: "#00e5c8" }}>{nodes.length} nodes</span>
-          </div>
-          <div style={{ height: "3px", background: "rgba(255,255,255,0.08)", borderRadius: "2px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${Math.min(100, (nodes.length / 20) * 100)}%`, background: "linear-gradient(to right, #00b8a0, #00e5c8)", borderRadius: "2px", transition: "width 0.5s" }} />
-          </div>
-        </div>
-
-        <div style={{ flex: 1, overflow: "auto", padding: "16px 20px 20px" }} className="scrollbar-hide">
-          <div style={{ fontSize: "10px", letterSpacing: "2px", color: "rgba(255,255,255,0.3)", marginBottom: "12px", fontFamily: "'Barlow Condensed', sans-serif", textTransform: "uppercase" }}>Your Path</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {nodes.map((node, i) => (
-              <div key={node.id} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
-                  <div style={{
-                    width: "8px", height: "8px", borderRadius: "50%", flexShrink: 0, marginTop: "4px",
-                    background: node.id === currentNode.id ? "#00e5c8" : i < nodes.indexOf(currentNode) ? "#00e5c8" : "rgba(255,255,255,0.2)",
-                    boxShadow: node.id === currentNode.id ? "0 0 10px rgba(0,229,200,0.8)" : undefined,
-                  }} />
-                  {i < nodes.length - 1 && (
-                    <div style={{ width: "1px", height: "30px", background: "rgba(0,229,200,0.15)", marginTop: "4px" }} />
-                  )}
-                </div>
-                <div style={{ paddingBottom: "16px" }}>
-                  <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'Barlow Condensed', sans-serif" }}>
-                    {node.choiceMade ? (
-                      <span style={{ color: "rgba(0,229,200,0.6)", fontSize: "10px" }}>"{node.choiceMade.slice(0, 40)}{node.choiceMade.length > 40 ? "..." : ""}"</span>
-                    ) : (
-                      <span style={{ color: "rgba(255,255,255,0.2)", fontStyle: "italic" }}>Opening</span>
-                    )}
-                  </div>
-                  {node.id === currentNode.id && (
-                    <div style={{ fontSize: "9px", color: "#00e5c8", letterSpacing: "1px", textTransform: "uppercase", fontFamily: "'Barlow Condensed', sans-serif", marginTop: "2px" }}>Current</div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
       {/* CENTER — Story Text */}
       <div style={{ flex: 1, height: "100vh", overflow: "hidden auto", display: "flex", flexDirection: "column" }} className="scrollbar-hide">
         <div style={{
@@ -596,6 +530,10 @@ export default function ReaderPage() {
           padding: "14px 32px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
         }}>
+          <button
+            onClick={() => setLocation("/home")}
+            style={{ background: "none", border: "none", color: "#00e5c8", cursor: "pointer", fontSize: "12px", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "2px", textTransform: "uppercase", padding: "0", display: "flex", alignItems: "center", gap: "6px" }}
+          >← Back to Home</button>
           <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", letterSpacing: "2px", color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>
             Chapter {nodes.length}
           </div>
@@ -717,7 +655,7 @@ export default function ReaderPage() {
       </div>
       {/* RIGHT SIDEBAR — Choices */}
       <div style={{
-        width: "300px",
+        width: "390px",
         flexShrink: 0,
         height: "100vh",
         overflow: "hidden auto",
