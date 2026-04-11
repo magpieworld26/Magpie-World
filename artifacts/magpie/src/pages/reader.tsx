@@ -26,6 +26,7 @@ export default function ReaderPage() {
   const [pendingChoiceText, setPendingChoiceText] = useState<string | null>(null);
   const mobileScrollRef = useRef<HTMLDivElement>(null);
   const desktopScrollRef = useRef<HTMLDivElement>(null);
+  const userScrolledDuringGeneration = useRef(false);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -61,10 +62,20 @@ export default function ReaderPage() {
     setGenerationError(null);
     setPendingChoiceText(choice.text);
     setStreamingText("");
+    userScrolledDuringGeneration.current = false;
     const scrollEl = mobileScrollRef.current || desktopScrollRef.current;
     requestAnimationFrame(() => {
       if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
     });
+
+    const handleScrollDuringGeneration = () => {
+      const el = mobileScrollRef.current || desktopScrollRef.current;
+      if (el && el.scrollTop + el.clientHeight < el.scrollHeight - 2) {
+        userScrolledDuringGeneration.current = true;
+      }
+    };
+    scrollEl?.addEventListener("scroll", handleScrollDuringGeneration, { passive: true });
+
     try {
       const newNode = await api.sessions.continueStream(
         sessionId,
@@ -84,10 +95,12 @@ export default function ReaderPage() {
         setChoicesForNodeId(newNode.id);
         setShowChoices(true);
       }
-      requestAnimationFrame(() => {
-        const el = mobileScrollRef.current || desktopScrollRef.current;
-        if (el) el.scrollTop = el.scrollHeight;
-      });
+      if (!userScrolledDuringGeneration.current) {
+        requestAnimationFrame(() => {
+          const el = mobileScrollRef.current || desktopScrollRef.current;
+          if (el) el.scrollTop = el.scrollHeight;
+        });
+      }
     } catch (err) {
       setStreamingText(null);
       const msg =
@@ -110,6 +123,7 @@ export default function ReaderPage() {
       if (currentNode) setChoicesForNodeId(currentNode.id);
       setShowChoices(true);
     } finally {
+      scrollEl?.removeEventListener("scroll", handleScrollDuringGeneration);
       setChoosing(false);
     }
   };
