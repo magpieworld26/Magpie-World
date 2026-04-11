@@ -199,7 +199,7 @@ export default function ReaderPage() {
                       }
                     }}
                     disabled={choosing || !!chosenId}
-                    placeholder="Describe what you do… (max 50 words)"
+                    placeholder="Describe what you do…"
                     rows={2}
                     maxLength={300}
                     style={{
