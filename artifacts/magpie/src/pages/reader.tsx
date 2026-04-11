@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { api, type StorySession, type StoryNode, type Choice } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
@@ -22,6 +22,10 @@ export default function ReaderPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [streamingText, setStreamingText] = useState<string | null>(null);
   const [freeWillInput, setFreeWillInput] = useState("");
+  const [choicesForNodeId, setChoicesForNodeId] = useState<string | null>(null);
+  const [pendingChoiceText, setPendingChoiceText] = useState<string | null>(null);
+  const mobileScrollRef = useRef<HTMLDivElement>(null);
+  const desktopScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -40,6 +44,7 @@ export default function ReaderPage() {
             setStoryComplete(true);
           } else {
             setShowChoices(true);
+            setChoicesForNodeId(data.currentNode.id);
           }
         })
         .catch(() => setLocation("/home"))
@@ -52,8 +57,14 @@ export default function ReaderPage() {
     setChosenId(choice.id);
     setChoosing(true);
     setShowChoices(false);
+    setChoicesForNodeId(null);
     setGenerationError(null);
+    setPendingChoiceText(choice.text);
     setStreamingText("");
+    const scrollEl = mobileScrollRef.current || desktopScrollRef.current;
+    requestAnimationFrame(() => {
+      if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
+    });
     try {
       const newNode = await api.sessions.continueStream(
         sessionId,
@@ -63,12 +74,14 @@ export default function ReaderPage() {
         choice.consequenceType,
       );
       setStreamingText(null);
+      setPendingChoiceText(null);
       setNodes((prev) => [...prev, newNode]);
       setCurrentNode(newNode);
       setChosenId(null);
       if (!newNode.choices || newNode.choices.length === 0) {
         setStoryComplete(true);
       } else {
+        setChoicesForNodeId(newNode.id);
         setShowChoices(true);
       }
     } catch (err) {
@@ -89,6 +102,8 @@ export default function ReaderPage() {
       }
       setGenerationError(msg);
       setChosenId(null);
+      setPendingChoiceText(null);
+      if (currentNode) setChoicesForNodeId(currentNode.id);
       setShowChoices(true);
     } finally {
       setChoosing(false);
@@ -155,7 +170,7 @@ export default function ReaderPage() {
 
   const choicesPanel = (
     <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-      {showChoices && currentNode.choices && currentNode.choices.length > 0 && (
+      {showChoices && choicesForNodeId === currentNode.id && currentNode.choices && currentNode.choices.length > 0 && (
         <>
           {(() => {
             const freeWillWordCount = freeWillInput.trim()
@@ -734,6 +749,7 @@ export default function ReaderPage() {
 
         {/* Story content */}
         <div
+          ref={mobileScrollRef}
           style={{ flex: 1, overflowY: "auto", padding: "24px 16px" }}
           className="scrollbar-hide"
         >
@@ -842,7 +858,7 @@ export default function ReaderPage() {
             </div>
           )}
 
-          {currentNode.choiceMade && (
+          {(pendingChoiceText || currentNode.choiceMade) && (
             <div
               style={{
                 marginBottom: "28px",
@@ -857,7 +873,7 @@ export default function ReaderPage() {
                 color: "#00e5c8",
               }}
             >
-              You chose: "{currentNode.choiceMade}"
+              You chose: "{pendingChoiceText || currentNode.choiceMade}"
             </div>
           )}
 
@@ -1126,6 +1142,7 @@ export default function ReaderPage() {
     >
       {/* CENTER — Story Text */}
       <div
+        ref={desktopScrollRef}
         style={{
           flex: 1,
           height: "100vh",
@@ -1276,7 +1293,7 @@ export default function ReaderPage() {
             </div>
           )}
 
-          {currentNode.choiceMade && (
+          {(pendingChoiceText || currentNode.choiceMade) && (
             <div
               style={{
                 marginBottom: "28px",
@@ -1291,7 +1308,7 @@ export default function ReaderPage() {
                 color: "#00e5c8",
               }}
             >
-              You chose: "{currentNode.choiceMade}"
+              You chose: "{pendingChoiceText || currentNode.choiceMade}"
             </div>
           )}
 
