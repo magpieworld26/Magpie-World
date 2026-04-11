@@ -1,0 +1,1 @@
+ALTER TABLE "magpie_users" ADD COLUMN "free_trials_used" integer NOT NULL DEFAULT 0;

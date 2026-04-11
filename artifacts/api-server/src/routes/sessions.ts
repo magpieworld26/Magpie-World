@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
-import { db, storySessionsTable, storyNodesTable, premiumMembershipsTable } from "@workspace/db";
-import { eq, and, asc, gt, desc } from "drizzle-orm";
+import { db, storySessionsTable, storyNodesTable, premiumMembershipsTable, usersTable } from "@workspace/db";
+import { eq, and, asc, gt, desc, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { type AuthenticatedRequest, requireAuth } from "../lib/auth-middleware";
 import { getStoryById, getInitialStoryNode } from "../lib/stories-data";
@@ -74,6 +74,16 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
     return;
   }
 
+  const FREE_TRIALS_MAX = 2;
+
+  const { storyId } = parsed.data;
+  const story = getStoryById(storyId);
+
+  if (!story) {
+    res.status(404).json({ message: "Story not found" });
+    return;
+  }
+
   const now = new Date();
   const [activeMembership] = await db
     .select()
@@ -88,51 +98,112 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
     .orderBy(desc(premiumMembershipsTable.expiresAt))
     .limit(1);
 
-  if (!activeMembership) {
-    res.status(403).json({ message: "Premium membership required to start a reading session", code: "PREMIUM_REQUIRED" });
-    return;
-  }
-
-  const { storyId } = parsed.data;
-  const story = getStoryById(storyId);
-
-  if (!story) {
-    res.status(404).json({ message: "Story not found" });
-    return;
-  }
+  let isFreeTrial = false;
+  let freeTrialsUsed = 0;
 
   const sessionId = randomUUID();
   const nodeId = randomUUID();
-
   const initialNode = getInitialStoryNode(storyId);
   const initialWordCount = countWords(initialNode.narrativeText);
 
-  const [session] = await db
-    .insert(storySessionsTable)
-    .values({
-      id: sessionId,
-      storyId,
-      userId,
-      status: "active",
-      currentNodeId: nodeId,
-      nodeCount: 1,
-      totalWordCount: initialWordCount,
-      storyHealthScore: 0,
-    })
-    .returning();
+  let session: typeof storySessionsTable.$inferSelect;
 
-  await db.insert(storyNodesTable).values({
-    id: nodeId,
-    sessionId,
-    parentNodeId: null,
-    choiceMade: null,
-    narrativeText: initialNode.narrativeText,
-    choicesJson: JSON.stringify(initialNode.choices),
-    nodeIndex: 0,
-  });
+  if (activeMembership) {
+    const [inserted] = await db.transaction(async (tx) => {
+      const [s] = await tx
+        .insert(storySessionsTable)
+        .values({
+          id: sessionId,
+          storyId,
+          userId,
+          status: "active",
+          currentNodeId: nodeId,
+          nodeCount: 1,
+          totalWordCount: initialWordCount,
+          storyHealthScore: 0,
+        })
+        .returning();
+      await tx.insert(storyNodesTable).values({
+        id: nodeId,
+        sessionId,
+        parentNodeId: null,
+        choiceMade: null,
+        narrativeText: initialNode.narrativeText,
+        choicesJson: JSON.stringify(initialNode.choices),
+        nodeIndex: 0,
+      });
+      return [s];
+    });
+    session = inserted;
+  } else {
+    const result = await db.transaction(async (tx) => {
+      const userEmail = `user-${userId}@magpie.app`;
+      await tx
+        .insert(usersTable)
+        .values({ id: userId, email: userEmail, displayName: userEmail.split("@")[0] })
+        .onConflictDoNothing();
+
+      const [updatedUser] = await tx
+        .update(usersTable)
+        .set({ freeTrialsUsed: sql`${usersTable.freeTrialsUsed} + 1` })
+        .where(
+          and(
+            eq(usersTable.id, userId),
+            sql`${usersTable.freeTrialsUsed} < ${FREE_TRIALS_MAX}`
+          )
+        )
+        .returning({ freeTrialsUsed: usersTable.freeTrialsUsed });
+
+      if (!updatedUser) {
+        return null;
+      }
+
+      const [s] = await tx
+        .insert(storySessionsTable)
+        .values({
+          id: sessionId,
+          storyId,
+          userId,
+          status: "active",
+          currentNodeId: nodeId,
+          nodeCount: 1,
+          totalWordCount: initialWordCount,
+          storyHealthScore: 0,
+        })
+        .returning();
+
+      await tx.insert(storyNodesTable).values({
+        id: nodeId,
+        sessionId,
+        parentNodeId: null,
+        choiceMade: null,
+        narrativeText: initialNode.narrativeText,
+        choicesJson: JSON.stringify(initialNode.choices),
+        nodeIndex: 0,
+      });
+
+      return { session: s, freeTrialsUsed: updatedUser.freeTrialsUsed };
+    });
+
+    if (!result) {
+      res.status(403).json({ message: "Premium membership required to start a reading session", code: "PREMIUM_REQUIRED" });
+      return;
+    }
+
+    session = result.session;
+    freeTrialsUsed = result.freeTrialsUsed;
+    isFreeTrial = true;
+  }
 
   const sessionWithStory = buildSessionResponse(session);
-  res.status(201).json(sessionWithStory);
+  res.status(201).json({
+    ...sessionWithStory,
+    ...(isFreeTrial ? {
+      isFreeTrial: true,
+      freeTrialsUsed,
+      freeTrialsRemaining: Math.max(0, FREE_TRIALS_MAX - freeTrialsUsed),
+    } : {}),
+  });
 });
 
 router.get("/sessions/:sessionId", requireAuth, async (req: AuthenticatedRequest, res): Promise<void> => {

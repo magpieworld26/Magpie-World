@@ -6,6 +6,8 @@ import { GetProfileResponse, UpdateProfileBody, UpdateProfileResponse } from "@w
 
 const router: IRouter = Router();
 
+const FREE_TRIALS_MAX = 2;
+
 router.get("/auth/profile", requireAuth, async (req: AuthenticatedRequest, res): Promise<void> => {
   const userId = req.userId!;
 
@@ -20,13 +22,19 @@ router.get("/auth/profile", requireAuth, async (req: AuthenticatedRequest, res):
       .returning();
   }
 
-  res.json(GetProfileResponse.parse({
-    id: user.id,
-    email: user.email,
-    displayName: user.displayName,
-    avatarUrl: user.avatarUrl,
-    createdAt: user.createdAt
-  }));
+  const freeTrialsUsed = user.freeTrialsUsed ?? 0;
+
+  res.json({
+    ...GetProfileResponse.parse({
+      id: user.id,
+      email: user.email,
+      displayName: user.displayName,
+      avatarUrl: user.avatarUrl,
+      createdAt: user.createdAt
+    }),
+    freeTrialsUsed,
+    freeTrialsRemaining: Math.max(0, FREE_TRIALS_MAX - freeTrialsUsed),
+  });
 });
 
 router.put("/auth/profile", requireAuth, async (req: AuthenticatedRequest, res): Promise<void> => {

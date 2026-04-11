@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import crypto from "crypto";
 import { createRequire } from "module";
-import { db, premiumMembershipsTable, premiumPendingOrdersTable } from "@workspace/db";
+import { db, premiumMembershipsTable, premiumPendingOrdersTable, usersTable } from "@workspace/db";
 import { eq, and, gt, desc } from "drizzle-orm";
 import { type AuthenticatedRequest, requireAuth } from "../lib/auth-middleware";
 
@@ -27,27 +27,38 @@ function getRazorpayClient() {
   return { client: new Razorpay({ key_id: keyId, key_secret: keySecret }), keyId };
 }
 
+const FREE_TRIALS_MAX = 2;
+
 router.get("/premium/status", requireAuth, async (req: AuthenticatedRequest, res): Promise<void> => {
   const userId = req.userId!;
   const now = new Date();
 
-  const [membership] = await db
-    .select()
-    .from(premiumMembershipsTable)
-    .where(
-      and(
-        eq(premiumMembershipsTable.userId, userId),
-        eq(premiumMembershipsTable.status, "active"),
-        gt(premiumMembershipsTable.expiresAt, now)
+  const [[membership], [userRow]] = await Promise.all([
+    db
+      .select()
+      .from(premiumMembershipsTable)
+      .where(
+        and(
+          eq(premiumMembershipsTable.userId, userId),
+          eq(premiumMembershipsTable.status, "active"),
+          gt(premiumMembershipsTable.expiresAt, now)
+        )
       )
-    )
-    .orderBy(desc(premiumMembershipsTable.expiresAt))
-    .limit(1);
+      .orderBy(desc(premiumMembershipsTable.expiresAt))
+      .limit(1),
+    db
+      .select({ freeTrialsUsed: usersTable.freeTrialsUsed })
+      .from(usersTable)
+      .where(eq(usersTable.id, userId)),
+  ]);
+
+  const freeTrialsUsed = userRow?.freeTrialsUsed ?? 0;
+  const freeTrialsRemaining = Math.max(0, FREE_TRIALS_MAX - freeTrialsUsed);
 
   if (membership) {
-    res.json({ isPremium: true, expiresAt: membership.expiresAt, plan: membership.plan });
+    res.json({ isPremium: true, expiresAt: membership.expiresAt, plan: membership.plan, freeTrialsUsed, freeTrialsRemaining });
   } else {
-    res.json({ isPremium: false });
+    res.json({ isPremium: false, freeTrialsUsed, freeTrialsRemaining });
   }
 });
 

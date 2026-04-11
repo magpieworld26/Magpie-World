@@ -77,12 +77,31 @@ export interface UserProfile {
   displayName: string;
   avatarUrl: string | null;
   createdAt: string;
+  freeTrialsUsed?: number;
+  freeTrialsRemaining?: number;
 }
 
 export interface PremiumStatus {
   isPremium: boolean;
   expiresAt?: string;
   plan?: string;
+  freeTrialsUsed?: number;
+  freeTrialsRemaining?: number;
+}
+
+export interface CreateSessionResponse {
+  id: string;
+  storyId: string;
+  userId: string;
+  status: string;
+  currentNodeId: string | null;
+  nodeCount: number;
+  createdAt: string;
+  updatedAt: string;
+  story: Story;
+  isFreeTrial?: boolean;
+  freeTrialsUsed?: number;
+  freeTrialsRemaining?: number;
 }
 
 export interface CreateOrderResponse {
@@ -106,7 +125,7 @@ export const api = {
   },
   sessions: {
     list: () => fetchApi<{ sessions: StorySession[] }>("/sessions"),
-    create: (storyId: string) => fetchApi<StorySession>("/sessions", {
+    create: (storyId: string) => fetchApi<CreateSessionResponse>("/sessions", {
       method: "POST",
       body: JSON.stringify({ storyId }),
     }),

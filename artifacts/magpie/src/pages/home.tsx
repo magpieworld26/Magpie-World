@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
-import { api, type Story, type StorySession } from "@/lib/api";
+import { api, type Story, type StorySession, type PremiumStatus } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
 
@@ -240,6 +240,7 @@ export default function HomePage() {
   const [, setLocation] = useLocation();
   const [stories, setStories] = useState<Story[]>([]);
   const [sessions, setSessions] = useState<StorySession[]>([]);
+  const [premiumStatus, setPremiumStatus] = useState<PremiumStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const { isMobile, isTablet } = useWindowWidth();
@@ -254,10 +255,12 @@ export default function HomePage() {
       Promise.all([
         api.stories.list(),
         api.sessions.list().catch(() => ({ sessions: [] })),
+        api.premium.status().catch(() => ({ isPremium: false })),
       ])
-        .then(([storiesData, sessionsData]) => {
+        .then(([storiesData, sessionsData, premiumData]) => {
           setStories(storiesData.stories);
           setSessions(sessionsData.sessions);
+          setPremiumStatus(premiumData);
         })
         .finally(() => setLoading(false));
     });

@@ -49,7 +49,7 @@ const storyResponseSchema = {
     },
     sceneSummary: {
       type: Type.STRING,
-      description: "A 10-15 sentence summary of what just happened in this scene. Include key facts, decisions made, and any important reveals. This will be used as story memory in future turns."
+      description: "A concise 10-15 sentence summary of what just happened in this scene. Include key facts, decisions made, and any important reveals. This will be used as story memory in future turns."
     },
     choices: {
       type: Type.ARRAY,

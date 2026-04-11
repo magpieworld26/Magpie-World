@@ -63,7 +63,11 @@ export default function StoryDetailPage() {
     try {
       const session = await api.sessions.create(story.id);
       setLocation(`/read/${session.id}`);
-    } catch {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      if (message.includes("PREMIUM_REQUIRED") || message.toLowerCase().includes("premium")) {
+        setPremiumStatus((prev) => prev ? { ...prev, freeTrialsRemaining: 0 } : { isPremium: false, freeTrialsRemaining: 0 });
+      }
       setStarting(false);
     }
   };
@@ -96,8 +100,13 @@ export default function StoryDetailPage() {
   if (!story) return null;
 
   const isPremium = premiumStatus?.isPremium === true;
+  const freeTrialsRemaining = premiumStatus?.freeTrialsRemaining ?? 0;
+  const hasFreeTrial = !isPremium && freeTrialsRemaining > 0;
+  const trialsExhausted = !isPremium && freeTrialsRemaining === 0 && (premiumStatus?.freeTrialsUsed ?? 0) > 0;
   const heroPadding = isMobile ? "0 16px 28px" : "0 6vw 40px";
   const contentPadding = isMobile ? "28px 16px 60px" : "40px 6vw 80px";
+
+  const canRead = isPremium || hasFreeTrial || !!existingSession;
 
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh" }}>
@@ -106,14 +115,14 @@ export default function StoryDetailPage() {
         onClick={() => setLocation("/home")}
         style={{
           position: "fixed", top: "24px", left: "24px", zIndex: 100,
-          background: "#0c1730", /* Slightly lighter than the page background */
-          border: "1px solid rgba(80, 120, 255, 0.2)", /* Tinted border */
-          color: "#e2e8f0", 
-          borderRadius: "50%", 
+          background: "#0c1730",
+          border: "1px solid rgba(80, 120, 255, 0.2)",
+          color: "#e2e8f0",
+          borderRadius: "50%",
           width: "44px", height: "44px",
           display: "flex", alignItems: "center", justifyContent: "center",
-          cursor: "pointer", 
-          boxShadow: "0 0 16px rgba(80, 120, 255, 0.1)", /* Subtle colored glow */
+          cursor: "pointer",
+          boxShadow: "0 0 16px rgba(80, 120, 255, 0.1)",
           transition: "transform 0.2s ease"
         }}
         aria-label="Go back"
@@ -249,7 +258,7 @@ export default function StoryDetailPage() {
             flexWrap: "wrap",
           }}
         >
-          {isPremium ? (
+          {canRead ? (
             <>
               <button
                 onClick={handleRead}
@@ -287,8 +296,13 @@ export default function StoryDetailPage() {
                     try {
                       const session = await api.sessions.create(story.id);
                       setLocation(`/read/${session.id}`);
-                    } catch {
-                      setStarting(false);
+                    } catch (err) {
+                      const message = err instanceof Error ? err.message : "";
+                      if (message.toLowerCase().includes("premium")) {
+                        setLocation("/premium");
+                      } else {
+                        setStarting(false);
+                      }
                     }
                   }}
                   style={{
@@ -339,7 +353,8 @@ export default function StoryDetailPage() {
           )}
         </div>
 
-        {!isPremium && (
+        {/* Free trial info for non-premium users with trials remaining */}
+        {hasFreeTrial && !existingSession && (
           <div
             style={{
               padding: "14px 16px",
@@ -353,12 +368,32 @@ export default function StoryDetailPage() {
               lineHeight: 1.6,
             }}
           >
-            Premium membership gives you unlimited access to all stories. Choose
-            a plan starting at ₹89.
+            Starting this story will use 1 of your {freeTrialsRemaining} free trial{freeTrialsRemaining === 1 ? "" : "s"}. Premium membership gives you unlimited access to all stories.
           </div>
         )}
 
-        {isPremium && existingSession && (
+        {/* Paywall notice for exhausted trials */}
+        {!canRead && (
+          <div
+            style={{
+              padding: "14px 16px",
+              background: "rgba(0,229,200,0.06)",
+              border: "1px solid rgba(0,229,200,0.2)",
+              borderRadius: "8px",
+              marginBottom: "28px",
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontSize: "14px",
+              color: "rgba(255,255,255,0.7)",
+              lineHeight: 1.6,
+            }}
+          >
+            {trialsExhausted
+              ? "You've used your 2 free trials. Upgrade to premium for unlimited access to all stories — starting at ₹89."
+              : "Premium membership gives you unlimited access to all stories. Choose a plan starting at ₹89."}
+          </div>
+        )}
+
+        {(isPremium || (hasFreeTrial && existingSession)) && existingSession && (
           <div
             style={{
               padding: "14px 16px",
