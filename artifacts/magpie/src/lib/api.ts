@@ -2,6 +2,15 @@ import { getAuthToken } from "./supabase";
 
 const BASE_URL = "/api";
 
+export class ApiError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 async function fetchApi<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = await getAuthToken();
   const headers: Record<string, string> = {
@@ -166,7 +175,7 @@ export const api = {
 
       if (!response.ok || !response.body) {
         const error = await response.json().catch(() => ({ message: "Request failed" }));
-        throw new Error(error.message || `Request failed with status ${response.status}`);
+        throw new ApiError(error.message || `Request failed with status ${response.status}`, response.status);
       }
 
       const reader = response.body.getReader();

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useLocation } from "wouter";
-import { api, type StorySession, type StoryNode, type Choice } from "@/lib/api";
+import { api, ApiError, type StorySession, type StoryNode, type Choice } from "@/lib/api";
 import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
 
@@ -77,30 +77,51 @@ export default function ReaderPage() {
     scrollEl?.addEventListener("scroll", handleScrollDuringGeneration, { passive: true });
 
     try {
-      const newNode = await api.sessions.continueStream(
-        sessionId,
-        choice.id,
-        choice.text,
-        (chunk) => setStreamingText((prev) => (prev ?? "") + chunk),
-        choice.consequenceType,
-      );
-      setStreamingText(null);
-      setPendingChoiceText(null);
-      setNodes((prev) => [...prev, newNode]);
-      setCurrentNode(newNode);
-      setChosenId(null);
-      if (!newNode.choices || newNode.choices.length === 0) {
-        setStoryComplete(true);
-      } else {
-        setChoicesForNodeId(newNode.id);
-        setShowChoices(true);
+      const RETRY_DELAYS = [3000, 6000, 9000];
+      let lastError: unknown = null;
+
+      for (let attempt = 0; attempt <= RETRY_DELAYS.length; attempt++) {
+        try {
+          if (attempt > 0) {
+            setStreamingText("");
+          }
+          const newNode = await api.sessions.continueStream(
+            sessionId,
+            choice.id,
+            choice.text,
+            (chunk) => setStreamingText((prev) => (prev ?? "") + chunk),
+            choice.consequenceType,
+          );
+          setStreamingText(null);
+          setPendingChoiceText(null);
+          setNodes((prev) => [...prev, newNode]);
+          setCurrentNode(newNode);
+          setChosenId(null);
+          if (!newNode.choices || newNode.choices.length === 0) {
+            setStoryComplete(true);
+          } else {
+            setChoicesForNodeId(newNode.id);
+            setShowChoices(true);
+          }
+          if (!userScrolledDuringGeneration.current) {
+            requestAnimationFrame(() => {
+              const el = mobileScrollRef.current || desktopScrollRef.current;
+              if (el) el.scrollTop = el.scrollHeight;
+            });
+          }
+          return;
+        } catch (err) {
+          const isServerError = err instanceof ApiError && err.status >= 500;
+          if (!isServerError || attempt >= RETRY_DELAYS.length) {
+            throw err;
+          }
+          lastError = err;
+          setStreamingText(null);
+          await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS[attempt]));
+        }
       }
-      if (!userScrolledDuringGeneration.current) {
-        requestAnimationFrame(() => {
-          const el = mobileScrollRef.current || desktopScrollRef.current;
-          if (el) el.scrollTop = el.scrollHeight;
-        });
-      }
+
+      throw lastError;
     } catch (err) {
       setStreamingText(null);
       const msg =
@@ -117,7 +138,12 @@ export default function ReaderPage() {
         setLocation("/login?reason=session_expired");
         return;
       }
-      setGenerationError(msg);
+      const isServerError = err instanceof ApiError && err.status >= 500;
+      setGenerationError(
+        isServerError
+          ? "The story continuation is facing difficulties right now. Please try again later."
+          : msg,
+      );
       setChosenId(null);
       setPendingChoiceText(null);
       if (currentNode) setChoicesForNodeId(currentNode.id);
