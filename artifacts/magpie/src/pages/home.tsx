@@ -207,23 +207,6 @@ function ContinueCard({
         >
           {session.story.title}
         </div>
-        <div
-          style={{
-            height: "3px",
-            background: "rgba(255,255,255,0.1)",
-            borderRadius: "2px",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              height: "100%",
-              width: `${pct}%`,
-              background: "linear-gradient(to right, #00b8a0, #00e5c8)",
-              borderRadius: "2px",
-            }}
-          />
-        </div>
       </div>
     </div>
   );
