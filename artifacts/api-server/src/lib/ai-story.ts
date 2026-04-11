@@ -122,21 +122,6 @@ function resolveStory(storyIdOrTitle: string) {
   return getStoryById(slug) || null;
 }
 // ─────────────────────────────────────────────
-// Context Truncation Helper
-// Limits raw scene text passed as "previous context" so it
-// cannot overwhelm the structured story-memory summaries.
-// The summaries are ground truth; the raw text is just
-// tonal/atmospheric reference for the previous beat.
-// ─────────────────────────────────────────────
-function truncateContext(context: string, maxWords: number = 450): string {
-  const words = context.split(/\s+/);
-  if (words.length <= maxWords) return context;
-  return (
-    words.slice(0, maxWords).join(" ") +
-    "\n\n[Scene truncated — the complete sequence of events is recorded in the STORY HISTORY above.]"
-  );
-}
-// ─────────────────────────────────────────────
 // Universal Prose Rules (injected for ALL genres)
 // ─────────────────────────────────────────────
 const UNIVERSAL_PROSE_RULES = `
@@ -527,8 +512,6 @@ function buildUserMessage(
   const healthScore = storyState?.storyHealthScore ?? 0;
   const storyMemoryBlock = buildStoryMemoryBlock(storyState);
 
-  const trimmedContext = truncateContext(previousContext, 450);
-
   const stateBlock = `## STORY STATE
 Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far: ${totalWordCount} | Choices made: ${choiceCount}/${targetEndingChoices} (hard cap: 40)`;
 
@@ -556,8 +539,8 @@ The story has ${choiceCount} choices out of a maximum of ${targetEndingChoices}.
 
   return `${stateBlock}
 
-${storyMemoryBlock}## PREVIOUS SCENE (tonal reference — Story History above is the authoritative record):
-${trimmedContext}
+${storyMemoryBlock}## PREVIOUS SCENE (full text — authoritative record is in STORY HISTORY above):
+${previousContext}
 
 ## THE READER CHOSE: "${choiceMade}"
 ${continuityCheck}${forcingInstruction}
