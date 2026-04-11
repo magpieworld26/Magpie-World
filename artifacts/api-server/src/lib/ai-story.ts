@@ -39,11 +39,13 @@ const storyResponseSchema = {
   properties: {
     narrativeText: {
       type: Type.STRING,
-      description: "Scene prose (1 word to 1500 words, second-person present tense, length chosen by AI based on narrative need)"
+      description:
+        "Scene prose (1 word to 1500 words, second-person present tense, length chosen by AI based on narrative need)",
     },
     sceneSummary: {
       type: Type.STRING,
-      description: "A PRECISE FACTUAL RECORD of this scene for story memory. Structure as numbered points covering ALL of: (1) What the player chose and its immediate consequence; (2) Specific new information revealed — names, facts, locations, objects; (3) How each named character acted and reacted, and their current relationship status with the protagonist; (4) Any objects, resources, or clues that became important; (5) Unresolved threads or questions raised. Be SPECIFIC — vague summaries cause continuity failures. Characters who appeared MUST be named. Write in past tense, factual prose."
+      description:
+        "A PRECISE FACTUAL RECORD of this scene for story memory. Structure as numbered points covering ALL of: (1) What the player chose and its immediate consequence; (2) Specific new information revealed — names, facts, locations, objects; (3) How each named character acted and reacted, and their current relationship status with the protagonist; (4) Any objects, resources, or clues that became important; (5) Unresolved threads or questions raised. Be SPECIFIC — vague summaries cause continuity failures. Characters who appeared MUST be named. Write in past tense, factual prose.",
     },
     choices: {
       type: Type.ARRAY,
@@ -51,12 +53,22 @@ const storyResponseSchema = {
         type: Type.OBJECT,
         properties: {
           id: { type: Type.STRING },
-          text: { type: Type.STRING, description: "Concrete action in present tense" },
-          consequence: { type: Type.STRING, description: "1-3 word thematic label" },
-          subtext: { type: Type.STRING, description: "One sentence: what this path offers or risks" },
+          text: {
+            type: Type.STRING,
+            description: "Concrete action in present tense",
+          },
+          consequence: {
+            type: Type.STRING,
+            description: "1-3 word thematic label",
+          },
+          subtext: {
+            type: Type.STRING,
+            description: "One sentence: what this path offers or risks",
+          },
           consequenceType: {
             type: Type.STRING,
-            description: "The likely consequence type of this choice: 'good', 'neutral', 'bad', or 'catastrophic'",
+            description:
+              "The likely consequence type of this choice: 'good', 'neutral', 'bad', or 'catastrophic'",
           },
         },
         required: ["id", "text", "consequence", "subtext", "consequenceType"],
@@ -85,7 +97,13 @@ const storyResponseSchema = {
       },
     },
   },
-  required: ["narrativeText", "sceneSummary", "choices", "isEnding", "storyStateUpdate"],
+  required: [
+    "narrativeText",
+    "sceneSummary",
+    "choices",
+    "isEnding",
+    "storyStateUpdate",
+  ],
 };
 // ─────────────────────────────────────────────
 // Utilities
@@ -364,13 +382,45 @@ Internal monologue is how the protagonist processes wonder — use it freely.
 // ─────────────────────────────────────────────
 function normaliseGenre(genre: string): string {
   const g = genre.toLowerCase().trim();
-  if (g.includes("fantasy") || g.includes("epic") || g.includes("magic")) return "fantasy";
-  if (g.includes("sci") || g.includes("scifi") || g.includes("science fiction") || g.includes("space")) return "scifi";
-  if (g.includes("mystery") || g.includes("thriller") || g.includes("detective") || g.includes("crime") || g.includes("noir")) return "mystery";
-  if (g.includes("horror") || g.includes("gothic") || g.includes("supernatural")) return "horror";
-  if (g.includes("romance") || g.includes("drama") || g.includes("emotional")) return "romance";
-  if (g.includes("comedy") || g.includes("absurd") || g.includes("humour") || g.includes("humor") || g.includes("satire")) return "comedy";
-  if (g.includes("literary") || g.includes("slice") || g.includes("contemporary")) return "literary";
+  if (g.includes("fantasy") || g.includes("epic") || g.includes("magic"))
+    return "fantasy";
+  if (
+    g.includes("sci") ||
+    g.includes("scifi") ||
+    g.includes("science fiction") ||
+    g.includes("space")
+  )
+    return "scifi";
+  if (
+    g.includes("mystery") ||
+    g.includes("thriller") ||
+    g.includes("detective") ||
+    g.includes("crime") ||
+    g.includes("noir")
+  )
+    return "mystery";
+  if (
+    g.includes("horror") ||
+    g.includes("gothic") ||
+    g.includes("supernatural")
+  )
+    return "horror";
+  if (g.includes("romance") || g.includes("drama") || g.includes("emotional"))
+    return "romance";
+  if (
+    g.includes("comedy") ||
+    g.includes("absurd") ||
+    g.includes("humour") ||
+    g.includes("humor") ||
+    g.includes("satire")
+  )
+    return "comedy";
+  if (
+    g.includes("literary") ||
+    g.includes("slice") ||
+    g.includes("contemporary")
+  )
+    return "literary";
   if (g.includes("adventure") || g.includes("exploration")) return "adventure";
   return "literary";
 }
@@ -393,7 +443,7 @@ function buildSystemInstruction(
   storyTitle: string,
   storyGenre: string,
   worldContext?: string,
-  storyArc?: string
+  storyArc?: string,
 ): string {
   const worldContextBlock = worldContext
     ? `\n## STORY BIBLE (Immutable Canon)\n${worldContext}\n`
@@ -428,9 +478,7 @@ function buildStoryMemoryBlock(storyState: StoryState | null): string {
 
   // Keep ALL summaries — never compress or truncate.
   // Each summary is ground truth; dropping any risks continuity failures.
-  const memoryLines = summaries.map(
-    (s, i) => `[Turn ${i + 1}]: ${s}`
-  );
+  const memoryLines = summaries.map((s, i) => `[Turn ${i + 1}]: ${s}`);
 
   const choiceHistory = (storyState.choicesMade ?? [])
     .map((c) => `Turn ${c.turn}: "${c.label}"`)
@@ -459,7 +507,7 @@ function buildUserMessage(
   nodeIndex: number,
   storyState: StoryState | null,
   totalWordCount: number,
-  forceEnding: boolean
+  forceEnding: boolean,
 ): string {
   const healthScore = storyState?.storyHealthScore ?? 0;
   const storyMemoryBlock = buildStoryMemoryBlock(storyState);
@@ -477,14 +525,15 @@ Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far
 This story has exceeded ${totalWordCount} words. You MUST set isEnding: true and write a concluding scene. Do not present new choices.`
     : "";
 
-  const continuityCheck = storyState && storyState.turn > 0
-    ? `\n## BEFORE YOU WRITE — CONTINUITY CHECKLIST
+  const continuityCheck =
+    storyState && storyState.turn > 0
+      ? `\n## BEFORE YOU WRITE — CONTINUITY CHECKLIST
 ✓ Every character named in the Story History above must behave consistently with their established state.
 ✓ Any information the protagonist has learned is still known to them.
 ✓ Physical conditions (injuries, resources, location) carry forward from prior turns.
 ✓ Planted threads from the Story History should be acknowledged or advanced, not ignored.
 ✓ The scene must feel like a continuation of a single coherent story, not a fresh start.\n`
-    : "";
+      : "";
 
   return `${stateBlock}
 
@@ -498,7 +547,10 @@ Write scene ${nodeIndex + 1} now. Begin directly with the consequence of the cho
 // ─────────────────────────────────────────────
 // Exponential Backoff Retry Wrapper
 // ─────────────────────────────────────────────
-async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+async function executeWithRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries = 3,
+): Promise<T> {
   let attempt = 0;
   while (attempt < maxRetries) {
     try {
@@ -508,7 +560,10 @@ async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promis
       if (error.status === 429 || error.status >= 500) {
         if (attempt >= maxRetries) throw error;
         const delay = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
-        logger.warn({ attempt, delay }, "API Rate limited or Server Error. Retrying...");
+        logger.warn(
+          { attempt, delay },
+          "API Rate limited or Server Error. Retrying...",
+        );
         await new Promise((res) => setTimeout(res, delay));
       } else {
         throw error;
@@ -522,11 +577,16 @@ async function executeWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promis
 // ─────────────────────────────────────────────
 export function healthScoreDelta(consequenceType: string | undefined): number {
   switch (consequenceType) {
-    case "good": return 2;
-    case "neutral": return 0;
-    case "bad": return -2;
-    case "catastrophic": return -5;
-    default: return 0;
+    case "good":
+      return 2;
+    case "neutral":
+      return 0;
+    case "bad":
+      return -2;
+    case "catastrophic":
+      return -5;
+    default:
+      return 0;
   }
 }
 // ─────────────────────────────────────────────
@@ -537,7 +597,7 @@ function buildGeneratedSegment(
   choiceMade: string,
   nodeIndex: number,
   currentStoryState: StoryState | null,
-  chosenConsequenceType?: string
+  chosenConsequenceType?: string,
 ): GeneratedSegment {
   const turnNumber = nodeIndex + 1;
   const prevScore = currentStoryState?.storyHealthScore ?? 0;
@@ -545,7 +605,8 @@ function buildGeneratedSegment(
 
   // Append the AI-generated scene summary to our rolling narrative memory.
   // This is the mechanism that prevents context loss across long stories.
-  const newSummary = parsed.sceneSummary ?? `Turn ${turnNumber}: Player chose "${choiceMade}".`;
+  const newSummary =
+    parsed.sceneSummary ?? `Turn ${turnNumber}: Player chose "${choiceMade}".`;
   const updatedNarrativeSummary = [
     ...(currentStoryState?.narrativeSummary ?? []),
     newSummary,
@@ -559,7 +620,9 @@ function buildGeneratedSegment(
       {
         turn: turnNumber,
         label: choiceMade,
-        consequenceNote: parsed.storyStateUpdate?.worldStateChanges?.[0] ?? "Consequence noted",
+        consequenceNote:
+          parsed.storyStateUpdate?.worldStateChanges?.[0] ??
+          "Consequence noted",
       },
     ],
     relationshipStates: {
@@ -614,7 +677,7 @@ export async function generateStorySegment(
     storyTitle,
     storyGenre,
     story?.worldContext,
-    story?.storyArc
+    story?.storyArc,
   );
   const userMessage = buildUserMessage(
     previousContext,
@@ -622,7 +685,7 @@ export async function generateStorySegment(
     nodeIndex,
     currentStoryState,
     totalWordCount,
-    forceEnding
+    forceEnding,
   );
 
   try {
@@ -649,11 +712,17 @@ export async function generateStorySegment(
         promptTokens: response.usageMetadata?.promptTokenCount,
         outputTokens: response.usageMetadata?.candidatesTokenCount,
       },
-      "Gemini generation successful"
+      "Gemini generation successful",
     );
 
     const parsed = JSON.parse(response.text);
-    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, currentStoryState, chosenConsequenceType);
+    return buildGeneratedSegment(
+      parsed,
+      choiceMade,
+      nodeIndex,
+      currentStoryState,
+      chosenConsequenceType,
+    );
   } catch (err) {
     logger.error({ err }, "Fatal error generating story segment");
     throw err;
@@ -688,7 +757,7 @@ export async function generateStorySegmentStream(
     storyTitle,
     storyGenre,
     story?.worldContext,
-    story?.storyArc
+    story?.storyArc,
   );
   const userMessage = buildUserMessage(
     previousContext,
@@ -696,7 +765,7 @@ export async function generateStorySegmentStream(
     nodeIndex,
     currentStoryState,
     totalWordCount,
-    forceEnding
+    forceEnding,
   );
 
   try {
@@ -739,10 +808,16 @@ export async function generateStorySegmentStream(
         if (pendingBackslash) {
           pendingBackslash = false;
           const esc = chars[i];
-          if (esc === 'n') { out += '\n'; i++; }
-          else if (esc === 't') { out += '\t'; i++; }
-          else if (esc === 'r') { out += '\r'; i++; }
-          else if (esc === 'u') {
+          if (esc === "n") {
+            out += "\n";
+            i++;
+          } else if (esc === "t") {
+            out += "\t";
+            i++;
+          } else if (esc === "r") {
+            out += "\r";
+            i++;
+          } else if (esc === "u") {
             i++;
             const remaining = chars.slice(i, i + 4);
             if (remaining.length === 4) {
@@ -752,17 +827,25 @@ export async function generateStorySegmentStream(
               unicodePending = remaining;
               i += remaining.length;
             }
+          } else {
+            out += esc;
+            i++;
           }
-          else { out += esc; i++; }
           continue;
         }
-        if (chars[i] === '\\') {
+        if (chars[i] === "\\") {
           if (i + 1 < chars.length) {
             const esc = chars[i + 1];
-            if (esc === 'n') { out += '\n'; i += 2; }
-            else if (esc === 't') { out += '\t'; i += 2; }
-            else if (esc === 'r') { out += '\r'; i += 2; }
-            else if (esc === 'u') {
+            if (esc === "n") {
+              out += "\n";
+              i += 2;
+            } else if (esc === "t") {
+              out += "\t";
+              i += 2;
+            } else if (esc === "r") {
+              out += "\r";
+              i += 2;
+            } else if (esc === "u") {
               i += 2;
               const remaining = chars.slice(i, i + 4);
               if (remaining.length === 4) {
@@ -772,8 +855,10 @@ export async function generateStorySegmentStream(
                 unicodePending = remaining;
                 i += remaining.length;
               }
+            } else {
+              out += esc;
+              i += 2;
             }
-            else { out += esc; i += 2; }
           } else {
             pendingBackslash = true;
             i++;
@@ -800,7 +885,9 @@ export async function generateStorySegmentStream(
         const match = NARRATIVE_PREFIX_RE.exec(prefixBuf);
         if (match) {
           narrativeStarted = true;
-          const afterOpeningQuote = prefixBuf.slice(match.index + match[0].length);
+          const afterOpeningQuote = prefixBuf.slice(
+            match.index + match[0].length,
+          );
           if (afterOpeningQuote.length > 0) {
             narrativeEnded = processNarrativeChars(afterOpeningQuote);
           }
@@ -814,11 +901,17 @@ export async function generateStorySegmentStream(
 
     logger.info(
       { storyId: storyIdOrTitle, turn: nodeIndex + 1 },
-      "Gemini streaming generation successful"
+      "Gemini streaming generation successful",
     );
 
     const parsed = JSON.parse(accumulated);
-    return buildGeneratedSegment(parsed, choiceMade, nodeIndex, currentStoryState, chosenConsequenceType);
+    return buildGeneratedSegment(
+      parsed,
+      choiceMade,
+      nodeIndex,
+      currentStoryState,
+      chosenConsequenceType,
+    );
   } catch (err) {
     logger.error({ err }, "Fatal error streaming story segment");
     throw err;
@@ -828,5 +921,7 @@ export async function generateStorySegmentStream(
 // Cleanup (kept to prevent breaking imports)
 // ─────────────────────────────────────────────
 export async function deleteStoryCaches(_storyKeys?: string[]): Promise<void> {
-  logger.info("Explicit caching removed; implicit caching active. No manual cleanup needed.");
+  logger.info(
+    "Explicit caching removed; implicit caching active. No manual cleanup needed.",
+  );
 }

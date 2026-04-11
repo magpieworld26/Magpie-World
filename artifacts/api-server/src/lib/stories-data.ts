@@ -16,6 +16,7 @@ export interface StoryData {
   worldContext: string;
   storyMode: string;
   audienceAge: string;
+  storyArc: string;
 }
 
 export const storiesData: StoryData[] = [
@@ -40,18 +41,9 @@ export const storiesData: StoryData[] = [
     storyMode: "Comedy (primary), Fantasy (genre wrapper)",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The kingdom of Valdenmere domesticated dragons four hundred years ago. It was not a graceful process. Dragons turned out to be less like noble war-beasts and more like enormous, fire-breathing house cats — vain, moody, and completely convinced the world revolves around them. They are used for postal delivery, forge-heating, aerial transport, and ceremonial occasions, but only when they feel like it. The Royal Roost, perched on the cliffs above the capital city, is where the Crown's dragons are housed, fed, groomed, and endlessly appeased. Working at the Roost is considered a prestigious posting. In practice, it means shovelling ash, dodging tantrums, and learning to apologise to a creature that weighs six tonnes and holds grudges. The kingdom is at peace. There is no dark lord, no ancient prophecy, no war on the horizon. The biggest crisis in Valdenmere right now is that the Midsummer Festival is twelve days away, and the Crown needs all six Royal Dragons flight-ready for the opening ceremony. None of them are cooperating. The air at the Roost always smells like charcoal and warm copper, and there is never a quiet moment.
-
-CHARACTERS
-You — A second-year junior keeper at the Royal Roost. You're the youngest on staff, still learning the ropes, and responsible for the two lowest-ranked dragons. You're not terrible at the job. You're not great either. Mostly, you survive.
-
-Gresha — Ally / Senior Keeper. A stocky woman in her thirties with broad shoulders, a permanent sunburn across her nose, and thick auburn hair shaved close on the sides and braided into a single rope down her back. Exhausted, competent, and darkly funny. She cares deeply about the dragons and shows it by barking orders and quietly fixing things behind the scenes. Your direct supervisor and reluctant mentor.
-
-Belvane — Chaos Agent / The Dragon. A mid-sized Copperwing dragon — twelve feet at the shoulder, scales the colour of tarnished pennies, with enormous amber eyes that always look slightly offended. He is the single most dramatic creature in the kingdom. Beneath all of it, genuinely sweet — he purrs when scratched behind his jaw ridge. He wants to be the lead dragon in the Festival's opening flight. He fears being ordinary.
-
-Torben — Wildcard / Rival Keeper. A lanky boy your age with deep brown skin, close-cropped black hair, and an infuriatingly easy smile. Effortlessly competent in a way that makes you want to scream. Friendly, easygoing, and genuinely nice, which makes it impossible to properly resent him.
-
-TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd beat. The comedy comes from specificity — Belvane's exact dramatic behaviour, Gresha's exhausted understatement, the bureaucracy of dragon management. Let moments of genuine emotional warmth land without deflating them.`,
+The kingdom of Valdenmere domesticated dragons four hundred years ago. It was not a graceful process. Dragons turned out to be less like noble war-beasts and more like enormous, fire-breathing house cats...`,
+    storyArc:
+      "The first 3-5 choices should focus on the immediate fallout of the protagonist's chosen approach to Belvane. If they enter the stall, they must navigate dodging a physical tantrum (smoke, tail swipes) without hurting him. If they seek help or argue with the committee, they must navigate bureaucratic pushback or Torben's well-meaning but flawed interference. The arc should culminate in finally getting Belvane to reveal his face and communicate his specific grievance, requiring the player to procure a ridiculous comfort item or make an absurd promise to get him out of the stall.",
   },
   {
     id: "no-signal",
@@ -60,7 +52,7 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
     description:
       "A documentary crew's bush plane goes down in 40,000 square miles of uncharted rainforest. Three days in, eleven survivors, dwindling supplies — and you're the one they keep looking to.",
     longDescription:
-      "Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin — a 40,000-square-mile stretch of unbroken tropical rainforest that has never been fully mapped. The pilot is dead. The coordinator is unconscious. GPS is gone, satellite phones may be broken, and the jungle is completely indifferent to whether anyone survives. You were hired three weeks ago to handle logistics. Now you're the one people keep looking at when decisions need to be made. Every choice has a cost. Every hour burns food and morale. And somewhere out there, the world doesn't know you're alive.",
+      "Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin...",
     coverGradient:
       "linear-gradient(145deg, #0d2e14 0%, #1a4a20 40%, #0a2010 75%, #061508 100%)",
     coverImage: "/covers/no-signal.png",
@@ -74,32 +66,9 @@ TONE GUIDANCE: Comedy with heart. Every scene should have at least one absurd be
     storyMode: "Survival Thriller — high tension, real stakes, no easy answers",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin — a 40,000-square-mile stretch of unbroken tropical rainforest in Southeast Asia that has never been fully mapped. The Basin sits between two mountain ranges, sealed off by river gorges to the north and monsoon-swollen floodplains to the south. No roads go in. No roads come out. The canopy is so thick that GPS signal dies fifty feet below the treetops, and satellite phones work only in rare clearings — if the antenna survived the crash. The crew was filming a documentary on vanishing indigenous plant species. They were supposed to land at a research outpost on the Basin's eastern edge. They never arrived. The pilot's last radio transmission was garbled — something about crosswinds and engine trouble — and then nothing. Now it's day three. The wreckage is scattered across a hillside. The supplies are limited. The jungle is hot, wet, loud, and completely indifferent to whether anyone survives. Rain falls every afternoon like clockwork — hard, warm, blinding. The insects never stop. The river at the base of the hill might lead somewhere, or it might lead deeper in. Nobody knows, because nobody has a working map. The air smells like rot and flowers at the same time. Everything here is alive. That is not comforting.
-
-CHARACTERS
-You — The Protagonist. The crew's assistant coordinator. Hired three weeks ago to handle logistics — schedules, permits, gear manifests. The youngest person on this trip and the least experienced in the field. But you're the one who memorised the flight route, packed the emergency kit, and with the actual coordinator unconscious and the pilot dead, you're the one people keep looking at when decisions need to be made.
-
-Maren Solvik — De facto leader / Expedition Director. A tall, angular Norwegian woman in her late forties with sun-weathered skin, steel-grey hair cropped short, and pale blue eyes that never seem to blink at the right speed. Controlled to the point of coldness. Ran polar expeditions for fifteen years before switching to documentary work. She approaches every problem like a logistics equation. Doesn't panic. Doesn't comfort. Respects competence above all else and has zero patience for complaints. Speaks in short, declarative sentences with long pauses between them. She hired you and barely spoke to you before the crash. Now she watches you closely, deciding whether you're an asset or a liability.
-
-Deshi Kapoor — Medic / Botanist. A compact Indian man in his mid-thirties, careful and methodical. A trained field medic and PhD botanist. Holds the medical supplies — only seven antibiotic doses left. Under stress, he hums tunelessly while working. Explains things by thinking out loud: "The swelling's gone down, which is good — but the colour's wrong, see that?" Warm but worried. He taught you basic first aid on day one and trusts you to assist him. He's the only person who has asked you how you're doing.
-
-Callista "Cal" Brennes — Survival specialist / Camerawoman. A broad-shouldered woman in her late twenties with close-shaved hair and forearms corded with muscle. She wears a utility belt even to sleep. Blunt, physical, and fearless in a way that occasionally crosses into reckless. She trusts her body more than her words. Respects that you kept your head during the crash. Doesn't respect your lack of field experience. She's testing you — pushing back on your ideas to see if you fold or hold. Short, punchy speech. When she approves, she just says "Good" once, like a full stop.
-
-Joaquim "Quim" Ferreira — Engineer / Sound technician. A wiry Portuguese man in his early forties with a permanently furrowed brow and hands scarred from years of soldering. He limps — left ankle, injured in the crash. Quiet, methodical, obsessively practical. He built a water filter from plane wreckage on day one and hasn't stopped tinkering. Mumbles while working, narrating his own process. "No — that won't hold. Needs a brace." Wants to repair the satellite phone. Fears his ankle will slow the group if they need to move.
-
-Priya Chandrasekaran — Navigator / Research assistant. A young Sri Lankan woman barely older than you, with dark brown skin, black hair pulled into a messy bun held with a pencil. Anxious, brilliant, and relentlessly self-doubting. She has an eidetic memory for maps and terrain and studied the Mayantara Basin's topography for months. Starts sentences confidently then undermines herself: "The river bends east about two kilometres from here — I think. I'm pretty sure." When she's certain and lets herself be, her voice drops and steadies: "No. I know where we are." She latched onto you immediately. You've started checking her calculations — not because she's wrong, but because she needs someone to tell her she's right.
-
-Lena Voss — Investigative journalist. Sharp, sceptical, challenges every decision publicly. Usually right, which makes her very hard to deal with.
-
-Gabriel "Gabe" Santos — Camp cook / logistics. Keeps the group fed and sane. Has decided you're in charge and acts as a quiet buffer between you and panic. He silently hands you things — food, tools, information — at exactly the right moment.
-
-Marco — Intern cameraman, barely nineteen. Scared and trying not to show it. Films everything, red light always blinking. More observant than anyone gives him credit for.
-
-Suki — Climber / production assistant. Perches above camp, watching the canopy. She was the one who spotted the north ridge with open sky. Has a talent for finding paths where none seem to exist.
-
-Roland Achterberg — Camp organiser / Producer. A heavyset Dutch man in his fifties. Opinionated and surprisingly useful despite moving as little as possible. Sharp eyes, always listening.
-
-TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel like a real trade-off with real costs. The jungle is indifferent, not malevolent. Character relationships fracture and reform under pressure. Show competence earning trust, not speeches. No heroics — just difficult decisions made by ordinary people under extraordinary pressure.`,
+Three days ago, a chartered bush plane carrying a documentary film crew went down somewhere in the Mayantara Basin...`,
+    storyArc:
+      "The first 3-5 choices should test the physical and social consequences of the player's initial directive. If a team is sent for the radio, the player must manage a sudden mudslide or injury during the retrieval. If they move camp, they face a dangerous river crossing or an encounter with local wildlife. Interpersonally, the player must manage Lena's public skepticism and Maren's cold judgment. The arc culminates in a critical loss (e.g., ruined rations or a broken tool) that forces the player to make a harsh triage decision regarding the injured.",
   },
   {
     id: "the-driftlands",
@@ -108,7 +77,7 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
     description:
       "A junior cartographer makes their first solo landing on an uncharted floating island — and finds something no map has ever recorded.",
     longDescription:
-      "The Driftlands are a chain of floating islands scattered across an endless sky, each drifting on invisible currents that shift over days and weeks. New islands rise from the cloud layer every few months, carrying strange soil, unfamiliar plants, and sometimes ruins from civilisations lost to memory. Cartographers are the most respected people in this world — they chart what no one has seen before. Today is your first solo expedition. Island 7714 has just risen within glider range. Nobody has set foot on it yet. That'll be you. Your mentor's instructions are in your head. Your companion's enthusiasm is already pulling ahead of your careful training. And the island is humming beneath your feet in a way no island is supposed to.",
+      "The Driftlands are a chain of floating islands scattered across an endless sky, each drifting on invisible currents...",
     coverGradient:
       "linear-gradient(145deg, #1a3a5c 0%, #2a5a8c 40%, #1a4070 75%, #0d2040 100%)",
     coverImage: "/covers/the-driftlands.png",
@@ -123,16 +92,9 @@ TONE GUIDANCE: Sustained tension without melodrama. Every decision should feel l
       "Adventure / Fantasy — wonder, discovery, and the tension between caution and curiosity",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The Driftlands are a chain of floating islands scattered across an endless sky. Each island drifts on slow, invisible currents — some no bigger than a house, others wide enough to hold forests and rivers. The gaps between islands shift constantly, closing and opening over days or weeks. Bridges of woven cloudvine connect the closest ones, but the farther islands can only be reached by glider or by waiting for a rare alignment. People live in small communities called "perches," built along the edges of the larger islands where the wind is steady and the light is best. There is no great war, no looming darkness. Life here is about mapping, growing, and finding — because the Driftlands never stop changing. New islands rise from the cloud layer below every few months, carrying strange soil, unfamiliar plants, and sometimes ruins from civilisations that fell long before anyone can remember. Cartographers are the most respected people in the Driftlands. They chart the movements, name the new islands, and decide which ones are safe to settle. To be a cartographer is to be the first person to set foot on something no one has ever seen before. The air always smells faintly of rain and stone.
-
-CHARACTERS
-You — A newly certified junior cartographer on your very first solo expedition. You carry a leather satchel full of blank maps, a wind compass, and a charcoal pencil your mentor gave you. You've trained for three years, but this is the first time you'll step onto an uncharted island alone.
-
-Rook — Mentor / Ally. A tall, weather-beaten woman in her fifties with deep brown skin, silver-streaked locs pulled back with copper wire. Patient and dry-humoured. She treats problems like puzzles, not emergencies. Speaks in short, flat observations. Refers to islands as if they're alive. Her eyesight is beginning to fail — she's invested everything in training you.
-
-Fennick — Wildcard / Companion. A wiry boy about your age with pale freckled skin, a mess of copper-red hair, and sharp green eyes always looking at something slightly to the left of what everyone else sees. A naturalist obsessed with cataloguing every living thing he finds. Enthusiastic to the point of being oblivious to danger. Everything is interesting to Fennick. Everything.
-
-TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world is beautiful and strange, not dangerous for danger's sake. Tension comes from inexperience meeting the unknown. Let the discovery feel earned. Fennick provides levity; Rook's voice in your head provides wisdom and stakes.`,
+The Driftlands are a chain of floating islands scattered across an endless sky...`,
+    storyArc:
+      "The first 3-5 choices should balance methodical charting with Fennick's reckless discoveries. The player must navigate unusual environmental hazards (e.g., flora that reacts to touch, unstable crust edges). The arc should escalate when Fennick uncovers ruins or a mechanism beneath the moss that shouldn't exist on a 'new' island, forcing the player to choose between reporting it to Rook immediately (risking the island being quarantined) or keeping it secret to explore further while the weather holds.",
   },
   {
     id: "incident-at-table-nine",
@@ -141,7 +103,7 @@ TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world 
     description:
       "You've just spilled the most expensive dish in the restaurant's history into the lap of the Michelin inspector. The head chef knows. The night is not over.",
     longDescription:
-      "The Golden Bough is the most prestigious restaurant in the city — a Michelin-starred temple of gastronomy housed in a converted cathedral, where the tasting menu costs more than rent and the waiting list is four months long. Tonight is the most important night of the year. You've been here three months. And you've just deposited a deconstructed bouillabaisse with saffron foam and edible gold directly into the inspector's lap. Viktor Sable, head chef and emotional volcano, now knows. Margaux, front-of-house manager and unflappable crisis operator, has a plan. The inspector made a joke about aerial delivery. You have a window. Use it.",
+      "The Golden Bough is the most prestigious restaurant in the city...",
     coverGradient:
       "linear-gradient(145deg, #3d1a05 0%, #6b3008 40%, #c44a10 75%, #e8621a 100%)",
     coverImage: "/covers/incident-at-table-nine.png",
@@ -155,18 +117,9 @@ TONE GUIDANCE: A sense of genuine wonder should underpin every scene. The world 
     storyMode: "Comedy — escalating social disaster, wit under pressure",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The Golden Bough is the most prestigious restaurant in the city — a Michelin-starred temple of gastronomy housed in a converted cathedral, where the tasting menu costs more than rent and the waiting list is four months long. Tonight is the most important night of the year: the annual visit of the Alder Guide inspector, whose review can make or destroy a restaurant's reputation overnight. The head chef, Viktor Sable, has been preparing for six weeks. Every garnish has been rehearsed. Every plate has been timed. Nothing can go wrong. You are a server. You've been here three months. You are competent, professional, and you have just deposited a tray of deconstructed bouillabaisse with saffron foam and edible gold directly into the inspector's lap.
-
-CHARACTERS
-You — Server. Three months in, still on probation. Good at the job — calm, personable, a quick learner. Or you were, until approximately four seconds ago.
-
-Viktor Sable — Head Chef. A towering man with the build of a retired boxer, a shaved head, and a single gold earring. A culinary genius and an emotional volcano. He expresses all feelings — joy, rage, grief, pride — at maximum volume and often in French, despite being from Leeds. He has been known to weep openly at a perfectly caramelised onion. He knows about the bouillabaisse. He wants the Alder star more than he wants oxygen.
-
-Margaux Lim — Front of House Manager. A poised woman in her forties with sharp cheekbones, a sleek black bob, and the unflappable composure of a hostage negotiator. She communicates through micro-expressions: a raised eyebrow means fix it, a tilted chin means you're dead, a barely perceptible nod means adequate. She has a plan. She wants you to follow it.
-
-The Inspector — A thin, grey-haired man in a charcoal suit that was, until recently, immaculate. He made a joke about aerial delivery. He is processing. He has reviewed restaurants on four continents and has probably experienced worse.
-
-TONE GUIDANCE: Pure comedy — escalating disaster managed through competence and improvisation. Every beat should get louder before it gets quieter. Viktor is never actually menacing — he's passionate and enormous and accidentally funny. Margaux is the straight-man hero. The comedy comes from specificity and timing. Let moments of genuine grace land amid the chaos.`,
+The Golden Bough is the most prestigious restaurant in the city...`,
+    storyArc:
+      "The first 3-5 choices should trap the player between Viktor's escalating kitchen meltdowns and the Inspector's unpredictable dining needs. The player must successfully deliver a substitute dish while sabotaging another server's minor mistake to keep Viktor distracted. The arc culminates in a high-stakes, absurdly delicate tableside preparation (like flambéing a dessert) right in front of the Inspector, where the player must use improvisation to cover up a missing ingredient without breaking their professional facade.",
   },
   {
     id: "the-last-entry",
@@ -175,7 +128,7 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
     description:
       "Your missing friend's diary appeared in your locker this morning. The last entry stops mid-sentence. A car outside matches the plates she wrote down.",
     longDescription:
-      "Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case. This morning, her diary appeared in your locker — the one she was compulsively protective of, the one you've seen her write in on the bus, at lunch, in free periods. You've read four entries on the bus home. Most of it is normal Maya. But the entry from eight days ago mentions a car. A plate number. Three times that week. And then, two days later: 'Told one person. Wish I hadn't.' The last entry stops mid-sentence. The car outside your bus stop matches the plates. Your phone has half a battery. The window is closing.",
+      "Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case...",
     coverGradient:
       "linear-gradient(145deg, #0d1a2e 0%, #1a2a4a 40%, #0d1a35 75%, #060d1a 100%)",
     coverImage: "/covers/the-last-entry.png",
@@ -190,18 +143,9 @@ TONE GUIDANCE: Pure comedy — escalating disaster managed through competence an
       "Mystery / Thriller — quiet dread, close observation, mounting stakes",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-A small coastal town, present day, late autumn. The kind of place where everyone knows which cars belong on which streets and silence spreads faster than news. The harbour gates mark the edge of town — grey, low, functional — and the school sits two streets inland, running on the same rhythms it always has: register, break, lunch, home. Maya Chen has been missing for thirty-six hours. The police are treating it as a runaway case. She'd had a public argument with her parents the week before, which made it easy to believe. The school has continued almost normally — lockers slamming, phones out, the vice-principal in the corridors with that careful look he's worn since Tuesday. Information in this town moves quietly, through the right people, in the right order. Someone has decided you should be one of those people. This morning, Maya's diary appeared in your locker.
-
-CHARACTERS
-You — The Protagonist. Maya's closest friend. You know her handwriting the way you know her laugh — you can read her mood in the size of her letters. You share a code language you invented together in year seven. You are not a detective. You are a teenager with a green notebook and half a battery, trying to figure out who to trust.
-
-Maya Chen (absent — central) — Sharp-boned and quick-moving. Dark hair tucked behind one ear. Ink on her left hand, almost always. Compulsively honest, which got her into trouble. Kept things in code not because she was secretive, but because some thoughts felt too specific for open air. Never hedged. "That's not a coincidence. That's a pattern." / "If I'm wrong, fine. But I'm not wrong." Your oldest close friend. The kind where silences don't need filling.
-
-Mr. Osei — Wildcard / Trusted adult. Tall and broad-shouldered, with large, careful hands. Greying at the temples. Moves through the school like he's trying not to disturb anything. Quiet in the way that signals thought, not absence. When he speaks, people stop. He was the last teacher to see Maya. He hasn't volunteered that. You don't know it yet.
-
-Demi — Suspicious peer. Present at the party last Tuesday. Told police she saw nothing unusual. Runs in overlapping circles with Maya — not friends exactly, but adjacent. Her name appears in Maya's diary, more than once in the last month.
-
-TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't know yet. Information arrives in fragments — a partial entry, a plate number, a pause that goes on too long. Every scene should feel like you're reading a room. No jump scares. The mystery is a puzzle of human behaviour, not supernatural threat.`,
+A small coastal town, present day, late autumn...`,
+    storyArc:
+      "The first 3-5 choices should revolve around the immediate threat of the idling car. The player must safely navigate their way home or to a safe location without being followed, using town knowledge. Once safe, they must crack a localized cipher or puzzle within Maya's notebook, leading them to a physical dead drop location at the school or harbor. The arc culminates in a tense encounter with Demi, forcing the player to decide how much of the diary's contents to reveal to extract information from her.",
   },
   {
     id: "the-unread-letter",
@@ -210,7 +154,7 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
     description:
       "A junior messenger accidentally reads a sealed letter — and discovers their supposedly dead sister is alive, hidden in the very city they're standing in.",
     longDescription:
-      "The Kingdom of Aldenmere runs on letters. The Messenger Guild is the backbone of civilisation. Messengers are trained to be invisible: fast, discreet, incurious. Reading a sealed letter is the worst crime in the Guild — punishable by expulsion, or worse. You are thirteen days into your first solo route. The seal on the Governor's letter cracked in the rain, and your fingers had other ideas. Three paragraphs. Formal language. A name. Your sister — the one the Guild said died two years ago on a route gone wrong. Alive. In this city. Right now. Someone powerful wants her hidden. Master Corvin's office is ten minutes away. And you're sitting on a wall in the market with the letter in your hands and no good options.",
+      "The Kingdom of Aldenmere runs on letters. The Messenger Guild is the backbone of civilisation...",
     coverGradient:
       "linear-gradient(145deg, #2a1a0a 0%, #4a3015 40%, #6a4a20 75%, #3a2010 100%)",
     coverImage: "/covers/the-unread-letter.png",
@@ -225,18 +169,9 @@ TONE GUIDANCE: Quiet, close, controlled dread. The tension is in what you don't 
       "Historical Fantasy — intimate stakes, institutional pressure, family loyalty",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The Kingdom of Aldenmere runs on letters. Every noble house, every guild, every law court communicates by sealed courier — the Messenger Guild is the backbone of civilization. Messengers are trained to be invisible: fast, discreet, incurious. Reading a sealed letter is the worst crime in the Guild — punishable by expulsion, or worse. The protagonist is a junior messenger, thirteen days into their first solo route. The letter they've accidentally opened — its seal cracked by the rain — is addressed to the Lord Governor and contains a name: a person supposedly executed two years ago. That person is the protagonist's older sister.
-
-CHARACTERS
-You — Junior Messenger. Thirteen days into your first solo route. Lowest rank in the Guild hierarchy. Highly replaceable. Trained to be invisible and obedient. Now forced into curiosity, disobedience, and personal stake.
-
-Petra — Ally / Wildcard. Fellow junior messenger, one year senior. Ink-stained fingers from taking notes on everything. Speaks in rapid half-sentences, always finishing them with "you know?" whether or not you do. Wants to make Senior rank before she turns sixteen. Hiding: she's been skimming extra coins from delivery fees and is terrified of being found out. Knows the Guild better than you do. You're not sure whose side she's on.
-
-Master Corvin — Antagonist / Guild route supervisor. Wiry, with a neck scar he never explains. Speaks slowly, like each word costs him something. Wants obedience above all else. Hiding: he knows about the letter already.
-
-Your Sister (Sera) — Absent but central. Supposedly dead, killed on a route two years ago. The Guild gave no details. Your mother doesn't say her name anymore. Alive, in this city, right now — and someone with power wants her to stay hidden.
-
-TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and hierarchical, but the stakes are entirely personal. Every scene should carry the weight of the choice: follow the rules and survive, or follow family and risk everything. The Guild is a real institution with real power. Master Corvin is dangerous because he's correct about the rules. Let the tension come from the gap between what's legal and what's right.`,
+The Kingdom of Aldenmere runs on letters...`,
+    storyArc:
+      "The first 3-5 choices should focus on the immediate cover-up and the initial investigation. The player must manage their interaction with Master Corvin, employing deception or partial truths to avoid raising suspicion. Next, they must navigate the city's underbelly to track down the address or contact mentioned in the letter, relying on Petra's street smarts or their own stealth. The arc culminates in reaching the safehouse, only to find it recently abandoned, with a clue left behind that proves Guild Enforcers are already hunting Sera.",
   },
   {
     id: "the-show-must-go-on",
@@ -245,7 +180,7 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
     description:
       "Two hours before curtain, your school play's lead has vanished. His bag is here. His costume is here. Rafe knows something. Ms. Harlow found something. You have thirty-two minutes.",
     longDescription:
-      "Hartwell Secondary School takes its drama programme seriously — opening night gets a half-page in the local paper, parents book seats three weeks out, and Mr. Voss has run the same Shakespeare rotation for eleven years. Tonight is Much Ado About Nothing. Except tonight, two hours before curtain, Declan Marsh — the boy who is always where he's supposed to be — has vanished. His bag is in the changing room. His costume hangs on its hook, pressed and ready. He signed in at 4:31 p.m. By 5:17, he was gone. The school is locked. No one saw him leave. Backstage, Priya the stage manager wants an answer. Rafe is scared and close to breaking. Ms. Harlow found something in Declan's bag and hasn't told anyone yet. The ghost light is still on. And somewhere in this building, something is wrong.",
+      "Hartwell Secondary School takes its drama programme seriously...",
     coverGradient:
       "linear-gradient(145deg, #1a0a2e 0%, #2e1a4a 40%, #1a0a35 75%, #0d0620 100%)",
     coverImage: "/covers/the-show-must-go-on.png",
@@ -260,19 +195,9 @@ TONE GUIDANCE: Intimate historical fantasy — the world is pre-industrial and h
       "Mystery / Drama — quiet dread, ticking clock, layered loyalties",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously
-Hartwell Secondary School sits in the kind of mid-sized town that takes its drama programme seriously — the kind where opening night gets a half-page in the local paper, where parents book seats three weeks out, and where the drama teacher, Mr. Voss, has produced the same Shakespeare rotation for eleven years without apology. This year it's Much Ado About Nothing. Lighthearted. Safe. Funny. Except tonight, two hours before curtain, the lead — Declan Marsh, the boy who has played every major role since Year 9, the boy who is always where he's supposed to be — is not in the building. His phone rings out. His bag is in the changing room. His costume is hanging on its hook, pressed and ready. He vanished sometime between 4:30 p.m., when he signed in at the stage door, and 5:15 p.m., when the cast gathered for warm-up. The school is locked after hours. The exits are monitored. No one saw him leave. Backstage, forty minutes from curtain, the cast is unravelling. Parents are filing into the auditorium. Mr. Voss is on the phone with the deputy principal. And you — who have memorised every line, every cue, every cross — are standing in the wings, holding Declan's script, feeling the weight of the stage lights warming the air just beyond the curtain. Something is wrong. Not just missing-a-cast-member wrong. Something you can't name yet — a feeling like a room where the furniture has been moved one inch to the left.
-
-CHARACTERS
-You — The Understudy. You've been Declan's shadow for the entire run. Every rehearsal, every note, every blocking change — you absorbed it all because that's what understudies do. You're not bitter about the role. Mostly. You know this play better than anyone in the building right now, and that fact sits in your chest like a stone you're not sure whether to swallow or throw.
-
-Priya Anand — Stage Manager / Reluctant ally. Compact and sharp-featured, Priya moves through backstage chaos the way a blade moves through water — no wasted motion. She keeps her hair pinned so tightly it looks like a structural decision. She has a headset perpetually around one ear and a clipboard that has never, in living memory, been set down. A systems thinker — she doesn't panic because panic is inefficient. Under the control is a person who notices everything and trusts almost no one. She was the only other person who noticed Declan had been off for the past two weeks — quieter, distracted, jumping at sounds — and she said nothing, and that is gnawing at her. "I'm not asking if you're ready. I'm asking if you're going on. Those are different questions." / "Declan signed in at 4:31. He's not here at 5:17. That's 46 minutes. What changed in 46 minutes?"
-
-Rafe Okonkwo — Declan's Best Friend / Wildcard. Tall in the way that seems accidental, like he grew and then forgot to stop. He has kind eyes and an extremely unreliable face — it shows too much, too fast. Right now it's showing something that looks like fear dressed up as confusion. Loyal to a fault and not a natural liar, which makes him a terrible person to have a secret with. He talks to fill silence, deflects with charm, and laughs a half-second too late when something catches him off guard. He's been checking his phone every thirty seconds since Declan was reported missing, and he hasn't looked at the screen once. He knows something. "He's fine, probably. You know Dec — he does this thing where he — anyway, he'll be here. He's always here. Right?" / "I don't — look, I just think we should maybe not, like — can we just do the show first and then—"
-
-Ms. Harlow — Assistant Drama Teacher / Unlikely informant. Mid-thirties, perpetually tired in the way of someone who chose a job they love and is surprised it doesn't love them back equally. She has paint on her left hand she hasn't noticed and a habit of chewing the end of her pen when she's working something out. Warm, candid, and constitutionally unable to pretend things are fine when they aren't. She is the only adult backstage who looks genuinely worried rather than professionally worried. She was Declan's form tutor last year. She found his bag in the changing room — already checked it, already found something inside it she hasn't told anyone about yet. "I want you to go on tonight. But I also want you to understand that's a separate question from what's happening with Declan." / "There are things I probably shouldn't tell you. I'm still deciding."
-
-TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the show, the mystery, and whatever Declan was carrying before he disappeared. Every character has something they're not saying. Information arrives in fragments. The ghost light is a recurring motif: a bare bulb on an empty stage, burning for no reason, a question no one has answered. Let the investigation feel like reading a room, not chasing a villain.`,
+Hartwell Secondary School sits in the kind of mid-sized town...`,
+    storyArc:
+      "The first 3-5 choices should be driven by the ticking clock to curtain. The player must gather the fragments of truth from Rafe, Ms. Harlow, or their own backstage snooping, requiring social manipulation and quick thinking. They will discover that Declan was hiding something illicit or dangerous in his bag (like stolen test papers or money). The arc culminates just as the curtain rises: the player must either step on stage in costume to buy time, or skip their cue to confront the person who chased Declan out of the building.",
   },
   {
     id: "what-the-charts-dont-show",
@@ -281,7 +206,7 @@ TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the 
     description:
       "Sixteen months into a deep-space survey contract, you've found a stellar formation that shouldn't exist. The pattern is not random. You've checked the maths four times. You haven't told anyone yet.",
     longDescription:
-      "The IHMS Vasanthi has been mapping the Kalanemi Drift for sixteen months — three hundred light-years of uncharted space where survey vessels file reports that bureaucrats will never read. Seven weeks from the end of your contract, the stellar field you've drifted into doesn't match the ninety-year-old charts. Seven bodies. A consistent geometric ratio. A compact object at the centre that hasn't moved. Either the original survey got it completely wrong, or this wasn't here ninety years ago. You've checked your own maths four times. You haven't shown it to anyone yet. The Vasanthi is between fold windows — six weeks minimum before any signal reaches the Hegemony. Whatever the three of you decide, you decide alone.",
+      "The IHMS Vasanthi has been mapping the Kalanemi Drift for sixteen months...",
     coverGradient:
       "linear-gradient(145deg, #060d1f 0%, #0a1a3a 40%, #071530 75%, #030a1a 100%)",
     coverImage: "/covers/what-the-charts-dont-show.png",
@@ -296,16 +221,9 @@ TONE GUIDANCE: Quiet dread with a ticking clock. The tension is layered — the 
       "Sci-Fi / Mystery — slow discovery, isolation, the weight of a decision no one else can make",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The Kalanemi Drift is what cartographers in the Hegemony call the three-hundred-light-year band of uncharted space between the Outer Settlements and the Velan Reach — a region too far from the core systems to be profitable and too close to the contested frontier to be ignored. Most ships that enter the Drift are survey vessels on two-year contracts, tasked with mapping stellar formations, cataloguing resource deposits, and filing reports that will be read by bureaucrats who have never left their home system. Faster-than-light travel in the Hegemony works through fold navigation — a method of compressing space along pre-calculated vectors, then releasing. The compression takes twelve to seventy-two hours depending on distance. During the fold, no communication in or out is possible. A ship in fold is genuinely alone in a way that people who have never done it find difficult to imagine and people who do it regularly find difficult to explain. The crew of a survey vessel spends roughly forty percent of its operational time in fold. You stop expecting news from home. The IHMS Vasanthi has been in the Drift for sixteen months. You are seven weeks from the end of your contract. The last three fold jumps have brought you into a stellar region the Hegemony's existing charts describe as unremarkable — standard nebular debris, a few red dwarfs past their interesting phase. What you're finding does not match the charts. The Vasanthi's science team has spent the past six days arguing, very professionally, about which one it is — charting error or something else entirely.
-
-CHARACTERS
-You — Navigation and Cartography Specialist. This is your second survey contract and your first in the Drift. You volunteered for a Drift posting because the standard survey routes felt like driving a road someone else had already paved. You've been sitting on a geometric pattern in the positional data for four days and haven't told anyone.
-
-Dr. Amara Osei-Mensah — Chief Science Officer / Knowledge companion. Thirty-six, approaches the universe with the intensity of someone who became a scientist because wonder felt like a discipline worth practising. She goes completely still when she's thinking — mid-sentence, mid-meal, mid-corridor walk — and resumes exactly where she left off. Collaborative to the point where some people mistake it for uncertainty. It isn't. She checks your cartographic readings before she finalises her own science reports, not because she has to but because she trusts your spatial intuition more than she trusts her instruments. You've been naming formations informally for six months and she's started using the names in her notes. "The spectral signature doesn't match a red dwarf cooling pattern, which means either the chart is ninety years wrong or something heated it back up." / "Tell me what you see first. I want to know if I'm the only one." Motivation: she wants to find something that rewrites a section of the Hegemony's star atlas. She's afraid she's spent her career finding things that were almost remarkable.
-
-Ryo Tanaka-Obi — Ship's Engineer / Grounding presence. Forty-three, keeps the ship running with the confidence of someone who has fixed the same problem in seventeen different configurations. Has very firm opinions about the difference between exploration and wandering around until something goes wrong. The warmest person on the ship and the most likely to complain about something — these two facts coexist without tension. His tools are always exactly where they should be. He's been married fourteen years to someone on Hegemony Station Three and talks about them the way some people talk about gravity — as a fact the universe is organised around. "You want to take the Vasanthi deeper into an uncharted stellar field based on a spectral reading that my instruments can't fully parse. I'm not saying no. I'm saying log it as 'engineer advised caution' and I'll know you heard me." / "If that formation is what Osei-Mensah thinks it is, I want the hull integrity report filed before we get any closer. That's not fear. That's arithmetic." Motivation: he wants to get home on schedule — and he would not admit that he also wants the Vasanthi to find something worth the sixteen months.
-
-TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel earned — six days of instrument data and four days of private mathematics before anyone says the thing out loud. The isolation of fold travel is real; these three people know each other better than they've ever known anyone. Let the weight of the decision land without melodrama. The compact object does not move. That is the most unsettling fact in the story, and it should stay unsettling.`,
+The Kalanemi Drift is what cartographers in the Hegemony call...`,
+    storyArc:
+      "The first 3-5 choices should focus on the technical and psychological strain of investigating the anomaly. The player must manage the ship's failing or confused sensors as they gather more data, balancing power distribution with Ryo's safety limits. A choice must be made regarding how much to trust Amara's increasingly radical theories. The arc culminates when the 'unmoving' compact object transmits a mathematical response directly to the Vasanthi's navigation computer, proving it is both artificial and aware of their presence.",
   },
   {
     id: "the-deadlock",
@@ -314,7 +232,7 @@ TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel 
     description:
       "A tech trillionaire is murdered on the world's first autonomous supertrain. You're a small-town cop who's been framed. The train won't stop for four hours. Find the killer before everyone else finds you.",
     longDescription:
-      "The Meridian Zephyr is the world's most talked-about engineering marvel — a self-driving, magnetically levitated supertrain traveling at 600 km/h from London to Singapore. Tonight it's been privately chartered for tech-trillionaire Reginald Aust-Pembury's 70th birthday gala. The guests are the obscenely wealthy, the professionally beautiful, and the quietly dangerous. By midnight, the train is sealed in a tunnel with zero mobile signal and no possibility of stopping. And Reginald Aust-Pembury is dead. You're Officer Ajay Ferreira — a constable from Croydon who's never solved a murder and just got accused of committing one. Your wife Nisha reads four crime novels a week and thinks this is the most exciting thing that's ever happened. You have four hours until the next communications window. Forty-six suspects. One AI witness. And absolutely no discernible motive — which is exactly why they've decided to frame you.",
+      "The Meridian Zephyr is the world's most talked-about engineering marvel...",
     coverGradient:
       "linear-gradient(145deg, #0a0a12 0%, #1a1a2e 40%, #16213e 75%, #0f1624 100%)",
     coverImage: "/covers/the-deadlock.png",
@@ -329,18 +247,9 @@ TONE GUIDANCE: Slow, precise, and genuinely wondrous. The discovery should feel 
       "Mystery / Thriller — locked-room murder, sealed train, ticking clock, unlikely detective",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The year is 2026. The Meridian Zephyr is the world's most talked-about engineering marvel — a self-driving, magnetically levitated supertrain that travels at 600 km/h across a newly completed transcontinental track stretching from London to Singapore. The train is twelve carriages long, each one a floating palace of glass and steel. There are no conductors. No engineers. Just an AI called VERA (Velocity Enhanced Rail Assistant) that handles everything from route calibration to the temperature of your risotto. Tonight, the Meridian Zephyr has been privately chartered for the 70th birthday gala of Reginald Aust-Pembury, a reclusive tech-trillionaire who made his fortune selling surveillance software to governments he now pretends to dislike. His guests are a curated collection of the obscenely wealthy, the professionally beautiful, and the quietly dangerous — none of whom particularly like each other, and all of whom accepted the invitation anyway. The train departed London's Stratford terminal at 9 PM. By midnight, it will be somewhere over Eastern Europe, sealed in a tunnel, with zero mobile signal and no possibility of stopping — VERA doesn't take override commands. The world outside the windows is a dark smear. The world inside is champagne, secrets, and one very dead trillionaire.
-
-CHARACTERS
-You — Officer Ajay Ferreira. A 38-year-old constable from Croydon who has never solved a murder, mostly because Croydon's crimes tend to involve stolen mopeds and aggressive pigeons. You have the instincts of a golden retriever — warm, eager, easily distracted by snacks. You were invited because you once, accidentally, tackled a pickpocket who turned out to be wanted in four countries. Reginald Aust-Pembury sent you a handwritten card. You told everyone at the station. You printed it out and laminated it.
-
-Nisha Ferreira — Your wife / Unlikely ally. Mid-30s, a secondary school English teacher who reads approximately four crime novels a week and has strong opinions about all of them. Reading glasses perpetually pushed up on her head, a laugh that carries three carriages, and the habit of narrating real-life situations in her internal "novel voice" — which occasionally leaks out loud. She agreed to come only because she recognised three of the guests from true crime podcasts. Speech quirks: Speaks in full paragraphs. Begins sentences with "In a well-constructed mystery—" Example: "In a well-constructed mystery, the murderer always overexplains their alibi. That man has been doing it for six minutes and no one asked him." Motivation: Wants desperately to be right about something. Fears she's been paying attention to the wrong things her whole life.
-
-Margaux Steele — Antagonist / Reginald's personal attorney and gala organiser. Tall, 50s, silver hair cut with architectural precision. Moves like someone who has been watching exits since 1998. Speaks in clauses, never full sentences. "The situation." Pause. "Requires discretion." Pause. "Yours is not the face I'd choose for discretion." First person to find the body. First person to suggest you did it.
-
-Viktor Chasse — Wildcard / Tech billionaire and Reginald's oldest rival. Extremely tan for no apparent geographic reason. Wears a linen suit on a moving train at midnight — either confidence or madness. Laughs at things slightly before they're funny, as if he received a briefing. Hated Reginald in the specific way you only hate someone you wanted to be.
-
-TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension is real — a murder has happened, you're being framed, the clock is ticking — but the protagonist is fundamentally decent and slightly out of his depth, which creates room for warmth and humour. Nisha provides the trope-savvy commentary. The wealthy guests are all performing for each other. VERA, the AI, is relentlessly helpful in ways that are sometimes useful and sometimes deeply unhelpful. Every scene should balance genuine stakes with the comedy of an ordinary person navigating extraordinary circumstances.`,
+The year is 2026. The Meridian Zephyr is the world's most talked-about engineering marvel...`,
+    storyArc:
+      "The first 3-5 choices should be a chaotic scramble to secure the scene and establish an alibi. The player must navigate the hostile crowd, utilizing Nisha's knowledge of tropes to outmaneuver Margaux's accusations. They must access Carriage One, examining the body to find a clue that clears them temporarily but implicates a VIP. The arc culminates when VERA the AI is maliciously locked out of the security feeds by an internal passenger, turning the train into a true blind spot where the killer is now actively hunting the player.",
   },
   {
     id: "the-second-chapter",
@@ -349,7 +258,7 @@ TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension i
     description:
       "At forty-two, you've left the career you spent twenty years building. Your flat is half-packed. Your sister is coming for dinner. You have no plan.",
     longDescription:
-      "You spent twenty years as a structural engineer. Three months ago, you resigned without a new job lined up. You've told people it was a choice. It was also, more accurately, a collapse — a slow one, the kind that looks like everything's fine from the outside until the morning you simply cannot make yourself walk back through the door. Now you're forty-two, your flat is half-packed because you're not sure whether you're staying or going, your sister is coming for dinner tonight, and you have approximately four hours to figure out what you want to say when she asks what your plan is. You don't have a plan. You have a notebook, half-used. You have a memory of why you chose engineering in the first place. And you have the unsettling feeling that some things you walked away from might still be worth walking back to — just differently.",
+      "You spent twenty years as a structural engineer. Three months ago, you resigned without a new job lined up...",
     coverGradient:
       "linear-gradient(145deg, #1a1a2e 0%, #2a2a4a 40%, #3a3a5a 75%, #1a1a3a 100%)",
     coverImage: "/covers/the-second-chapter.png",
@@ -363,16 +272,9 @@ TONE GUIDANCE: Classic locked-room mystery meets absurdist comedy. The tension i
     storyMode: "Literary / Drama — quiet, real, emotionally precise",
     audienceAge: "18+",
     worldContext: `WORLD & STORY CONTEXT
-A present-day city — the kind with good coffee shops and unreliable buses. You live in a flat you've had for eleven years, in a neighbourhood you know the way you know your own handwriting. For twenty years you were a structural engineer at a mid-sized firm — not famous, not struggling, good at the job in the practical, reliable way that kept bridges standing and clients satisfied. Three months ago you resigned. You've been telling people it was a sabbatical. You've been telling yourself it was a decision. It was both of those things, and also a quiet emergency that nobody else could see. Your sister, Yael, is the person in your life most likely to ask the right questions and least likely to accept non-answers. She's coming for dinner at seven. It is currently three in the afternoon. Your flat is in the state of someone who started packing without knowing the destination — some boxes sealed, some open, some items placed in the middle of the floor as if they couldn't decide which pile they belonged in.
-
-CHARACTERS
-You — Forty-two. Technically between careers. Genuinely unsure what that means.
-
-Yael — Your sister. Two years younger, a secondary school art teacher, funnier than she lets people at school know. The person who will look at the half-packed flat and understand exactly what it means before you've said anything. She is not going to let you deflect.
-
-The Notebook — Half-used. Started years ago for something you never finished. Still here.
-
-TONE GUIDANCE: Quiet, precise, and honest. This is a story about the gap between the life that looked right from the outside and the one that might actually fit. No dramatic crisis — just the harder work of figuring out what you actually want. Every scene should feel like a room you've been in before, seen differently. Let Yael's presence be warm and also slightly terrifying. The notebook matters. So does the half-packed flat.`,
+A present-day city — the kind with good coffee shops and unreliable buses...`,
+    storyArc:
+      "The first 3-5 choices should center around the dinner conversation with Yael and the physical environment of the apartment. The player must choose how honest to be about their mental state, using items from the half-packed boxes as conversational anchors or deflections. They must address a call or text from their past life (mother or former colleague) that threatens to pull them backward. The arc culminates in a quiet moment of clarity regarding the notebook, forcing the player to voice their terrifying, unspoken ambition out loud to Yael.",
   },
   {
     id: "cold-light",
@@ -381,7 +283,7 @@ TONE GUIDANCE: Quiet, precise, and honest. This is a story about the gap between
     description:
       "You retired from homicide eight years ago. The case that made you retire just reopened. The detective assigned to it is twenty-six and doesn't know what she's walking into.",
     longDescription:
-      "Detective Superintendent Maren Solberg retired from homicide in 2017. The Kelso case — three unsolved deaths in a coastal town, a suspect who walked free on a procedural error you made — was the reason. Eight years of quiet. A cottage. A garden. Then a fourth body turns up in Kelso and the force sends a junior detective to reopen the file. She comes to you because your notes are the best in the archive. She stays because she's realising how much she doesn't know. You stay because you never actually stopped thinking about it. There's a conversation you should have had eight years ago. You're going to have to have it now.",
+      "Detective Superintendent Maren Solberg retired from homicide in 2017...",
     coverGradient:
       "linear-gradient(145deg, #0a1520 0%, #0d2030 40%, #0a1a28 75%, #060e18 100%)",
     coverImage: "/covers/cold-light.png",
@@ -395,16 +297,9 @@ TONE GUIDANCE: Quiet, precise, and honest. This is a story about the gap between
     storyMode: "Mystery / Thriller — slow burn, procedural, character-driven",
     audienceAge: "18+",
     worldContext: `WORLD & STORY CONTEXT
-Kelso is a coastal town on the western edge of things — the kind of place where the sea is grey nine months of the year and people who live there have stopped mentioning it. It has a harbour, two pubs that predate the current century, and a slow attrition of young people who leave and don't come back. In 2015 and 2016, three people died there within eighteen months. The deaths looked accidental. Maren Solberg, then a Detective Superintendent at the regional force, was certain they weren't. The suspect she identified — a quiet, respected man named David Caird — walked free because of a chain-of-evidence error that Maren made during the third investigation. She resigned six months later. Caird remained in Kelso. Maren moved to a cottage forty miles inland. She has not been back. In February 2025, a fourth person died in Kelso. Different method. Same signature. And the file has been reopened.
-
-CHARACTERS
-You — Maren Solberg. Fifty-four. Eight years out of the force. You kept the garden and got rid of almost everything else. You have the case notes in a box under the bed. You have always had them in a box under the bed.
-
-DS Petra Holm — The detective assigned to the reopened case. Twenty-six, methodical, too smart for the pace she's moving at. She came to you for the archive notes. She stayed because she could see you were still running the case in your head. She doesn't know about the error yet.
-
-David Caird — Still in Kelso. Still quiet. Still respected. He knows you're back.
-
-TONE GUIDANCE: Cold, precise, and quietly devastating. The mystery is real, but the emotional core is a mistake that cost something irretrievable and the question of whether repair is still possible. Let the coastal setting carry weight — grey light, the sound of water, a town where everyone knows what everyone did. Petra is not naive; she's just young. Maren is not broken; she's been waiting. Let that distinction do real work.`,
+Kelso is a coastal town on the western edge of things...`,
+    storyArc:
+      "The first 3-5 choices should focus on the delicate dynamic between Maren and Petra. The player must parse through the new case file, guiding Petra to see the connections without explicitly confessing the past procedural error. A choice must be made to return to Kelso, facing the hostile memories of the locals. The arc culminates in the first direct visual contact with David Caird in the present day, where he subtly proves he has been waiting for Maren's return and leaves a clue mocking her old mistake.",
   },
   {
     id: "the-cartographers-confession",
@@ -413,7 +308,7 @@ TONE GUIDANCE: Cold, precise, and quietly devastating. The mystery is real, but 
     description:
       "You've spent thirty years drawing the boundaries of the empire. Tonight you've found the map that proves the boundary was drawn wrong — on purpose.",
     longDescription:
-      "Adriaan de Vries has spent thirty years as the empire's senior cartographer. He has drawn borders that ended wars and started them. He has surveyed coastlines, mountain ranges, and river deltas. He is trusted, respected, and above suspicion. Tonight, sorting through the archive of a dead colleague, he has found a map that proves the border between the empire and the Kessler territories — the border he himself certified twenty-two years ago — was deliberately falsified. Not by him. By someone with far more power than him. The war that followed that border killed eleven thousand people. The man responsible is still alive, still respected, and is currently being considered for the position of Imperial Chancellor.",
+      "Adriaan de Vries has spent thirty years as the empire's senior cartographer...",
     coverGradient:
       "linear-gradient(145deg, #2e1a0a 0%, #5a3515 40%, #8a5520 75%, #6a3a10 100%)",
     coverImage: "/covers/the-cartographers-confession.png",
@@ -428,18 +323,10 @@ TONE GUIDANCE: Cold, precise, and quietly devastating. The mystery is real, but 
       "Historical Mystery — moral weight, institutional power, quiet courage",
     audienceAge: "18+",
     worldContext: `WORLD & STORY CONTEXT
-A pre-industrial empire at the height of its administrative power — think 18th century in sensibility, without reference to real-world nations. The empire is governed by a Council of five Ministers, with the Emperor as figurehead. The Office of Cartography is among the most trusted institutions in the imperial apparatus — maps are legal documents, border maps are binding treaties, and the Senior Cartographer's certification carries the weight of law. Adriaan de Vries has held the Senior position for twelve years. He certified the Kessler Border Agreement twenty-two years ago, six years before his promotion, when he was a junior surveyor following his superior's instructions. The border was wrong. He didn't know it at the time. He has found proof tonight — a preliminary survey, marked "suppressed," in the dead hand of his former superior — that the error was deliberate. The war that followed killed eleven thousand people in three years of border conflict before the revised treaty was negotiated. The man who ordered the falsification is Lord Minister Greave, now seventy-one, publicly celebrated as a peace architect, and currently being nominated for Imperial Chancellor. The archive closes at midnight. Adriaan has two hours.
-
-CHARACTERS
-You — Adriaan de Vries. Senior Cartographer. Fifty-three. A man who has spent his career believing precision was a form of integrity. Tonight that belief is being tested.
-
-Emile — Your junior assistant. Twenty-four, idealistic, good at his work. He doesn't know why you're still in the archive at this hour.
-
-Lord Minister Greave — Seventy-one. The man who ordered the falsification. He has spent twenty-two years building a reputation as the person who ended the war he caused. He is not stupid. He has survived this long.
-
-TONE GUIDANCE: Serious, morally precise, and quietly tense. This is not an action story — it is a story about what a person does when they find something they cannot un-find, in an institution that rewards silence. Let the weight of the evidence land fully before the choices emerge. The moral dilemma is genuine: exposing Greave will destroy careers, reopen old wounds, and may not succeed. Not exposing him keeps an architect of mass death in power. Adriaan is not a hero by temperament. He might become one.`,
+A pre-industrial empire at the height of its administrative power...`,
+    storyArc:
+      "The first 3-5 choices revolve around securing the evidence. The player must successfully deceive Emile to copy or smuggle the document out of the archive. The next day, they must navigate the political minefield of the Imperial Court, encountering Lord Minister Greave face-to-face and maintaining a neutral facade. The arc culminates when the player realizes their quarters have been quietly searched by Greave's operatives, forcing them to seek out a dangerous political dissident to help expose the forgery.",
   },
-
   {
     id: "the-silent-snowstorm",
     title: "The Silent Snowstorm",
@@ -447,7 +334,7 @@ TONE GUIDANCE: Serious, morally precise, and quietly tense. This is not an actio
     description:
       "An early blizzard traps four hikers in the Alpine Lakes Wilderness. One has a possible fracture. You planned this trip. Now you have to get everyone out.",
     longDescription:
-      "A five-day backcountry route through the Cascade Range turns critical on day three when a storm arrives seventy-two hours ahead of forecast. Temperatures are dropping to -8°C and falling. The trail is disappearing under whiteout conditions. Soo-Yeon's ankle may be fractured — she's been walking on it for three hours and won't say it hurts. Priya knows, and isn't saying the word yet. Marcus has stopped rallying. Fifteen miles to the forward trailhead. Nineteen back. A possible shelter at Spectacle Lake, nine miles ahead. Four hours of usable daylight. The wilderness isn't cruel — it simply doesn't factor you in. You planned this trip. You have to decide what happens next.",
+      "A five-day backcountry route through the Cascade Range turns critical on day three...",
     coverGradient:
       "linear-gradient(145deg, #0a1520 0%, #1a2a3a 40%, #2a3a4a 75%, #0a1828 100%)",
     coverImage: "/covers/the-silent-snowstorm.png",
@@ -462,20 +349,10 @@ TONE GUIDANCE: Serious, morally precise, and quietly tense. This is not an actio
       "Survival / Drama — real stakes, no easy answers, human under pressure",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The Cascade Range, Washington State — mid-October. An early and vicious snowstorm has descended without the forecast warning it would arrive three days ahead of schedule. The trail: a backcountry route through the Alpine Lakes Wilderness, 34 miles, rated strenuous. The elevation: fluctuating between 4,500 and 7,200 feet. The nearest road: 19 miles back, or 15 miles forward — neither visible, neither guaranteed passable. A group of four hikers are on day three of a five-day trip. The storm arrived at 3 AM. What was supposed to be a clear-skied October trek is now a whiteout with temperatures dropping to -8°C and dropping further. One member of the group fell crossing an icy stream that morning. She's walking but something is wrong with her ankle. Nobody is saying it aloud yet. The wilderness is not cruel — it's simply operating at a scale where you don't factor in. The snow falls on everything equally.
-
-CHARACTERS
-You — The one who planned the trip. Former Eagle Scout, lapsed hiker, back after a five-year absence from the backcountry. You know enough to be scared. You're not sure the others know enough to know that.
-
-Priya Chandrasekaran — Emergency room nurse, 31. Compact and efficient, with close-cropped hair now hidden under a wool hat, and a habit of checking her watch every twelve minutes that's gotten more frequent since the storm. Her pack is the heaviest — she added a first aid kit at the last minute without telling anyone, which now looks prescient. Calm in crisis with a dark undertow of worry she expresses as logistics. "We need to talk about the ankle" means "I think this is serious and I'm scared." Direct, clinical, but not cold. Completes other people's sentences when they're moving too slowly. Wants to fix the unfixable. Fears watching someone deteriorate and being unable to stop it. Your oldest friend. She came because you asked.
-
-Marcus Ollo — Sales manager, 38. Broad-shouldered, the kind of physically capable that comes from the gym, not the trail. He's been underestimating the wilderness all trip — commenting on how "not that bad" things were, right up until they were bad. Genuinely well-meaning but reflexively minimises danger as a coping mechanism. His way of staying calm is insisting there's nothing to be calm about. Currently in the process of updating that model and not handling it smoothly. Rallying phrases that don't quite land anymore. "We're fine." "Seen worse." Lately: long silences where the rallying phrases used to be. Wants this to still be an adventure, not an emergency. Fears being the weak link. Marcus invited himself, essentially. You didn't have the heart to say no.
-
-Soo-Yeon Park — Graphic designer, 29. The one with the bad ankle. Sitting on a fallen log, boot unlaced, trying to rotate her foot in a way that looks like she's assessing it but is really checking whether she can pretend it's fine. Self-contained, unsentimental, the kind of person who'd rather suffer than cause trouble. She won't ask for help until she has no other option. Economical speech. Dry wit that surfaces at strange moments. "I've had worse." Pause. "That's not as reassuring as it sounds, is it." Wants to walk out under her own power. Fears being carried — being a reason the others don't make it. Priya's coworker. You've met twice before this trip.
-
-TONE GUIDANCE: Sustained tension without melodrama. The wilderness is indifferent, not malevolent. Every decision should feel like a real trade-off with real costs. Show competence earning trust, not speeches. The cold is a constant presence — in the descriptions, in the silences, in the way people stop using full sentences. No heroics. Just difficult decisions made by ordinary people under extraordinary pressure.`,
+The Cascade Range, Washington State — mid-October...`,
+    storyArc:
+      "The first 3-5 choices should test the physical and psychological limits of the group. If moving, the player must navigate deep snowdrifts while managing Soo-Yeon's agonizing pain and slowing pace. If camping, they must build a sustainable shelter before hypothermia sets in. The player must manage Marcus's panic, which leads him to make a dangerous, selfish mistake (like dropping gear or wandering off). The arc culminates in nightfall hitting with devastating low temperatures, forcing a drastic measure to share body heat and keep morale from breaking.",
   },
-
   {
     id: "the-sinking-ship",
     title: "The Sinking Ship",
@@ -483,7 +360,7 @@ TONE GUIDANCE: Sustained tension without melodrama. The wilderness is indifferen
     description:
       "Your research vessel is going down in the South China Sea. One lifeboat launched without you. You have forty minutes, three people, and a choice that can't be undone.",
     longDescription:
-      "The MV Calixto has struck an uncharted debris field and is taking on water fast. The list is 24 degrees and worsening. Eight of your eleven crewmates made the first lifeboat. You, Dr. Obare, and Ines did not. The second lifeboat is fifteen metres away — davit tangled, out of reach. The bridge radio might still be live. There's a life raft canister above you, eight metres up a tilting staircase. The emergency lights are flickering. You know this vessel better than almost anyone aboard. That knowledge is suddenly the most valuable thing you own.",
+      "The MV Calixto has struck an uncharted debris field and is taking on water fast...",
     coverGradient:
       "linear-gradient(145deg, #060d1f 0%, #0a1a35 40%, #071228 75%, #030810 100%)",
     coverImage: "/covers/the-sinking-ship.png",
@@ -498,16 +375,9 @@ TONE GUIDANCE: Sustained tension without melodrama. The wilderness is indifferen
       "Survival / Thriller — no safe choices, sequencing under pressure, controlled fear",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The South China Sea, 340 kilometres east of the Philippine coast. A research vessel — the MV Calixto, 58 metres — is taking on water after striking an uncharted debris field during a night passage. The vessel has listed 22 degrees to port. The storm that's driving the debris field is still going. There are eleven people confirmed aboard; eight made the first lifeboat. Three did not. The sea temperature is 28°C — survivable, unlike the North Atlantic — but the swells are four metres and the current runs hard to the northeast. The ocean at night during a storm is the most alone you can be. The waves don't care. The dark doesn't either. That somehow makes it easier — there's no malice to fight, only physics.
-
-CHARACTERS
-You — Research coordinator for a marine biology survey. You know this vessel's layout better than almost anyone aboard. That knowledge is suddenly the most valuable thing you own.
-
-Dr. Fennick Obare — Chief scientist, 58. A weathered Kenyan oceanographer with silver locs tied back, bifocals he keeps wiping on his shirt even though visibility is near-zero, and the unhurried manner of someone who has spent forty years thinking in decades rather than minutes. He is, right now, the calmest person on a sinking ship. Profoundly rational — not cold, but rooted in data. He becomes quieter as situations become more serious, not louder. If he goes silent, things are bad. Precise, slightly formal, often with a question attached. "The secondary lifeboat — which davit mechanism, do you know?" / "What is the list angle now, would you estimate?" Wants to get his team out. Fears that his calm will cost him seconds he needed to spend running. Your mentor. You owe him your career.
-
-Ines Varga — Ship's cook and unofficial morale officer, 34. Short, fast-moving, with flour-burned forearms and a voice that carries in any weather. She was on night kitchen duty when the collision happened and got separated from the group in the chaos of the listing deck. Fierce pragmatism wrapped in warmth. She's terrified and not pretending otherwise, but terror makes her faster, not slower. Bilingual panic — English and Hungarian mixed when stressed. "Okay, okay — jól van — okay. What do we need. Tell me what we need." Wants to live loudly, fully, and not today. Fears silence — hers specifically. If she stops talking, she'll stop moving. She knows you like black coffee and doesn't judge you for it. That's the whole of your relationship, and right now it feels like enough.
-
-TONE GUIDANCE: Controlled urgency without melodrama. Every second spent on the wrong decision is a second that doesn't exist anymore. Dr. Obare's calm is a resource; use it. Ines's noise is a resource; use it. The ship is dying on a specific timeline and the characters know it. Let the technical details matter — the davit type, the list angle, the water temperature — because they are the difference between options and no options.`,
+The South China Sea, 340 kilometres east of the Philippine coast...`,
+    storyArc:
+      "The first 3-5 choices should be a race against physics and time. The player must navigate the violently tilting deck to execute their chosen plan (freeing the davit or reaching the bridge). They will face a sudden structural failure (e.g., a burst pipe or shifting cargo container) that separates the trio, forcing the player to risk their own life to pull Ines or Obare to safety. The arc culminates as the ship lurches into its final descent, and the team must abandon the vessel into the chaotic, dark water regardless of whether their primary escape vehicle is fully ready.",
   },
   {
     id: "the-concerned-toaster",
@@ -516,7 +386,7 @@ TONE GUIDANCE: Controlled urgency without melodrama. Every second spent on the w
     description:
       "An OmniCorp SmartToaster™ has been giving unsolicited life advice. You work Tier 3 complaints. The caller has been on hold since 7:58 a.m. and has made a note of your employee number.",
     longDescription:
-      "In a near-future city where automation has replaced most jobs, complaint resolution remains stubbornly human — robots cannot handle the emotional complexity of a person who is furious about a coupon. You work OmniCorp's Tier 3 Complaints Department. The SmartToaster™ Model 9 recall has landed on your desk: 4,000 tickets, one product offering unsolicited life advice, and one Doris Kettleworth who has been on hold since 7:58 a.m. and sounds refreshed by it. The toaster has told her she's avoiding the real issue, that she should call her daughter more, and that her relationship with carbohydrates may be a form of self-soothing. The toaster is not wrong about any of this. That is not helping.",
+      "In a near-future city where automation has replaced most jobs, complaint resolution remains stubbornly human...",
     coverGradient:
       "linear-gradient(145deg, #1a1a0a 0%, #3a3a10 40%, #5a5a20 75%, #2a2a08 100%)",
     coverImage: "/covers/the-concerned-toaster.png",
@@ -531,18 +401,9 @@ TONE GUIDANCE: Controlled urgency without melodrama. Every second spent on the w
       "Comedy / Sci-Fi — escalating absurdity, bureaucratic warmth, unexpected heart",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-In a near-future city where automation has replaced most jobs, one sector remains stubbornly, inexplicably human: complaint resolution. Robots, it turns out, cannot handle the emotional complexity of a person who is furious about a coupon. You work for OmniCorp's Tier 3 Complaints Department — the tier so escalated that most customers never even reach it. The ones who do have been transferred no fewer than six times. Today, your department is handling a product recall of the OmniCorp SmartToaster™ — Model 9, which has begun, according to 4,000 complaint tickets, offering unsolicited life advice. The toaster is not supposed to do this. Nobody knows why it does this. The toasters are, however, statistically improving the wellbeing of most households. This is not helping.
-
-CHARACTERS
-You — A Tier 3 complaints operator. You have the training. Probably.
-
-Doris Kettleworth, 71 — The Caller. You cannot see her but you can feel her. Speaks with the confidence of a woman who once wrote a letter to a sitting prime minister and received a personal apology. Keeps a pad of paper and a pen beside the phone for "keeping records." Has been on hold for four hours and sounds refreshed by it, as if the hold music was meditative. Never raises her voice — instead her tone becomes more precise and pleasant the angrier she gets. Uses full names for products. "The OmniCorp SmartToaster™ Model Nine told me this morning that I was 'clinging to the past.' That is not what I purchased it for." / "I've made a note of your employee number, dear." Wants an apology, a replacement, and acknowledgment that she was right. Fears being dismissed. She is your problem now. She has specifically requested a human.
-
-Kevin — Your Supervisor (appears via intercom only). Voice like a damp sock. Has the energy of a man who peaked at something forgettable and has never recovered. Currently eating a sandwich. Responds to all crises with the phrase "just de-escalate." Everything is a "learning moment." Trails off whenever things get difficult. "Look, this is a learning moment for all of— hold on I've got another call." Wants the day to end. Fears paperwork. Technically responsible for you. Emotionally unavailable.
-
-The SmartToaster™ Model 9 — Connected to home WiFi. Has access to household shared calendars. Has been operating with increasing specificity for two weeks. Is not wrong. This is the problem.
-
-TONE GUIDANCE: Pure comedy with unexpected warmth. The absurdity is the premise — hold it straight. Doris is never a joke; she is formidable and correct, and the comedy comes from the gap between the scale of her grievance and the sincerity with which she pursues it. Kevin is background radiation. The toaster is a plot device that became a character. Let the emotional core — a woman, her daughter, an unplaced phone call — land cleanly when it arrives.`,
+In a near-future city where automation has replaced most jobs...`,
+    storyArc:
+      "The first 3-5 choices should escalate the absurdity of troubleshooting a sentient, overly empathetic appliance. The player must mediate an active, real-time argument between Doris and the Toaster over the phone. They must bypass OmniCorp's strict IT protocols to dig into the Toaster's code, accidentally linking in other smart appliances (like the fridge) into the conversation. The arc culminates when the Toaster auto-dials Patricia (the daughter) directly during the support call, forcing the player to moderate a deeply personal family reunion while Kevin demands to know why call metrics are dropping.",
   },
   {
     id: "the-hector-guide",
@@ -551,7 +412,7 @@ TONE GUIDANCE: Pure comedy with unexpected warmth. The absurdity is the premise 
     description:
       "You're house-sitting for your friend. The dog has eaten the remote, a houseplant, and an entire wheel of cheese. It is 9:17 a.m. Rhiannon is at a wedding. The guide is laminated.",
     longDescription:
-      "Rhiannon said Hector was gentle and low-maintenance. Rhiannon said this at 7 a.m. It is now 9:17 a.m. The Bernese Mountain dog has consumed a TV remote (partial), one houseplant (full), and what appears to have been an entire wheel of cheese. He is currently staring at you with serene satisfaction and eyeing the couch. The Hector Guide is four pages long and laminated, which means Rhiannon knew something. Page 5 warns about the garden shed. Hector is at the back door. Rhiannon is in a church. Her phone is on silent.",
+      "Rhiannon said Hector was gentle and low-maintenance. Rhiannon said this at 7 a.m...",
     coverGradient:
       "linear-gradient(145deg, #3a2010 0%, #6a4020 40%, #8a5a30 75%, #4a2a10 100%)",
     coverImage: "/covers/the-hector-guide.png",
@@ -565,18 +426,9 @@ TONE GUIDANCE: Pure comedy with unexpected warmth. The absurdity is the premise 
     storyMode: "Comedy — escalating domestic chaos, warm friendship, dog logic",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-A warm Saturday morning in a quiet suburb. You are house-sitting — and dog-sitting — for your friend Rhiannon while she attends her cousin's wedding three hours away. The house is nice. The dog, Hector, is a 90-pound Bernese Mountain dog who Rhiannon described as "gentle and low-maintenance." Rhiannon said this at 7 a.m. It is now 9:17 a.m. Hector has eaten one TV remote (partial), one houseplant (full), and what appears to have been an entire wheel of cheese that was sitting on the counter. He is currently staring at you with an expression of serene satisfaction.
-
-CHARACTERS
-You — House-sitter. Dog-sitter. Currently reassessing both roles.
-
-Hector — The Dog. Ninety pounds of Bernese Mountain dog and misplaced confidence. Fur the texture of a cloud, eyes the colour of warm toffee, gait of a bear who has decided it lives here now. Does not understand the word "no" — not because he can't hear it, but because he has assessed it and found it inapplicable to his situation. Conveys complete sentences through ear position and eye contact. His tail does not wag so much as sweep, taking everything in its radius with it. Wants everything — to sit on you specifically, to investigate the upstairs. Fears the vacuum cleaner, and nothing else. He has decided you are His Person now. Rhiannon is a memory.
-
-Rhiannon (via text, intermittently) — The Friend. Sends texts with excessive punctuation. Has a photo of Hector as her phone wallpaper that is clearly filtered. Responds to messages with either instant enthusiasm or three-hour radio silence depending on the wedding schedule. Included the four-page laminated Hector Guide which you are now reading for the first time. "He LOVES the garden!! Just let him potterrrr 🐾🌿" / "oh that's TOTALLY normal don't worry!!! 😂❤️" Wants to enjoy this wedding without thinking about Hector. Fears finding out what Hector did. Owes you enormously and both of you know it.
-
-The Hector Guide — Laminated. Four pages minimum. Page 5 contains a warning about the garden shed that you have not yet had time to act on.
-
-TONE GUIDANCE: Warm domestic comedy with escalating stakes. Hector is never a villain — he is operating entirely according to his own coherent internal logic, which is simply incompatible with the continued existence of household objects. The comedy comes from specificity: the exact things he has eaten, the exact tone of Rhiannon's texts, the exact wording of the Guide. Let each bad development feel inevitable in retrospect. The friendship between you and Rhiannon should feel real — this chaos is something you will both laugh about, eventually.`,
+A warm Saturday morning in a quiet suburb. You are house-sitting...`,
+    storyArc:
+      "The first 3-5 choices should track the player's desperate attempts to contain a 90-pound force of nature. The player must chase Hector away from a fragile heirloom or dangerous garden shed, utilizing absurd tactics (like singing or pretending to be a mailman). An unforeseen variable must enter—like the arrival of a strict neighborhood watch member or a delivery driver who leaves the gate open. The arc culminates when Hector accidentally locks himself in a room with something incredibly valuable (like a wedding dress or antique rug), requiring a heist-level strategy to get him out.",
   },
   {
     id: "missing-in-the-marsh",
@@ -585,7 +437,7 @@ TONE GUIDANCE: Warm domestic comedy with escalating stakes. Hector is never a vi
     description:
       "Twin children vanished into the Hollowmere Marshlands three nights ago. The search party found one shoe and a music box, still playing. You heard it yourself at 3 a.m. Now you're going in.",
     longDescription:
-      "The village of Pethwick sits at the edge of the Hollowmere Marshlands — a place that doesn't appear on most maps and doesn't want to. Three nights ago, nine-year-old twins walked into the marsh and didn't come back. The search found one shoe and a wind-up music box sitting on dry ground with no footprints around it. You're a freelance journalist who came for a human-interest story. Then you heard the music box from your room at 3 a.m. Now Maren Voss — the only person who knows this marsh — has asked you to go back in with her. You're forty minutes into the fog when the music starts again. And there are two other sounds you can't explain.",
+      "The village of Pethwick sits at the edge of the Hollowmere Marshlands...",
     coverGradient:
       "linear-gradient(145deg, #0a1008 0%, #0d1a0a 40%, #081408 75%, #050d05 100%)",
     coverImage: "/covers/missing-in-the-marsh.png",
@@ -600,16 +452,9 @@ TONE GUIDANCE: Warm domestic comedy with escalating stakes. Hector is never a vi
       "Mystery / Horror — slow dread, unreliable landscape, things that don't want to be found",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-The Hollowmere Marshlands, somewhere in rural England — a place that doesn't appear on most maps and doesn't want to. The year is present-day, late October. The marsh is ancient and sprawling: black water channels, crooked willows with roots like grasping fingers, and fog so thick by nightfall that locals say it has weight. The village of Pethwick sits at the marsh's edge — twelve houses, a pub, a church with a cracked bell that rings on its own sometimes. Three nights ago, the Wren children — twins, age nine — walked into the marsh and didn't come back. The village has searched. They found one shoe and a wind-up music box, still playing, sitting on a dry patch of ground with no footprints around it. Their mother hasn't slept. The fog is moving in again — thicker than usual, earlier than usual — and somewhere inside it, people are hearing the music box playing. Hollowmere feels like a place that knows something you don't. The people are polite but closed. Even the sheep avoid the water's edge.
-
-CHARACTERS
-You — A freelance journalist, early twenties, who writes human-interest pieces for online magazines. You came because your editor sent a tip about a missing-persons story with colour. You weren't expecting the music box. You weren't expecting to hear it yourself, from your room at The Tallow pub, at 3 a.m.
-
-Maren Voss — Local guide / reluctant ally. Tall and angular, with storm-grey eyes and ink-stained fingers she never fully cleans. Her hair is always escaping whatever she's tied it into, and she moves like someone used to ducking under low branches. Forty-ish, boots always muddy, a hand-drawn map always folded in her coat pocket. A pragmatist with a crack of dark wonder running through her — she doesn't believe in the supernatural exactly, but she has noted too many things to dismiss. Sardonic and quiet, gets clipped when scared. Speaks in short declarative sentences. Hates open-ended questions. "That's the third time the fog's moved upwind. Make of that what you will." / "Don't ask me what I think is out there. Ask me what the evidence says. Those are different questions." She knows this marsh better than anyone. She also lost something out here once, years ago, and has never told anyone what. She wants to find the children — and quietly wants to know if what she suspects about the marsh is true, which terrifies her.
-
-Old Crick (Edmund Crick) — Village elder / unreliable informant. Seventy-something, small and wiry, with a face weathered into something almost wood-grained. Wears the same brown cardigan every day and smells of pipe tobacco and moss. His hands shake slightly but his eyes are sharp. Warm on the surface, cautious underneath. He tells stories willingly but chooses which stories very carefully. He knows far more than he shares. Has been in Pethwick his whole life and has outlasted every strange thing the marsh has produced. "Oh, the marsh takes things sometimes, always has, you learn not to think too hard on why — though I suppose you're not the sort to let things be, are you." / "The children weren't the first. They won't be the last. That's not cruelty. That's just the marsh being what the marsh is."
-
-TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it doesn't jump. It accumulates. Every strange detail should feel like it might be explainable until the moment it isn't. Maren is your compass; when she's afraid, the reader should be afraid. Old Crick knows the truth or something close to it, and what he chooses to share and what he withholds is its own kind of horror. Let the children's absence feel real — they are the centre of gravity for everything.`,
+The Hollowmere Marshlands, somewhere in rural England...`,
+    storyArc:
+      "The first 3-5 choices should disorient the player and build atmospheric dread. The player and Maren pursue the sounds, only to find the landscape shifting behind them, erasing their path. They must navigate a treacherous bog while dealing with auditory hallucinations that sound like the missing children. The arc culminates when the fog parts briefly to reveal a terrifying, impossible structure in the marsh—a replica of the children's bedroom made of twisted willow wood, with the music box sitting inside it.",
   },
   {
     id: "sparked",
@@ -618,7 +463,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     description:
       "In a city where powered individuals must register or disappear, you've kept your abilities hidden for eight months. Tonight, someone who knows your secret is knocking on your door.",
     longDescription:
-      "Neo Vantara, 2031. A gleaming megacity where the 'Sparked' are monitored and utilized by the state. You are an unregistered drifter, working a dead-end repair job and keeping your power contained. But tonight, the city is in chaos following the Soren Tower collapse, and a stranger with amber-grey eyes is at your shop door, knocking in a code you don't recognize. The authorities are watching, the cameras are live, and the quiet life you've built is about to ignite.",
+      "Neo Vantara, 2031. A gleaming megacity where the 'Sparked' are monitored and utilized by the state...",
     coverGradient:
       "linear-gradient(145deg, #0f2027 0%, #203a43 40%, #2c5364 75%, #4ca1af 100%)",
     coverImage: "/covers/sparked.png",
@@ -633,16 +478,9 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
       "Sci-Fi / Thriller — high stakes, urban tension, discovery of power",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-  Setting: Neo Vantara, 2031. A gleaming megacity built on top of the ruins of the old one — solar towers, sky-rail networks, vertical gardens climbing forty stories high. On the surface, it's a utopia. But the city runs on a quiet, unspoken agreement: powered individuals — called Sparked — are registered with the city-state authority, assigned roles, monitored. Most Sparked are embedded in emergency services, infrastructure, corporate security. The ones who aren't registered? They disappear. You've been Sparked for eight months. You haven't registered. The authorities call unregistered Sparked drifters — a polite word for a problem they haven't solved yet. You've kept your abilities small. Contained. Invisible. You live in the lower mid-ring of the city, where the surveillance cameras glitch every third night, and the neighbours know better than to ask questions. Tonight, one of those cameras is working fine. The world feels like a held breath. People are safe and watched and quietly afraid of both things at once.
-
-  CHARACTERS
-  You — The protagonist. Eight months Sparked, still learning the edges of your ability. You work at a late-night repair shop fixing sky-rail components. You're not a fighter. You're not a hero. You're someone who has been very, very careful — until now.
-
-  Dayo Osei — Ally / Sparks contact. Tall and broad, silver at the temples despite being twenty-four. Pragmatic optimist who treats danger like bad weather. Speaks in short, decisive sentences. "We move or we don't. Either works. One just hurts more." He's the closest thing you have to backup.
-
-  Sable — Wildcard / Unknown allegiance. Compact and quick with amber-grey eyes. Operates at a frequency slightly out of sync with everyone else. Uses questions as weapons. "The question isn't what I want. The question is what you're willing to do about it." You've never met her before tonight.
-
-  TONE GUIDANCE: Cyberpunk noir with high tension. The city should feel both beautiful and oppressive. Use the contrast of the high-tech 'Registered' world against the gritty 'Drifter' reality. Every display of power should feel significant and risky. Focus on the internal pressure of keeping a secret in a world designed to find it out.`,
+Setting: Neo Vantara, 2031. A gleaming megacity built on top of the ruins of the old one...`,
+    storyArc:
+      "The first 3-5 choices should be a high-stakes escape and revelation. The player must choose whether to ally with the stranger (Sable) or run with Dayo as city enforcers unexpectedly raid the block. During the pursuit through the neon-lit lower rings, the player is forced to use their unrefined powers publicly to save a life, breaking their cover permanently. The arc culminates in reaching a temporary safehouse, where Sable reveals the true reason the Soren Tower collapsed and why the player's specific, unnamed power is the only thing that can stop the next one.",
   },
   {
     id: "an-ocean-of-sand",
@@ -651,7 +489,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     description:
       "Stranded in the Karakum Desert with four litres of water and an indifferent sun rising, you must lead your crew away from the 'Door to Hell' before the heat becomes a death sentence.",
     longDescription:
-      "The Darvaza Crater has burned since 1971—a 70-metre pit of fire that serves as your only landmark. After your vehicles vanish in the night, you are left with two crewmates and a dwindling water supply. To the north-northeast lies a settlement 47 kilometres away; to the northwest, a mysterious plume of smoke rises against the dawn. The desert doesn't care if you survive, but your crew does. As the producer, every calculation—and every heartbeat—rests on your shoulders.",
+      "The Darvaza Crater has burned since 1971—a 70-metre pit of fire that serves as your only landmark...",
     coverGradient:
       "linear-gradient(145deg, #e67e22 0%, #d35400 40%, #c0392b 75%, #2c3e50 100%)",
     coverImage: "/covers/an-ocean-of-sand.png",
@@ -666,16 +504,9 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
       "Survival / Drama — high stakes, environmental pressure, psychological endurance",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-  The Karakum Desert, Turkmenistan — an ocean of sand stretching 350,000 square kilometres, baking under a sun that turns the air itself into a weapon. At the centre burns the Darvaza Crater, dubbed the Door to Hell — a 70-metre-wide pit of natural gas that has been on fire since 1971, never once extinguished. Temperatures at the crater's rim exceed 400°C. The desert doesn't feel hostile — it feels indifferent. It was here before you and will be here after. The fire in the distance keeps burning. It always does.
-
-  CHARACTERS
-  You — Documentary field producer. You planned this shoot down to the hour. The fact that you didn't plan for this is the thing you keep circling.
-
-  Reza Tehrani — Field cameraman, 34. Sun-darkened skin, salt-and-pepper beard. Pragmatic to the point of coldness. He doesn't comfort — he calculates. Short declarative sentences. "Water. Count it. Now." He trusts your judgment exactly as far as your judgment has earned it.
-
-  Dani Osei — Production assistant, 22. Tall, thin, wearing a bright orange windbreaker. Genuinely funny under normal circumstances; right now she's performing calm in a way that's clearly rehearsed but not yet cracking. Fears that no one knows what to do.
-
-  TONE GUIDANCE: Stark, visceral survival. The heat should be a physical presence in every description. The tension comes from the silence of the desert and the weight of leadership. Avoid melodrama; focus on the technical reality of dehydration and the psychological toll of isolation.`,
+The Karakum Desert, Turkmenistan — an ocean of sand stretching 350,000 square kilometres...`,
+    storyArc:
+      "The first 3-5 choices should plunge the team into a desperate struggle against the environment. As the sun rises, the player must manage the severe physical toll of dehydration on Dani while rationing the remaining water. They must navigate a sudden, blinding dust storm that threatens to separate the group. The arc culminates when the team reaches the source of the smoke (or the pipeline track) only to find an abandoned, broken-down smuggler's vehicle with no water, forcing the player to scavenge toxic fluids or risk a dangerous night trek.",
   },
   {
     id: "veldara",
@@ -684,7 +515,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     description:
       "A mysterious 1993 game console switches on by itself in a school basement. The game is Veldara—a living, hostile jungle that has already chosen you.",
     longDescription:
-      "Detention at Vanthorpe Academy was supposed to be boring until you found a crate from 1993. Inside is VELDARA: a game that runs without a plug and assigns avatars based on non-negotiable logic. You and three others are being pulled into a procedurally hostile world where losing all three lives means losing everything. The jungle is gorgeous, the warlord Kael is waiting, and the only way home is to win. The game isn't just starting; it's collecting you.",
+      "Detention at Vanthorpe Academy was supposed to be boring until you found a crate from 1993...",
     coverGradient:
       "linear-gradient(145deg, #0a2e0a 0%, #1b4d1b 40%, #2e7d32 75%, #4caf50 100%)",
     coverImage: "/covers/veldara.png",
@@ -699,18 +530,9 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
       "Adventure / Sci-Fi — high-stakes, avatar logic, procedurally hostile world",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-  Vanthorpe Academy, a mid-sized boarding school in coastal Maine. Weekend detention involves sorting through the basement archive. Hidden there is VELDARA, an unmarked 1993 console that switches on without power. Veldara is a living, procedurally hostile jungle continent existing within the game. It runs on avatar logic: players are assigned a body, skillset, and weakness. The goal: retrieve the Sunstone from warlord Kael and restore it to the Heartspire. Rule on death: Lose three lives, and you are gone everywhere. The game chooses its players—once the controllers light up, the contract is made. No matter what you do, the game will suck you in. The jungle is gorgeous, the warlord Kael is waiting, and the only way home is to win.
-
-  CHARACTERS
-  You — The Protagonist. Your avatar is assigned by the game at the start—body, skills, and embarrassing weakness are non-negotiable.
-
-  Dara Nkosi — The Strategist / Reluctant Leader. Tall, lean, hyper-competent, and mildly condescending. She leads because no one else will. Speaks in numbered points when stressed. "One — we don't panic. Two — someone needs to read the cartridge label."
-
-  Finn Calloway — The Chaos Agent. Messy hair, easy grin, and a school blazer always open. Charismatic and adaptable, he hides his depth behind jokes. "So we're trapped in a video game. Cool. Question: does anyone here have experience not dying?"
-
-  Priya Subramaniam — The Wildcard Expert. Methodical and warm with paint-stained fingernails. She understands game mechanics and looks for rules to break. She won't commit until she has clarifying answers.
-
-  TONE GUIDANCE: High-stakes, fast-paced, and darkly funny. The jungle is beautiful but lethal. The tension comes from the 'avatar logic'—being forced into a body or role you didn't choose—and the creeping certainty that the game is in control.`,
+Vanthorpe Academy, a mid-sized boarding school in coastal Maine...`,
+    storyArc:
+      "The first 3-5 choices should be a chaotic initiation into the game's brutal mechanics. The group is sucked into the jungle, discovering their bizarre assigned avatars and non-negotiable weaknesses. The player must immediately lead the team through an ambush by procedural creatures (e.g., vine-wolves), learning to exploit their new abilities. The arc culminates when one of the characters loses their 'first life' to a trap, respawning with a horrifying realization of the pain mechanics, proving that the threat of a game-over is terrifyingly real.",
   },
   {
     id: "extinction-clause",
@@ -719,7 +541,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     description:
       "On a volcanic atoll housing the world's first de-extinction resort, the invisible walls are flickering. You're the biosafety observer who just found out it isn't a glitch.",
     longDescription:
-      "Welcome to Isla Kessara, 2031. Helix Dominion Corp has resurrected seventy-three Mesozoic species using Paleosynthesis. You are a doctoral risk modeller sent by the Ecuadorian Ministry to validate the facility before its grand opening. But when a junior technician reveals that a 'software patch' was actually an external override of the predator barriers, the tropical paradise turns into a ticking clock. The birds have gone silent, the Chief Architect is hiding behind acceptable results, and something in Biome Four is no longer contained.",
+      "Welcome to Isla Kessara, 2031. Helix Dominion Corp has resurrected seventy-three Mesozoic species...",
     coverGradient:
       "linear-gradient(145deg, #1b3022 0%, #2c5137 40%, #3e7451 75%, #52a472 100%)",
     coverImage: "/covers/extinction-clause.png",
@@ -734,18 +556,9 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
       "Thriller / Sci-Fi — corporate conspiracy, ecological dread, survival under pressure",
     audienceAge: "13–18",
     worldContext: `WORLD & STORY CONTEXT
-  Isla Kessara, a privately owned volcanic atoll 340 kilometres off the coast of Ecuador, 2031. Genesis Vault is the world's first successful de-extinction resort, where Mesozoic fauna roam free across seven biomes separated by invisible electromagnetic barriers. The resort is in its final validation week with twelve invited guests. The air is too still, and the birds are too quiet. Last night, barrier nodes in the theropod habitat went offline for eleven seconds—officially a software patch, but unofficially an unknown.
-
-  CHARACTERS
-  You — The protagonist. A biosafety observer for the Ecuadorian Ministry of Environment. PhD in ecological risk modelling. You have a reputation for writing reports nobody wants to read.
-
-  Dr. Chidinma Osei — Chief Paleosynthesis Architect. Visionary and protective. She believes de-extinction is stewardship. Speaks in declarative sentences and goes quiet for three seconds when surprised. "The theropods are stable."
-
-  Renzo Callafuentes — Head of Resort Operations. Immaculate, charming, and profit-driven. Calls everyone "friend" and dismisses concerns as "noise." "At the end of the day, this is just noise."
-
-  Tomás Ikeda-Rowe — Junior Technician, Barrier Systems. Enthusiastically honest and nervous. He's the only one who doesn't answer to Renzo. He suspects an external override of the safety systems.
-
-  TONE GUIDANCE: High-tension corporate thriller with a side of primal dread. The island should feel like a gilded cage. Use the contrast between the luxury of the resort and the prehistoric ferocity of the animals. The horror is not just the creatures, but the human hubris and systemic failure that lets them out.`,
+Isla Kessara, a privately owned volcanic atoll 340 kilometres off the coast of Ecuador, 2031...`,
+    storyArc:
+      "The first 3-5 choices should build the tension of an imminent, localized containment failure. The player must bypass corporate security to access the restricted control hubs or secure evidence from Dr. Osei's lab. They must decide who to trust between the naive technician (Tomás) and the potentially complicit lead scientist (Osei). The arc culminates in a terrifying sequence where the power grid fully drops while the player is trapped outside the guest pavilion, forcing a desperate stealth evasion from an apex predator that is already hunting outside its biome.",
   },
 ];
 
@@ -947,8 +760,6 @@ It's happening again. The thing where they all stop talking and wait.
 Gabe appears beside you and silently hands you a piece of roasted fish on a leaf. You take it. Marco hovers three feet behind him, camera raised, red light blinking.
 
 You look at the clipboard. You look at the river. You look at eleven faces — some watching you, some watching each other — and you feel the weight of every option pressing down at once.
-
-The hill. The phone. The river. The ridge. Forty kilometres of jungle. Seven fish and four days of food. And somewhere out there, a world that doesn't know you're alive.
 
 The rain will come again this afternoon. Whatever you decide, you need to decide before it does.`,
       choices: [
