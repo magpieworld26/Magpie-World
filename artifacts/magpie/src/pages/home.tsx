@@ -49,6 +49,8 @@ function BookCard({
           position: "relative",
           border: "1px solid rgba(255,255,255,0.07)",
           background: story.coverGradient || COVER_CLASSES[0],
+          transform: "translateZ(0)",
+          willChange: "transform",
           ...(story.coverImage
             ? {
                 backgroundImage: `url(${story.coverImage})`,
@@ -159,6 +161,8 @@ function ContinueCard({
           position: "relative",
           overflow: "hidden",
           background: session.story.coverGradient,
+          transform: "translateZ(0)",
+          willChange: "transform",
           ...(session.story.coverImage
             ? {
                 backgroundImage: `url(${session.story.coverImage})`,
@@ -696,6 +700,8 @@ export default function HomePage() {
                     background:
                       story.coverGradient ||
                       COVER_CLASSES[i % COVER_CLASSES.length],
+                    transform: "translateZ(0)",
+                    willChange: "transform",
                     ...(story.coverImage
                       ? {
                           backgroundImage: `url(${story.coverImage})`,
@@ -708,12 +714,12 @@ export default function HomePage() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform =
-                      "translateY(-8px) scale(1.025)";
+                      "translateZ(0) translateY(-8px) scale(1.025)";
                     e.currentTarget.style.boxShadow =
                       "0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(104,230,197,0.2)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "";
+                    e.currentTarget.style.transform = "translateZ(0)";
                     e.currentTarget.style.boxShadow = "";
                   }}
                 >

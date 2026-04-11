@@ -165,6 +165,8 @@ export default function LandingPage() {
                     border: "1px solid rgba(255,255,255,0.08)",
                     cursor: "pointer",
                     background: story.coverGradient || TOP5_GRADIENTS[i % TOP5_GRADIENTS.length],
+                    transform: "translateZ(0)",
+                    willChange: "transform",
                     ...(story.coverImage ? {
                       backgroundImage: `url(${story.coverImage})`,
                       backgroundSize: "cover",
@@ -173,11 +175,11 @@ export default function LandingPage() {
                     transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s",
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.transform = "translateY(-8px) scale(1.025)";
+                    e.currentTarget.style.transform = "translateZ(0) translateY(-8px) scale(1.025)";
                     e.currentTarget.style.boxShadow = "0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(104,230,197,0.2)";
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.transform = "";
+                    e.currentTarget.style.transform = "translateZ(0)";
                     e.currentTarget.style.boxShadow = "";
                   }}
                 >
