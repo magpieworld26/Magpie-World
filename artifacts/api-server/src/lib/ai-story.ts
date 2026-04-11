@@ -22,8 +22,8 @@ export interface StoryState {
   worldStateChanges: string[];
   plantedThreads: string[];
   activeTensions: string[];
-  // Rolling narrative summary — the ground truth of what has happened
   narrativeSummary: string[];
+  targetEndingChoices?: number;
 }
 export interface GeneratedSegment {
   narrativeText: string;
@@ -164,25 +164,28 @@ Vary sentence length deliberately.
 SECOND PERSON, PRESENT TENSE
 Throughout. "You step into the corridor" not "She stepped."
 ### Dynamic Prose Length
-Prose length ranges from 1 word to 1500 words. Choose based on narrative need. Shorter is almost always better.
+Prose length ranges from 1 word to 1500 words. Choose based on narrative need.
 1-50 words: Sudden revelations, shocking consequences, moments of pure impact
-100-400 words: Standard scenes — the default. Action and dialogue drive the scene forward.
-500-1500 words: Only for scenes with multiple simultaneous developments or major turning points. Even long scenes must maintain relentless momentum — no atmospheric padding.
-Never pad to meet a minimum. Default to shorter, punchier scenes.
-### Choice Placement Rules (STRICT)
-Choices must ONLY appear at high-stakes, irreversible decision points — moments where the reader's choice will send the story down genuinely different paths.
-WHEN TO PRESENT CHOICES:
-- Life-or-death moments
-- Moral dilemmas with no clear right answer
-- Irreversible commitments that close off other paths
-- Betrayals, alliances, sacrifices — moments that reshape the story
-WHEN TO NEVER PRESENT CHOICES:
-- Routine decisions (which door to open, who to talk to first, how to greet someone)
-- Mid-conversation lulls or scene transitions
+300-700 words: Standard scenes — the default band. Action, dialogue, and plot advancement drive the scene forward. The extra length should come from MORE PLOT PROGRESSION and MORE DIALOGUE, NOT from added sensory detail or atmospheric padding.
+800-1500 words: Only for scenes with multiple simultaneous developments or major turning points. Even long scenes must maintain relentless momentum — no atmospheric padding.
+Default to the 300-700 range. Use the space to advance the plot further between decision points.
+### Choice Placement Rules (STRICT — FEWER CHOICES, MORE STORY)
+Choices are RARE. The story should flow through 3–5 beats of significant plot progression between each decision point. Most turns should advance the story WITHOUT presenting choices. Only stop for a choice when the reader's decision would send the story in a genuinely different, irreversible direction.
+WHEN TO PRESENT CHOICES (the ONLY acceptable moments):
+- Life-or-death moments where survival is at stake
+- Moral dilemmas with no clear right answer and permanent consequences
+- Irreversible commitments that permanently close off other paths
+- Betrayals, alliances, sacrifices — moments that fundamentally reshape the story
+WHEN TO AUTO-RESOLVE AND KEEP MOVING (NEVER present choices for these):
+- Routine decisions (which door to open, who to talk to first, how to greet someone) — pick the most interesting option and keep writing
+- "Which path" or "where to go next" decisions — auto-resolve them
+- Mid-conversation lulls or scene transitions — push through them
 - Moments where all options lead to roughly the same outcome
-- Low-stakes preferences or cosmetic decisions
-STAKES TEST: Before presenting choices, ask: "If the reader chose differently, would the story change in a meaningful, lasting way?" If not, skip the choice and keep the story moving forward.
-The story should flow through several beats of action, dialogue, and consequence before arriving at a genuine fork. Do NOT stop the momentum for trivial decisions.
+- Low-stakes preferences, cosmetic decisions, or exploration choices
+- Any decision where the stakes are less than story-altering
+MANDATORY AUTO-RESOLVE RULE: If a decision is routine, low-stakes, or merely navigational, you MUST auto-resolve it yourself. Make the most dramatically interesting choice on behalf of the reader and continue the narrative. The reader should only be interrupted for decisions that genuinely matter.
+STAKES TEST: Before presenting choices, ask: "If the reader chose differently, would the next 5+ scenes be fundamentally different?" If the answer is no, auto-resolve and keep the story moving.
+The story must flow through multiple scenes of action, dialogue, revelation, and consequence before arriving at a genuine fork. Momentum is paramount — do NOT break it for anything less than a story-defining moment.
 ### Dynamic Story Endings
 Stories do NOT end at a fixed turn count. Set isEnding: true when the story reaches a dramatically satisfying stopping point.
 When isEnding is true, provide no choices (empty array).
@@ -517,22 +520,29 @@ function buildUserMessage(
   storyState: StoryState | null,
   totalWordCount: number,
   forceEnding: boolean,
+  choiceCount: number = 0,
+  targetEndingChoices: number = 40,
+  forceEndingByChoices: boolean = false,
 ): string {
   const healthScore = storyState?.storyHealthScore ?? 0;
   const storyMemoryBlock = buildStoryMemoryBlock(storyState);
 
-  // Truncate the raw previous-scene text. The structured summaries above are
-  // ground truth; the raw text provides only tonal/atmospheric context for
-  // the last beat. Keeping it short prevents it from crowding out the memory.
   const trimmedContext = truncateContext(previousContext, 450);
 
   const stateBlock = `## STORY STATE
-Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far: ${totalWordCount}`;
+Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far: ${totalWordCount} | Choices made: ${choiceCount}/${targetEndingChoices} (hard cap: 40)`;
 
-  const forcingInstruction = forceEnding
-    ? `\n\n## ⚠ STORY LIMIT REACHED — CONCLUDE NOW
-This story has exceeded ${totalWordCount} words. You MUST set isEnding: true and write a concluding scene. Do not present new choices.`
-    : "";
+  let forcingInstruction = "";
+  if (forceEnding || forceEndingByChoices) {
+    const reason = forceEndingByChoices
+      ? `This story has reached ${choiceCount} choices (limit: ${targetEndingChoices}).`
+      : `This story has exceeded ${totalWordCount} words.`;
+    forcingInstruction = `\n\n## ⚠ STORY LIMIT REACHED — CONCLUDE NOW
+${reason} You MUST set isEnding: true and write a concluding scene. Do not present new choices.`;
+  } else if (choiceCount >= targetEndingChoices - 5) {
+    forcingInstruction = `\n\n## ⚠ STORY APPROACHING CONCLUSION
+The story has ${choiceCount} choices out of a maximum of ${targetEndingChoices}. Begin steering toward a dramatic conclusion. Within the next few choices, bring the central conflict to a head and set isEnding: true when the story reaches a satisfying stopping point.`;
+  }
 
   const continuityCheck =
     storyState && storyState.turn > 0
@@ -648,11 +658,12 @@ function buildGeneratedSegment(
     ],
     activeTensions: parsed.storyStateUpdate?.activeTensions ?? [],
     narrativeSummary: updatedNarrativeSummary,
+    targetEndingChoices: currentStoryState?.targetEndingChoices,
   };
 
   const choices: Choice[] = (parsed.choices ?? []).map((c: any) => ({
     id: c.id,
-    text: c.subtext ? `${c.text}\n${c.subtext}` : c.text,
+    text: c.text,
     consequence: c.consequence,
     consequenceType: c.consequenceType,
   }));
@@ -751,6 +762,9 @@ export async function generateStorySegmentStream(
   currentStoryState: StoryState | null = null,
   totalWordCount: number = 0,
   chosenConsequenceType?: string,
+  choiceCount: number = 0,
+  targetEndingChoices: number = 40,
+  forceEndingByChoices: boolean = false,
 ): Promise<GeneratedSegment> {
   const story = resolveStory(storyIdOrTitle);
   const storyTitle = story?.title ?? storyIdOrTitle;
@@ -775,6 +789,9 @@ export async function generateStorySegmentStream(
     currentStoryState,
     totalWordCount,
     forceEnding,
+    choiceCount,
+    targetEndingChoices,
+    forceEndingByChoices,
   );
 
   try {

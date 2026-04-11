@@ -17,6 +17,12 @@ const router: IRouter = Router();
 
 const MAX_STORY_WORDS = 50000;
 const FORCE_ENDING_THRESHOLD = 47000;
+const MAX_STORY_CHOICES = 40;
+const MIN_ENDING_CHOICES = 25;
+
+function pickTargetEndingChoices(): number {
+  return Math.floor(Math.random() * (MAX_STORY_CHOICES - MIN_ENDING_CHOICES + 1)) + MIN_ENDING_CHOICES;
+}
 
 function parseChoices(choicesJson: string): Array<{ id: string; text: string; consequence?: string; consequenceType?: string }> {
   try {
@@ -106,6 +112,9 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
   const initialNode = getInitialStoryNode(storyId);
   const initialWordCount = countWords(initialNode.narrativeText);
 
+  const targetEndingChoices = pickTargetEndingChoices();
+  const initialStoryStateJson = JSON.stringify({ targetEndingChoices });
+
   let session: typeof storySessionsTable.$inferSelect;
 
   if (activeMembership) {
@@ -121,6 +130,7 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
           nodeCount: 1,
           totalWordCount: initialWordCount,
           storyHealthScore: 0,
+          storyStateJson: initialStoryStateJson,
         })
         .returning();
       await tx.insert(storyNodesTable).values({
@@ -169,6 +179,7 @@ router.post("/sessions", requireAuth, async (req: AuthenticatedRequest, res): Pr
           nodeCount: 1,
           totalWordCount: initialWordCount,
           storyHealthScore: 0,
+          storyStateJson: initialStoryStateJson,
         })
         .returning();
 
@@ -281,6 +292,17 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
     return;
   }
 
+  // Hard cap: if already at or over MAX_STORY_CHOICES, mark completed and reject continuation
+  const currentChoiceCount = (session.nodeCount ?? 1) - 1;
+  if (currentChoiceCount >= MAX_STORY_CHOICES) {
+    await db
+      .update(storySessionsTable)
+      .set({ status: "completed" })
+      .where(eq(storySessionsTable.id, id));
+    res.status(400).json({ message: "Story has reached the maximum number of choices and has concluded", code: "STORY_MAX_CHOICES" });
+    return;
+  }
+
   const parsed = ContinueSessionBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ message: "Invalid request body" });
@@ -343,6 +365,7 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
         plantedThreads: Array.isArray(raw?.plantedThreads) ? raw.plantedThreads : [],
         activeTensions: Array.isArray(raw?.activeTensions) ? raw.activeTensions : [],
         narrativeSummary: Array.isArray(raw?.narrativeSummary) ? raw.narrativeSummary : [],
+        targetEndingChoices: typeof raw?.targetEndingChoices === "number" ? raw.targetEndingChoices : undefined,
       };
     } catch {
       currentStoryState = {
@@ -371,6 +394,14 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
 
   const forceEnding = currentTotalWordCount >= FORCE_ENDING_THRESHOLD;
 
+  const targetEndingChoices = currentStoryState.targetEndingChoices
+    ?? pickTargetEndingChoices();
+  if (!currentStoryState.targetEndingChoices) {
+    currentStoryState.targetEndingChoices = targetEndingChoices;
+  }
+  const newChoiceCount = currentChoiceCount + 1;
+  const forceEndingByChoices = newChoiceCount >= targetEndingChoices;
+
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
@@ -391,9 +422,10 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
       (chunk) => sendEvent("chunk", { text: chunk }),
       currentStoryState,
       currentTotalWordCount,
-      // Pass undefined here: health delta is already applied above (updatedHealthScore).
-      // buildGeneratedSegment would double-apply if we passed consequenceType again.
       undefined,
+      newChoiceCount,
+      targetEndingChoices,
+      forceEndingByChoices,
     );
 
     let narrativeText = generated.narrativeText;
@@ -409,8 +441,7 @@ router.post("/sessions/:sessionId/continue", requireAuth, async (req: Authentica
 
     const updatedTotalWordCount = currentTotalWordCount + newWordCount;
 
-    // Force ending if we've now hit the cap or AI decided to end
-    const isEnding = generated.isEnding || forceEnding || updatedTotalWordCount >= MAX_STORY_WORDS;
+    const isEnding = generated.isEnding || forceEnding || forceEndingByChoices || updatedTotalWordCount >= MAX_STORY_WORDS;
 
     const newNodeId = randomUUID();
     const [newNode] = await db
