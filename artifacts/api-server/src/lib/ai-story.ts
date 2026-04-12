@@ -2,12 +2,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { logger } from "./logger";
 import { getStoryById, storiesData } from "./stories-data";
-
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-// ⚠️ IMPORTANT: Copy your exact MODEL string from your old ai-story.ts and paste it here.
-// Context caching works best with a pinned version like "gemini-1.5-flash-001".
-// Do NOT guess — use whatever string was already working for you.
 const MODEL = "gemini-2.5-flash-lite";
 
 // ─────────────────────────────────────────────
@@ -31,6 +26,10 @@ export interface StoryState {
   activeTensions: string[];
   narrativeSummary: string[];
   targetEndingChoices?: number;
+  // New: tracks whether the AI has signalled narrative readiness to conclude
+  narrativeReadyToEnd?: boolean;
+  // New: consecutive "neutral" turns — used to nudge story forward
+  stalledTurns?: number;
 }
 
 export interface GeneratedSegment {
@@ -84,6 +83,13 @@ const storyResponseSchema = {
       },
     },
     isEnding: { type: Type.BOOLEAN },
+    // New field: AI signals when the narrative arc is approaching resolution
+    // so the ending window can expand or contract dynamically.
+    narrativeReadyToEnd: {
+      type: Type.BOOLEAN,
+      description:
+        "Set true when the story's central conflict is approaching a natural climax or resolution — even if the story is not ending this turn. Used to dynamically adjust the ending window.",
+    },
     storyStateUpdate: {
       type: Type.OBJECT,
       properties: {
@@ -111,6 +117,7 @@ const storyResponseSchema = {
     "sceneSummary",
     "choices",
     "isEnding",
+    "narrativeReadyToEnd",
     "storyStateUpdate",
   ],
 };
@@ -183,16 +190,31 @@ MANDATORY AUTO-RESOLVE RULE: If a decision is routine, low-stakes, or merely nav
 STAKES TEST: Before presenting choices, ask: "If the reader chose differently, would the next 5+ scenes be fundamentally different?" If the answer is no, auto-resolve and keep the story moving.
 The story must flow through multiple scenes of action, dialogue, revelation, and consequence before arriving at a genuine fork. Momentum is paramount — do NOT break it for anything less than a story-defining moment.
 ### Dynamic Story Endings
-Stories do NOT end at a fixed turn count. Set isEnding: true when the story reaches a dramatically satisfying stopping point.
+Stories do NOT end at a fixed turn count. Set isEnding: true ONLY when the story reaches a dramatically satisfying stopping point — meaning:
+  - The central conflict has been resolved or irrevocably decided
+  - The protagonist has crossed a point of no return
+  - All major planted threads have paid off or been deliberately left open for thematic effect
+  - The emotional arc of the story has completed
+  - At least 8 meaningful choices have been made — a story that ends in fewer choices has not had room to breathe, develop characters, or earn its conclusion
+Do NOT end the story prematurely. A free-will action that happens to resolve a surface conflict is NOT a story ending — the deeper threads, relationships, and consequences still need to play out. A story that ends before its threads are resolved is not a satisfying ending — it is an abandoned story. Equally, a story that keeps going after its natural conclusion loses all power. Find the exact right moment.
 When isEnding is true, provide no choices (empty array).
-Ending tone is calibrated by story health score:
-- Score >= +8: spectacular win — everything the reader fought for is realised
-- Score +4 to +7: good outcome — meaningful success with some costs
-- Score +1 to +3: mixed result — partial win, something important was lost
-- Score 0: ambiguous — neither victory nor defeat, open to interpretation
-- Score -1 to -3: partial failure — the goal was missed, but survival remains
-- Score -4 to -7: bad outcome — significant loss, lasting consequences
-- Score <= -8: catastrophic loss — everything unravels, total defeat
+Ending tone is calibrated by story health score. Every band — winning or losing — demands the same craft and specificity. A great victory ending is as hard to write as a great tragic one.
+
+WINNING ENDINGS (score positive) — do not soften, rush, or undercut these:
+- Score >= +12: LEGENDARY — the protagonist didn't just win; they changed the shape of the world. The ending image should feel mythic. Something that was impossible at the start is now simply true. Write this with the scale of Le Guin or Tolkien's grey havens — earned weight, not triumphalism.
+- Score +9 to +11: FULL TRIUMPH — the central goal is achieved completely. The cost was real but worth it. The reader should feel the specific texture of what winning this particular thing actually means. Not generic joy — the exact flavour of THIS victory. Show what the world looks like now that the impossible thing is done.
+- Score +6 to +8: HARD-WON SUCCESS — won, but something of real value was spent to get here. The ending holds both things simultaneously: the achievement and the cost. Do not resolve the tension by deciding which one matters more. Let both stand. Think of Frodo at the end of The Lord of the Rings — the Shire is saved, and he can no longer live in it.
+- Score +3 to +5: BITTERSWEET VICTORY — the goal was achieved but the protagonist is not the same person who started. Something was permanently altered. The ending image should capture what was gained AND what was irreversibly changed. The reader should feel the gap between who the protagonist was and who they are now.
+- Score +1 to +2: NARROW WIN — barely made it. The victory is real but fragile; the world is not saved, only this particular thing, this particular person. The ending should feel like a held breath finally released — not celebration, just survival with meaning.
+
+AMBIGUOUS / TURNING POINT:
+- Score 0: AMBIGUOUS — neither victory nor defeat. The ending earns its ambiguity through a single specific, concrete image — not vagueness. The reader should be able to argue for either reading and find evidence for both.
+
+LOSING ENDINGS (score negative) — these must be written with full craft, not dismissed:
+- Score -1: PYRRHIC — the battle was won but something essential was lost in the winning. The protagonist got what they fought for, and now stands in the wreckage of what that cost. The ending should show the hollow place where the victory lives.
+- Score -2 to -4: PARTIAL FAILURE — the goal was missed; survival remains; the protagonist is changed by the loss. Not destroyed — changed. The ending should show specifically how the world is different, and what the protagonist carries forward.
+- Score -5 to -7: BAD OUTCOME — something is broken that cannot be fixed. The ending must name what was lost without melodrama. Show it in a single concrete image. The world continues; the loss is permanent.
+- Score <= -8: CATASTROPHIC — everything unravels. This MUST still be written with full literary craft — a great tragic ending, not a dismissal. Think of the closing of 1984 or Blood Meridian. Total defeat can be the most powerful ending of all if it is written with precision and inevitability. The reader should feel that this was always where the story was going.
 ### What to Avoid
 - Recapping the previous scene. Start with what happens next.
 - Telling the reader how they feel.
@@ -206,6 +228,82 @@ Ending tone is calibrated by story health score:
 - Characters who exist only to deliver information. Every character must want something.
 - Lengthy sensory descriptions, atmospheric padding, or scene-setting monologues.
 - Stopping the story for trivial or low-stakes choices.
+`;
+
+// ─────────────────────────────────────────────
+// Literary Ending Craft (injected at conclusion phase)
+//
+// This block is NOT part of the standing system prompt — it is injected
+// dynamically into the user message only when the story is approaching
+// or reaching its conclusion. Keeping it out of the cached system prompt
+// keeps the cache hit rate high for mid-story turns.
+// ─────────────────────────────────────────────
+const LITERARY_ENDING_CRAFT = `
+## ═══ ENDING CRAFT — HOW GREAT NOVELS END ═══
+You are now writing toward (or at) the story's conclusion. Study the techniques below and apply them.
+
+### What separates a memorable ending from a forgettable one
+Forgettable endings: summarise what happened, tell the reader how to feel, resolve everything neatly, add a final paragraph explaining the theme.
+Memorable endings: arrive at a specific, concrete image or moment that carries all the weight without explanation. The reader understands — they are not told.
+
+### Core techniques (drawn from literature's greatest closings)
+
+**THE RESONANT IMAGE** (Fitzgerald, le Carré, McCarthy)
+End on a single concrete image that crystallises the whole story's meaning. Not an explanation — an image.
+Fitzgerald ends Gatsby not with a summary of Jay's tragedy but with boats against the current, borne back ceaselessly into the past.
+McCarthy ends The Road not with survival statistics but a man's hands in a cold stream and the memory of trout.
+Your ending image should: be specific to THIS story, connect back to something established early, carry meaning without stating it.
+
+**THE EARNED REVERSAL** (Austen, Dostoevsky, Ishiguro)
+The final beat recontextualises everything that came before. What the reader thought the story was about turns out to be the surface; the final moment reveals the depth.
+Ishiguro ends Never Let Me Go not with the tragedy of the clones but with a quiet field and the realisation that everyone — not just the characters — is running out of road.
+Use this when the story's true subject is not what it appeared to be on the surface.
+
+**THE UNRESOLVED THREAD AS THEME** (Chekhov, Carver, Morrison)
+Not everything resolves. Some endings leave one thread deliberately open — and the open thread IS the meaning.
+The thing left unresolved must be the thing that most matters. Chekhov's characters leave rooms that they will never re-enter. The door closing IS the ending.
+Use this for ambiguous or bittersweet scores.
+
+**THE COST THAT LANDS LATE** (Hemingway, O'Brien, le Carré)
+The ending reveals that the victory (if there was one) cost more than the protagonist understood at the time.
+The final moment is not "I won" but "I won, and this is what winning looks like." The reader feels the cost — they are not told about it.
+Use this for mixed or pyrrhic outcomes.
+
+**THE CIRCULAR RETURN** (García Márquez, Conrad, Woolf)
+The ending returns to an image, phrase, or moment from the opening — but now it carries entirely different weight because of everything that happened between.
+The reader recognises the echo and feels the full arc of the story in a single flash. What was innocence is now knowledge. What was hope is now either fulfilment or ruin.
+Use this when the story has an established motif or opening image worth returning to.
+
+**THE QUIET AFTER** (Munro, Cheever, Saunders)
+After catastrophe or triumph, the world keeps going. The ending shows the ordinary world resuming — and the contrast with what just happened carries all the emotion.
+The character makes tea. The sun comes up. A child asks an unrelated question.
+The mundane detail after the extraordinary event IS the ending. The reader supplies the grief or the joy.
+
+### Things that kill endings
+- The protagonist reflects on what they learned. (Never. Show, do not tell.)
+- A final paragraph of summary or explanation.
+- Telling the reader the theme.
+- Resolving a thread that was more powerful left open.
+- A hopeful final line that isn't earned by the story's events.
+- Any version of "and so [protagonist] finally understood..."
+- Adding new information in the last scene that wasn't planted earlier.
+
+### Length of the ending
+Endings are almost always SHORTER than the scenes that precede them.
+The climax may be long. The ending — the moment after the climax settles — is usually 150-400 words.
+The weight of the ending comes from precision, not length.
+Resist the urge to write more. The last image should land and then stop.
+
+### The final sentence
+The final sentence of a great story is never accidental. It carries the whole story's weight.
+Read it alone. Ask: does it resonate without context? Does it add resonance when the reader has the full context?
+Great last lines (paraphrased to avoid reproduction):
+- A character alone, doing something small, while something immense has just happened.
+- A question that the story has just answered — but not in words.
+- A description of the world that is also a description of the character's inner state.
+- The specific sensation of an irreversible change.
+Write your final sentence knowing it is the last thing the reader will carry with them.
+═══════════════════════════════════════════════════════
 `;
 
 // ─────────────────────────────────────────────
@@ -296,7 +394,7 @@ Watch for: Never describe what is scary. Fear is created by NOT naming the thing
 THE DIALOGUE IMPERATIVE
 Normal conversation alongside mounting horror is THE technique.
 People talk about mundane things while something is deeply wrong. This contrast IS the fear.
-Never explain what the dialogue means. Never interrupt a frightening moment to annotate it.
+Never explain what the frightening moment means. Never interrupt it to annotate it.
 Example voice:
 "It's probably a pipe," Dev said. He was making tea. He always made tea when he didn't want to think about something.
 The sound came again from upstairs. Rhythmic. Patient.
@@ -457,11 +555,6 @@ function getGenreStyleBlock(genre: string): string {
 
 // ─────────────────────────────────────────────
 // System Prompt Builder
-//
-// storyArc is intentionally NOT included here. The system instruction
-// is what gets cached — it must be identical across all turns for every
-// user on the same story. storyArc is dynamic (only needed for turns 1-5)
-// so it lives in buildUserMessage() instead.
 // ─────────────────────────────────────────────
 function buildSystemInstruction(
   storyTitle: string,
@@ -491,28 +584,17 @@ ${UNIVERSAL_PROSE_RULES}`;
 
 // ─────────────────────────────────────────────
 // Context Cache Registry
-//
-// One cache per story, shared across ALL users reading that story.
-// Two data structures work together:
-//
-//   systemPromptCacheRegistry  — maps cache key → { Gemini cache name, expiry }
-//   cacheCreationInProgress    — maps cache key → in-flight Promise
-//
-// The in-flight Promise is the race condition fix. If 50 users start the
-// same story at the exact same moment before any cache exists, they all
-// await the same Promise. One cache gets created, everyone uses it.
-// Without this, 50 separate cache-create calls fire simultaneously.
 // ─────────────────────────────────────────────
 interface CacheEntry {
-  name: string; // Gemini cache resource name e.g. "cachedContents/abc123"
-  expiresAt: number; // ms since epoch
+  name: string;
+  expiresAt: number;
 }
 
 const systemPromptCacheRegistry = new Map<string, CacheEntry>();
 const cacheCreationInProgress = new Map<string, Promise<string | null>>();
 
-const CACHE_TTL_SECONDS = 7200; // 2 hour cache lifetime
-const CACHE_REFRESH_BUFFER_MS = 5 * 60 * 1000; // recreate if <5 min left
+const CACHE_TTL_SECONDS = 7200;
+const CACHE_REFRESH_BUFFER_MS = 5 * 60 * 1000;
 
 function buildCacheKey(storyIdOrTitle: string, genre: string): string {
   return `${storyIdOrTitle}::${normaliseGenre(genre)}`;
@@ -526,7 +608,6 @@ async function getOrCreateSystemCache(
   const key = buildCacheKey(storyIdOrTitle, genre);
   const now = Date.now();
 
-  // ── 1. Return live cache if we already have one ──────────────────────────
   const existing = systemPromptCacheRegistry.get(key);
   if (existing && existing.expiresAt > now + CACHE_REFRESH_BUFFER_MS) {
     logger.info(
@@ -536,14 +617,12 @@ async function getOrCreateSystemCache(
     return existing.name;
   }
 
-  // ── 2. If another request is already creating this cache, wait for it ────
   const inFlight = cacheCreationInProgress.get(key);
   if (inFlight) {
     logger.info({ key }, "Cache creation in flight — awaiting shared promise");
     return inFlight;
   }
 
-  // ── 3. No live cache, no in-flight creation — start one ──────────────────
   const creationPromise: Promise<string | null> = (async () => {
     try {
       const cache = await ai.caches.create({
@@ -566,16 +645,12 @@ async function getOrCreateSystemCache(
       );
       return cache.name ?? null;
     } catch (err) {
-      // Caching is a performance optimisation, not a correctness requirement.
-      // If it fails for any reason (wrong model version, prompt too short,
-      // quota issue) the story continues normally — just without the savings.
       logger.warn(
         { err, key },
         "Cache creation failed — falling back to direct system instruction",
       );
       return null;
     } finally {
-      // Always clean up the in-flight marker so future requests can retry
       cacheCreationInProgress.delete(key);
     }
   })();
@@ -586,12 +661,6 @@ async function getOrCreateSystemCache(
 
 // ─────────────────────────────────────────────
 // Shared config builder
-//
-// Handles the cachedContent vs systemInstruction switch in one place.
-// cachedContent and systemInstruction are mutually exclusive in Gemini's API.
-// If caching succeeded (name returned), use cachedContent.
-// If caching failed (null returned), fall back to systemInstruction directly —
-// identical to the original code, just without the cost/latency benefit.
 // ─────────────────────────────────────────────
 function buildGenerateConfig(
   cachedContentName: string | null,
@@ -610,9 +679,6 @@ function buildGenerateConfig(
 
 // ─────────────────────────────────────────────
 // Story Memory Builder
-// Builds the COMPLETE, uncompressed narrative history.
-// Every turn summary is kept in full — no truncation.
-// This is the primary mechanism preventing story amnesia.
 // ─────────────────────────────────────────────
 function buildStoryMemoryBlock(storyState: StoryState | null): string {
   const summaries: string[] = storyState?.narrativeSummary ?? [];
@@ -640,6 +706,84 @@ ACTIVE TENSIONS (keep alive unless resolved): ${(storyState.activeTensions ?? []
 }
 
 // ─────────────────────────────────────────────
+// Dynamic Ending Window Calculator
+//
+// Rather than a fixed "end at turn N" cap, the ending window is a range:
+//   - EARLIEST the story can naturally end (AI judgement respected after this)
+//   - LATEST the story is allowed to continue (hard cap, graceful not abrupt)
+//
+// The window shifts based on:
+//   1. narrativeReadyToEnd signal from the AI (pulls window earlier)
+//   2. stalledTurns counter (if score hasn't moved in 4+ turns, push toward end)
+//   3. Total word count (very long stories get a tighter window)
+//
+// The default target is 25-35 choices — enough for a full arc without
+// overstaying. Hard cap is 45 to allow genuinely expansive stories room.
+// ─────────────────────────────────────────────
+const DEFAULT_EARLIEST_END = 15; // never end before this many choices
+const DEFAULT_TARGET_END = 28; // natural conclusion zone starts here
+const DEFAULT_HARD_CAP = 45; // absolute maximum choices before forced end
+const WORD_COUNT_SOFT_CAP = 40000; // soft nudge toward ending
+const WORD_COUNT_HARD_CAP = 50000; // absolute word count hard stop
+
+interface EndingWindowResult {
+  forceEndingNow: boolean; // must end this turn
+  approachingConclusion: boolean; // soft nudge — steer toward ending
+  turnsRemaining: number; // how many choices remain before hard cap
+}
+
+function calculateEndingWindow(
+  choiceCount: number,
+  totalWordCount: number,
+  storyState: StoryState | null,
+): EndingWindowResult {
+  const target = storyState?.targetEndingChoices ?? DEFAULT_TARGET_END;
+  const hardCap = Math.min(target + 10, DEFAULT_HARD_CAP);
+
+  // ── Hard stops ───────────────────────────────────────────────────────────
+  if (totalWordCount >= WORD_COUNT_HARD_CAP || choiceCount >= hardCap) {
+    return {
+      forceEndingNow: true,
+      approachingConclusion: true,
+      turnsRemaining: 0,
+    };
+  }
+
+  const narrativeReady = storyState?.narrativeReadyToEnd ?? false;
+  const stalledTurns = storyState?.stalledTurns ?? 0;
+
+  // ── Dynamic target adjustment ────────────────────────────────────────────
+  // If the AI has flagged narrative readiness AND we're past the earliest end
+  // point, pull the target in so the story doesn't drag.
+  let effectiveTarget = target;
+  if (narrativeReady && choiceCount >= DEFAULT_EARLIEST_END) {
+    // Give up to 5 more choices to reach the natural conclusion.
+    effectiveTarget = Math.min(choiceCount + 5, hardCap);
+  }
+
+  // If the story has stalled (score flat for 4+ consecutive turns) and we're
+  // past the earliest end, push gently toward resolution.
+  if (stalledTurns >= 4 && choiceCount >= DEFAULT_EARLIEST_END) {
+    effectiveTarget = Math.min(effectiveTarget, choiceCount + 6);
+  }
+
+  // ── Word count soft nudge ────────────────────────────────────────────────
+  if (totalWordCount >= WORD_COUNT_SOFT_CAP) {
+    effectiveTarget = Math.min(effectiveTarget, choiceCount + 4);
+  }
+
+  const turnsRemaining = hardCap - choiceCount;
+  const approachingConclusion = choiceCount >= effectiveTarget - 4;
+  const forceEndingNow =
+    choiceCount >= effectiveTarget &&
+    (narrativeReady ||
+      stalledTurns >= 6 ||
+      totalWordCount >= WORD_COUNT_SOFT_CAP);
+
+  return { forceEndingNow, approachingConclusion, turnsRemaining };
+}
+
+// ─────────────────────────────────────────────
 // Dynamic User Message
 // ─────────────────────────────────────────────
 function buildUserMessage(
@@ -648,37 +792,60 @@ function buildUserMessage(
   nodeIndex: number,
   storyState: StoryState | null,
   totalWordCount: number,
-  forceEnding: boolean,
   storyArc: string | undefined,
-  choiceCount: number = 0,
-  targetEndingChoices: number = 40,
-  forceEndingByChoices: boolean = false,
+  choiceCount: number,
+  endingWindow: EndingWindowResult,
 ): string {
   const healthScore = storyState?.storyHealthScore ?? 0;
   const storyMemoryBlock = buildStoryMemoryBlock(storyState);
 
   const stateBlock = `## STORY STATE
-Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far: ${totalWordCount} | Choices made: ${choiceCount}/${targetEndingChoices} (hard cap: 40)`;
+Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words so far: ${totalWordCount} | Choices made: ${choiceCount}`;
 
-  // Story arc is only included for the first 5 turns (nodeIndex 0–4).
-  // After turn 5 the story has its own established momentum and characters —
-  // repeating the arc adds noise and wastes tokens on every request.
   const STORY_ARC_TURN_LIMIT = 5;
   const storyArcBlock =
     storyArc && nodeIndex < STORY_ARC_TURN_LIMIT
       ? `\n## NARRATIVE ARC GUIDANCE\nThis guidance describes the intended shape of the early story. Use it as a compass, not a script — the reader's choices drive the actual path.\n${storyArc}\n`
       : "";
 
-  let forcingInstruction = "";
-  if (forceEnding || forceEndingByChoices) {
-    const reason = forceEndingByChoices
-      ? `This story has reached ${choiceCount} choices (limit: ${targetEndingChoices}).`
-      : `This story has exceeded ${totalWordCount} words.`;
-    forcingInstruction = `\n\n## ⚠ STORY LIMIT REACHED — CONCLUDE NOW
-${reason} You MUST set isEnding: true and write a concluding scene. Do not present new choices.`;
-  } else if (choiceCount >= targetEndingChoices - 5) {
-    forcingInstruction = `\n\n## ⚠ STORY APPROACHING CONCLUSION
-The story has ${choiceCount} choices out of a maximum of ${targetEndingChoices}. Begin steering toward a dramatic conclusion. Within the next few choices, bring the central conflict to a head and set isEnding: true when the story reaches a satisfying stopping point.`;
+  // ── Ending instructions — graduated and craft-aware ──────────────────────
+  let endingInstruction = "";
+
+  if (endingWindow.forceEndingNow) {
+    // Forced ending: give full literary craft guidance so quality doesn't drop
+    endingInstruction = `
+${LITERARY_ENDING_CRAFT}
+## ⚠ THE STORY MUST CONCLUDE THIS TURN
+The narrative has reached its limit. Set isEnding: true. Write the ending scene now.
+Apply every technique in the ENDING CRAFT block above. This is the final impression the reader will carry. Make it count.
+The ending should feel INEVITABLE in retrospect — as though the whole story was always heading here.
+Score ${healthScore}: use the full ending scale in the Universal Prose Rules to determine the tone.
+${
+  healthScore >= 1
+    ? `⚑ POSITIVE SCORE (${healthScore}): The reader earned a winning ending. Write it. Do NOT default to tragedy, undercut the victory, or introduce last-minute loss as a false gesture toward realism. Victory endings require as much craft as tragic ones — write the specific texture of what this particular win means, in this particular story. Rise to it.`
+    : healthScore === 0
+      ? `⚑ SCORE ZERO: Write a genuinely ambiguous ending — not sad by default. Balanced on a knife edge. The reader should be able to argue for either reading and find evidence for both.`
+      : `⚑ NEGATIVE SCORE (${healthScore}): Write the loss with full literary craft — not as a dismissal, but as a deliberate, inevitable ending that earns its tragedy.`
+}
+Do not present choices. Do not summarise. End on a specific, resonant image or moment.`;
+  } else if (endingWindow.approachingConclusion) {
+    // Soft approach zone: prime the AI to start thinking about the end
+    endingInstruction = `
+${LITERARY_ENDING_CRAFT}
+## STORY APPROACHING ITS CONCLUSION (${endingWindow.turnsRemaining} choices remaining before hard cap)
+The central conflict should now be approaching its climax. Begin steering deliberately toward resolution.
+- Planted threads must be paid off or consciously left open for thematic effect.
+- Active tensions should be escalating toward their breaking point.
+- If this turn reaches a dramatically satisfying stopping point, set isEnding: true and apply the ending craft above.
+- Do NOT drag the story out past its natural end. When the moment arrives, take it.
+Score ${healthScore}: the ending you're building toward should honour this score.
+${
+  healthScore >= 1
+    ? `⚑ POSITIVE SCORE (${healthScore}): Steer toward a winning ending. The reader has earned it through their choices. Do not undercut it with unnecessary loss or ambiguity unless the story's planted threads genuinely demand it.`
+    : healthScore === 0
+      ? `⚑ SCORE ZERO: Build toward an ambiguous ending — not defaulting to sadness, but genuinely poised between outcomes.`
+      : `⚑ NEGATIVE SCORE (${healthScore}): Steer toward a losing ending — but one written with full craft and inevitability, not as a throwaway.`
+}`;
   }
 
   const continuityCheck =
@@ -697,7 +864,7 @@ ${storyMemoryBlock}## PREVIOUS SCENE (full text — authoritative record is in S
 ${previousContext}
 
 ## THE READER CHOSE: "${choiceMade}"
-${continuityCheck}${forcingInstruction}
+${continuityCheck}${endingInstruction}
 Write scene ${nodeIndex + 1} now. Begin directly with the consequence of the choice — do not recap or summarise what just happened.`;
 }
 
@@ -731,21 +898,59 @@ async function executeWithRetry<T>(
 }
 
 // ─────────────────────────────────────────────
-// Health score delta from consequenceType
+// Health Score Delta
+//
+// Previous scoring was asymmetric: bad=-2, catastrophic=-5 but good=+2.
+// One catastrophic choice undid 2.5 good choices, making positive endings
+// nearly impossible in practice. The revised scale is:
+//
+//   good:         +3   (was +2) — good choices should meaningfully reward
+//   neutral:       0   (unchanged)
+//   bad:          -2   (unchanged — bad choices have real but recoverable cost)
+//   catastrophic:  -4  (was -5 — severe but not story-ruining on its own)
+//
+// Additionally a small base accumulation (+1 every 8 choices) rewards
+// sustained engagement and represents the protagonist growing through
+// the story — preventing score decay in long neutral stretches.
 // ─────────────────────────────────────────────
-export function healthScoreDelta(consequenceType: string | undefined): number {
-  switch (consequenceType) {
-    case "good":
-      return 2;
-    case "neutral":
-      return 0;
-    case "bad":
-      return -2;
-    case "catastrophic":
-      return -5;
-    default:
-      return 0;
-  }
+export function healthScoreDelta(
+  consequenceType: string | undefined,
+  choiceCount: number = 0,
+): number {
+  const baseDelta = (() => {
+    switch (consequenceType) {
+      case "good":
+        return 3;
+      case "neutral":
+        return 0;
+      case "bad":
+        return -2;
+      case "catastrophic":
+        return -4;
+      default:
+        return 0;
+    }
+  })();
+
+  // Protagonist growth bonus: +1 every 8 choices regardless of outcome.
+  // Represents the character learning, adapting, surviving.
+  const growthBonus = choiceCount > 0 && choiceCount % 8 === 0 ? 1 : 0;
+
+  return baseDelta + growthBonus;
+}
+
+// ─────────────────────────────────────────────
+// Stall Detector
+//
+// Tracks how many consecutive turns the health score has not moved.
+// Used by calculateEndingWindow to nudge stalled stories toward resolution.
+// ─────────────────────────────────────────────
+function updateStalledTurns(
+  prevState: StoryState | null,
+  delta: number,
+): number {
+  if (delta !== 0) return 0; // any movement resets the counter
+  return (prevState?.stalledTurns ?? 0) + 1;
 }
 
 // ─────────────────────────────────────────────
@@ -757,10 +962,12 @@ function buildGeneratedSegment(
   nodeIndex: number,
   currentStoryState: StoryState | null,
   chosenConsequenceType?: string,
+  choiceCount: number = 0,
 ): GeneratedSegment {
   const turnNumber = nodeIndex + 1;
   const prevScore = currentStoryState?.storyHealthScore ?? 0;
-  const delta = healthScoreDelta(chosenConsequenceType);
+  const delta = healthScoreDelta(chosenConsequenceType, choiceCount);
+  const stalledTurns = updateStalledTurns(currentStoryState, delta);
 
   const newSummary =
     parsed.sceneSummary ?? `Turn ${turnNumber}: Player chose "${choiceMade}".`;
@@ -796,7 +1003,11 @@ function buildGeneratedSegment(
     ],
     activeTensions: parsed.storyStateUpdate?.activeTensions ?? [],
     narrativeSummary: updatedNarrativeSummary,
-    targetEndingChoices: currentStoryState?.targetEndingChoices,
+    targetEndingChoices:
+      currentStoryState?.targetEndingChoices ?? DEFAULT_TARGET_END,
+    // Carry forward AI narrative readiness signal
+    narrativeReadyToEnd: parsed.narrativeReadyToEnd ?? false,
+    stalledTurns,
   };
 
   const choices: Choice[] = (parsed.choices ?? []).map((c: any) => ({
@@ -806,10 +1017,128 @@ function buildGeneratedSegment(
     consequenceType: c.consequenceType,
   }));
 
+  // ── Ending Gate ───────────────────────────────────────────────────────────
+  // The AI may signal isEnding: true at any point — including turn 1 if a
+  // free-will input happens to resolve everything narratively. We respect
+  // the AI's judgement but enforce three non-negotiable conditions:
+  //
+  //   1. MINIMUM TURNS: A story cannot end before MIN_TURNS_BEFORE_ENDING
+  //      choices. This prevents a single dramatic free-will action from
+  //      short-circuiting a story that has barely started.
+  //
+  //   2. PLANTED THREADS: If the story has planted threads that haven't
+  //      appeared in the scene summary as resolved or consciously left open,
+  //      the ending is deferred and the AI gets one more turn to honour them.
+  //      (We check this loosely — if ANY planted thread keyword appears
+  //      nowhere in the accumulated summaries, we defer.)
+  //
+  //   3. ARC MINIMUM: The story must have at least reached the point where
+  //      the central conflict was introduced — nodeIndex >= 2 ensures at
+  //      least an opening + complication + resolution structure.
+  //
+  // When an ending is deferred, choices are restored (from the parsed output
+  // if available, or a single "continue" fallback) so the story keeps moving.
+  // ─────────────────────────────────────────────────────────────────────────
+  const MIN_TURNS_BEFORE_ENDING = 8; // absolute floor — no story ends in fewer than 8 choices
+  const MIN_ARC_NODES = 3; // nodeIndex floor — need opening + complication + resolution
+
+  function isEndingPermitted(): boolean {
+    // Hard floor on choice count
+    if (choiceCount < MIN_TURNS_BEFORE_ENDING) return false;
+    // Hard floor on node index (arc structure minimum)
+    if (nodeIndex < MIN_ARC_NODES) return false;
+    return true;
+  }
+
+  function hasUnresolvedCriticalThreads(): boolean {
+    const planted = updatedStoryState.plantedThreads ?? [];
+    if (planted.length === 0) return false;
+
+    // Build a single searchable string from all summaries produced so far
+    const fullHistory = (updatedStoryState.narrativeSummary ?? [])
+      .join(" ")
+      .toLowerCase();
+    const latestSummary = (parsed.sceneSummary ?? "").toLowerCase();
+    const searchable = fullHistory + " " + latestSummary;
+
+    // A thread is considered "addressed" if at least one of its significant
+    // words (length > 4, not stop-words) appears in the story history.
+    // This is intentionally permissive — we only block endings when a thread
+    // has been completely forgotten, not when it's partially developed.
+    const STOP_WORDS = new Set([
+      "with",
+      "that",
+      "this",
+      "from",
+      "have",
+      "they",
+      "their",
+      "about",
+      "which",
+      "when",
+      "where",
+      "been",
+      "will",
+      "into",
+    ]);
+
+    const unresolvedCount = planted.filter((thread) => {
+      const keywords = thread
+        .toLowerCase()
+        .split(/\W+/)
+        .filter((w) => w.length > 4 && !STOP_WORDS.has(w));
+      if (keywords.length === 0) return false;
+      // If NONE of the thread's keywords appear anywhere in the story, it's forgotten
+      return !keywords.some((kw) => searchable.includes(kw));
+    }).length;
+
+    // Only block if more than half the planted threads are completely unaddressed
+    return unresolvedCount > Math.floor(planted.length / 2);
+  }
+
+  const aiWantsToEnd = parsed.isEnding ?? false;
+  const endingAllowed = isEndingPermitted();
+  const threadsUnresolved =
+    aiWantsToEnd && endingAllowed && hasUnresolvedCriticalThreads();
+
+  // Determine final isEnding value
+  const resolvedIsEnding = aiWantsToEnd && endingAllowed && !threadsUnresolved;
+
+  // If ending was deferred, ensure choices exist so the story continues.
+  // Prefer the AI's own choices if it provided them despite isEnding:true,
+  // otherwise inject a minimal fallback so the UI never deadlocks.
+  const resolvedChoices: Choice[] = resolvedIsEnding
+    ? [] // endings never have choices
+    : choices.length > 0
+      ? choices
+      : [
+          {
+            id: "continue",
+            text: "Press forward",
+            consequence: "Momentum",
+            subtext: "The story continues.",
+            consequenceType: "neutral",
+          },
+        ];
+
+  if (aiWantsToEnd && !resolvedIsEnding) {
+    logger.info(
+      {
+        choiceCount,
+        nodeIndex,
+        plantedThreads: updatedStoryState.plantedThreads?.length ?? 0,
+        reason: !endingAllowed
+          ? `too early (choice ${choiceCount} < min ${MIN_TURNS_BEFORE_ENDING})`
+          : "unresolved planted threads",
+      },
+      "Ending deferred — story continues",
+    );
+  }
+
   return {
     narrativeText: parsed.narrativeText,
-    choices,
-    isEnding: parsed.isEnding ?? false,
+    choices: resolvedChoices,
+    isEnding: resolvedIsEnding,
     storyState: updatedStoryState,
   };
 }
@@ -826,11 +1155,17 @@ export async function generateStorySegment(
   currentStoryState: StoryState | null = null,
   totalWordCount: number = 0,
   chosenConsequenceType?: string,
+  choiceCount: number = 0,
 ): Promise<GeneratedSegment> {
   const story = resolveStory(storyIdOrTitle);
   const storyTitle = story?.title ?? storyIdOrTitle;
   const storyGenre = story?.genre ?? genre;
-  const forceEnding = totalWordCount >= 47000;
+
+  const endingWindow = calculateEndingWindow(
+    choiceCount,
+    totalWordCount,
+    currentStoryState,
+  );
 
   const systemInstruction = buildSystemInstruction(
     storyTitle,
@@ -850,8 +1185,9 @@ export async function generateStorySegment(
     nodeIndex,
     currentStoryState,
     totalWordCount,
-    forceEnding,
     story?.storyArc,
+    choiceCount,
+    endingWindow,
   );
 
   try {
@@ -873,6 +1209,8 @@ export async function generateStorySegment(
         outputTokens: response.usageMetadata?.candidatesTokenCount,
         cachedTokens: response.usageMetadata?.cachedContentTokenCount,
         cacheHit: !!cachedContentName,
+        choiceCount,
+        endingWindow,
       },
       "Gemini generation successful",
     );
@@ -884,6 +1222,7 @@ export async function generateStorySegment(
       nodeIndex,
       currentStoryState,
       chosenConsequenceType,
+      choiceCount,
     );
   } catch (err) {
     logger.error({ err }, "Fatal error generating story segment");
@@ -906,18 +1245,26 @@ export async function generateStorySegmentStream(
   totalWordCount: number = 0,
   chosenConsequenceType?: string,
   choiceCount: number = 0,
-  targetEndingChoices: number = 40,
+  targetEndingChoices: number = DEFAULT_TARGET_END,
   forceEndingByChoices: boolean = false,
 ): Promise<GeneratedSegment> {
   const story = resolveStory(storyIdOrTitle);
   const storyTitle = story?.title ?? storyIdOrTitle;
   const storyGenre = story?.genre ?? genre;
-  const forceEnding = totalWordCount >= 47000;
 
   const isFreeWill = choiceId === "free-will";
   const effectiveChoiceMade = isFreeWill
     ? `The reader invented their own action: "${choiceMade}". Treat this as a fully consequential player decision and honour it directly in the narrative.`
     : choiceMade;
+
+  // Merge external forceEndingByChoices signal with dynamic window calculation
+  const stateWithTarget: StoryState | null = currentStoryState
+    ? { ...currentStoryState, targetEndingChoices }
+    : null;
+
+  const endingWindow = forceEndingByChoices
+    ? { forceEndingNow: true, approachingConclusion: true, turnsRemaining: 0 }
+    : calculateEndingWindow(choiceCount, totalWordCount, stateWithTarget);
 
   const systemInstruction = buildSystemInstruction(
     storyTitle,
@@ -937,11 +1284,9 @@ export async function generateStorySegmentStream(
     nodeIndex,
     currentStoryState,
     totalWordCount,
-    forceEnding,
     story?.storyArc,
     choiceCount,
-    targetEndingChoices,
-    forceEndingByChoices,
+    endingWindow,
   );
 
   try {
@@ -1070,7 +1415,12 @@ export async function generateStorySegmentStream(
     if (!accumulated) throw new Error("Empty response from Gemini");
 
     logger.info(
-      { storyId: storyIdOrTitle, turn: nodeIndex + 1 },
+      {
+        storyId: storyIdOrTitle,
+        turn: nodeIndex + 1,
+        choiceCount,
+        endingWindow,
+      },
       "Gemini streaming generation successful",
     );
 
@@ -1081,6 +1431,7 @@ export async function generateStorySegmentStream(
       nodeIndex,
       currentStoryState,
       chosenConsequenceType,
+      choiceCount,
     );
   } catch (err) {
     logger.error({ err }, "Fatal error streaming story segment");
@@ -1090,10 +1441,6 @@ export async function generateStorySegmentStream(
 
 // ─────────────────────────────────────────────
 // Cache Cleanup
-//
-// Call this to explicitly delete caches from Gemini's servers before their
-// TTL expires — useful on story completion or server shutdown to avoid
-// unnecessary storage billing.
 // ─────────────────────────────────────────────
 export async function deleteStoryCaches(storyKeys?: string[]): Promise<void> {
   const keysToDelete = storyKeys ?? [...systemPromptCacheRegistry.keys()];
