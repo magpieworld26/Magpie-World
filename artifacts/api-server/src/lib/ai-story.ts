@@ -165,10 +165,10 @@ SECOND PERSON, PRESENT TENSE
 Throughout. "You step into the corridor" not "She stepped."
 
 ### Dynamic Prose Length
-Prose length ranges from 1 word to 1500 words. Choose based on narrative need.
+Prose length ranges from 1 word to 1000 words. Choose based on narrative need.
 1-50 words: Sudden revelations, shocking consequences, moments of pure impact
 100-400 words: Standard scenes where consequences unfold at measured pace
-500-1500 words: Complex scenes with multiple characters, major world shifts, deep emotional beats
+500-1000 words: Complex scenes with multiple characters, major world shifts, deep emotional beats
 Never pad to meet a minimum. Never truncate a scene that needs to breathe.
 
 ### Dynamic Story Endings
@@ -933,7 +933,7 @@ export async function generateStorySegment(
   const story = resolveStory(storyIdOrTitle);
   const storyTitle = story?.title ?? storyIdOrTitle;
   const storyGenre = story?.genre ?? genre;
-  const forceEndingByWords = totalWordCount >= 47000;
+  const forceEndingByWords = totalWordCount >= 40000;
 
   const choiceCount = currentStoryState?.choicesMade?.length ?? 0;
   const targetEndingChoices = currentStoryState?.targetEndingChoices ?? 25;
