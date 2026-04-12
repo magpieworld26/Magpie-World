@@ -750,7 +750,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
 
   TONE GUIDANCE: High-stakes, fast-paced, and darkly funny. The jungle is beautiful but lethal. The tension comes from the 'avatar logic'—being forced into a body or role you didn't choose—and the creeping certainty that the game is in control.`,
     storyArc:
-      "The first 1-5 choices should be a chaotic initiation into the game's brutal mechanics. The group is sucked into the jungle, discovering their assigned avatars and non-negotiable weaknesses and strengths. The player must immediately lead the team through an ambush by procedural creatures, learning to exploit their new abilities. The arc culminates when one of the characters loses their 'first life' to a trap, respawning with a horrifying realization of the pain mechanics, proving that the threat of a game-over is terrifyingly real. The group then ",
+      "The first 1-5 choices should be a chaotic initiation into the game's brutal mechanics. The group is sucked into the jungle, discovering their assigned avatars and non-negotiable weaknesses and strengths. The player must immediately lead the team through an ambush by procedural creatures, learning to exploit their new abilities. The arc culminates when one of the characters loses their 'first life' to a trap, respawning with a horrifying realization of the pain mechanics, proving that the threat of a game-over is terrifyingly real. The group then must get to know about how the game works and they should start working on it.",
   },
   {
     id: "extinction-clause",
