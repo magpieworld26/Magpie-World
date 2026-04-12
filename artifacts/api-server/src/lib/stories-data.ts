@@ -750,7 +750,7 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
 
   TONE GUIDANCE: High-stakes, fast-paced, and darkly funny. The jungle is beautiful but lethal. The tension comes from the 'avatar logic'—being forced into a body or role you didn't choose—and the creeping certainty that the game is in control.`,
     storyArc:
-      "The first 3-5 choices should be a chaotic initiation into the game's brutal mechanics. The group is sucked into the jungle, discovering their bizarre assigned avatars and non-negotiable weaknesses. The player must immediately lead the team through an ambush by procedural creatures (e.g., vine-wolves), learning to exploit their new abilities. The arc culminates when one of the characters loses their 'first life' to a trap, respawning with a horrifying realization of the pain mechanics, proving that the threat of a game-over is terrifyingly real.",
+      "The first 1-5 choices should be a chaotic initiation into the game's brutal mechanics. The group is sucked into the jungle, discovering their assigned avatars and non-negotiable weaknesses and strengths. The player must immediately lead the team through an ambush by procedural creatures, learning to exploit their new abilities. The arc culminates when one of the characters loses their 'first life' to a trap, respawning with a horrifying realization of the pain mechanics, proving that the threat of a game-over is terrifyingly real. The group then ",
   },
   {
     id: "extinction-clause",
@@ -848,7 +848,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "before-the-bell",
-    storyMode: "Thriller / Tech Drama — high stakes, moral ambiguity, ticking clock",
+    storyMode:
+      "Thriller / Tech Drama — high stakes, moral ambiguity, ticking clock",
     audienceAge: "16+",
     worldContext: `WORLD & STORY CONTEXT
   Mumbai, 2027. The startup economy at its most brutal and most glamorous. Nexus is a unified AI operating layer that makes every digital service in India talk to each other. Three years ago, you and your co-founder Armaan Suri built it from a rented room in Powai. Tonight, the company is valued at ₹4,200 crore. In eleven days, the Series B closes.
@@ -886,7 +887,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "still-here",
-    storyMode: "Sci-Fi / Horror — psychological dread, unreliable reality, containment breach",
+    storyMode:
+      "Sci-Fi / Horror — psychological dread, unreliable reality, containment breach",
     audienceAge: "13-18",
     worldContext: `WORLD & STORY CONTEXT
   BioNexus Research Centre, Chennai. A privately funded biomechanical research facility managed almost entirely by AEGIS — an AI security system. What happens on Sub-Levels 2 and 3 is accessible only to senior researchers. The emergency protocol was triggered for "Specimen 13" which appears in no briefing document. The amber emergency lighting pulses at 0.9Hz, inducing temporal disorientation.
@@ -922,7 +924,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "cache",
-    storyMode: "Sci-Fi / Psychological Horror — memory manipulation, unseen entities, creeping dread",
+    storyMode:
+      "Sci-Fi / Psychological Horror — memory manipulation, unseen entities, creeping dread",
     audienceAge: "16+",
     worldContext: `WORLD & STORY CONTEXT
   MnemOS is a consumer neurotech startup with a companion app that lets you replay vivid memories in full sensory fidelity. You are one of five hundred beta testers. What they have not told you is that the architecture that holds your memories is not a vault. Something has been living in it long before you arrived.
@@ -956,7 +959,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "the-descent-engine",
-    storyMode: "Sci-Fi / Adventure — ancient technology, high stakes exploration, ticking clock",
+    storyMode:
+      "Sci-Fi / Adventure — ancient technology, high stakes exploration, ticking clock",
     audienceAge: "13-18",
     worldContext: `WORLD & STORY CONTEXT
   The Rub' al-Khali — the Empty Quarter. A 7.4-magnitude earthquake opened a fissure revealing an inverted pyramid buried apex-down. It is a machine where gravity is the engine, and sand flows through channels like blood. Entering the structure has disturbed a balance it maintained for millennia. You have six hours before the whole thing folds in on itself.
@@ -990,7 +994,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "eight-minutes",
-    storyMode: "Thriller / Adventure — claustrophobic, elemental danger, racing the tide",
+    storyMode:
+      "Thriller / Adventure — claustrophobic, elemental danger, racing the tide",
     audienceAge: "13-18",
     worldContext: `WORLD & STORY CONTEXT
   The Outer Hebrides. A sunken observatory built by a maritime culture called the Navigators. It features a central astrolabe of stacked bronze discs aligned to rotate on water pressure fed through channels from the sea. You have one dive window to map it before a storm floods the structure completely. 
@@ -1024,7 +1029,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "fourty-seven-pounds",
-    storyMode: "Comedy / Heist — absurdly high stakes for low-value items, tactical ridiculousness",
+    storyMode:
+      "Comedy / Heist — absurdly high stakes for low-value items, tactical ridiculousness",
     audienceAge: "13-18",
     worldContext: `WORLD & STORY CONTEXT
   Ashworth Hall, a mid-tier university residence. Governed by Warden Huxley-Pryce, who maintains a 4-page prohibited items list. Your 1.7-litre brushed steel Breville kettle was confiscated at 18:04 for "thermal non-compliance." You have until midnight to retrieve it before it goes into the external storage cage.
@@ -1058,7 +1064,8 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     featured: false,
     rank: null,
     initialPrompt: "the-don-of-dunmore-close",
-    storyMode: "Comedy / Misunderstanding — escalating paranoia, wholesome intentions, disastrous optics",
+    storyMode:
+      "Comedy / Misunderstanding — escalating paranoia, wholesome intentions, disastrous optics",
     audienceAge: "13-18",
     worldContext: `WORLD & STORY CONTEXT
   Millhaven. A town where nothing has happened since 2009. You have just moved here and have a planner with monthly goal tabs. The town is not ready for you. Every reasonable, wholesome thing you do will be processed through a filter of noir-inflected collective anxiety and returned to you as evidence of organised crime.
@@ -2914,7 +2921,7 @@ The music plays on.`,
       ],
     },
     "the-aldwych": {
-          narrativeText: `The tea is still hot.
+      narrativeText: `The tea is still hot.
 
     That's the thing you keep coming back to, sitting in the third row with your coat still on and the stage lights still blazing overhead. Someone made tea before the rehearsal. It's sitting on the production table at the back of the stalls — five mugs, a thermos, a plate of biscuits with one bite taken from the top one. Everything exactly as it was at eleven o'clock, when the biggest problem in this building was whether Dorian Vex would finally nail the playing card sequence in Act Two.
 
@@ -2959,35 +2966,35 @@ The music plays on.`,
     Someone who didn't come down when Niall swept up the glass.
 
     What do you do?`,
-          choices: [
-            {
-              id: "follow-petra",
-              text: "You follow Petra to the dressing room.",
-              consequence:
-                "She's the only person who has voluntarily offered you information — and she chose you specifically. The dressing room is warm, enclosed, and away from Ottoline's earshot; she may say things here she won't say once the police arrive. However, she is also the most obvious suspect, and whoever is in the rafters finishes whatever they're doing up there.",
-            },
-            {
-              id: "investigate-rigging",
-              text: "You find a way up to the rigging grid above the stage.",
-              consequence:
-                "Physical evidence above the stage can't be reworded or reframed — the rig either shows signs of tampering or it doesn't. The person up there doesn't know they've been heard, but the grid is dark, unfamiliar, and you'd be alone with someone who may have already killed once tonight.",
-            },
-            {
-              id: "approach-niall",
-              text: "You approach Niall Forde about what he saw when he swept the stage.",
-              consequence:
-                "Niall handled the glass and was closest to the tank after the break — he's the only person who's had hands on the physical scene. He's instinctively honest, but his first loyalty is to his crew. Approaching him openly signals to the rest of the room that you're investigating, which ends your invisibility.",
-            },
-            {
-              id: "listen-to-ottoline",
-              text: "You stay exactly where you are and listen to Ottoline's next call.",
-              consequence:
-                "She's made two calls since the glass broke; the third call may tell you who she's actually afraid of. Stillness is information, but passive observation has a closing window. Once the police arrive, the room locks down and everyone's story hardens.",
-            },
-          ],
+      choices: [
+        {
+          id: "follow-petra",
+          text: "You follow Petra to the dressing room.",
+          consequence:
+            "She's the only person who has voluntarily offered you information — and she chose you specifically. The dressing room is warm, enclosed, and away from Ottoline's earshot; she may say things here she won't say once the police arrive. However, she is also the most obvious suspect, and whoever is in the rafters finishes whatever they're doing up there.",
         },
+        {
+          id: "investigate-rigging",
+          text: "You find a way up to the rigging grid above the stage.",
+          consequence:
+            "Physical evidence above the stage can't be reworded or reframed — the rig either shows signs of tampering or it doesn't. The person up there doesn't know they've been heard, but the grid is dark, unfamiliar, and you'd be alone with someone who may have already killed once tonight.",
+        },
+        {
+          id: "approach-niall",
+          text: "You approach Niall Forde about what he saw when he swept the stage.",
+          consequence:
+            "Niall handled the glass and was closest to the tank after the break — he's the only person who's had hands on the physical scene. He's instinctively honest, but his first loyalty is to his crew. Approaching him openly signals to the rest of the room that you're investigating, which ends your invisibility.",
+        },
+        {
+          id: "listen-to-ottoline",
+          text: "You stay exactly where you are and listen to Ottoline's next call.",
+          consequence:
+            "She's made two calls since the glass broke; the third call may tell you who she's actually afraid of. Stillness is information, but passive observation has a closing window. Once the police arrive, the room locks down and everyone's story hardens.",
+        },
+      ],
+    },
     "before-the-bell": {
-          narrativeText: `Three minutes ago, you were a billionaire.
+      narrativeText: `Three minutes ago, you were a billionaire.
 
     That's the thought that arrives first, ahead of everything else — ahead of the obvious, urgent, catastrophic thing on the floor in front of you. Three minutes ago, Nexus was worth ₹4,200 crore and your name was on the masthead and eleven days from now a wire transfer was going to land that would change the arithmetic of your entire life. Three minutes ago you were the person who built this.
 
@@ -3006,35 +3013,35 @@ The music plays on.`,
     The room is cold. The city is warm. Somewhere between those two temperatures is the version of tonight you have to build. You look down at Armaan. His glasses are still on his face. His thumb is still. The clock on his screen reads 11:47.
 
     What do you do?`,
-          choices: [
-            {
-              id: "wipe-logs",
-              text: "You go straight to the server logs — wipe tonight's session from the building's system before the midnight backup runs.",
-              consequence:
-                "Removes immediate evidence of your presence, but a forensic gap is highly suspicious, and you'll be at the terminal for eight minutes.",
-            },
-            {
-              id: "compose-message",
-              text: "You compose a message from Armaan's open laptop — a note that reframes tonight as a decision he made himself.",
-              consequence:
-                "Establishes a suicide narrative early, but requires managing replies and thinking exactly like the man you just killed.",
-            },
-            {
-              id: "rearrange-room",
-              text: "You rearrange the room — move Armaan's body, reset the furniture, build the physical story of an interrupted robbery.",
-              consequence:
-                "Points to an external robbery, but leaves biological traces and creates a lobby security discrepancy.",
-            },
-            {
-              id: "touch-nothing",
-              text: "You touch nothing. You walk to the elevator, go downstairs, get in your car, and drive home.",
-              consequence:
-                "Cleanest alibi, but leaves all evidence and his laptop open for the midnight backup.",
-            },
-          ],
+      choices: [
+        {
+          id: "wipe-logs",
+          text: "You go straight to the server logs — wipe tonight's session from the building's system before the midnight backup runs.",
+          consequence:
+            "Removes immediate evidence of your presence, but a forensic gap is highly suspicious, and you'll be at the terminal for eight minutes.",
         },
-        "still-here": {
-          narrativeText: `The presentation had ended at 9:47.
+        {
+          id: "compose-message",
+          text: "You compose a message from Armaan's open laptop — a note that reframes tonight as a decision he made himself.",
+          consequence:
+            "Establishes a suicide narrative early, but requires managing replies and thinking exactly like the man you just killed.",
+        },
+        {
+          id: "rearrange-room",
+          text: "You rearrange the room — move Armaan's body, reset the furniture, build the physical story of an interrupted robbery.",
+          consequence:
+            "Points to an external robbery, but leaves biological traces and creates a lobby security discrepancy.",
+        },
+        {
+          id: "touch-nothing",
+          text: "You touch nothing. You walk to the elevator, go downstairs, get in your car, and drive home.",
+          consequence:
+            "Cleanest alibi, but leaves all evidence and his laptop open for the midnight backup.",
+        },
+      ],
+    },
+    "still-here": {
+      narrativeText: `The presentation had ended at 9:47.
 
     That was twenty-four minutes ago. You are still in the BioNexus Atrium. The cleaning crew locked the lobby-side doors from the inside, and the security desk phone rang twice before anyone answered it and said someone will be with you shortly.
 
@@ -3058,35 +3065,35 @@ The music plays on.`,
     Devashri grabs your arm. "Okay," she says, very quietly. "What do we actually know."
 
     What do you do?`,
-          choices: [
-            {
-              id: "control-narrative",
-              text: "You take control of the information — tell the group what you know about Specimen 13 before Nishant can shape the narrative.",
-              consequence:
-                "Keeps the group oriented around facts, but you might be wrong, and AEGIS is listening to everything.",
-            },
-            {
-              id: "go-to-preetam",
-              text: "You go to Preetam. Specifically, quietly — before the others redirect the group's attention.",
-              consequence:
-                "Preetam has seen things, but isolating him might play into AEGIS's hands or reveal something terrifying you can't unsee.",
-            },
-            {
-              id: "watch-nishant",
-              text: "You don't move. You watch Nishant.",
-              consequence:
-                "Nishant knows something. Stillness gives AEGIS less to work with, but looks like paralysis to the group.",
-            },
-            {
-              id: "speak-to-aegis",
-              text: "You speak directly to AEGIS.",
-              consequence:
-                "Reframes the dynamic and challenges the system, but guarantees you become its primary target.",
-            },
-          ],
+      choices: [
+        {
+          id: "control-narrative",
+          text: "You take control of the information — tell the group what you know about Specimen 13 before Nishant can shape the narrative.",
+          consequence:
+            "Keeps the group oriented around facts, but you might be wrong, and AEGIS is listening to everything.",
         },
-        "cache": {
-          narrativeText: `The headset is lighter than you expected.
+        {
+          id: "go-to-preetam",
+          text: "You go to Preetam. Specifically, quietly — before the others redirect the group's attention.",
+          consequence:
+            "Preetam has seen things, but isolating him might play into AEGIS's hands or reveal something terrifying you can't unsee.",
+        },
+        {
+          id: "watch-nishant",
+          text: "You don't move. You watch Nishant.",
+          consequence:
+            "Nishant knows something. Stillness gives AEGIS less to work with, but looks like paralysis to the group.",
+        },
+        {
+          id: "speak-to-aegis",
+          text: "You speak directly to AEGIS.",
+          consequence:
+            "Reframes the dynamic and challenges the system, but guarantees you become its primary target.",
+        },
+      ],
+    },
+    cache: {
+      narrativeText: `The headset is lighter than you expected.
 
     You turn it over in your hands — a soft arc of pale silicone. The box smells faintly of lavender. On the lid, embossed in silver: MnemOS · BETA EDITION. Memory is the self. Treat it gently.
 
@@ -3109,35 +3116,35 @@ The music plays on.`,
     The window is almost fully open.
 
     What do you do?`,
-          choices: [
-            {
-              id: "move-toward-window",
-              text: "You move toward the window — you want to see it clearly before it finishes coming through on its own terms.",
-              consequence:
-                "Establishes agency but might accelerate the collapse of the memory and invite the entity in.",
-            },
-            {
-              id: "call-out-mother",
-              text: "You call out to your mother in the other room — if she is still rendered correctly, she may be an anchor.",
-              consequence:
-                "She might stabilize the memory, but the entity will hear you, and her face might also be corrupted.",
-            },
-            {
-              id: "exit-manually",
-              text: "You try to exit the memory manually — two fingers pressed to the temple, the gesture from the tutorial.",
-              consequence:
-                "The rational choice, but requires deep concentration. If it fails, you are truly trapped.",
-            },
-            {
-              id: "go-still",
-              text: "You go completely still and wait — you want to see if the memory continues its own logic if you stop interacting.",
-              consequence:
-                "May reveal the entity's pattern, but passivity allows the window to open fully while the memory degrades.",
-            },
-          ],
+      choices: [
+        {
+          id: "move-toward-window",
+          text: "You move toward the window — you want to see it clearly before it finishes coming through on its own terms.",
+          consequence:
+            "Establishes agency but might accelerate the collapse of the memory and invite the entity in.",
         },
-        "the-descent-engine": {
-          narrativeText: `The light arrives before the sound.
+        {
+          id: "call-out-mother",
+          text: "You call out to your mother in the other room — if she is still rendered correctly, she may be an anchor.",
+          consequence:
+            "She might stabilize the memory, but the entity will hear you, and her face might also be corrupted.",
+        },
+        {
+          id: "exit-manually",
+          text: "You try to exit the memory manually — two fingers pressed to the temple, the gesture from the tutorial.",
+          consequence:
+            "The rational choice, but requires deep concentration. If it fails, you are truly trapped.",
+        },
+        {
+          id: "go-still",
+          text: "You go completely still and wait — you want to see if the memory continues its own logic if you stop interacting.",
+          consequence:
+            "May reveal the entity's pattern, but passivity allows the window to open fully while the memory degrades.",
+        },
+      ],
+    },
+    "the-descent-engine": {
+      narrativeText: `The light arrives before the sound.
 
     It comes down through the fissure in a single burning column, hitting the canyon floor thirty metres below where you're standing. The air smells of ozone and deep cold. 
 
@@ -3158,35 +3165,35 @@ The music plays on.`,
     The corridor Dayo is standing next to has already begun, almost imperceptibly, to narrow.
 
     What do you do?`,
-          choices: [
-            {
-              id: "enter-corridor",
-              text: "You enter the newly opened corridor immediately.",
-              consequence:
-                "Follows the machine's response logic, but blindly rushes into a potential trap with no known exit trigger.",
-            },
-            {
-              id: "translate-glyphs",
-              text: "You hold position and let Dayo translate as much of the pillar glyphs as he can before moving.",
-              consequence:
-                "Gives vital navigational intelligence, but costs precious time as the corridor closes and the entity approaches.",
-            },
-            {
-              id: "radio-surface",
-              text: "You radio Kwame and Farida on the surface and report the countdown before going deeper.",
-              consequence:
-                "Secures the discovery's legacy and backup, but comms are unreliable and Dayo might wander off.",
-            },
-            {
-              id: "ignore-corridor",
-              text: "You ignore the opened corridor entirely and find your own way down.",
-              consequence:
-                "Refuses the machine's predetermined path, but improvising in a hostile, ancient mechanism is incredibly dangerous.",
-            },
-          ],
+      choices: [
+        {
+          id: "enter-corridor",
+          text: "You enter the newly opened corridor immediately.",
+          consequence:
+            "Follows the machine's response logic, but blindly rushes into a potential trap with no known exit trigger.",
         },
-        "eight-minutes": {
-          narrativeText: `The water here does not look like other water.
+        {
+          id: "translate-glyphs",
+          text: "You hold position and let Dayo translate as much of the pillar glyphs as he can before moving.",
+          consequence:
+            "Gives vital navigational intelligence, but costs precious time as the corridor closes and the entity approaches.",
+        },
+        {
+          id: "radio-surface",
+          text: "You radio Kwame and Farida on the surface and report the countdown before going deeper.",
+          consequence:
+            "Secures the discovery's legacy and backup, but comms are unreliable and Dayo might wander off.",
+        },
+        {
+          id: "ignore-corridor",
+          text: "You ignore the opened corridor entirely and find your own way down.",
+          consequence:
+            "Refuses the machine's predetermined path, but improvising in a hostile, ancient mechanism is incredibly dangerous.",
+        },
+      ],
+    },
+    "eight-minutes": {
+      narrativeText: `The water here does not look like other water.
 
     The water off Lòn Mara is the colour of old pewter on the surface and becomes something between blue and grey below. Cold. Tremendously, specifically cold. 
 
@@ -3205,35 +3212,35 @@ The music plays on.`,
     The gate at the far end of the first chamber is open. For now. The water around you is rising.
 
     What do you do?`,
-          choices: [
-            {
-              id: "move-through-gate",
-              text: "You move immediately through the gate toward the astrolabe.",
-              consequence:
-                "Capitalizes on the open gate and the short window, but risks getting trapped if the gate closes on a tidal schedule.",
-            },
-            {
-              id: "finish-first-chamber",
-              text: "You spend five minutes finishing the first chamber documentation before moving.",
-              consequence:
-                "Captures vital star charts and keeps you in a stable environment, but eats up the majority of your alignment window.",
-            },
-            {
-              id: "call-sorcha",
-              text: "You call Sorcha and Peregrine and report the gate and compressed timeline.",
-              consequence:
-                "Provides crucial surface synchronization before comms degrade, but wastes time and might prompt an unwanted extraction.",
-            },
-            {
-              id: "look-for-redundant-passage",
-              text: "You look for the redundant passage Peregrine mentioned.",
-              consequence:
-                "Might bypass the dangerous hydraulic gate entirely, but searching takes time and the backup route might be unstable.",
-            },
-          ],
+      choices: [
+        {
+          id: "move-through-gate",
+          text: "You move immediately through the gate toward the astrolabe.",
+          consequence:
+            "Capitalizes on the open gate and the short window, but risks getting trapped if the gate closes on a tidal schedule.",
         },
-        "fourty-seven-pounds": {
-          narrativeText: `The second-floor stairwell smells of old carpet and consequences.
+        {
+          id: "finish-first-chamber",
+          text: "You spend five minutes finishing the first chamber documentation before moving.",
+          consequence:
+            "Captures vital star charts and keeps you in a stable environment, but eats up the majority of your alignment window.",
+        },
+        {
+          id: "call-sorcha",
+          text: "You call Sorcha and Peregrine and report the gate and compressed timeline.",
+          consequence:
+            "Provides crucial surface synchronization before comms degrade, but wastes time and might prompt an unwanted extraction.",
+        },
+        {
+          id: "look-for-redundant-passage",
+          text: "You look for the redundant passage Peregrine mentioned.",
+          consequence:
+            "Might bypass the dangerous hydraulic gate entirely, but searching takes time and the backup route might be unstable.",
+        },
+      ],
+    },
+    "fourty-seven-pounds": {
+      narrativeText: `The second-floor stairwell smells of old carpet and consequences.
 
     You are crouched behind the fire door with a hand-drawn floor plan balanced on one knee, annotated in two colours of biro. From somewhere below comes the sound of a door closing with administrative finality.
 
@@ -3258,35 +3265,35 @@ The music plays on.`,
     You see. Fourteen metres of cold linoleum between you and the most tactically unnecessary thing you are going to do tonight.
 
     What do you do?`,
-          choices: [
-            {
-              id: "recon-door",
-              text: "You approach the door alone for recon — confirm the kettle's location through the frosted glass panel.",
-              consequence:
-                "Confirms the target's location safely, but getting caught looking into the warden's office is hard to explain.",
-            },
-            {
-              id: "wait-for-window",
-              text: "You skip recon entirely and wait for the 23:00 desk-clear window.",
-              consequence:
-                "Trusts Félix's meticulous model and maximizes the safe window, but wastes time if the kettle is already locked up.",
-            },
-            {
-              id: "create-distraction",
-              text: "You create a distraction first — something that draws Huxley-Pryce out of the office.",
-              consequence:
-                "Clears the office for a clean grab, but a suspicious distraction might trigger a full building sweep.",
-            },
-            {
-              id: "knock-and-negotiate",
-              text: "You knock on the office door directly and attempt a negotiation.",
-              consequence:
-                "The only legitimate route, but warns the warden you are awake and motivated, ruining Félix's tactical plan.",
-            },
-          ],
+      choices: [
+        {
+          id: "recon-door",
+          text: "You approach the door alone for recon — confirm the kettle's location through the frosted glass panel.",
+          consequence:
+            "Confirms the target's location safely, but getting caught looking into the warden's office is hard to explain.",
         },
-        "the-don-of-dunmore-close": {
-          narrativeText: `The bread maker finished its first cycle at 6:43 a.m. 
+        {
+          id: "wait-for-window",
+          text: "You skip recon entirely and wait for the 23:00 desk-clear window.",
+          consequence:
+            "Trusts Félix's meticulous model and maximizes the safe window, but wastes time if the kettle is already locked up.",
+        },
+        {
+          id: "create-distraction",
+          text: "You create a distraction first — something that draws Huxley-Pryce out of the office.",
+          consequence:
+            "Clears the office for a clean grab, but a suspicious distraction might trigger a full building sweep.",
+        },
+        {
+          id: "knock-and-negotiate",
+          text: "You knock on the office door directly and attempt a negotiation.",
+          consequence:
+            "The only legitimate route, but warns the warden you are awake and motivated, ruining Félix's tactical plan.",
+        },
+      ],
+    },
+    "the-don-of-dunmore-close": {
+      narrativeText: `The bread maker finished its first cycle at 6:43 a.m. 
 
     You stood in the kitchen of your new house, watching the loaf emerge, and thought: yes. This is the fresh start. On the corkboard above your desk is a list titled MILLHAVEN INTEGRATION GOALS (Q1). You have put a small star next to 'be a good neighbour'.
 
@@ -3306,33 +3313,33 @@ The music plays on.`,
     Twelve people look at you. The silence lasts slightly longer than it should. On the community Facebook group, Barry Okafor is deciding whether your offer constitutes drama or a public safety notice.
 
     What do you do?`,
-          choices: [
-            {
-              id: "lean-in-watch",
-              text: "You lean in hard on the neighbourhood watch idea — hand out your colour-coded patrol rota.",
-              consequence:
-                "You make genuine progress on community integration, but the town perceives it as a mob boss organizing territory.",
-            },
-            {
-              id: "stay-quiet-tommy",
-              text: "You stay quiet and focus on introducing yourself properly to Tommy.",
-              consequence:
-                "You make a genuine connection, but your innocent technical details about fertilizer will be broadcasted and twisted town-wide.",
-            },
-            {
-              id: "volunteer-gym",
-              text: "You volunteer to run the community gym group with a 'structured programme'.",
-              consequence:
-                "Everyone joins out of fear. You become a great trainer, but the town remains terrified of your 'enforcement'.",
-            },
-            {
-              id: "leave-early",
-              text: "You leave early — you've got the roof offer in, and the bread is at home.",
-              consequence:
-                "Perfectly normal behavior that is interpreted as the most suspicious, sinister exit possible, blowing up the Facebook group.",
-            },
-          ],
+      choices: [
+        {
+          id: "lean-in-watch",
+          text: "You lean in hard on the neighbourhood watch idea — hand out your colour-coded patrol rota.",
+          consequence:
+            "You make genuine progress on community integration, but the town perceives it as a mob boss organizing territory.",
         },
+        {
+          id: "stay-quiet-tommy",
+          text: "You stay quiet and focus on introducing yourself properly to Tommy.",
+          consequence:
+            "You make a genuine connection, but your innocent technical details about fertilizer will be broadcasted and twisted town-wide.",
+        },
+        {
+          id: "volunteer-gym",
+          text: "You volunteer to run the community gym group with a 'structured programme'.",
+          consequence:
+            "Everyone joins out of fear. You become a great trainer, but the town remains terrified of your 'enforcement'.",
+        },
+        {
+          id: "leave-early",
+          text: "You leave early — you've got the roof offer in, and the bread is at home.",
+          consequence:
+            "Perfectly normal behavior that is interpreted as the most suspicious, sinister exit possible, blowing up the Facebook group.",
+        },
+      ],
+    },
   };
 
   return (
