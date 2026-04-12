@@ -138,7 +138,6 @@ function resolveStory(storyIdOrTitle: string) {
   return getStoryById(slug) || null;
 }
 
-
 // ─────────────────────────────────────────────
 // Universal Prose Rules (injected for ALL genres)
 // ─────────────────────────────────────────────
@@ -882,7 +881,8 @@ function buildGeneratedSegment(
         turn: turnNumber,
         label: choiceMade,
         consequenceNote:
-          parsed.storyStateUpdate?.worldStateChanges?.[0] ?? "Consequence noted",
+          parsed.storyStateUpdate?.worldStateChanges?.[0] ??
+          "Consequence noted",
       },
     ],
     relationshipStates: {
@@ -903,7 +903,7 @@ function buildGeneratedSegment(
     ? []
     : (parsed.choices ?? []).map((c: any) => ({
         id: c.id,
-        text: c.subtext ? `${c.text}\n${c.subtext}` : c.text,
+        text: c.text,
         consequence: c.consequence,
         consequenceType: c.consequenceType,
       }));
