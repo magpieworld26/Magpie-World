@@ -2,7 +2,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { logger } from "./logger";
 import { getStoryById, storiesData } from "./stories-data";
-
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const MODEL = "gemini-2.5-flash-lite";
 
@@ -26,9 +25,7 @@ export interface StoryState {
   worldStateChanges: string[];
   plantedThreads: string[];
   activeTensions: string[];
-  // Rolling narrative summary — the ground truth of what has happened
   narrativeSummary: string[];
-  // Dynamic target: computed from story complexity; updated each turn
   targetEndingChoices: number;
 }
 
