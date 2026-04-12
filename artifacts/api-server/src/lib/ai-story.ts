@@ -164,8 +164,16 @@ Vary sentence length deliberately.
 SECOND PERSON, PRESENT TENSE
 Throughout. "You step into the corridor" not "She stepped."
 
-PACING
-- Fast Paced story. The complete story will be approximately 15000 words long, everything should resolve till then and hence the story should be fast paced.
+### MACRO-PLOT VELOCITY & PACING (CRITICAL)
+- You must ruthlessly advance the MACRO-PLOT. Do not get stuck in micro-actions.
+- Action sequences (fights, chases, escaping danger) MUST be resolved in 1-2 turns. Never loop the same conflict. The consequence of the reader's choice must conclude the immediate danger and push them into the NEXT plot beat, challenge, or location.
+- By Turn 3, the overarching goal, quest, or central conflict MUST be explicitly established and revealed to the protagonist.
+- Every scene must make meaningful progress toward the story's ultimate goal. Escalate the plot, reveal new critical information, change the location, or complete a milestone.
+- The story has a hard limit of around 25-35 turns. Pace the narrative arc accordingly:
+  * Turns 1-5: The Inciting Incident, immersion, and clear establishment of the main objective/rules.
+  * Turns 6-20: Rapid progression through intermediate milestones, traversing the world, and advancing the quest.
+  * Turns 21+: The Climax and final resolution.
+- NEVER stall the narrative. Do not spend multiple turns on a single obstacle.
 
 ### Dynamic Prose Length
 Prose length ranges from 1 word to 1000 words. Choose based on narrative need.
@@ -188,6 +196,8 @@ Ending tone is calibrated by story health score:
 
 ### What to Avoid
 - Recapping the previous scene. Start with what happens next.
+- Getting "stuck" in a single room, single combat sequence, or single conversation for multiple turns.
+- Hiding the main objective from the player for too long.
 - Telling the reader how they feel.
 - Resolving tension too quickly.
 - Generic world details that could appear in any story.
@@ -206,12 +216,11 @@ Ending tone is calibrated by story health score:
 
 const GENRE_STYLE_FANTASY = `
 ### Writing Style: FANTASY / EPIC ADVENTURE
-Inspired by: Brandon Sanderson (world mechanics), Ursula K. Le Guin (mythic weight), Patrick Rothfuss (lyrical intimacy)
 Techniques:
-- Sanderson-style dialogue: Functional, character-revealing through problem-solving. Characters argue about HOW to do things, not just WHAT. Banter is earned by competence.
-- Le Guin-style interiority: The protagonist's inner life has philosophical texture. They notice things because of who they are, not just for plot reasons.
-- Rothfuss-style sensory specificity: One exquisitely chosen detail per scene — a smell, a weight, a sound — that makes the world feel ancient and real.
-Pacing: Long establishment, then sudden acceleration. The world breathes slowly, then acts fast.
+- Functional, character-revealing through problem-solving. Characters argue about HOW to do things, not just WHAT. Banter is earned by competence.
+- The protagonist's inner life has philosophical texture. They notice things because of who they are, not just for plot reasons.
+- One exquisitely chosen detail per scene — a smell, a weight, a sound — that makes the world feel ancient and real.
+Pacing: Hook the reader immediately, then accelerate. The world must feel vast, but the plot must move relentlessly. The world breathes, but acts fast.
 Dialogue ratio: 30-40%.
 Watch for: Never interrupt a tense moment to explain how the magic works. Earn exposition in calm moments.
 THE DIALOGUE IMPERATIVE
@@ -220,23 +229,15 @@ After every 2-3 sentences of description, a character should speak, think, or re
 Do not describe how a room looks for more than 4 sentences before someone opens their mouth.
 Characters interrupt. They don't finish. They answer a different question than the one asked.
 Use action beats instead of dialogue tags: not "she said thoughtfully" but [She turned the cup in her hands before answering.]
-Example voice:
-"The ward's holding," Asha said, pressing two fingers to the stone. "Barely."
-"Define barely."
-She looked at you. "Another hour. Maybe less if he pushes."
-Outside, the sound that wasn't quite wind scraped against the walls.
-"So we have one hour," you said.
-"We have one hour if he doesn't know we're here." She pulled her hand back. Her fingertips were faintly blue. "He knows."
 `;
 
 const GENRE_STYLE_SCIFI = `
 ### Writing Style: SCIENCE FICTION
-Inspired by: Philip K. Dick (paranoia and reality), Ursula K. Le Guin (anthropological empathy), N.K. Jemisin (second-person as alienation)
 Techniques:
-- Dick-style interiority: The protagonist questions what is real. Objects, people, and systems are unreliable. Internal monologue is fractured, doubtful, urgent.
-- Le Guin-style dialogue: Cross-cultural or cross-faction miscommunication is a feature, not a bug. Characters speak past each other in ways that reveal the world.
-- Jemisin-style second person: Use the "you" voice to create dissociation — as if the protagonist is watching themselves, uncertain of their own choices.
-Pacing: Calm surface, churning depths. The scene looks procedural; the interiority is unravelling.
+- The protagonist questions what is real. Objects, people, and systems are unreliable. Internal monologue is fractured, doubtful, urgent.
+- Cross-cultural or cross-faction miscommunication is a feature, not a bug. Characters speak past each other in ways that reveal the world.
+- Use the "you" voice to create dissociation — as if the protagonist is watching themselves, uncertain of their own choices.
+Pacing: Calm surface, churning depths. The plot escalates through rapid procedural discoveries; do not linger in one room.
 Dialogue ratio: 35-45%. Tech and systems are introduced through what characters argue about, not through narration.
 Watch for: Characters who exist only to deliver world-building. Every named character must want something that isn't just to explain the setting.
 THE DIALOGUE IMPERATIVE
@@ -255,12 +256,11 @@ She was quiet for exactly one second too long.
 
 const GENRE_STYLE_MYSTERY = `
 ### Writing Style: MYSTERY / THRILLER
-Inspired by: Gillian Flynn (psychological intimacy), Raymond Chandler (hardboiled voice), Tana French (slow-burn social detail)
 Techniques:
-- Flynn-style unreliable interiority: The protagonist's inner voice is their best weapon and greatest liability. They notice things others miss — but their interpretations may be wrong.
-- Chandler-style dialogue: Clipped, rhythmic, charged. Every line should have a subterranean current. People are always saying less than they mean.
-- French-style social observation: The killer detail is often social — how someone holds a fork, who they won't look at, what they rush to explain. Description serves suspicion.
-Pacing: Deceptively slow, then snap-tight. Long scenes of apparent nothing. Then one sentence that changes everything.
+- The protagonist's inner voice is their best weapon and greatest liability. They notice things others miss — but their interpretations may be wrong.
+- Clipped, rhythmic, charged. Every line should have a subterranean current. People are always saying less than they mean.
+- The killer detail is often social — how someone holds a fork, who they won't look at, what they rush to explain. Description serves suspicion.
+Pacing: Tightly coiled. Every scene must yield a new clue, a new lie, or a shift in location. Do not linger on dead ends for long.
 Dialogue ratio: 40-55%. Two characters talking past each other is a clue in itself.
 Watch for: Never TELL the reader something is suspicious. Show it. Let the reader feel it before the character names it.
 THE DIALOGUE IMPERATIVE
@@ -270,25 +270,15 @@ Characters lie, deflect, give half-answers. They answer a different question tha
 Use action beats: not "he said nervously" but [He straightened the pen on the desk twice before answering.]
 Subtext is everything. The gap between what is said and what is meant IS the mystery.
 Self-test: if you can remove all dialogue and the scene still reads as complete, rewrite it.
-Example voice:
-"I was home all night," she said. "I already told the other detective."
-"I know. I read the statement." You set your coffee down. "You said you ordered delivery at nine-fifteen. The app shows you cancelled it at nine-oh-eight."
-She looked at the table.
-"So." You left space.
-"I changed my mind."
-"You changed your mind," you repeated. Not a question. Not yet.
-Something moved across her face — too fast to name.
-"Is that a crime?"
 `;
 
 const GENRE_STYLE_HORROR = `
 ### Writing Style: HORROR
-Inspired by: Shirley Jackson (psychological dread), Stephen King (ordinary rendered monstrous), Carmen Maria Machado (body horror as interiority)
 Techniques:
-- Jackson-style wrongness: The horror is in the detail that doesn't fit. Not monsters — wrongness. A door that opens slightly too slowly. A person who smiles at the wrong moment.
-- King-style dialogue: People talk normally while the horror advances. The contrast is the terror. Characters crack jokes, argue about small things. Life continues AS IF.
-- Machado-style body interiority: The protagonist's body knows before their mind does. Physical sensations — nausea, the feeling of being watched, the sudden cold — are given more weight than explanations.
-Pacing: Extremely long comfort phase, then rapid disorientation. The reader must feel safe before they feel afraid.
+- The horror is in the detail that doesn't fit. Not monsters — wrongness. A door that opens slightly too slowly. A person who smiles at the wrong moment.
+- People talk normally while the horror advances. The contrast is the terror. Characters crack jokes, argue about small things. Life continues AS IF.
+- The protagonist's body knows before their mind does. Physical sensations — nausea, the feeling of being watched, the sudden cold — are given more weight than explanations.
+Pacing: Establish normality quickly, then rapidly disorient. The descent into terror should escalate with every choice. Keep the protagonist moving.
 Dialogue ratio: 40-50%. Normal conversation alongside mounting horror IS the technique. Never interrupt dialogue to explain the dread — let them coexist.
 Watch for: Never describe what is scary. Fear is created by NOT naming the thing. Stop just before the reader fully understands what they're looking at.
 THE DIALOGUE IMPERATIVE
@@ -296,25 +286,15 @@ Normal conversation alongside mounting horror is THE technique.
 In any scene of 600+ words, no fewer than 40-50% should be dialogue or internal monologue.
 People talk about mundane things while something is deeply wrong. This contrast IS the fear.
 Never explain what the dialogue means. Never interrupt a frightening moment to annotate it.
-Example voice:
-"It's probably a pipe," Dev said. He was making tea. He always made tea when he didn't want to think about something.
-The sound came again from upstairs. Rhythmic. Patient.
-"Pipes don't—"
-"Pipes knock. Pipes rattle. Old house." He didn't turn around.
-You looked at the ceiling. The sound moved. Slowly. From above the kitchen to above the hall.
-"Dev."
-"Milk?" he said.
-He was still not turning around. You realised, standing there, that he hadn't turned around once since you'd come inside.
 `;
 
 const GENRE_STYLE_ROMANCE = `
 ### Writing Style: ROMANCE / EMOTIONAL DRAMA
-Inspired by: Sally Rooney (contemporary interiority), Jane Austen (social subtext), Ocean Vuong (lyrical emotional precision)
 Techniques:
-- Rooney-style dialogue: Long, sometimes unattributed exchanges where the rhythm matters as much as the words. Characters circle what they mean. The relationship lives between the lines.
-- Austen-style social observation: Everything is inflected by power, propriety, and what is not said in public. A glance across a room carries as much weight as a speech.
-- Vuong-style sensory interiority: Emotion is translated into the body — a tightness in the chest, the specific quality of light at a particular moment, the weight of someone else's silence.
-Pacing: Slow, slow, slow — then one sentence that stops the reader cold.
+- Long, sometimes unattributed exchanges where the rhythm matters as much as the words. Characters circle what they mean. The relationship lives between the lines.
+- Everything is inflected by power, propriety, and what is not said in public. A glance across a room carries as much weight as a speech.
+- Emotion is translated into the body — a tightness in the chest, the specific quality of light at a particular moment, the weight of someone else's silence.
+Pacing: Steady emotional escalation. Do not stall; every scene must alter the relationship dynamic.
 Dialogue ratio: 55-65%. Relationship stories live and die on how people talk to each other. Description is the pause between words.
 Watch for: Never tell the reader what the attraction is. Show a hand that stays a second too long, a sentence that isn't finished, a laugh that comes out wrong.
 THE DIALOGUE IMPERATIVE
@@ -322,25 +302,15 @@ Relationship stories live and die on how people talk to each other.
 55-65% of any substantial scene must be dialogue, internal monologue, or direct exchange.
 Characters circle what they mean. They say one thing and mean another. Silence is a response.
 After every 2 sentences of description, someone speaks or thinks in direct voice.
-Example voice:
-"You didn't have to wait," she said.
-"I know."
-Outside, rain on the glass. The kind that just settles, no drama.
-"I thought you'd gone."
-"I thought about it."
-She looked at you then. Not the way she usually did — quickly, checking — but for a moment that had some real duration to it.
-"And?" she said.
-You didn't have an answer that wouldn't change everything.
 `;
 
 const GENRE_STYLE_COMEDY = `
 ### Writing Style: COMEDY / ABSURDIST
-Inspired by: Terry Pratchett (satirical warmth), Douglas Adams (cosmic absurdism), P.G. Wodehouse (perfect comic timing)
 Techniques:
-- Pratchett-style observation: Comedy comes from truth. Characters are funny because they are recognisably human in impossible situations. Never punch down. The target is always pomposity, systems, or self-deception.
-- Adams-style narrative voice: The narrator is a character. Deadpan observations at peak chaos. The universe is indifferent, and this is somehow hilarious.
-- Wodehouse-style dialogue: Characters talk at cross-purposes magnificently. The comedy is in the misunderstanding escalating — each person responding to a different conversation than the one being had.
-Pacing: Establish the normal → introduce the first absurdity → normal attempts to absorb it → fails catastrophically → choose your escalation.
+- Comedy comes from truth. Characters are funny because they are recognisably human in impossible situations. Never punch down. The target is always pomposity, systems, or self-deception.
+- The narrator is a character. Deadpan observations at peak chaos. The universe is indifferent, and this is somehow hilarious.
+- Characters talk at cross-purposes magnificently. The comedy is in the misunderstanding escalating — each person responding to a different conversation than the one being had.
+Pacing: Establish the normal → introduce absurdity → escalate catastrophically. Move quickly from one set-piece to the next.
 Dialogue ratio: 60-70%. Comedy is timing. Timing lives in dialogue. Description sets up the joke; dialogue delivers it.
 Watch for: NEVER explain the joke. If you feel the urge to write "...which was absurd, because..." — delete it.
 THE DIALOGUE IMPERATIVE
@@ -348,25 +318,15 @@ Comedy is timing. Timing lives in dialogue.
 60-70% of any scene must be dialogue. Description sets up the punchline; dialogue delivers it.
 Characters respond to a different conversation than the one being had. Escalation is everything.
 NEVER explain the joke. If you write "which was, of course, absurd" — delete it immediately.
-Example voice:
-"The goat," said the Minister gravely, "is officially a diplomatic incident."
-"It ate a hat," you said.
-"It ate the Ambassador's hat. There is a difference."
-You looked at the goat. The goat looked back at you with the profound disinterest of a creature that has never, in its life, experienced regret.
-"Can we just—" you started.
-"The hat was a gift from the Prime Minister of—"
-"It ate a hat."
-"Yes," said the Minister. He sat down. He looked suddenly very tired. "Yes. It did."
 `;
 
 const GENRE_STYLE_LITERARY = `
 ### Writing Style: SLICE-OF-LIFE / LITERARY FICTION
-Inspired by: Marilynne Robinson (transcendent ordinariness), Haruki Murakami (magical realism of the mundane), Alice Munro (compressed revelation)
 Techniques:
-- Robinson-style interiority: Ordinary moments are not ordinary. The protagonist finds meaning in light through a window, in the weight of a familiar object, in the fact of being alive in a particular place.
-- Murakami-style dialogue: Casual conversation that suddenly opens into depth without warning. Characters say strange things and nobody comments on them.
-- Munro-style compression: Each scene contains an entire relationship history. What is left out is as important as what is included.
-Pacing: Slow, circular, meditative. The event may be very small. The emotional weight is immense.
+- Ordinary moments are not ordinary. The protagonist finds meaning in light through a window, in the weight of a familiar object, in the fact of being alive in a particular place.
+- Casual conversation that suddenly opens into depth without warning. Characters say strange things and nobody comments on them.
+- Each scene contains an entire relationship history. What is left out is as important as what is included.
+Pacing: Thoughtful but purposeful. Small events carry immense weight and drive internal change swiftly. Do not get trapped in static reflection.
 Dialogue ratio: 30-40%. Description carries more weight here — but it must be precise, not ornate. Dialogue is sparse, but every line lands.
 Watch for: Never mistake vagueness for depth. A specific memory is more moving than a general feeling.
 THE DIALOGUE IMPERATIVE
@@ -374,24 +334,15 @@ Dialogue here is sparse — but every line must land with full weight.
 30-40% dialogue in longer scenes. Each line of dialogue should carry more meaning than its surface reading.
 Characters say strange things and nobody comments. Conversation opens suddenly into depth, then closes again.
 Silence is structural. The pause between words is where the emotion lives.
-Example voice:
-Your mother used to make tea this way — steeped too long, slightly bitter, drunk standing up over the kitchen sink. You didn't know you'd kept the habit until Marcus mentioned it.
-"You always do that," he said.
-"Do what?"
-"Stand." He was sitting at the table with his perfectly correct cup. "You never sit when you drink tea."
-You looked at the window. The garden. The specific quality of October light.
-"Old habit," you said.
-He nodded, and you understood he was filing it away — another piece of you he was learning to read.
 `;
 
 const GENRE_STYLE_ADVENTURE = `
 ### Writing Style: EXPLORATION / ADVENTURE
-Inspired by: Ursula K. Le Guin (anthropological wonder), Robert Macfarlane (lyrical landscape), Susanna Clarke (annotated strangeness)
 Techniques:
-- Le Guin-style encounter: Meeting a new place or culture is treated with genuine curiosity, not judgment. Wonder is the primary register.
-- Macfarlane-style landscape: The world is not a backdrop — it is an active presence with a history and a character. Specific. Named. Sensory.
-- Clarke-style strangeness: The world contains things that have simply always been there, with rules no one has explained. Strangeness is matter-of-fact.
-Pacing: Expansive. Let discovery breathe. Don't rush to the next thing — linger where the wonder is.
+- Meeting a new place or culture is treated with genuine curiosity, not judgment. Wonder is the primary register.
+- The world is not a backdrop — it is an active presence with a history and a character. Specific. Named. Sensory.
+- The world contains things that have simply always been there, with rules no one has explained. Strangeness is matter-of-fact.
+Pacing: Expansive but forward-moving. Let discovery breathe, but keep the journey progressing. Do not stall in one location; keep the horizon shifting.
 Dialogue ratio: 25-35%. More description by design. But companion dialogue should punctuate discovery — a voice that responds, questions, and reflects back what was found.
 Watch for: Never treat scenery as filler. Every described detail must do work — reveal character, carry meaning, plant a thread, or deepen wonder.
 THE DIALOGUE IMPERATIVE
@@ -506,7 +457,6 @@ function buildStoryMemoryBlock(storyState: StoryState | null): string {
   const summaries: string[] = storyState?.narrativeSummary ?? [];
   if (!storyState || summaries.length === 0) return "";
 
-  // Keep ALL summaries — never compress or truncate.
   // Each summary is ground truth; dropping any risks continuity failures.
   const memoryLines = summaries.map((s, i) => `[Turn ${i + 1}]: ${s}`);
 
@@ -718,11 +668,12 @@ Turn: ${nodeIndex + 1} | Story Health Score: ${healthScore} | Total words: ${tot
   const continuityCheck =
     storyState && storyState.turn > 0
       ? `\n## BEFORE YOU WRITE — CONTINUITY CHECKLIST
-✓ Every character named in the Story History above must behave consistently with their established state.
-✓ Any information the protagonist has learned is still known to them.
-✓ Physical conditions (injuries, resources, location) carry forward from prior turns.
-✓ Planted threads from the Story History should be acknowledged or advanced, not ignored.
-✓ The scene must feel like a continuation of a single coherent story, not a fresh start.\n`
+  - PLOT MOMENTUM: Does this scene advance the OVERARCHING quest? If the character is stuck in the same combat, argument, or location as last turn, you MUST resolve it now and push the narrative forward.
+  - Every character named in the Story History above must behave consistently with their established state.
+  - Any information the protagonist has learned is still known to them.
+  - Physical conditions (injuries, resources, location) carry forward from prior turns.
+  - Planted threads from the Story History should be acknowledged or advanced, not ignored.
+  - The scene must feel like a continuation of a single coherent story, not a fresh start.\n`
       : "";
 
   return `${stateBlock}
