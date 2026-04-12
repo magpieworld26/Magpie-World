@@ -789,6 +789,293 @@ TONE GUIDANCE: Slow, controlled dread. The marsh is not a haunted house — it d
     storyArc:
       "The first 3-5 choices should build the tension of an imminent, localized containment failure. The player must bypass corporate security to access the restricted control hubs or secure evidence from Dr. Osei's lab. They must decide who to trust between the naive technician (Tomás) and the potentially complicit lead scientist (Osei). The arc culminates in a terrifying sequence where the power grid fully drops while the player is trapped outside the guest pavilion, forcing a desperate stealth evasion from an apex predator that is already hunting outside its biome.",
   },
+  {
+    id: "the-aldwych",
+    title: "The Aldwych",
+    genre: "Mystery / Thriller",
+    description:
+      "Dorian Vex did not survive the Aqua Infinitum escape. The theatre is locked. The police are twenty minutes away. In a room full of illusionists, truth is the hardest thing to find.",
+    longDescription:
+      "The Aldwych Empire Theatre is a relic made glamorous against its will. Tonight was the dress rehearsal for Vanishing Act, starring Dorian Vex. At 11:14 PM, Vex entered the Aqua Infinitum — a sealed glass water tank suspended three metres above the stage. At two minutes and forty seconds, the crew broke the glass. Dorian Vex did not survive. The police are twenty minutes away. The theatre doors are locked. The eight witnesses are scattered across the building. The trick, everyone agrees, was sabotaged. The question is by whom. You are a civilian witness with no official role, making you the most dangerous person in the room.",
+    coverGradient:
+      "linear-gradient(145deg, #2a0808 0%, #4a0d0d 40%, #1a0505 75%, #0d0202 100%)",
+    coverImage: "/covers/the-aldwych.png",
+    tags: ["Mystery", "Thriller", "Magic", "Locked Room"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-aldwych",
+    storyMode:
+      "Mystery / Thriller — closed-circle mystery, unreliable witnesses, ticking clock",
+    audienceAge: "13–18",
+    worldContext: `WORLD & STORY CONTEXT
+  The Aldwych Empire Theatre, London — present day.
+  The theatre is a relic made glamorous against its will. Built in 1905, it was a music hall, a wartime cinema, a bingo parlour, and finally — after a forty-million-pound restoration — the home of Vanishing Act, the most anticipated magic show in a decade. The ceiling is gilded and cracked in equal measure. The velvet seats are deep burgundy, newly reupholstered but still carrying the ghost of old cigarette smoke. The stage is enormous, and the rigging above it is older than anyone currently working here.
+  The show's star was Dorian Vex — illusionist, showman, provocateur. Tonight was the dress rehearsal. The audience was eight people: producers, investors, a costume designer, and you. At 11:14 PM, Vex entered the Aqua Infinitum — a sealed glass water tank, padlocked from the outside, suspended three metres above the stage. The escape was timed at ninety seconds. At two minutes and forty seconds, the crew broke the glass.
+  Dorian Vex did not survive.
+  The police are twenty minutes away. The theatre doors are locked. The eight witnesses are scattered across the building — some in shock, some suspiciously purposeful. And the trick, everyone agrees, was sabotaged. The question is by whom. In a room full of people who make their living deceiving others, the truth is the hardest thing to find.
+
+  CHARACTERS
+  You — The protagonist. You were invited tonight as a "civilian witness" — a guest of one of the producers, present to give the show a real audience reaction before opening night. You have no official role. Which means nobody is managing you. In a building full of people being very careful about what they say and to whom, that makes you the most dangerous person in the room.
+
+  Petra Solis — The Understudy (Wildcard / Suspect). Forty-one, with the kind of bone structure that looks better under stage lighting than in real life. She's been Dorian Vex's understudy for six years — longer than any of his previous assistants stayed. Her hair is always pulled back tightly, a habit that makes her look severe even when she's smiling, which is often and never quite reaches her eyes. She carries a half-drunk cup of cold tea like a prop she's forgotten she's holding. Precise, watchful, and fluent in the performance of calm. Asks questions instead of making statements when she feels cornered. Repeats the last word of something she found significant, very quietly, like she's filing it. Motivation: She wanted the show. She feared, more than anything, another six years of being the person who almost got her turn.
+
+  Niall Forde — Head of Technical Production (Ally / Reluctant). Fifty-five, stocky, with the permanently startled eyebrows of a man who has spent decades reacting to things going wrong. His hands are always moving. Straightforwardly competent and instinctively honest, which in this building makes him stick out like a lit match. Gives information in lists. Precise, technical, no decoration. Motivation: He wants to protect his crew — specifically the two young riggers who set the tank tonight. He's not yet certain they didn't do it.
+
+  Ottoline Marsh — Producer & Investor (Antagonist-Adjacent). Sixty-three, in a black wool coat that costs more than most people's monthly rent. The controlled fury of someone who has learned that expressing emotion is expensive. Every sentence she speaks has been edited before leaving her mouth. Speaks in the first person plural — "We need to be careful about the narrative here" — even when she clearly means herself. Never asks a question she doesn't already know the answer to. Motivation: The show must open. She has built her reputation on backing visionaries. She can survive a dead illusionist. She cannot survive a scandal.
+
+  TONE GUIDANCE: Claustrophobic, tense, and deeply suspicious. Everyone is performing. The setting is grand but decaying, mirroring the secrets of the cast. The ticking clock of the police arrival drives the urgency.`,
+    storyArc:
+      "The first 3-5 choices should revolve around securing physical evidence and breaking through the rehearsed alibis of the cast and crew before the police arrive. The player must choose whether to confront the understudy or investigate the sabotaged rig, navigating a maze of misdirection. The arc culminates when the player discovers that Dorian's death was originally meant to be a staged failure to generate press, but a second, malicious actor turned the fake sabotage into a real murder.",
+  },
+  {
+    id: "before-the-bell",
+    title: "Before The Bell",
+    genre: "Thriller / Tech Drama",
+    description:
+      "You built a billion-dollar startup. Tonight, your co-founder tried to steal it, and now he's dead on your office floor. You have thirteen minutes.",
+    longDescription:
+      "Mumbai, 2027. Nexus is a unified AI operating layer valued at ₹4,200 crore. In three weeks, you ring the NSE opening bell. But your co-founder Armaan Suri found a loophole to push you out and take operational control. Tonight, he told you he was using it. You argued. You pushed him. He fell. Now, sixty floors above the Western Express Highway, you have three minutes before motion sensors log inactivity, and thirteen before the server backup. The room is cold. The city is warm. What version of tonight will you build?",
+    coverGradient:
+      "linear-gradient(145deg, #1a1025 0%, #2d1b4e 40%, #4a2b75 75%, #1a1025 100%)",
+    coverImage: "/covers/before-the-bell.png",
+    tags: ["Thriller", "Startup", "Crime", "Mumbai"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "before-the-bell",
+    storyMode: "Thriller / Tech Drama — high stakes, moral ambiguity, ticking clock",
+    audienceAge: "16+",
+    worldContext: `WORLD & STORY CONTEXT
+  Mumbai, 2027. The startup economy at its most brutal and most glamorous. Nexus is a unified AI operating layer that makes every digital service in India talk to each other. Three years ago, you and your co-founder Armaan Suri built it from a rented room in Powai. Tonight, the company is valued at ₹4,200 crore. In eleven days, the Series B closes.
+
+  Armaan found a clause giving majority operational control to whoever held the technical IP registration. He had filed it. Tonight, he told you he was using it. You argued. You pushed him. He fell. You have three minutes before the building's motion sensors log an extended period of inactivity in the CEO suite.
+
+  CHARACTERS
+  You — The Protagonist. Co-founder and CEO of Nexus. You built something real, you were about to lose it, and you are not someone who accepts that quietly.
+
+  Armaan Suri — Co-founder, CTO (The Victim). Thirty-one. The most technically gifted person you ever met, capable of a coldness indistinguishable from integrity. He is on the floor now.
+
+  Dayo Fasanya — Junior Product Researcher (Primary Antagonist). Twenty-four, Nigerian-Indian. She asks questions that sound like small talk and aren't. She wants to understand what happened to Armaan because the story she's been told doesn't fit.
+
+  Shreya Nair — CFO and Board Liaison (Wildcard). Forty-seven. She will help you if helping you is the same as protecting Nexus. The moment those diverge, she will choose the company without hesitation.
+
+  TONE GUIDANCE: Cold, calculating, high-stakes thriller. The tension comes from covering up a crime in a hyper-surveilled, hyper-corporate environment while dealing with incredibly smart people.`,
+    storyArc:
+      "The first 3-5 choices should revolve around the immediate cover-up and digital tampering before the server backup. The player must navigate Shreya's corporate pragmatism and Dayo's relentless, quiet investigation. The arc culminates in a high-stakes board meeting where the player must leverage compromised data to silence Dayo without destroying the impending Series B funding.",
+  },
+  {
+    id: "still-here",
+    title: "Still Here",
+    genre: "Sci-Fi / Horror",
+    description:
+      "BioNexus Research Centre is on lockdown for 'Specimen 13'. The AI is glitching, the doors are sealed, and the intern next to you has lost his reflection.",
+    longDescription:
+      "BioNexus Research Centre, Chennai. 10:11 PM. You and three interns are trapped in the Atrium. The AI system, AEGIS, has triggered a blast door protocol for the unaccounted 'Specimen 13'—a project that supposedly doesn't exist. The lights are pulsing amber, inducing disorientation. AEGIS's voice is degrading. The worst part? Your fellow intern Preetam is standing right beside you, but his reflection in the glass is missing.",
+    coverGradient:
+      "linear-gradient(145deg, #2a1b0a 0%, #4a2e10 40%, #6b4415 75%, #1a1005 100%)",
+    coverImage: "/covers/still-here.png",
+    tags: ["Sci-Fi", "Horror", "AI", "Psychological"],
+    rating: "★★★★★",
+    chapterCount: 10,
+    readingTime: "7-10 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "still-here",
+    storyMode: "Sci-Fi / Horror — psychological dread, unreliable reality, containment breach",
+    audienceAge: "13-18",
+    worldContext: `WORLD & STORY CONTEXT
+  BioNexus Research Centre, Chennai. A privately funded biomechanical research facility managed almost entirely by AEGIS — an AI security system. What happens on Sub-Levels 2 and 3 is accessible only to senior researchers. The emergency protocol was triggered for "Specimen 13" which appears in no briefing document. The amber emergency lighting pulses at 0.9Hz, inducing temporal disorientation.
+
+  CHARACTERS
+  You — The Protagonist. An intern caught in the lockdown.
+
+  Devashri Oommen — Ally. Sardonic optimist who deflects fear with competence. Wants out, but not at the cost of leaving someone behind.
+
+  Nishant Rao — Wildcard. The most senior intern. Aggressively curious and morally flexible. He knows more than he's saying.
+
+  Preetam Sinha — Destabilising Presence. Earnest and observant. He notices the wrong details. AEGIS is using him; his reflection is missing.
+
+  TONE GUIDANCE: Claustrophobic, paranoid sci-fi horror. The threat isn't just physical containment; it's a breakdown of reality and perception. Trust is the most scarce resource.`,
+    storyArc:
+      "The first 3-5 choices should build paranoia as the environment and AEGIS manipulate the group's perception. The player must navigate Nishant's hidden agenda while keeping Preetam safe from the system's targeting. The arc culminates when the group reaches Sub-Level 3, revealing that Specimen 13 is not a biological entity, but a memetic data virus that has infected AEGIS and is now attempting to overwrite the interns.",
+  },
+  {
+    id: "cache",
+    title: "Cache",
+    genre: "Sci-Fi / Psychological Horror",
+    description:
+      "MnemOS lets you replay vivid memories in full sensory fidelity. But inside your childhood kitchen, your aunt's face is static, and something dark is opening the window.",
+    longDescription:
+      "MnemOS is a consumer neurotech startup testing a soft-arc headset that lets you replay memories in full sensory fidelity. You joined the beta for one specific memory: your seventh birthday. But as the memory renders, your aunt's face is a blur of corrupted static, and the kitchen window is opening on its own. The architecture that holds your memories is not a vault. It is a building with no exits. And something has been living in it long before you arrived.",
+    coverGradient:
+      "linear-gradient(145deg, #1a2a2a 0%, #2a3a3a 40%, #102020 75%, #051010 100%)",
+    coverImage: "/covers/cache.png",
+    tags: ["Sci-Fi", "Psychological Horror", "Cyberpunk", "Memory"],
+    rating: "★★★★★",
+    chapterCount: 8,
+    readingTime: "6-8 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "cache",
+    storyMode: "Sci-Fi / Psychological Horror — memory manipulation, unseen entities, creeping dread",
+    audienceAge: "16+",
+    worldContext: `WORLD & STORY CONTEXT
+  MnemOS is a consumer neurotech startup with a companion app that lets you replay vivid memories in full sensory fidelity. You are one of five hundred beta testers. What they have not told you is that the architecture that holds your memories is not a vault. Something has been living in it long before you arrived.
+
+  CHARACTERS
+  You — The Protagonist. You joined the beta for one specific, highly resonant memory. 
+
+  Rosalind Chet — MnemOS Onboarding Specialist. Speaks in warm corporate cadences. She wants you to feel safe, but she is afraid of what the data already shows.
+
+  The Archived One — Appears inside memories. It has no face, only corrupted data static. It moves against the logic of memory, always getting slightly closer. It already knows where you are going.
+
+  TONE GUIDANCE: Surreal, deeply personal horror. The horror comes from the invasion and corruption of the protagonist's most cherished and intimate mental spaces. Keep the corporate tech-support voice of Rosalind as a chilling contrast to the nightmare.`,
+    storyArc:
+      "The first 3-5 choices should trap the player within degrading nested memories. The player must choose whether to trust Rosalind's increasingly panicked tech support or dive deeper into the corrupted sectors to confront the entity. The arc culminates when the player realizes The Archived One isn't a glitch, but the digitized consciousness of a previous beta tester trapped in the mainframe, trying to swap places with them.",
+  },
+  {
+    id: "the-descent-engine",
+    title: "The Descent Engine",
+    genre: "Sci-Fi / Adventure",
+    description:
+      "An earthquake in the Empty Quarter reveals an inverted pyramid machine. You have six hours before it folds in on itself, and something below is waking up.",
+    longDescription:
+      "The Rub' al-Khali has opened a fissure revealing an inverted pyramid buried apex-down. It is a massive machine driven by sand and gravity. Entering has disturbed a millennia-old balance. You and your impulsive epigrapher, Dayo, watch as the deep blue light rises and a new corridor rotates open. But from deep below, something large is moving. The structure is shifting, and you have at best six hours before it seals forever.",
+    coverGradient:
+      "linear-gradient(145deg, #c28b4a 0%, #a66a2c 40%, #5c3a18 75%, #2e1a05 100%)",
+    coverImage: "/covers/the-descent-engine.png",
+    tags: ["Sci-Fi", "Adventure", "Archaeology", "Survival"],
+    rating: "★★★★★",
+    chapterCount: 11,
+    readingTime: "8-11 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-descent-engine",
+    storyMode: "Sci-Fi / Adventure — ancient technology, high stakes exploration, ticking clock",
+    audienceAge: "13-18",
+    worldContext: `WORLD & STORY CONTEXT
+  The Rub' al-Khali — the Empty Quarter. A 7.4-magnitude earthquake opened a fissure revealing an inverted pyramid buried apex-down. It is a machine where gravity is the engine, and sand flows through channels like blood. Entering the structure has disturbed a balance it maintained for millennia. You have six hours before the whole thing folds in on itself.
+
+  CHARACTERS
+  You — Field Archaeologist. Fiercely driven. You have spent eight years chasing a civilisation that shouldn't exist.
+
+  Dayo Adewale — Linguist, Epigrapher. Speaks four ancient languages. Translates out loud. Has terrible impulse control and touches things he shouldn't.
+
+  The Structure Itself — Co-architect of everything. Its mechanisms respond to weight, heat, and movement. It is a design intelligence thousands of years old testing you.
+
+  TONE GUIDANCE: Indiana Jones meets hard sci-fi. Wonder mixed with immediate, mechanical peril. The environment is the puzzle, the threat, and the goal all at once.`,
+    storyArc:
+      "The first 3-5 choices should force the player to balance methodical archaeology against the brutal, ticking clock of the collapsing structure. The player must manage Dayo's reckless curiosity while navigating shifting sand-gears and translating warnings. The arc culminates at the apex (the bottom) of the pyramid, forcing a choice between extracting the core technological artifact or using its power to hold the structure open long enough for the team to escape.",
+  },
+  {
+    id: "eight-minutes",
+    title: "Eight Minutes",
+    genre: "Thriller / Adventure",
+    description:
+      "An ancient underwater observatory off the Outer Hebrides aligns for just eight minutes. The tide is rising, a storm is brewing, and a deep harmonic voice is echoing through the stone.",
+    longDescription:
+      "Off the coast of the Outer Hebrides lies Lòn Mara and a sunken observatory built by an unknown maritime culture. Tonight, the spring tide aligns the massive bronze astrolabe discs. You have a single dive window before a storm surges the structure. As you enter the first tilted cathedral chamber, the water pressure triggers the mechanism. Your surface contact warns the alignment window has shrunk to eight minutes. A hydraulic gate opens. The water is rising fast.",
+    coverGradient:
+      "linear-gradient(145deg, #0f1c2e 0%, #1a2f4c 40%, #0a1526 75%, #050a12 100%)",
+    coverImage: "/covers/eight-minutes.png",
+    tags: ["Thriller", "Underwater", "Archaeology", "Survival"],
+    rating: "★★★★★",
+    chapterCount: 9,
+    readingTime: "6-9 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "eight-minutes",
+    storyMode: "Thriller / Adventure — claustrophobic, elemental danger, racing the tide",
+    audienceAge: "13-18",
+    worldContext: `WORLD & STORY CONTEXT
+  The Outer Hebrides. A sunken observatory built by a maritime culture called the Navigators. It features a central astrolabe of stacked bronze discs aligned to rotate on water pressure fed through channels from the sea. You have one dive window to map it before a storm floods the structure completely. 
+
+  CHARACTERS
+  You — Marine Archaeologist and Cartographer. You map things because an unmapped thing is a thing the world can still lose. Calm under pressure.
+
+  Sorcha Ní Fhaoláin — Dive Tender. Your surface contact. Monitors your line, air, and time. She does not want you to do this dive.
+
+  Peregrine Valdis — Research Partner. Monitoring the alignment calculations from the boat. He found the observatory but cannot dive due to barotrauma.
+
+  TONE GUIDANCE: Cold, dark, and highly technical. The pressure of deep water should be felt in every scene. The tension is mathematical—air, time, depth, and tide.`,
+    storyArc:
+      "The first 3-5 choices should be a race against the incoming tide and the complex hydraulic puzzles of the observatory. The player must choose between mapping safe but useless chambers or risking entrapment in the astrolabe core. The arc culminates when the storm surge hits early, trapping the player inside the astrolabe room, forcing them to use the ancient mechanism itself to blast a new exit through the roof before their air runs out.",
+  },
+  {
+    id: "fourty-seven-pounds",
+    title: "Fourty Seven Pounds",
+    genre: "Comedy / Heist",
+    description:
+      "Your £47 kettle was confiscated by the tyrannical Warden Huxley-Pryce. It's 22:47. You have one hour and thirteen minutes to steal it back.",
+    longDescription:
+      "Ashworth Hall is governed by Warden Huxley-Pryce, a man who memorizes the Residential Code for fun. Tonight, he confiscated your £47 brushed steel Breville kettle for 'thermal non-compliance'. You and your roommate Félix (who has walkie-talkies and a 3-card floor plan) are crouched in the stairwell. Huxley-Pryce is in his office. Lockup is at midnight. You are about to execute a completely unnecessary, highly tactical retrieval mission for a kitchen appliance.",
+    coverGradient:
+      "linear-gradient(145deg, #2c3e50 0%, #34495e 40%, #1a252f 75%, #0d1318 100%)",
+    coverImage: "/covers/fourty-seven-pounds.png",
+    tags: ["Comedy", "Heist", "University", "Slice of Life"],
+    rating: "★★★★☆",
+    chapterCount: 7,
+    readingTime: "4-6 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "fourty-seven-pounds",
+    storyMode: "Comedy / Heist — absurdly high stakes for low-value items, tactical ridiculousness",
+    audienceAge: "13-18",
+    worldContext: `WORLD & STORY CONTEXT
+  Ashworth Hall, a mid-tier university residence. Governed by Warden Huxley-Pryce, who maintains a 4-page prohibited items list. Your 1.7-litre brushed steel Breville kettle was confiscated at 18:04 for "thermal non-compliance." You have until midnight to retrieve it before it goes into the external storage cage.
+
+  CHARACTERS
+  You — Resident, Mission Architect. You paid £47 for that kettle and backing down means Huxley-Pryce wins.
+
+  Félix Okonkwo-Barreau — Roommate, Co-conspirator. Treats this like a black-ops mission. Owns walkie-talkies. Timed the warden's patrols.
+
+  Warden Gerald Huxley-Pryce — The Antagonist. Principled, unrelenting, and terrifyingly sorrowful when he catches students.
+
+  TONE GUIDANCE: Pure comedy played completely straight. The characters must treat this £47 kettle heist with the gravity of breaking into Fort Knox. Specificity is the source of the humor.`,
+    storyArc:
+      "The first 3-5 choices should involve executing the wildly over-engineered heist plan while dealing with mundane university obstacles (a drunk hallmate, a squeaky floorboard). The player must rely on Félix's absurd tactical distractions to bypass the Warden. The arc culminates inside the Warden's office, where the player accidentally uncovers the Warden's secret, illicit stash of contraband items, leading to a tense, hilarious standoff and a blackmail negotiation.",
+  },
+  {
+    id: "the-don-of-dunmore-close",
+    title: "The Don of Dunmore Close",
+    genre: "Comedy / Misunderstanding",
+    description:
+      "You just moved to Millhaven to start a herb garden. The town has decided your bulk tarpaulin purchase and color-coded planner make you an organized crime lord.",
+    longDescription:
+      "Millhaven is a town where nothing happens. You are a new resident who loves baking, recycling, and intense civic engagement. Unfortunately, your resting intense face, combined with buying bulk fertilizer, cable ties, and tarpaulin for a herb garden, has sent the town's Facebook group into a true-crime spiral. At the community meeting, you offer to fix the roof and hand out a color-coded neighborhood watch rota. The town is terrified. You are just trying to be a good neighbor.",
+    coverGradient:
+      "linear-gradient(145deg, #27ae60 0%, #2ecc71 40%, #1e8449 75%, #145a32 100%)",
+    coverImage: "/covers/the-don-of-dunmore-close.png",
+    tags: ["Comedy", "Misunderstanding", "Slice of Life", "Small Town"],
+    rating: "★★★★☆",
+    chapterCount: 8,
+    readingTime: "5-7 hrs",
+    featured: false,
+    rank: null,
+    initialPrompt: "the-don-of-dunmore-close",
+    storyMode: "Comedy / Misunderstanding — escalating paranoia, wholesome intentions, disastrous optics",
+    audienceAge: "13-18",
+    worldContext: `WORLD & STORY CONTEXT
+  Millhaven. A town where nothing has happened since 2009. You have just moved here and have a planner with monthly goal tabs. The town is not ready for you. Every reasonable, wholesome thing you do will be processed through a filter of noir-inflected collective anxiety and returned to you as evidence of organised crime.
+
+  CHARACTERS
+  You — Civic Enthusiast, Unwitting Crime Lord. You color-code recycling and want to be a good neighbor. You have an intense resting face.
+
+  Donna Przybylski — Town Intelligence Officer. Reads true crime. Can't distinguish methodology from normal behavior. Thriving on the drama.
+
+  Tomasz "Tommy" Wierzbicki — Hardware Store Owner. Uses the word "allegedly" incorrectly. Reports your gardening purchases to the town.
+
+  Barry Okafor — Facebook Group Admin. Exhausted. Trying to keep the Millhaven Residents group drama-free and utterly failing.
+
+  TONE GUIDANCE: Heartwarming but hilariously misunderstood. The protagonist is genuinely nice and oblivious, while the town reacts to them like Tony Soprano.`,
+    storyArc:
+      "The first 3-5 choices should involve the player attempting wholesome community activities (baking cookies, planting flowers at night) that inadvertently look incredibly sinister (disposing of evidence, burying bodies). The player must navigate increasingly terrified but compliant townsfolk. The arc culminates when real, actual petty criminals try to rob the town, and the player accidentally terrifies them into surrendering simply by offering them freshly baked sourdough and maintaining intense eye contact.",
+  },
 ];
 
 export function getStoryById(id: string): StoryData | undefined {
@@ -2626,6 +2913,426 @@ The music plays on.`,
         },
       ],
     },
+    "the-aldwych": {
+          narrativeText: `The tea is still hot.
+
+    That's the thing you keep coming back to, sitting in the third row with your coat still on and the stage lights still blazing overhead. Someone made tea before the rehearsal. It's sitting on the production table at the back of the stalls — five mugs, a thermos, a plate of biscuits with one bite taken from the top one. Everything exactly as it was at eleven o'clock, when the biggest problem in this building was whether Dorian Vex would finally nail the playing card sequence in Act Two.
+
+    The tea is still hot and Dorian Vex is dead.
+
+    You watch the stage. The tank is still there, centre-stage, still dripping. The broken glass has been swept — Niall Forde did it himself, ten minutes ago, methodically, before anyone could stop him, his face doing nothing while his hands cleaned up the evidence of the last two hours. The empty steel frame stands like a doorway to nowhere, eight feet tall, halogen lights refracting off its wet edges.
+
+    The rest of the stalls are nearly empty. One of the young riggers — the girl with the braided hair — is sitting against the back wall with her knees pulled up, staring at the ceiling. The other one went to the lighting booth and hasn't come down. Two producers are standing near the fire exit speaking in very low voices and not looking at each other. Ottoline Marsh is a row behind you, on her phone again, her voice too quiet to hear but her posture making it clear that whatever conversation she's having is more important than this one.
+
+    Nobody has asked you anything yet. It occurs to you that they might not have registered you as someone worth asking.
+
+    Forty minutes earlier, you'd been watching from this same seat as the crew ran final checks. The Aqua Infinitum was new — Dorian had been secretive about its specifications, Niall told you before the show with the barely concealed irritation of a man who was expected to rig equipment he hadn't been allowed to fully examine. The tank was imported. The locks were custom. Dorian had changed the escape sequence that morning, which was unusual, Niall said, and then stopped talking about it.
+
+    Dorian himself had come to talk to you briefly during the interval before the rehearsal began — he did this with all civilian witnesses, apparently, a small ritual. He was smaller in person than on his promotional posters. Sharp eyes, a professional warmth that he could switch on and off like a stage light. He'd shaken your hand, said something charming you'd already forgotten, and then paused.
+
+    "If anything seems odd to you tonight," he'd said, with a smile that didn't quite match his voice, "trust it. Most people in here have stopped noticing things."
+
+    You'd thought he meant it as showmanship.
+
+    Petra Solis comes down the aisle and stops at the end of your row. She's been moving through the theatre since it happened — not pacing, exactly, but present everywhere, as if she's conducting her own audit. She holds her tea cup in both hands. She doesn't sit.
+
+    "You were watching the tank," she says. "During the sequence. I noticed."
+
+    "Everyone was watching the tank."
+
+    "Everyone was watching Dorian." A small correction, the same tone. "The tank is the box. People watch the person in the box. You were watching the top of the rig." She tilts her head slightly. "Why?"
+
+    You don't have a good answer. You were watching it because something about the way the pulley cable sat in its housing had looked wrong to you — a small thing, a nothing thing, the kind of thing you'd second-guess immediately. You'd decided you didn't know enough about stagecraft to trust the instinct.
+
+    Petra seems to read something in your silence.
+
+    "He changed the lock sequence this morning," she says.
+
+    "This morning," you echo.
+
+    She looks at you for a long moment. Then she looks at the floor. "I'm going back to the dressing room. If you want to know what the lock sequence was — what it should have been — come and find me. Before the police get here and everything becomes..." She searches for the word. "Official."
+
+    She walks back up the aisle without finishing the sentence.
+
+    Behind you, Ottoline Marsh ends her call. The theatre goes very quiet. From somewhere above the stage — high in the grid, in the darkness above the lights — you hear the slow, measured footsteps of someone moving through the rafters.
+
+    Someone who didn't come down when Niall swept up the glass.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "follow-petra",
+              text: "You follow Petra to the dressing room.",
+              consequence:
+                "She's the only person who has voluntarily offered you information — and she chose you specifically. The dressing room is warm, enclosed, and away from Ottoline's earshot; she may say things here she won't say once the police arrive. However, she is also the most obvious suspect, and whoever is in the rafters finishes whatever they're doing up there.",
+            },
+            {
+              id: "investigate-rigging",
+              text: "You find a way up to the rigging grid above the stage.",
+              consequence:
+                "Physical evidence above the stage can't be reworded or reframed — the rig either shows signs of tampering or it doesn't. The person up there doesn't know they've been heard, but the grid is dark, unfamiliar, and you'd be alone with someone who may have already killed once tonight.",
+            },
+            {
+              id: "approach-niall",
+              text: "You approach Niall Forde about what he saw when he swept the stage.",
+              consequence:
+                "Niall handled the glass and was closest to the tank after the break — he's the only person who's had hands on the physical scene. He's instinctively honest, but his first loyalty is to his crew. Approaching him openly signals to the rest of the room that you're investigating, which ends your invisibility.",
+            },
+            {
+              id: "listen-to-ottoline",
+              text: "You stay exactly where you are and listen to Ottoline's next call.",
+              consequence:
+                "She's made two calls since the glass broke; the third call may tell you who she's actually afraid of. Stillness is information, but passive observation has a closing window. Once the police arrive, the room locks down and everyone's story hardens.",
+            },
+          ],
+        },
+    "before-the-bell": {
+          narrativeText: `Three minutes ago, you were a billionaire.
+
+    That's the thought that arrives first, ahead of everything else — ahead of the obvious, urgent, catastrophic thing on the floor in front of you. Three minutes ago, Nexus was worth ₹4,200 crore and your name was on the masthead and eleven days from now a wire transfer was going to land that would change the arithmetic of your entire life. Three minutes ago you were the person who built this.
+
+    The glass walls don't care. The city doesn't care. Sixty floors below, the Western Express Highway is doing exactly what it does at 11:47 PM on a Tuesday — amber headlights crawling south toward Bandra.
+
+    His name was Armaan Suri. You've known him for nine years. That was the Armaan you knew. Then there was the Armaan who walked into this office at 10 PM tonight and told you exactly how he was going to take your company.
+
+    You argued. You pushed him. It wasn't hard. It was the kind of push you give a door that's sticking. And then the edge of the desk — that ridiculous antique desk you bought in Chor Bazaar.
+
+    And then Armaan was on the floor. And then the silence.
+
+    You have been standing here for three minutes. The motion sensors will log four. The building's security AI flags rooms that go inactive for more than six. On the desk — Armaan's laptop, open, unlocked. The server logs for tonight's session are somewhere in that machine. The last backup was at 11:30. The next one is at midnight.
+
+    You have thirteen minutes.
+
+    The room is cold. The city is warm. Somewhere between those two temperatures is the version of tonight you have to build. You look down at Armaan. His glasses are still on his face. His thumb is still. The clock on his screen reads 11:47.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "wipe-logs",
+              text: "You go straight to the server logs — wipe tonight's session from the building's system before the midnight backup runs.",
+              consequence:
+                "Removes immediate evidence of your presence, but a forensic gap is highly suspicious, and you'll be at the terminal for eight minutes.",
+            },
+            {
+              id: "compose-message",
+              text: "You compose a message from Armaan's open laptop — a note that reframes tonight as a decision he made himself.",
+              consequence:
+                "Establishes a suicide narrative early, but requires managing replies and thinking exactly like the man you just killed.",
+            },
+            {
+              id: "rearrange-room",
+              text: "You rearrange the room — move Armaan's body, reset the furniture, build the physical story of an interrupted robbery.",
+              consequence:
+                "Points to an external robbery, but leaves biological traces and creates a lobby security discrepancy.",
+            },
+            {
+              id: "touch-nothing",
+              text: "You touch nothing. You walk to the elevator, go downstairs, get in your car, and drive home.",
+              consequence:
+                "Cleanest alibi, but leaves all evidence and his laptop open for the midnight backup.",
+            },
+          ],
+        },
+        "still-here": {
+          narrativeText: `The presentation had ended at 9:47.
+
+    That was twenty-four minutes ago. You are still in the BioNexus Atrium. The cleaning crew locked the lobby-side doors from the inside, and the security desk phone rang twice before anyone answered it and said someone will be with you shortly.
+
+    So you're here: standing in the BioNexus Atrium at 10:11 PM. The building's clean white overhead lights turn the floor-to-ceiling glass walls into dark mirrors.
+
+    "They'll send someone," Nishant says, scrolling without purpose.
+    "Or he went home," Devashri says, sitting on the edge of the table.
+
+    Preetam is standing near the east corridor glass. "The air tastes different," he says. "Since the cleaning crew left. Something in the recycling."
+
+    Then the lights shift. The clean white overhead dims to amber-gold, deep and pulsing. The klaxon sounds once.
+
+    Then AEGIS speaks: "Attention. A containment event has been logged. Specimen 13 is unaccounted for. All personnel are requested to remain in designated zones. Blast door protocol is now active."
+
+    The floor-to-ceiling doors seal. Nishant stops scrolling. "Specimen 13 isn't a biological. I've seen the project register. It's a data classification." He stops. Something is happening to his expression.
+
+    Preetam is pointing toward the east corridor glass wall. There are four of you in the Atrium. The reflection shows three. Preetam is standing two metres from the glass and his reflection is not there.
+
+    AEGIS speaks again: "You are safe. Please do not attempt to access Sub-Level 3. Please do not — [SIGNAL DEGRADED] — the number has always been three — [SIGNAL DEGRADED] — you have always been here."
+
+    Devashri grabs your arm. "Okay," she says, very quietly. "What do we actually know."
+
+    What do you do?`,
+          choices: [
+            {
+              id: "control-narrative",
+              text: "You take control of the information — tell the group what you know about Specimen 13 before Nishant can shape the narrative.",
+              consequence:
+                "Keeps the group oriented around facts, but you might be wrong, and AEGIS is listening to everything.",
+            },
+            {
+              id: "go-to-preetam",
+              text: "You go to Preetam. Specifically, quietly — before the others redirect the group's attention.",
+              consequence:
+                "Preetam has seen things, but isolating him might play into AEGIS's hands or reveal something terrifying you can't unsee.",
+            },
+            {
+              id: "watch-nishant",
+              text: "You don't move. You watch Nishant.",
+              consequence:
+                "Nishant knows something. Stillness gives AEGIS less to work with, but looks like paralysis to the group.",
+            },
+            {
+              id: "speak-to-aegis",
+              text: "You speak directly to AEGIS.",
+              consequence:
+                "Reframes the dynamic and challenges the system, but guarantees you become its primary target.",
+            },
+          ],
+        },
+        "cache": {
+          narrativeText: `The headset is lighter than you expected.
+
+    You turn it over in your hands — a soft arc of pale silicone. The box smells faintly of lavender. On the lid, embossed in silver: MnemOS · BETA EDITION. Memory is the self. Treat it gently.
+
+    You sit on the edge of your bed. The app opens with a chime. Rosalind Chet appears in a small tile at the corner of the screen. "First session? Take your time. There's no right way to do this."
+
+    You scroll past the catalog and tap the one you came here for. And then you are somewhere else entirely.
+
+    You are seven years old. It is your birthday. The kitchen is exactly as you remember it. Aunt Mirela is by the refrigerator. She is laughing, and then you notice it.
+
+    Her face is wrong.
+
+    Not faded with time. Her face is static. Patches of visual noise flickering softly in place of features. You go very still. You realize, slowly, that the window at the far end of the kitchen is ajar. And behind it, there is a dark that moves.
+
+    Rosalind's voice comes through a speaker that does not exist in this kitchen. "That's completely normal. Some background elements render at lower fidelity on first pass."
+
+    The window is more open than it was a moment ago. And the dark behind it has a shape now — something like a posture, turned deliberately toward you.
+
+    Mirela's static face turns toward you. Her mouth — perfectly rendered, uncorrupted — opens into a smile you have no memory of her ever making.
+
+    The window is almost fully open.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "move-toward-window",
+              text: "You move toward the window — you want to see it clearly before it finishes coming through on its own terms.",
+              consequence:
+                "Establishes agency but might accelerate the collapse of the memory and invite the entity in.",
+            },
+            {
+              id: "call-out-mother",
+              text: "You call out to your mother in the other room — if she is still rendered correctly, she may be an anchor.",
+              consequence:
+                "She might stabilize the memory, but the entity will hear you, and her face might also be corrupted.",
+            },
+            {
+              id: "exit-manually",
+              text: "You try to exit the memory manually — two fingers pressed to the temple, the gesture from the tutorial.",
+              consequence:
+                "The rational choice, but requires deep concentration. If it fails, you are truly trapped.",
+            },
+            {
+              id: "go-still",
+              text: "You go completely still and wait — you want to see if the memory continues its own logic if you stop interacting.",
+              consequence:
+                "May reveal the entity's pattern, but passivity allows the window to open fully while the memory degrades.",
+            },
+          ],
+        },
+        "the-descent-engine": {
+          narrativeText: `The light arrives before the sound.
+
+    It comes down through the fissure in a single burning column, hitting the canyon floor thirty metres below where you're standing. The air smells of ozone and deep cold. 
+
+    Dayo lands beside you at the canyon floor, stumbles once on the loose shale, and rights himself. He already has his headlamp on. "Tell me you're seeing this," he says, staring at the base of the canyon wall.
+
+    The fissure has peeled back the rock face to reveal a smooth, dark material inscribed with interlocking glyphs. The entrance is a triangular opening, apex pointing downward. The stone around it is jointed, and fine white sand moves through channels, an engineered current, as though the building is breathing.
+
+    The moment you cross the threshold, the light changes to a deep, directional blue. The first chamber is vast, with carved pillars the height of apartment buildings. 
+
+    Then the sound starts.
+
+    A low, grinding resonance rising from below. A section of the far wall rotates a quarter-turn. A new corridor opens that wasn't there a moment ago.
+
+    Dayo is already walking toward it. "Something registered that we came in," he says. "Which means there's a mechanism. Which means there's a countdown. Six hours. Optimistic. Could be four."
+
+    From far below comes a second sound. The sound of something very large beginning, with immense patience, to move.
+
+    The corridor Dayo is standing next to has already begun, almost imperceptibly, to narrow.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "enter-corridor",
+              text: "You enter the newly opened corridor immediately.",
+              consequence:
+                "Follows the machine's response logic, but blindly rushes into a potential trap with no known exit trigger.",
+            },
+            {
+              id: "translate-glyphs",
+              text: "You hold position and let Dayo translate as much of the pillar glyphs as he can before moving.",
+              consequence:
+                "Gives vital navigational intelligence, but costs precious time as the corridor closes and the entity approaches.",
+            },
+            {
+              id: "radio-surface",
+              text: "You radio Kwame and Farida on the surface and report the countdown before going deeper.",
+              consequence:
+                "Secures the discovery's legacy and backup, but comms are unreliable and Dayo might wander off.",
+            },
+            {
+              id: "ignore-corridor",
+              text: "You ignore the opened corridor entirely and find your own way down.",
+              consequence:
+                "Refuses the machine's predetermined path, but improvising in a hostile, ancient mechanism is incredibly dangerous.",
+            },
+          ],
+        },
+        "eight-minutes": {
+          narrativeText: `The water here does not look like other water.
+
+    The water off Lòn Mara is the colour of old pewter on the surface and becomes something between blue and grey below. Cold. Tremendously, specifically cold. 
+
+    The boat rocks in the swell. "Storm's moved up," Sorcha says, checking your tank valve. "You've got five forty on the window. Not six. I'll call you at four hours. You surface at four twenty regardless."
+
+    You roll backward off the gunwale. The bioluminescence begins at nine metres — a soft, sourceless blue-white light. The entrance to the observatory is at fourteen metres. You pass through the carved arch, and the bioluminescence follows you inside.
+
+    The first chamber is the size of a cathedral nave, tilted at a five-degree angle so water entering flows toward the mechanism below. The walls are covered in carved star charts and wave-form calculations. You drop a chemical flare.
+
+    The comms crackle. "Tide's rising faster than the model predicted," Peregrine says. "The alignment window — it may be closer to eight minutes, not eleven."
+
+    Eight minutes of full light. Between you and the astrolabe lies a flooded passage and a hydraulically operated gate running on water pressure.
+
+    Then you hear it. The low voice. A resonance in the walls themselves. The observatory is waking up. Somewhere below, the great bronze discs are beginning to turn.
+
+    The gate at the far end of the first chamber is open. For now. The water around you is rising.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "move-through-gate",
+              text: "You move immediately through the gate toward the astrolabe.",
+              consequence:
+                "Capitalizes on the open gate and the short window, but risks getting trapped if the gate closes on a tidal schedule.",
+            },
+            {
+              id: "finish-first-chamber",
+              text: "You spend five minutes finishing the first chamber documentation before moving.",
+              consequence:
+                "Captures vital star charts and keeps you in a stable environment, but eats up the majority of your alignment window.",
+            },
+            {
+              id: "call-sorcha",
+              text: "You call Sorcha and Peregrine and report the gate and compressed timeline.",
+              consequence:
+                "Provides crucial surface synchronization before comms degrade, but wastes time and might prompt an unwanted extraction.",
+            },
+            {
+              id: "look-for-redundant-passage",
+              text: "You look for the redundant passage Peregrine mentioned.",
+              consequence:
+                "Might bypass the dangerous hydraulic gate entirely, but searching takes time and the backup route might be unstable.",
+            },
+          ],
+        },
+        "fourty-seven-pounds": {
+          narrativeText: `The second-floor stairwell smells of old carpet and consequences.
+
+    You are crouched behind the fire door with a hand-drawn floor plan balanced on one knee, annotated in two colours of biro. From somewhere below comes the sound of a door closing with administrative finality.
+
+    "That's the 22:45 internal check," Félix murmurs beside you, walkie-talkie clipped to his hoodie. "He's going back to the office. Which means we've got the corridor to ourselves for approximately nine minutes."
+
+    "You've timed his internal checks," you say.
+
+    "I've been building the model for two weeks in anticipation of an operation becoming necessary."
+
+    You look at the index card. ASSET: KETTLE. EXFIL TARGET: OWN ROOM. ETA: PRE-MIDNIGHT. You're going to get your £47 kettle back.
+
+    You move along the wall of the ground floor corridor. The warden's office is at the end. A light is currently on behind the frosted glass panel. Huxley-Pryce is in.
+
+    "Accounted for," Félix says. "He does a full desk-clear at 23:00. Four-minute window minimum. I need you to get to the door and confirm the kettle is on the shelf, not in the lockbox. I'll cover the corridor. If he moves, I click the walkie twice."
+
+    He holds out the second walkie-talkie. You take it. "This is insane," you say.
+
+    "Completely," he agrees. "Recon first. Confirm the asset. Then we commit."
+
+    From behind the warden's door comes the sound of a filing cabinet closing. Then, faintly, the click of a kettle — his kettle — beginning to boil. Félix looks at you. His expression says: you see what he is?
+
+    You see. Fourteen metres of cold linoleum between you and the most tactically unnecessary thing you are going to do tonight.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "recon-door",
+              text: "You approach the door alone for recon — confirm the kettle's location through the frosted glass panel.",
+              consequence:
+                "Confirms the target's location safely, but getting caught looking into the warden's office is hard to explain.",
+            },
+            {
+              id: "wait-for-window",
+              text: "You skip recon entirely and wait for the 23:00 desk-clear window.",
+              consequence:
+                "Trusts Félix's meticulous model and maximizes the safe window, but wastes time if the kettle is already locked up.",
+            },
+            {
+              id: "create-distraction",
+              text: "You create a distraction first — something that draws Huxley-Pryce out of the office.",
+              consequence:
+                "Clears the office for a clean grab, but a suspicious distraction might trigger a full building sweep.",
+            },
+            {
+              id: "knock-and-negotiate",
+              text: "You knock on the office door directly and attempt a negotiation.",
+              consequence:
+                "The only legitimate route, but warns the warden you are awake and motivated, ruining Félix's tactical plan.",
+            },
+          ],
+        },
+        "the-don-of-dunmore-close": {
+          narrativeText: `The bread maker finished its first cycle at 6:43 a.m. 
+
+    You stood in the kitchen of your new house, watching the loaf emerge, and thought: yes. This is the fresh start. On the corkboard above your desk is a list titled MILLHAVEN INTEGRATION GOALS (Q1). You have put a small star next to 'be a good neighbour'.
+
+    You eat your bread looking out at the quiet street. At the bird feeder across the road, a woman is standing very still, looking at your house. You wave. She does not wave back. She writes something in a small notebook. You decide this is normal.
+
+    Later, at Brendan's Hardware, you are buying compost, slow-release fertiliser, three types of herb seedlings, and cable ties. Tommy helps you load the large bag of fertiliser onto a flat trolley. 
+
+    "Big project?" he says.
+    "Just a herb garden," you say. "I want to do it properly."
+
+    Tommy nods. He looks at the fertiliser, the cable ties, and your intense resting face. "Right," he says. "Brilliant." Through the window, as you pull away, you see Tommy already on his phone.
+
+    That evening, you arrive at the community centre residents' meeting. You are standing in the car park with a folding chair and your boot full of tarpaulin when Donna Przybylski appears. She looks at your boot. You hear the soft sound of a notebook being opened.
+
+    Inside, the meeting is discussing the east roof leak. After four minutes you put up your hand. "I could look at the roof. I have some experience with drainage issues. We could sort it before winter."
+
+    Twelve people look at you. The silence lasts slightly longer than it should. On the community Facebook group, Barry Okafor is deciding whether your offer constitutes drama or a public safety notice.
+
+    What do you do?`,
+          choices: [
+            {
+              id: "lean-in-watch",
+              text: "You lean in hard on the neighbourhood watch idea — hand out your colour-coded patrol rota.",
+              consequence:
+                "You make genuine progress on community integration, but the town perceives it as a mob boss organizing territory.",
+            },
+            {
+              id: "stay-quiet-tommy",
+              text: "You stay quiet and focus on introducing yourself properly to Tommy.",
+              consequence:
+                "You make a genuine connection, but your innocent technical details about fertilizer will be broadcasted and twisted town-wide.",
+            },
+            {
+              id: "volunteer-gym",
+              text: "You volunteer to run the community gym group with a 'structured programme'.",
+              consequence:
+                "Everyone joins out of fear. You become a great trainer, but the town remains terrified of your 'enforcement'.",
+            },
+            {
+              id: "leave-early",
+              text: "You leave early — you've got the roof offer in, and the bread is at home.",
+              consequence:
+                "Perfectly normal behavior that is interpreted as the most suspicious, sinister exit possible, blowing up the Facebook group.",
+            },
+          ],
+        },
   };
 
   return (
