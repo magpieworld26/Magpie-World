@@ -69,6 +69,7 @@ export type ChoiceConsequenceType =
   (typeof ChoiceConsequenceType)[keyof typeof ChoiceConsequenceType];
 
 export const ChoiceConsequenceType = {
+  spectacular: "spectacular",
   good: "good",
   neutral: "neutral",
   bad: "bad",
@@ -107,6 +108,7 @@ export type ContinueSessionRequestConsequenceType =
   (typeof ContinueSessionRequestConsequenceType)[keyof typeof ContinueSessionRequestConsequenceType];
 
 export const ContinueSessionRequestConsequenceType = {
+  spectacular: "spectacular",
   good: "good",
   neutral: "neutral",
   bad: "bad",

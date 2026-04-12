@@ -164,6 +164,9 @@ Vary sentence length deliberately.
 SECOND PERSON, PRESENT TENSE
 Throughout. "You step into the corridor" not "She stepped."
 
+PACING
+- Fast Paced story. The complete story will be approximately 15000 words long, everything should resolve till then and hence the story should be fast paced.
+
 ### Dynamic Prose Length
 Prose length ranges from 1 word to 1000 words. Choose based on narrative need.
 1-50 words: Sudden revelations, shocking consequences, moments of pure impact
@@ -918,7 +921,7 @@ function buildGeneratedSegment(
 
 // ─────────────────────────────────────────────
 // Main Generator
-// ─────────────────────────────────────────────
+// ───────────────────s��─────────────────────────
 
 export async function generateStorySegment(
   storyIdOrTitle: string,

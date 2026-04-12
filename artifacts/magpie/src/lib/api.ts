@@ -54,7 +54,7 @@ export interface Choice {
   id: string;
   text: string;
   consequence?: string;
-  consequenceType?: "good" | "neutral" | "bad" | "catastrophic";
+  consequenceType?: "spectacular" | "good" | "neutral" | "bad" | "catastrophic";
 }
 
 export interface StoryNode {

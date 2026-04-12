@@ -179,7 +179,7 @@ export const GetSessionResponse = zod.object({
           text: zod.string(),
           consequence: zod.string().optional(),
           consequenceType: zod
-            .enum(["good", "neutral", "bad", "catastrophic"])
+            .enum(["spectacular", "good", "neutral", "bad", "catastrophic"])
             .optional(),
         }),
       ),
@@ -200,7 +200,7 @@ export const GetSessionResponse = zod.object({
           text: zod.string(),
           consequence: zod.string().optional(),
           consequenceType: zod
-            .enum(["good", "neutral", "bad", "catastrophic"])
+            .enum(["spectacular", "good", "neutral", "bad", "catastrophic"])
             .optional(),
         }),
       ),
@@ -221,7 +221,7 @@ export const ContinueSessionBody = zod.object({
   choiceId: zod.string(),
   choiceText: zod.string(),
   consequenceType: zod
-    .enum(["good", "neutral", "bad", "catastrophic"])
+    .enum(["spectacular", "good", "neutral", "bad", "catastrophic"])
     .optional(),
 });
 
@@ -237,7 +237,7 @@ export const ContinueSessionResponse = zod.object({
       text: zod.string(),
       consequence: zod.string().optional(),
       consequenceType: zod
-        .enum(["good", "neutral", "bad", "catastrophic"])
+        .enum(["spectacular", "good", "neutral", "bad", "catastrophic"])
         .optional(),
     }),
   ),
@@ -264,7 +264,7 @@ export const GenerateStorySegmentResponse = zod.object({
       text: zod.string(),
       consequence: zod.string().optional(),
       consequenceType: zod
-        .enum(["good", "neutral", "bad", "catastrophic"])
+        .enum(["spectacular", "good", "neutral", "bad", "catastrophic"])
         .optional(),
     }),
   ),
