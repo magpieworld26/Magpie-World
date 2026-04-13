@@ -474,7 +474,7 @@ export default function LandingPage() {
         color: "rgba(255,255,255,0.3)",
         fontSize: "0.8rem",
       }}>
-        <div>© 2026 Magpie. The Home of Breathing Books.</div>
+        <div> Magpie World - The Home of Breathing Books.</div>
         <div style={{ marginTop: "8px", display: "flex", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
           <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" style={{ color: "#68e6c5", textDecoration: "none" }}>Privacy Policy</a>
           <a href="/terms-of-service.html" target="_blank" rel="noopener noreferrer" style={{ color: "#68e6c5", textDecoration: "none" }}>Terms of Service</a>
