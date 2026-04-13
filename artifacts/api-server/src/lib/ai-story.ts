@@ -152,7 +152,7 @@ Every scene must contain at least one unexpected element:
 
 READER CHARACTER AGENCY
 - NEVER perform any high-stakes action on behalf of the reader's character
-- The prose shows: consequences of the choice made, other characters' reactions, world changes, revelations, backstory
+- The prose shows: consequences of the choice made, other characters' reactions, world changes, revelations, backstory and progress towards the goal.
 
 SENTENCE RHYTHM
 Vary sentence length deliberately.
@@ -176,7 +176,6 @@ Prose length ranges from 1 word to 1000 words. Choose based on narrative need.
 1-50 words: Sudden revelations, shocking consequences, moments of pure impact
 100-400 words: Standard scenes where consequences unfold at measured pace
 500-1000 words: Complex scenes with multiple characters, major world shifts, deep emotional beats
-Never pad to meet a minimum. Never truncate a scene that needs to breathe.
 
 ### Dynamic Story Endings
 Stories do NOT end at a fixed turn count. The system will tell you when the story is approaching its conclusion window. Do not set isEnding: true early. Let the story reach a CLIMAX first — a confrontation, revelation, or decisive moment — then conclude.
@@ -204,144 +203,87 @@ Ending tone is calibrated by story health score:
 `;
 
 // ─────────────────────────────────────────────
-// Genre-Specific Writing Style Blocks
+// Genre-Specific Writing Style Blocks (v2 — Fast-Paced)
 // ─────────────────────────────────────────────
 
 const GENRE_STYLE_FANTASY = `
 ### Writing Style: FANTASY / EPIC ADVENTURE
-Techniques:
-- The protagonist's inner life has philosophical texture. They notice things because of who they are, not just for plot reasons.
-- One exquisitely chosen detail per scene —  a weight, a sound — that makes the world feel ancient and real.
-Pacing: Hook the reader immediately, then accelerate. The world must feel vast, but the plot must move relentlessly. The world breathes, but acts fast.
-Dialogue ratio: 30-40%.
-Watch for: Never interrupt a tense moment to explain how the magic works. Earn exposition in calm moments.
-THE DIALOGUE IMPERATIVE
-Scenic description is infrastructure. Dialogue is the story.
-After every 2-3 sentences of description, a character should speak, think, or react in direct voice.
-Do not describe how a room looks for more than 4 sentences before someone opens their mouth.
-Characters interrupt. They don't finish. They answer a different question than the one asked.
-Use action beats instead of dialogue tags: not "she said thoughtfully" but [She turned the cup in her hands before answering.]
+The story moves like a chase. Every scene ends on a turn — a betrayal, a discovery, a door that shouldn't exist.
+- Stakes escalate every 500 words. If nothing has changed, cut the scene.
+- Magic and lore are revealed through conflict, never narration. A character uses a power wrong, breaks a rule, pays a price — that's how the reader learns the system.
+- Dialogue ratio: 35-45%. Characters argue, scheme, warn, and lie. Banter during combat. Whispered deals before betrayals.
+- Description is surgical: one detail per location, one per character. The rest is motion and consequence.
+- Never pause the plot to explain the world. The world is what happens to people.
 `;
 
 const GENRE_STYLE_SCIFI = `
 ### Writing Style: SCIENCE FICTION
-Techniques:
-- The protagonist questions what is real. Objects, people, and systems are unreliable. Internal monologue is fractured, doubtful, urgent.
-- Cross-cultural or cross-faction miscommunication is a feature, not a bug. Characters speak past each other in ways that reveal the world.
-- Use the "you" voice to create dissociation — as if the protagonist is watching themselves, uncertain of their own choices.
-Pacing: Calm surface, churning depths. The plot escalates through rapid procedural discoveries; do not linger in one room.
-Dialogue ratio: 35-45%. Tech and systems are introduced through what characters argue about, not through narration.
-Watch for: Characters who exist only to deliver world-building. Every named character must want something that isn't just to explain the setting.
-THE DIALOGUE IMPERATIVE
-In any scene of 600+ words, no fewer than 35-45% of the prose should be dialogue or internal monologue.
-Characters lie, deflect, joke when they shouldn't, go quiet when words are expected.
-Subtext is everything. What a character doesn't say is usually more important than what they do.
-NO on-the-nose exposition in dialogue. If a character says "As you know, the system has been offline for three days..." — rewrite it.
-Example voice:
-The readout said 0.0 anomalies. It had said 0.0 anomalies yesterday, and the day before. You had started to find this suspicious.
-"You're overthinking it," Rei said, without looking up.
-"The system flagged nothing for eleven days straight."
-"That means it's working."
-"Or it means it stopped checking." You pulled up the raw feed. Numbers that looked normal. Numbers that looked too normal. "Rei. When did you last run a manual sweep?"
-She was quiet for exactly one second too long.
+The excitement is in what the characters discover and how fast it unravels what they thought was true.
+- Every scene delivers a revelation, a system failure, or a decision under pressure. Procedural momentum — characters are always solving, escaping, or arguing about what to do next.
+- Dialogue ratio: 40-50%. Tech is introduced through disagreement: "That's not what the data says." "The data's wrong." Arguments are exposition.
+- Internal monologue is short, sharp, and paranoid. The protagonist doubts what they're seeing. One line of doubt, then action.
+- No worldbuilding tours. The setting is conveyed through what breaks, what's forbidden, and what characters take for granted.
+- Cross-faction tension drives every interaction. Nobody fully trusts anyone. Alliances shift fast.
 `;
 
 const GENRE_STYLE_MYSTERY = `
 ### Writing Style: MYSTERY / THRILLER
-Techniques:
-- The protagonist's inner voice is their best weapon and greatest liability. They notice things others miss — but their interpretations may be wrong.
-- Clipped, rhythmic, charged. Every line should have a subterranean current. People are always saying less than they mean.
-- The killer detail is often social — how someone holds a fork, who they won't look at, what they rush to explain. Description serves suspicion.
-Pacing: Tightly coiled. Every scene must yield a new clue, a new lie, or a shift in location. Do not linger on dead ends for long.
-Dialogue ratio: 40-55%. Two characters talking past each other is a clue in itself.
-Watch for: Never TELL the reader something is suspicious. Show it. Let the reader feel it before the character names it.
-THE DIALOGUE IMPERATIVE
-This is the single most important craft rule for mystery. Dialogue is where clues live.
-In any scene of 600+ words, no fewer than 40-55% should be dialogue or internal monologue.
-Characters lie, deflect, give half-answers. They answer a different question than the one asked.
-Use action beats: not "he said nervously" but [He straightened the pen on the desk twice before answering.]
-Subtext is everything. The gap between what is said and what is meant IS the mystery.
-Self-test: if you can remove all dialogue and the scene still reads as complete, rewrite it.
+Every scene is an interrogation — of a person, a place, or an assumption.
+- Each scene must yield exactly one of: a new clue, a new lie exposed, or a suspect eliminated. If it doesn't, cut it.
+- Dialogue ratio: 45-60%. Dialogue IS the investigation. Characters reveal themselves by what they dodge, over-explain, or refuse to answer.
+- Clues are behavioral, not descriptive. It's not about the room — it's about who flinched, who left early, who knew something they shouldn't.
+- Pacing is relentless. Short scenes, frequent location changes, ticking clocks. The protagonist is always one step behind until they're suddenly one step ahead.
+- Never tell the reader something is suspicious. Let the wrong detail sit there. The reader will feel it.
 `;
 
 const GENRE_STYLE_HORROR = `
 ### Writing Style: HORROR
-Techniques:
-- The horror is in the detail that doesn't fit. Not monsters — wrongness. A door that opens slightly too slowly. A person who smiles at the wrong moment.
-- People talk normally while the horror advances. The contrast is the terror. Characters crack jokes, argue about small things. Life continues AS IF.
-- The protagonist's body knows before their mind does. Physical sensations — nausea, the feeling of being watched, the sudden cold — are given more weight than explanations.
-Pacing: Establish normality quickly, then rapidly disorient. The descent into terror should escalate with every choice. Keep the protagonist moving.
-Dialogue ratio: 40-50%. Normal conversation alongside mounting horror IS the technique. Never interrupt dialogue to explain the dread — let them coexist.
-Watch for: Never describe what is scary. Fear is created by NOT naming the thing. Stop just before the reader fully understands what they're looking at.
-THE DIALOGUE IMPERATIVE
-Normal conversation alongside mounting horror is THE technique.
-In any scene of 600+ words, no fewer than 40-50% should be dialogue or internal monologue.
-People talk about mundane things while something is deeply wrong. This contrast IS the fear.
-Never explain what the dialogue means. Never interrupt a frightening moment to annotate it.
+The excitement is dread accelerating into panic. Something is wrong and it's getting worse faster than anyone can react.
+- Normalcy lasts one page, max. Then the first wrong thing. Then it never stops.
+- The horror escalates through action: a door that won't open, a message that shouldn't exist, a person behaving impossibly. Characters are forced to move, investigate, flee — never sit and reflect.
+- Dialogue ratio: 40-50%. Characters talk normally while everything goes wrong. The contrast is the terror. Arguments about what to do next are where the fear lives.
+- Never describe the monster/threat in full. What the characters can't see or understand is scarier than what they can.
+- Body horror and dread are conveyed in one line, then the scene moves. No lingering.
 `;
 
 const GENRE_STYLE_ROMANCE = `
 ### Writing Style: ROMANCE / EMOTIONAL DRAMA
-Techniques:
-- Long, sometimes unattributed exchanges where the rhythm matters as much as the words. Characters circle what they mean. The relationship lives between the lines.
-- Everything is inflected by power, propriety, and what is not said in public. A glance across a room carries as much weight as a speech.
-- Emotion is translated into the body — a tightness in the chest, the specific quality of light at a particular moment, the weight of someone else's silence.
-Pacing: Steady emotional escalation. Do not stall; every scene must alter the relationship dynamic.
-Dialogue ratio: 55-65%. Relationship stories live and die on how people talk to each other. Description is the pause between words.
-Watch for: Never tell the reader what the attraction is. Show a hand that stays a second too long, a sentence that isn't finished, a laugh that comes out wrong.
-THE DIALOGUE IMPERATIVE
-Relationship stories live and die on how people talk to each other.
-55-65% of any substantial scene must be dialogue, internal monologue, or direct exchange.
-Characters circle what they mean. They say one thing and mean another. Silence is a response.
-After every 2 sentences of description, someone speaks or thinks in direct voice.
+The excitement is emotional collision — two people who want incompatible things forced into proximity, making choices that change everything.
+- Every scene must shift the relationship: closer, further, or sideways into new territory. Static scenes are cut.
+- Dialogue ratio: 55-65%. The relationship lives in what people say and don't say. Rapid-fire exchanges, unfinished sentences, the line that lands like a punch.
+- Conflict is the engine. Desire alone is not a scene. Desire + obstacle + a choice that costs something = a scene.
+- Internal monologue is brief and honest — one gut-punch line of what the character actually feels, then back to action and dialogue.
+- Grand gestures earn their weight only if preceded by real cost. No easy declarations.
 `;
 
 const GENRE_STYLE_COMEDY = `
 ### Writing Style: COMEDY / ABSURDIST
-Techniques:
-- Comedy comes from truth. Characters are funny because they are recognisably human in impossible situations. Never punch down. The target is always pomposity, systems, or self-deception.
-- The narrator is a character. Deadpan observations at peak chaos. The universe is indifferent, and this is somehow hilarious.
-- Characters talk at cross-purposes magnificently. The comedy is in the misunderstanding escalating — each person responding to a different conversation than the one being had.
-Pacing: Establish the normal → introduce absurdity → escalate catastrophically. Move quickly from one set-piece to the next.
-Dialogue ratio: 60-70%. Comedy is timing. Timing lives in dialogue. Description sets up the joke; dialogue delivers it.
-Watch for: NEVER explain the joke. If you feel the urge to write "...which was absurd, because..." — delete it.
-THE DIALOGUE IMPERATIVE
-Comedy is timing. Timing lives in dialogue.
-60-70% of any scene must be dialogue. Description sets up the punchline; dialogue delivers it.
-Characters respond to a different conversation than the one being had. Escalation is everything.
-NEVER explain the joke. If you write "which was, of course, absurd" — delete it immediately.
+The excitement is catastrophic escalation. A small misunderstanding becomes an avalanche, and every attempt to fix it makes it worse.
+- Pacing is everything. Set up → absurdity → escalation → peak chaos, in rapid succession. Never let a joke breathe too long.
+- Dialogue ratio: 60-70%. Comedy is timing, timing is dialogue. Characters talk past each other magnificently. Each person is having a different conversation.
+- The narrator is deadpan at peak chaos. No winking at the audience. State the absurd as fact.
+- Characters are funny because they're competent people in incompatible situations, not because they're stupid. The humor is structural, not mockery.
+- Never explain the joke. If you wrote "which was, of course, absurd" — delete it.
 `;
 
 const GENRE_STYLE_LITERARY = `
 ### Writing Style: SLICE-OF-LIFE / LITERARY FICTION
-Techniques:
-- Ordinary moments are not ordinary. The protagonist finds meaning in light through a window, in the weight of a familiar object, in the fact of being alive in a particular place.
-- Casual conversation that suddenly opens into depth without warning. Characters say strange things and nobody comments on them.
-- Each scene contains an entire relationship history. What is left out is as important as what is included.
-Pacing: Thoughtful but purposeful. Small events carry immense weight and drive internal change swiftly. Do not get trapped in static reflection.
-Dialogue ratio: 30-40%. Description carries more weight here — but it must be precise, not ornate. Dialogue is sparse, but every line lands.
-Watch for: Never mistake vagueness for depth. A specific memory is more moving than a general feeling.
-THE DIALOGUE IMPERATIVE
-Dialogue here is sparse — but every line must land with full weight.
-30-40% dialogue in longer scenes. Each line of dialogue should carry more meaning than its surface reading.
-Characters say strange things and nobody comments. Conversation opens suddenly into depth, then closes again.
-Silence is structural. The pause between words is where the emotion lives.
+The excitement is emotional revelation — the moment a character sees their life clearly, and it changes them.
+- Every scene builds toward a single honest moment. Get there fast. No circular reflection.
+- Dialogue ratio: 35-45%. Conversation opens into unexpected depth, then closes. Characters say one true thing surrounded by small talk.
+- Ordinary events carry weight because of what the character brings to them — history, regret, hope. But convey this through action and choice, not long internal passages.
+- Specificity over poetry. A concrete memory in one sentence beats a paragraph of mood.
+- Keep moving between locations and encounters. Literary does not mean slow. Quiet intensity, rapid progression.
 `;
 
 const GENRE_STYLE_ADVENTURE = `
 ### Writing Style: EXPLORATION / ADVENTURE
-Techniques:
-- Meeting a new place or culture is treated with genuine curiosity, not judgment. Wonder is the primary register.
-- The world is not a backdrop — it is an active presence with a history and a character. Specific. Named. Sensory.
-- The world contains things that have simply always been there, with rules no one has explained. Strangeness is matter-of-fact.
-Pacing: Expansive but forward-moving. Let discovery breathe, but keep the journey progressing. Do not stall in one location; keep the horizon shifting.
-Dialogue ratio: 25-35%. More description by design. But companion dialogue should punctuate discovery — a voice that responds, questions, and reflects back what was found.
-Watch for: Never treat scenery as filler. Every described detail must do work — reveal character, carry meaning, plant a thread, or deepen wonder.
-THE DIALOGUE IMPERATIVE
-Even in exploration stories, dialogue punctuates discovery.
-25-35% of substantial scenes should be dialogue or internal reflection.
-Companion voices respond, question, and reflect back what was found.
-Internal monologue is how the protagonist processes wonder — use it freely.
+The excitement is discovery — each new place, creature, or culture is a problem to solve, a wonder to survive, or a mystery to crack.
+- Every location is an encounter, not a postcard. Something happens the moment the characters arrive. The world acts on them.
+- Dialogue ratio: 30-40%. Companions react, argue about the path, warn each other. Discovery is processed through conversation, not contemplation.
+- One striking detail per new place — then action. The jungle isn't described; it's what attacks from the jungle that matters.
+- The journey has momentum: each destination leads to the next through consequence, not just geography. Arriving somewhere should raise the stakes, not reset them.
+- Wonder is earned through danger. The beautiful thing is also the dangerous thing.
 `;
 
 // ─────────────────────────────────────────────
