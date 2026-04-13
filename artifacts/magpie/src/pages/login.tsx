@@ -398,9 +398,9 @@ export default function LoginPage() {
 
               <p style={{ textAlign: "center", fontSize: "0.7rem", color: "#3a4e63", fontFamily: "'Montserrat', sans-serif" }}>
                 By continuing, you agree to our{" "}
-                <a href="#" style={{ color: "#68e6c5", textDecoration: "none" }}>Terms of Service</a>
+                <a href="/terms-of-service.html" target="_blank" rel="noopener noreferrer" style={{ color: "#68e6c5", textDecoration: "none" }}>Terms of Service</a>
                 {" "}and{" "}
-                <a href="#" style={{ color: "#68e6c5", textDecoration: "none" }}>Privacy Policy</a>
+                <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" style={{ color: "#68e6c5", textDecoration: "none" }}>Privacy Policy</a>
               </p>
             </form>
           </div>
@@ -409,7 +409,7 @@ export default function LoginPage() {
 
       <footer style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "14px 24px 24px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
         <p style={{ fontSize: "0.72rem", color: "#1a2a3a", fontFamily: "'Montserrat', sans-serif" }}>
-          © 2026 Magpie · <a href="#" style={{ color: "#253a4f", textDecoration: "none" }}>Privacy</a> · <a href="#" style={{ color: "#253a4f", textDecoration: "none" }}>Terms</a>
+          © 2026 Magpie · <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" style={{ color: "#253a4f", textDecoration: "none" }}>Privacy</a> · <a href="/terms-of-service.html" target="_blank" rel="noopener noreferrer" style={{ color: "#253a4f", textDecoration: "none" }}>Terms</a>
         </p>
       </footer>
 

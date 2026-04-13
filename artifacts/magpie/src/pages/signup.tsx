@@ -176,6 +176,12 @@ export default function SignupPage() {
         </div>
       </div>
 
+      <footer style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "14px 24px 24px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <p style={{ fontSize: "0.72rem", color: "#1a2a3a", fontFamily: "'Montserrat', sans-serif" }}>
+          © 2026 Magpie · <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer" style={{ color: "#253a4f", textDecoration: "none" }}>Privacy</a> · <a href="/terms-of-service.html" target="_blank" rel="noopener noreferrer" style={{ color: "#253a4f", textDecoration: "none" }}>Terms</a>
+        </p>
+      </footer>
+
       <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
