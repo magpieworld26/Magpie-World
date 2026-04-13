@@ -27,6 +27,7 @@ export default function ReaderPage() {
   const mobileScrollRef = useRef<HTMLDivElement>(null);
   const desktopScrollRef = useRef<HTMLDivElement>(null);
   const userScrolledDuringGeneration = useRef(false);
+  const newContentStartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -94,6 +95,10 @@ export default function ReaderPage() {
           );
           setStreamingText(null);
           setPendingChoiceText(null);
+
+          const scrollEl2 = mobileScrollRef.current || desktopScrollRef.current;
+          const savedScrollTop = scrollEl2 ? scrollEl2.scrollTop : 0;
+
           setNodes((prev) => [...prev, newNode]);
           setCurrentNode(newNode);
           setChosenId(null);
@@ -103,12 +108,22 @@ export default function ReaderPage() {
             setChoicesForNodeId(newNode.id);
             setShowChoices(true);
           }
-          if (!userScrolledDuringGeneration.current) {
-            requestAnimationFrame(() => {
-              const el = mobileScrollRef.current || desktopScrollRef.current;
-              if (el) el.scrollTop = el.scrollHeight;
-            });
-          }
+
+          requestAnimationFrame(() => {
+            const el = mobileScrollRef.current || desktopScrollRef.current;
+            if (!el) return;
+
+            if (userScrolledDuringGeneration.current) {
+              el.scrollTop = savedScrollTop;
+            } else {
+              if (newContentStartRef.current) {
+                const containerTop = el.getBoundingClientRect().top;
+                const refTop = newContentStartRef.current.getBoundingClientRect().top;
+                el.scrollBy({ top: refTop - containerTop, behavior: "smooth" });
+              }
+            }
+          });
+
           return;
         } catch (err) {
           const isServerError = err instanceof ApiError && err.status >= 500;
@@ -902,6 +917,7 @@ export default function ReaderPage() {
             </div>
           )}
 
+          <div ref={newContentStartRef} style={{ height: 0 }} />
           {(pendingChoiceText || currentNode.choiceMade) && (
             <div
               style={{
@@ -1337,6 +1353,7 @@ export default function ReaderPage() {
             </div>
           )}
 
+          <div ref={newContentStartRef} style={{ height: 0 }} />
           {(pendingChoiceText || currentNode.choiceMade) && (
             <div
               style={{
