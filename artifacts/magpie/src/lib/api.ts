@@ -11,11 +11,14 @@ export class ApiError extends Error {
   }
 }
 
-async function fetchApi<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function fetchApi<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
   const token = await getAuthToken();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...(options.headers as Record<string, string> || {}),
+    ...((options.headers as Record<string, string>) || {}),
   };
 
   if (token) {
@@ -28,8 +31,12 @@ async function fetchApi<T>(path: string, options: RequestInit = {}): Promise<T> 
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: "Request failed" }));
-    throw new Error(error.message || `Request failed with status ${response.status}`);
+    const error = await response
+      .json()
+      .catch(() => ({ message: "Request failed" }));
+    throw new Error(
+      error.message || `Request failed with status ${response.status}`,
+    );
   }
 
   return response.json();
@@ -148,22 +155,33 @@ export const api = {
   },
   sessions: {
     list: () => fetchApi<{ sessions: StorySession[] }>("/sessions"),
-    create: (storyId: string) => fetchApi<CreateSessionResponse>("/sessions", {
-      method: "POST",
-      body: JSON.stringify({ storyId }),
-    }),
-    get: (id: string) => fetchApi<{ session: StorySession; nodes: StoryNode[]; currentNode: StoryNode | null }>(`/sessions/${id}`),
+    create: (storyId: string) =>
+      fetchApi<CreateSessionResponse>("/sessions", {
+        method: "POST",
+        body: JSON.stringify({ storyId }),
+      }),
+    get: (id: string) =>
+      fetchApi<{
+        session: StorySession;
+        nodes: StoryNode[];
+        currentNode: StoryNode | null;
+      }>(`/sessions/${id}`),
     continueStream: async (
       id: string,
       choiceId: string,
       choiceText: string,
       onChunk: (text: string) => void,
-      consequenceType?: "good" | "neutral" | "bad" | "catastrophic",
+      consequenceType?:
+        | "spectacular"
+        | "good"
+        | "neutral"
+        | "bad"
+        | "catastrophic",
     ): Promise<StoryNode> => {
       const token = await getAuthToken();
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
-        "Accept": "text/event-stream",
+        Accept: "text/event-stream",
       };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
@@ -174,8 +192,13 @@ export const api = {
       });
 
       if (!response.ok || !response.body) {
-        const error = await response.json().catch(() => ({ message: "Request failed" }));
-        throw new ApiError(error.message || `Request failed with status ${response.status}`, response.status);
+        const error = await response
+          .json()
+          .catch(() => ({ message: "Request failed" }));
+        throw new ApiError(
+          error.message || `Request failed with status ${response.status}`,
+          response.status,
+        );
       }
 
       const reader = response.body.getReader();
@@ -218,20 +241,30 @@ export const api = {
   },
   premium: {
     status: () => fetchApi<PremiumStatus>("/premium/status"),
-    createOrder: (plan: string) => fetchApi<CreateOrderResponse>("/premium/create-order", {
-      method: "POST",
-      body: JSON.stringify({ plan }),
-    }),
-    verifyPayment: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
+    createOrder: (plan: string) =>
+      fetchApi<CreateOrderResponse>("/premium/create-order", {
+        method: "POST",
+        body: JSON.stringify({ plan }),
+      }),
+    verifyPayment: (data: {
+      razorpay_order_id: string;
+      razorpay_payment_id: string;
+      razorpay_signature: string;
+    }) =>
       fetchApi<VerifyPaymentResponse>("/premium/verify-payment", {
         method: "POST",
         body: JSON.stringify(data),
       }),
-    buyStory: (storyId: string) => fetchApi<BuyStoryOrderResponse>("/premium/buy-story", {
-      method: "POST",
-      body: JSON.stringify({ storyId }),
-    }),
-    verifyStoryPurchase: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
+    buyStory: (storyId: string) =>
+      fetchApi<BuyStoryOrderResponse>("/premium/buy-story", {
+        method: "POST",
+        body: JSON.stringify({ storyId }),
+      }),
+    verifyStoryPurchase: (data: {
+      razorpay_order_id: string;
+      razorpay_payment_id: string;
+      razorpay_signature: string;
+    }) =>
       fetchApi<VerifyStoryPurchaseResponse>("/premium/verify-story-purchase", {
         method: "POST",
         body: JSON.stringify(data),
