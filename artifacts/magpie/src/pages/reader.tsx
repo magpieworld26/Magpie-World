@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { api, ApiError, type StorySession, type StoryNode, type Choice } from "@/lib/api";
-import { getAuthToken } from "@/lib/supabase";
 import { useWindowWidth } from "@/hooks/use-mobile";
 
 export default function ReaderPage() {
@@ -31,27 +30,21 @@ export default function ReaderPage() {
 
   useEffect(() => {
     if (!sessionId) return;
-    getAuthToken().then((token) => {
-      if (!token) {
-        setLocation("/login");
-        return;
-      }
-      api.sessions
-        .get(sessionId)
-        .then((data) => {
-          setSession(data.session);
-          setNodes(data.nodes);
-          setCurrentNode(data.currentNode);
-          if (!data.currentNode || data.currentNode.choices.length === 0) {
-            setStoryComplete(true);
-          } else {
-            setShowChoices(true);
-            setChoicesForNodeId(data.currentNode.id);
-          }
-        })
-        .catch(() => setLocation("/home"))
-        .finally(() => setLoading(false));
-    });
+    api.sessions
+      .get(sessionId)
+      .then((data) => {
+        setSession(data.session);
+        setNodes(data.nodes);
+        setCurrentNode(data.currentNode);
+        if (!data.currentNode || data.currentNode.choices.length === 0) {
+          setStoryComplete(true);
+        } else {
+          setShowChoices(true);
+          setChoicesForNodeId(data.currentNode.id);
+        }
+      })
+      .catch(() => setLocation("/home"))
+      .finally(() => setLoading(false));
   }, [sessionId, setLocation]);
 
   const handleChoice = async (choice: Choice) => {
