@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, storySessionsTable, storyNodesTable } from "@workspace/db";
+import { db, storySessionsTable, storyNodesTable, usersTable } from "@workspace/db";
 import { eq, and, asc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { type AuthenticatedRequest, optionalAuth } from "../lib/auth-middleware";
@@ -96,6 +96,10 @@ router.post("/sessions", optionalAuth, async (req: AuthenticatedRequest, res): P
   const initialStoryStateJson = JSON.stringify({ targetEndingChoices });
 
   const [session] = await db.transaction(async (tx) => {
+    await tx
+      .insert(usersTable)
+      .values({ id: userId, email: `${userId}@magpie.app`, displayName: userId })
+      .onConflictDoNothing();
     const [s] = await tx
       .insert(storySessionsTable)
       .values({
