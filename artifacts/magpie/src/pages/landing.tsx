@@ -117,7 +117,7 @@ export default function LandingPage() {
               onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
               onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
             >
-              ▶ Start Your Journey
+              ▶ Begin Your Journey
             </button>
           </div>
         </div>

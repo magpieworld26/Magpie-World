@@ -64,11 +64,6 @@ export default function StoryDetailPage() {
 
   const handleRead = async () => {
     if (!story) return;
-    const token = await getAuthToken();
-    if (!token) {
-      setLocation("/login");
-      return;
-    }
     if (existingSession) {
       setLocation(`/read/${existingSession.id}`);
       return;
@@ -78,10 +73,6 @@ export default function StoryDetailPage() {
       const session = await api.sessions.create(story.id);
       setLocation(`/read/${session.id}`);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "";
-      if (message.includes("PREMIUM_REQUIRED") || message.toLowerCase().includes("premium")) {
-        setPremiumStatus((prev) => prev ? { ...prev, freeTrialsRemaining: 0 } : { isPremium: false, freeTrialsRemaining: 0 });
-      }
       setStarting(false);
     }
   };
@@ -163,15 +154,8 @@ export default function StoryDetailPage() {
 
   if (!story) return null;
 
-  const isPremium = premiumStatus?.isPremium === true;
-  const freeTrialsRemaining = premiumStatus?.freeTrialsRemaining ?? 0;
-  const hasFreeTrial = !isPremium && freeTrialsRemaining > 0;
-  const trialsExhausted = !isPremium && freeTrialsRemaining === 0 && (premiumStatus?.freeTrialsUsed ?? 0) > 0;
-  const hasPurchasedStory = !!(storyId && premiumStatus?.purchasedStoryIds?.includes(storyId));
   const heroPadding = isMobile ? "0 16px 28px" : "0 6vw 40px";
   const contentPadding = isMobile ? "28px 16px 60px" : "40px 6vw 80px";
-
-  const canRead = isPremium || hasFreeTrial || hasPurchasedStory || !!existingSession;
 
   return (
     <div style={{ background: "#060d1f", color: "#fff", minHeight: "100vh" }}>
@@ -323,7 +307,6 @@ export default function StoryDetailPage() {
             flexWrap: "wrap",
           }}
         >
-          {canRead ? (
             <>
               <button
                 onClick={handleRead}
@@ -361,13 +344,8 @@ export default function StoryDetailPage() {
                     try {
                       const session = await api.sessions.create(story.id);
                       setLocation(`/read/${session.id}`);
-                    } catch (err) {
-                      const message = err instanceof Error ? err.message : "";
-                      if (message.toLowerCase().includes("premium")) {
-                        setLocation("/premium");
-                      } else {
-                        setStarting(false);
-                      }
+                    } catch {
+                      setStarting(false);
                     }
                   }}
                   style={{
@@ -392,99 +370,9 @@ export default function StoryDetailPage() {
                 </button>
               )}
             </>
-          ) : (
-            <>
-              <button
-                onClick={handleBuyStory}
-                disabled={buyingStory}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  background: "#00e5c8",
-                  color: "#060d1f",
-                  border: "none",
-                  padding: isMobile ? "12px 24px" : "14px 32px",
-                  borderRadius: "4px",
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  fontSize: isMobile ? "14px" : "16px",
-                  letterSpacing: "1.5px",
-                  textTransform: "uppercase",
-                  cursor: buyingStory ? "not-allowed" : "pointer",
-                  opacity: buyingStory ? 0.7 : 1,
-                  flex: isMobile ? "1" : "unset",
-                }}
-              >
-                {buyingStory ? "Processing..." : "Buy This Story – ₹29"}
-              </button>
-              <button
-                onClick={() => setLocation("/premium")}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  background: "rgba(255,255,255,.1)",
-                  color: "#fff",
-                  border: "1px solid rgba(255,255,255,.2)",
-                  padding: isMobile ? "12px 24px" : "14px 32px",
-                  borderRadius: "4px",
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  fontSize: isMobile ? "14px" : "16px",
-                  letterSpacing: "1.5px",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                  flex: isMobile ? "1" : "unset",
-                }}
-              >
-                ★ Go Premium
-              </button>
-            </>
-          )}
         </div>
 
-        {/* Free trial info for non-premium users with trials remaining */}
-        {hasFreeTrial && !existingSession && (
-          <div
-            style={{
-              padding: "14px 16px",
-              background: "rgba(0,229,200,0.06)",
-              border: "1px solid rgba(0,229,200,0.2)",
-              borderRadius: "8px",
-              marginBottom: "28px",
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "14px",
-              color: "rgba(255,255,255,0.7)",
-              lineHeight: 1.6,
-            }}
-          >
-            Starting this story will use 1 of your {freeTrialsRemaining} free trial{freeTrialsRemaining === 1 ? "" : "s"}. Premium membership gives you unlimited access to all stories.
-          </div>
-        )}
-
-        {/* Paywall notice for exhausted trials */}
-        {!canRead && (
-          <div
-            style={{
-              padding: "14px 16px",
-              background: "rgba(0,229,200,0.06)",
-              border: "1px solid rgba(0,229,200,0.2)",
-              borderRadius: "8px",
-              marginBottom: "28px",
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "14px",
-              color: "rgba(255,255,255,0.7)",
-              lineHeight: 1.6,
-            }}
-          >
-            {trialsExhausted
-              ? "You've used your 2 free trials. Buy this story for ₹29 for a single read, or upgrade to premium for unlimited access — starting at ₹89."
-              : "Buy this story for ₹29 for a single read, or get premium for unlimited access to all stories — starting at ₹89."}
-          </div>
-        )}
-
-        {(isPremium || (hasFreeTrial && existingSession)) && existingSession && (
+        {existingSession && (
           <div
             style={{
               padding: "14px 16px",

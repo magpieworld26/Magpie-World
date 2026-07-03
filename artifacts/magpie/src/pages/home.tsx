@@ -222,25 +222,16 @@ export default function HomePage() {
   const { isMobile, isTablet } = useWindowWidth();
 
   useEffect(() => {
-    getAuthToken().then((token) => {
-      if (!token) {
-        setLocation("/login");
-        return;
-      }
-
-      Promise.all([
-        api.stories.list(),
-        api.sessions.list().catch(() => ({ sessions: [] })),
-        api.premium.status().catch(() => ({ isPremium: false })),
-      ])
-        .then(([storiesData, sessionsData, premiumData]) => {
-          setStories(storiesData.stories);
-          setSessions(sessionsData.sessions);
-          setPremiumStatus(premiumData);
-        })
-        .finally(() => setLoading(false));
-    });
-  }, [setLocation]);
+    Promise.all([
+      api.stories.list(),
+      api.sessions.list().catch(() => ({ sessions: [] })),
+    ])
+      .then(([storiesData, sessionsData]) => {
+        setStories(storiesData.stories);
+        setSessions(sessionsData.sessions);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const [heroIndex, setHeroIndex] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);

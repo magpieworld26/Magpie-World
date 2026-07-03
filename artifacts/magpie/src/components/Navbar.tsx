@@ -44,13 +44,7 @@ export default function Navbar({ showSearch = false, variant = "landing", search
   const isCompact = isMobile;
 
   useEffect(() => {
-    if (variant === "home") {
-      getAuthToken().then(token => {
-        if (token) {
-          api.premium.status().then(s => setIsPremium(s.isPremium)).catch(() => setIsPremium(false));
-        }
-      });
-    }
+    setIsPremium(null);
   }, [variant]);
 
   useEffect(() => {
@@ -229,44 +223,6 @@ export default function Navbar({ showSearch = false, variant = "landing", search
                     boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
                     zIndex: 200,
                   }}>
-                    {isPremium ? (
-                      <div style={{
-                        padding: "12px 18px",
-                        fontFamily: "'Barlow Condensed', sans-serif",
-                        fontSize: "12px",
-                        letterSpacing: "1.5px",
-                        textTransform: "uppercase",
-                        color: "#00e5c8",
-                        background: "rgba(0,229,200,0.08)",
-                        borderBottom: "1px solid rgba(0,229,200,0.15)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}>
-                        <span style={{ fontSize: "14px" }}>★</span> Premium Member
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => { setDropdownOpen(false); setLocation("/premium"); }}
-                        style={{
-                          display: "block",
-                          width: "100%",
-                          padding: "12px 18px",
-                          background: "transparent",
-                          border: "none",
-                          borderBottom: "1px solid rgba(0,229,200,0.1)",
-                          color: "#00e5c8",
-                          fontFamily: "'Barlow Condensed', sans-serif",
-                          fontSize: "13px",
-                          letterSpacing: "1.5px",
-                          textTransform: "uppercase",
-                          textAlign: "left",
-                          cursor: "pointer",
-                        }}
-                        onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,229,200,0.08)")}
-                        onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                      >Get Premium</button>
-                    )}
                     <button
                       onClick={() => { setDropdownOpen(false); handleSignOut(); }}
                       style={{
@@ -289,12 +245,7 @@ export default function Navbar({ showSearch = false, variant = "landing", search
                   </div>
                 )}
               </div>
-            ) : (
-              <button
-                onClick={handleSignIn}
-                style={buttonStyle}
-              >Sign In</button>
-            )
+            ) : null
           )}
         </div>
       </header>
@@ -383,39 +334,8 @@ export default function Navbar({ showSearch = false, variant = "landing", search
           )}
 
           {/* Action buttons */}
-          {variant === "home" ? (
+          {variant === "home" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "4px" }}>
-              {!isPremium && (
-                <button
-                  onClick={() => { setMobileOpen(false); setLocation("/premium"); }}
-                  style={{
-                    ...buttonStyle,
-                    width: "100%",
-                    padding: "12px",
-                    textAlign: "center",
-                    background: "rgba(0,229,200,0.08)",
-                  }}
-                >Get Premium</button>
-              )}
-              {isPremium && (
-                <div style={{
-                  padding: "12px",
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontSize: "13px",
-                  letterSpacing: "1.5px",
-                  textTransform: "uppercase",
-                  color: "#00e5c8",
-                  background: "rgba(0,229,200,0.08)",
-                  border: "1px solid rgba(0,229,200,0.2)",
-                  borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                }}>
-                  <span>★</span> Premium Member
-                </div>
-              )}
               <button
                 onClick={() => { setMobileOpen(false); handleSignOut(); }}
                 style={{
@@ -434,11 +354,6 @@ export default function Navbar({ showSearch = false, variant = "landing", search
                 }}
               >Sign Out</button>
             </div>
-          ) : (
-            <button
-              onClick={() => { setMobileOpen(false); handleSignIn(); }}
-              style={{ ...buttonStyle, width: "100%", padding: "12px", textAlign: "center" }}
-            >Sign In</button>
           )}
         </div>
       )}
