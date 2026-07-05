@@ -290,6 +290,7 @@ router.post("/sessions/:sessionId/continue", optionalAuth, async (req: Authentic
         plantedThreads: [],
         activeTensions: [],
         narrativeSummary: [],
+        targetEndingChoices: 25,
       };
     }
   } else {
@@ -302,6 +303,7 @@ router.post("/sessions/:sessionId/continue", optionalAuth, async (req: Authentic
       plantedThreads: [],
       activeTensions: [],
       narrativeSummary: [],
+      targetEndingChoices: 25,
     };
   }
 
@@ -336,9 +338,6 @@ router.post("/sessions/:sessionId/continue", optionalAuth, async (req: Authentic
       currentStoryState,
       currentTotalWordCount,
       undefined,
-      newChoiceCount,
-      targetEndingChoices,
-      forceEndingByChoices,
     );
 
     let narrativeText = generated.narrativeText;
