@@ -3,7 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { logger } from "./logger";
 import { getStoryById, storiesData } from "./stories-data";
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const MODEL = "gemini-2.5-flash-lite";
+const MODEL = "gemini-2.5-flash";
 
 // ─────────────────────────────────────────────
 // Public types
